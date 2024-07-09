@@ -64,36 +64,36 @@ $machinestates = array(
     // Note: ID=2 => your first state
 
     2 => array(
-    		"name" => "playerTurn",
-    		"description" => clienttranslate('${actplayer} must play a card or pass'),
-    		"descriptionmyturn" => clienttranslate('${you} must play a card or pass'),
-    		"type" => "activeplayer",
-    		"possibleactions" => array( "playCard", "pass" ),
-    		"transitions" => array( "playCard" => 2, "pass" => 2 )
+        "name" => "ActivationMulti",
+        "description" => clienttranslate('The other players must perform their actions'),
+        "descriptionmyturn" => clienttranslate('${you} must take an action or pass'),
+        "type" => "multipleactiveplayer",
+        "action" => 'st_MultiPlayerActivation',
+        "possibleactions" => array( "actSelect"),
+        "transitions" => array( "next" => 3, "zombiePass" => 2, "end" => 99)
     ),
-    
-/*
-    Examples:
-    
-    2 => array(
-        "name" => "nextPlayer",
-        "description" => '',
-        "type" => "game",
-        "action" => "stNextPlayer",
-        "updateGameProgression" => true,   
-        "transitions" => array( "endGame" => 99, "nextPlayer" => 10 )
-    ),
-    
-    10 => array(
-        "name" => "playerTurn",
-        "description" => clienttranslate('${actplayer} must play a card or pass'),
-        "descriptionmyturn" => clienttranslate('${you} must play a card or pass'),
-        "type" => "activeplayer",
-        "possibleactions" => array( "playCard", "pass" ),
-        "transitions" => array( "playCard" => 2, "pass" => 2 )
-    ), 
 
-*/    
+    
+    3 => array(
+        "name" => "playerTurn",
+        "description" => clienttranslate('The other players must perform their actions'),
+        "descriptionmyturn" => clienttranslate('${you} must take an action or pass'),
+        "type" => "multipleactiveplayer",
+        "args" => "argPlayerTurn",  
+        "possibleactions" => array( "actSelect"),
+        "transitions" => array( "stop" => 2, "next" => 4, "same" => 3, "zombiePass" => 2, "end" => 99)
+    ),
+
+    4 => array(
+        "name" => "fonctionauto",
+        "description" => clienttranslate('The other players must perform their actions'),
+        "descriptionmyturn" => clienttranslate('${you} must take an action or pass'),
+        "type" => "multipleactiveplayer",
+        "action" => 'st_Pending',
+        "updateGameProgression" => true,
+        "transitions" => array( "stop" => 2, "next" => 3, "zombiePass" => 2, "end" => 99)
+        
+    ),
    
     // Final state.
     // Please do not modify (and do not overload action/args methods).

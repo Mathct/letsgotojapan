@@ -26,18 +26,14 @@
 -->
 
 
-This is your game interface. You can edit this HTML in your ".tpl" file.
+<div id="group">
+<div id="carre1" class="carre"></div>
+<div id="carre2" class="carre"></div>
+</div>
 
 
 <script type="text/javascript">
 
-// Javascript HTML templates
-
-/*
-// Example:
-var jstpl_some_game_item='<div class="my_game_item" id="my_game_item_${MY_ITEM_ID}"></div>';
-
-*/
 
 </script>  
 

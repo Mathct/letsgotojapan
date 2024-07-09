@@ -63,6 +63,28 @@
     
     */
 
+    public function actSelect()
+  	{
+  	    self::setAjaxMode();
+  	    
+  	    $arg1 = self::getArg( "arg1", AT_alphanum );
+  	    
+  	    
+  	    $this->game->actSelect( $arg1);
+  	    
+  	    self::ajaxResponse( );
+  	}
+
+	  public function actButton()
+  	{
+		self::setAjaxMode();
+		$arg1 = self::getArg( "arg1", AT_alphanum );
+  	    
+  	    $this->game->actButton($arg1);
+  	    
+  	    self::ajaxResponse( );
+  	}
+
   }
   
 

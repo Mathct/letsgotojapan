@@ -37,50 +37,25 @@ class view_letsgotojapan_letsgotojapan extends game_view
   	function build_page( $viewArgs )
   	{		
   	    // Get players & players number
-        $players = $this->game->loadPlayersBasicInfos();
-        $players_nbr = count( $players );
+          global $g_user;
+          $current_player_id = $g_user->get_id(); // id current player
+          $spectator = $this->game->isSpectator();  // true ou false
+          $players = $this->game->loadPlayersBasicInfos();
+          
+          $players_nbr = count( $players );
+          $template = self::getGameName() . "_" . self::getGameName();
+    
+          $player_ordre = $this->game->getPlayerRelativePositions();
 
         /*********** Place your code below:  ************/
 
 
-        /*
-        
-        // Examples: set the value of some element defined in your tpl file like this: {MY_VARIABLE_ELEMENT}
-
-        // Display a specific number / string
-        $this->tpl['MY_VARIABLE_ELEMENT'] = $number_to_display;
-
-        // Display a string to be translated in all languages: 
-        $this->tpl['MY_VARIABLE_ELEMENT'] = $this->_("A string to be translated");
-
-        // Display some HTML content of your own:
-        $this->tpl['MY_VARIABLE_ELEMENT'] = $this->raw( $some_html_code );
-        
-        */
-        
-        /*
-        
-        // Example: display a specific HTML block for each player in this game.
-        // (note: the block is defined in your .tpl file like this:
-        //      <!-- BEGIN myblock --> 
-        //          ... my HTML code ...
-        //      <!-- END myblock --> 
         
 
-        $this->page->begin_block( "letsgotojapan_letsgotojapan", "myblock" );
-        foreach( $players as $player )
-        {
-            $this->page->insert_block( "myblock", array( 
-                                                    "PLAYER_NAME" => $player['player_name'],
-                                                    "SOME_VARIABLE" => $some_value
-                                                    ...
-                                                     ) );
-        }
+
+
+
+
         
-        */
-
-
-
-        /*********** Do not change anything below this line  ************/
   	}
 }
