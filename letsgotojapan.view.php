@@ -49,9 +49,27 @@ class view_letsgotojapan_letsgotojapan extends game_view
 
         /*********** Place your code below:  ************/
 
-        $this->page->begin_block($template, "player");
+        if($spectator === false)
+        {
+        $this->page->begin_block($template, "playerhand");
+        $this->page->insert_block( "playerhand", array(
+            'PLAYER_ID' => $current_player_id,
+            'COLOR' => $players[$current_player_id]['player_color'],
+            
+                        
+        ) );
+        
+        
+        }
 
-                
+
+
+
+
+
+
+        $this->page->begin_block($template, "player");
+         
         $this->page->insert_block("player", array (
         "PLAYER_ID" => $player_ordre[0],
         "PLAYER_NAME" => $players [$player_ordre[0]] ['player_name'],

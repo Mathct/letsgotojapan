@@ -18,7 +18,7 @@ class Pending extends APP_GameClass
         $ret = array();
         $ret["selectable"] = array();
         $ret['buttons'] = array();
-        $ret['titleyou'] = clienttranslate('${you} devez cliquer sur le carre rouge');
+        $ret['titleyou'] = clienttranslate('${you} must choose a card to place');
 
 
         
@@ -63,7 +63,7 @@ class Pending extends APP_GameClass
         $ret = array();
         $ret["selectable"] = array();
         $ret['buttons'] = array();
-        $ret['titleyou'] = clienttranslate('${you} devez cliquer sur le carre bleu');
+        $ret['titleyou'] = clienttranslate('${you} must choose a location in your trip');
 
         
        
