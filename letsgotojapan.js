@@ -211,6 +211,35 @@ function (dojo, declare) {
     
             ///////////////////////////////////////////////////
             //// Player's action
+
+            /*onScreenWidthChange: function()
+            {
+          
+            this.gameinterface_zoomFactor = 1;
+            dojo.style('page-content', 'zoom', '');
+            dojo.style('page-title', 'zoom', '');
+            dojo.style('right-side-first-part', 'zoom', '');
+
+            this.default_viewport = "width=" + this.interface_min_width;
+
+            var MAP_WIDTH = 1500;
+            var MAP_HEIGHT = 482;
+
+            var gameWidth = MAP_WIDTH;
+            var gameHeight = MAP_HEIGHT;
+
+            var horizontalScale = document.getElementById('game_play_area').clientWidth / gameWidth;
+            var verticalScale = (window.innerHeight - 0) / gameHeight;
+
+            var scale = Math.min(1, horizontalScale, verticalScale);
+
+            var resized_div = document.getElementById('resized_id');
+            var play_area_height = dojo.marginBox("player_board").h;
+
+            resized_div.style.transform = scale === 1 ? '' : "scale(".concat(scale, ")");
+            
+            dojo.style("resized_id",'height', (play_area_height*scale)+'px');
+            },*/
             
            
             onSelect: function(evt)

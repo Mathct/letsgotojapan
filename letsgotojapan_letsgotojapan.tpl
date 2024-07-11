@@ -14,7 +14,7 @@
     This is the HTML template of your game.
     
     Everything you are writing in this file will be displayed in the HTML page of your game user interface,
-    in the "main game zone" of the screen.
+    in the "main game zone" of the screen.6.8
     
     You can use in this template:
     _ variables, with the format {MY_VARIABLE_ELEMENT}.
@@ -25,12 +25,50 @@
     Please REMOVE this comment before publishing your game on BGA
 -->
 
+<!-- 
+<div id="global">
+    <div id="turn_board">
+        <div class="turn_board">
+            <div id="turnboard_marqueur_1" class = "turnboard_marqueur" style="left: 1.6%; top: 5.5%;"></div>
+            <div id="turnboard_marqueur_2" class = "turnboard_marqueur" style="left: 8.9%; top: 5.5%;"></div>
+            <div id="turnboard_marqueur_3" class = "turnboard_marqueur" style="left: 16%; top: 5.5%;"></div>
+            <div id="turnboard_marqueur_4" class = "turnboard_marqueur" style="left: 23.4%; top: 5.5%;"></div>
+            <div id="turnboard_marqueur_5" class = "turnboard_marqueur" style="left: 31.1%; top: 5.5%;"></div>
+            <div id="turnboard_marqueur_6" class = "turnboard_marqueur" style="left: 38.4%; top: 5.5%;"></div>
+            <div id="turnboard_marqueur_7" class = "turnboard_marqueur" style="left: 45.5% ; top: 5.5%;"></div>
+            <div id="turnboard_marqueur_8" class = "turnboard_marqueur" style="left: 52.9%; top: 5.5%;"></div>
+            <div id="turnboard_marqueur_9" class = "turnboard_marqueur" style="left: 60.2%; top: 5.5%;"></div>
+            <div id="turnboard_marqueur_10" class = "turnboard_marqueur" style="left: 68.2%; top: 5.5%;"></div>
+            <div id="turnboard_marqueur_11" class = "turnboard_marqueur" style="left: 75.4%; top: 5.5%;"></div>
+            <div id="turnboard_marqueur_12" class = "turnboard_marqueur" style="left: 82.6%; top: 5.5%;"></div>
+            <div id "turnboard_marqueur_13" class = "turnboard_marqueur" style="left: 89.9%; top: 5.5%;"></div>
+        </div>
+    </div>
 
-<div id="group">
-<div id="carre1" class="carre"></div>
-<div id="carre2" class="carre"></div>
+    <div id="player_board">
+        <div class="player_board"></div>
+    </div>
+    
 </div>
 
+
+<div class="turn_board"></div>
+
+-->
+
+
+
+<div id="global">
+
+    
+    <div id="player_board" class="player_board responsive-div">
+    <div id="carre" class="child-div"></div>
+    </div>
+    
+       
+
+
+</div>
 
 <script type="text/javascript">
 

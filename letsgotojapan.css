@@ -49,29 +49,44 @@
 /********* You can start writing your CSS below this line: **********/
 
 
-#group {
+#global {
+    width: 100%;
+    height: 500px;
     display: flex;
-    justify-content: space-evenly;
-    margin-top: 100px;
+    justify-content: center;
 
 }
-#carre1 {
-    width: 50px;
-    height: 50px;
-    background-color: red;
+
+
+.player_board {
+       
+    background-image: url('img/players_board.jpg');
+    background-size: 100% 400%;
+    background-position-y: -0%;
+    position: relative;
+    width: 1200px;
+    height: 386px;
+    z-index: 1;
+    
 }
 
-#carre2 {
-    width: 50px;
-    height: 50px;
-    background-color: blue;
-
-}
 
 .selectable {
     border: 2px solid black;
     cursor: pointer;
+    box-sizing: border-box;
 }
 
-
-
+/*
+.turn_board {
+   
+    background-image: url('img/turn_board.jpg');
+    background-size: 100% 100%;
+    position: relative;
+    width: 750px;
+    height: 150px;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}*/

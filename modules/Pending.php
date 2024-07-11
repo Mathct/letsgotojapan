@@ -21,7 +21,7 @@ class Pending extends APP_GameClass
         $ret['titleyou'] = clienttranslate('${you} devez cliquer sur le carre rouge');
 
 
-        $ret["selectable"][]='carre1';
+        
        
 
         
@@ -65,7 +65,7 @@ class Pending extends APP_GameClass
         $ret['buttons'] = array();
         $ret['titleyou'] = clienttranslate('${you} devez cliquer sur le carre bleu');
 
-        $ret["selectable"][]='carre2';
+        
        
 
         $ret['buttons'][]='cancel';
