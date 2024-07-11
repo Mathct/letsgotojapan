@@ -80,7 +80,7 @@ class letsgotojapan extends Table
         }
         $sql .= implode( ',', $values );
         $this->DbQuery( $sql );
-        $this->reattributeColorsBasedOnPreferences( $players, $gameinfos['player_colors'] );
+        //$this->reattributeColorsBasedOnPreferences( $players, $gameinfos['player_colors'] );
         $this->reloadPlayersBasicInfos();
         
 /////////////////////////////////////////////////////////////////////////////////  
@@ -128,8 +128,9 @@ class letsgotojapan extends Table
         $result['players'] = self::getCollectionFromDb( $sql );
 
         $result['listplayers'] = self::getObjectListFromDB( "SELECT player_id id FROM player", true );
+        $result['countplayers'][] = count(self::getObjectListFromDB( "SELECT player_id id FROM player", true ));
 
-        // TODO: Gather all information about current game situation (visible by player $current_player_id).
+        
 
         return $result;
     }

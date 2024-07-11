@@ -25,9 +25,12 @@
     Please REMOVE this comment before publishing your game on BGA
 -->
 
-<!-- 
+
+
 <div id="global">
-    <div id="turn_board">
+    
+   
+    
         <div class="turn_board">
             <div id="turnboard_marqueur_1" class = "turnboard_marqueur" style="left: 1.6%; top: 5.5%;"></div>
             <div id="turnboard_marqueur_2" class = "turnboard_marqueur" style="left: 8.9%; top: 5.5%;"></div>
@@ -43,32 +46,23 @@
             <div id="turnboard_marqueur_12" class = "turnboard_marqueur" style="left: 82.6%; top: 5.5%;"></div>
             <div id "turnboard_marqueur_13" class = "turnboard_marqueur" style="left: 89.9%; top: 5.5%;"></div>
         </div>
-    </div>
 
-    <div id="player_board">
-        <div class="player_board"></div>
-    </div>
+        <!-- BEGIN player -->
+        
+        
+        <div id="playerview_{PLAYER_ID}" class="playerview">
+        <div id="playername_{PLAYER_ID}" class="playername" style="color:#{COLOR}; outline: 0.5px solid #{COLOR};"><div class="left"><<<&nbsp;&nbsp;&nbsp;</div>{PLAYER_NAME}<div class="right">&nbsp;&nbsp;&nbsp;>>></div></div>
+        <div id="playerboard_{PLAYER_ID}" class="playerboard color_{COLOR}"></div>
+        </div>
+            
+        
+        <!-- END player -->
     
 </div>
 
 
-<div class="turn_board"></div>
-
--->
 
 
-
-<div id="global">
-
-    
-    <div id="player_board" class="player_board responsive-div">
-    <div id="carre" class="child-div"></div>
-    </div>
-    
-       
-
-
-</div>
 
 <script type="text/javascript">
 

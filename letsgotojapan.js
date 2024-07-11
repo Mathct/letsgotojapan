@@ -24,12 +24,15 @@ function (dojo, declare) {
     return declare("bgagame.letsgotojapan", ebg.core.gamegui, {
         constructor: function(){
             console.log('letsgotojapan constructor');
-              
+
+                          
             // Here, you can init the global variables of your user interface
             // Example:
             // this.myGlobalValue = 0;
 
         },
+
+      
         
         /*
             setup:
@@ -59,13 +62,30 @@ function (dojo, declare) {
                     // TODO: Setting up players boards if needed
                 }
                 
-                // TODO: Set up your game interface here, according to "gamedatas"
+                for( var player_id in gamedatas.players )
+                    {
+                        var player = gamedatas.players[player_id].id;
+                        if(player != this.getCurrentPlayerId())
+                        {
+                            dojo.query("#playerview_"+player).addClass("masque");
+                        }
+    
+                                                    
+                        
+                    }
+
+                if(this.isSpectator)
+                    {
+                        var player = gamedatas.listplayers[0];
+                        dojo.query("#playerview_"+player).removeClass("masque");
+                    }
                 
      
                 // Setup game notifications to handle (see "setupNotifications" method below)
                 this.setupNotifications();
     
-                dojo.query(".carre").connect('onclick', this, 'onSelect' );
+                dojo.query(".left").connect('onclick', this, 'onPrev' );
+                dojo.query(".right").connect('onclick', this, 'onNext' );
     
     
                 console.log( "Ending game setup" );
@@ -107,7 +127,23 @@ function (dojo, declare) {
                             {
                                 $('pagemaintitletext').innerHTML = 	this.format_string_recursive(_(this.args[this.getCurrentPlayerId()][0].titleyou).replace('${you}', this.divYou()).replace('#nb#',args.args.nb).replace('#nb2#',args.args.nb2).replace('#icon#',args.args.icon), args.args);
                             }
-                                    
+
+
+
+                            var elements = document.querySelectorAll('[id^="playerview"]:not(.masque)');
+                            var idsSansMasque = [];
+                            elements.forEach(function(element) {
+                                // Obtenez l'ID de chaque élément
+                                var id = element.id;
+                                
+                                // Ajoutez l'ID à la liste
+                                idsSansMasque.push(id);
+                            });
+
+                            dojo.query("#"+idsSansMasque[0]).addClass("masque");
+                            dojo.query("#playerview_"+this.getCurrentPlayerId()).removeClass("masque");
+                                  
+                            
                         }
                             
                         
@@ -212,35 +248,7 @@ function (dojo, declare) {
             ///////////////////////////////////////////////////
             //// Player's action
 
-            /*onScreenWidthChange: function()
-            {
-          
-            this.gameinterface_zoomFactor = 1;
-            dojo.style('page-content', 'zoom', '');
-            dojo.style('page-title', 'zoom', '');
-            dojo.style('right-side-first-part', 'zoom', '');
-
-            this.default_viewport = "width=" + this.interface_min_width;
-
-            var MAP_WIDTH = 1500;
-            var MAP_HEIGHT = 482;
-
-            var gameWidth = MAP_WIDTH;
-            var gameHeight = MAP_HEIGHT;
-
-            var horizontalScale = document.getElementById('game_play_area').clientWidth / gameWidth;
-            var verticalScale = (window.innerHeight - 0) / gameHeight;
-
-            var scale = Math.min(1, horizontalScale, verticalScale);
-
-            var resized_div = document.getElementById('resized_id');
-            var play_area_height = dojo.marginBox("player_board").h;
-
-            resized_div.style.transform = scale === 1 ? '' : "scale(".concat(scale, ")");
-            
-            dojo.style("resized_id",'height', (play_area_height*scale)+'px');
-            },*/
-            
+                       
            
             onSelect: function(evt)
             {        	 
@@ -278,6 +286,99 @@ function (dojo, declare) {
                     }, 
                     this, function( result ) {}, function( is_error) {} );
     
+            },
+
+            onNext: function(evt)
+            {        	 
+                // Preventing default browser reaction
+                dojo.stopEvent( evt );
+
+                var elements = document.querySelectorAll('[id^="playerview"]:not(.masque)');
+                var idsSansMasque = [];
+                elements.forEach(function(element) {
+                    // Obtenez l'ID de chaque élément
+                    var id = element.id;
+                    
+                    // Ajoutez l'ID à la liste
+                    idsSansMasque.push(id);
+                });
+
+                var elementall = document.querySelectorAll('[id^="playerview"]');
+                var idsAll = [];
+                // Parcourez les éléments et affichez leur ID
+                elementall.forEach(function(element) {
+                    var id = element.id;
+                    idsAll.push(id);
+                });
+
+                
+                var variable = idsSansMasque[0];
+                var index = idsAll.indexOf(variable);
+                               
+                if(index != (this.gamedatas.countplayers[0]-1))
+                {
+                    dojo.query("#"+variable).addClass("masque");
+                    dojo.query("#"+idsAll[index+1]).removeClass("masque");
+
+                }
+
+                if(index == (this.gamedatas.countplayers[0]-1))
+                {
+                    dojo.query("#"+variable).addClass("masque");
+                    dojo.query("#"+idsAll[0]).removeClass("masque");
+
+                }
+    
+
+                
+                
+
+            },
+
+            onPrev: function(evt)
+            {        	 
+                // Preventing default browser reaction
+                dojo.stopEvent( evt );
+
+                var elements = document.querySelectorAll('[id^="playerview"]:not(.masque)');
+                var idsSansMasque = [];
+                elements.forEach(function(element) {
+                    // Obtenez l'ID de chaque élément
+                    var id = element.id;
+                    
+                    // Ajoutez l'ID à la liste
+                    idsSansMasque.push(id);
+                });
+
+                var elementall = document.querySelectorAll('[id^="playerview"]');
+                var idsAll = [];
+                // Parcourez les éléments et affichez leur ID
+                elementall.forEach(function(element) {
+                    var id = element.id;
+                    idsAll.push(id);
+                });
+
+                
+                var variable = idsSansMasque[0];
+                var index = idsAll.indexOf(variable);
+                
+
+               
+                if(index != 0)
+                {
+                    dojo.query("#"+variable).addClass("masque");
+                    dojo.query("#"+idsAll[index-1]).removeClass("masque");
+
+                }
+
+                if(index == 0)
+                {
+                    dojo.query("#"+variable).addClass("masque");
+                    dojo.query("#"+idsAll[this.gamedatas.countplayers[0]-1]).removeClass("masque");
+
+                }
+    
+
             },
     
             
