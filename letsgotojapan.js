@@ -50,6 +50,16 @@ function (dojo, declare) {
             setup: function( gamedatas )
             {
                 console.log( "Starting game setup" );
+
+/////////////////////////////////////////////////////////////////////////////////           
+//    _____                      _____        _            
+//   / ____|                    |  __ \      | |           
+//  | |  __  __ _ _ __ ___   ___| |  | | __ _| |_ __ _ ___ 
+//  | | |_ |/ _` | '_ ` _ \ / _ \ |  | |/ _` | __/ _` / __|
+//  | |__| | (_| | | | | | |  __/ |__| | (_| | || (_| \__ \
+//   \_____|\__,_|_| |_| |_|\___|_____/ \__,_|\__\__,_|___/
+//                                                        
+/////////////////////////////////////////////////////////////////////////////////  
                 
                 this.players = gamedatas.players;
     
@@ -79,6 +89,34 @@ function (dojo, declare) {
                         var player = gamedatas.listplayers[0];
                         dojo.query("#playerview_"+player).removeClass("masque");
                     }
+
+                ////////////////////////////////////////////////////////////////////////////////////////////
+
+                for( var tokyo in gamedatas.tokyo)
+                    {
+                        var tokyo = gamedatas.tokyo[tokyo];
+                        console.warn (tokyo);
+                        //this.addMateria(materia.id, materia.type, materia.type_arg, materia.location, materia.location_arg);
+                        
+                        
+                    }
+
+                for( var kyoto in gamedatas.kyoto)
+                    {
+                        var kyoto = gamedatas.kyoto[kyoto];
+                        console.warn (kyoto);
+                        //this.addMateria(materia.id, materia.type, materia.type_arg, materia.location, materia.location_arg);
+                        
+                        
+                    }
+
+                
+                
+
+
+
+
+                
                 
      
                 // Setup game notifications to handle (see "setupNotifications" method below)
@@ -91,9 +129,15 @@ function (dojo, declare) {
                 console.log( "Ending game setup" );
             },
            
-    
-            ///////////////////////////////////////////////////
-            //// Game & client states
+/////////////////////////////////////////////////////////////////////////////////   
+//         _____ _        _            
+//        / ____| |      | |           
+//       | (___ | |_ __ _| |_ ___  ___ 
+//        \___ \| __/ _` | __/ _ \/ __|
+//        ____) | || (_| | ||  __/\__ \
+//       |_____/ \__\__,_|\__\___||___/
+//                                    
+/////////////////////////////////////////////////////////////////////////////////  
             
             // onEnteringState: this method is called each time we are entering into a new game state.
             //                  You can use this method to perform some user interface changes at this moment.
@@ -212,8 +256,16 @@ function (dojo, declare) {
                 
             },  
     
-            ///////////////////////////////////////////////////
-            //// Utility methods
+/////////////////////////////////////////////////////////////////////////////////         
+//   _    _ _   _ _ _ _                          _   _               _     
+//  | |  | | | (_) (_) |                        | | | |             | |    
+//  | |  | | |_ _| |_| |_ _   _   _ __ ___   ___| |_| |__   ___   __| |___ 
+//  | |  | | __| | | | __| | | | | '_ ` _ \ / _ \ __| '_ \ / _ \ / _` / __|
+//  | |__| | |_| | | | |_| |_| | | | | | | |  __/ |_| | | | (_) | (_| \__ \
+//   \____/ \__|_|_|_|\__|\__, | |_| |_| |_|\___|\__|_| |_|\___/ \__,_|___/
+//                         __/ |                                           
+//                        |___/                                            
+/////////////////////////////////////////////////////////////////////////////////  
             
             divYou : function() {
                 
@@ -243,10 +295,44 @@ function (dojo, declare) {
                 }
                 return this.inherited(arguments);
             },
+
+            attachToNewParentNoDestroy: function (mobile_in, new_parent_in, relation, place_position) 
+            {
+        
+                const mobile = $(mobile_in);
+                const new_parent = $(new_parent_in);
+
+                var src = dojo.position(mobile);
+                if (place_position)
+                    mobile.style.position = place_position;
+                dojo.place(mobile, new_parent, relation);
+                mobile.offsetTop;//force re-flow
+                var tgt = dojo.position(mobile);
+                var box = dojo.marginBox(mobile);
+                var cbox = dojo.contentBox(mobile);
+                var left = box.l + src.x - tgt.x;
+                var top = box.t + src.y - tgt.y;
+
+                mobile.style.position = "absolute";
+                mobile.style.left = left + "px";
+                mobile.style.top = top + "px";
+                box.l += box.w - cbox.w;
+                box.t += box.h - cbox.h;
+                mobile.offsetTop;//force re-flow
+                return box;
+            },
     
     
-            ///////////////////////////////////////////////////
-            //// Player's action
+/////////////////////////////////////////////////////////////////////////////////  
+//         _____  _                       _                  _   _             
+//        |  __ \| |                     ( )                | | (_)            
+//        | |__) | | __ _ _   _  ___ _ __|/ ___    __ _  ___| |_ _  ___  _ __  
+//        |  ___/| |/ _` | | | |/ _ \ '__| / __|  / _` |/ __| __| |/ _ \| '_ \ 
+//        | |    | | (_| | |_| |  __/ |    \__ \ | (_| | (__| |_| | (_) | | | |
+//        |_|    |_|\__,_|\__, |\___|_|    |___/  \__,_|\___|\__|_|\___/|_| |_|
+//                         __/ |                                               
+//                        |___/                                                
+/////////////////////////////////////////////////////////////////////////////////  
 
                        
            
@@ -382,8 +468,15 @@ function (dojo, declare) {
             },
     
             
-            ///////////////////////////////////////////////////
-            //// Reaction to cometD notifications
+///////////////////////////////////////////////////////////////////////////////// 
+//       _   _       _   _  __ _           _   _                 
+//      | \ | |     | | (_)/ _(_)         | | (_)                
+//      |  \| | ___ | |_ _| |_ _  ___ __ _| |_ _  ___  _ __  ___ 
+//      | . ` |/ _ \| __| |  _| |/ __/ _` | __| |/ _ \| '_ \/ __|
+//      | |\  | (_) | |_| | | | | (_| (_| | |_| | (_) | | | \__ \
+//      |_| \_|\___/ \__|_|_| |_|\___\__,_|\__|_|\___/|_| |_|___/
+//                                                                 
+/////////////////////////////////////////////////////////////////////////////////  
     
             setupNotifications: function()
             {

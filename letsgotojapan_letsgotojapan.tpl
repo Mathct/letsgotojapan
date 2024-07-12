@@ -66,7 +66,20 @@
         <!-- BEGIN player -->
         <div id="playerview_{PLAYER_ID}" class="playerview">
             <div id="playername_{PLAYER_ID}" class="playername" style="color:#{COLOR}; outline: 0.5px solid #{COLOR};"><div class="left"><<<&nbsp;&nbsp;&nbsp;</div>{PLAYER_NAME}<div class="right">&nbsp;&nbsp;&nbsp;>>></div></div>
-            <div id="playerboard_{PLAYER_ID}" class="playerboard color_{COLOR}"></div>
+            <div id="playerboard_{PLAYER_ID}" class="playerboard color_{COLOR}">
+                <div id="cardposition_1_1_{PLAYER_ID}"class="cardposition" style="top: 101%; left: 2.3%;"></div>
+                <div id="cardposition_1_2_{PLAYER_ID}"class="cardposition" style="top: 115%; left: 2.3%;"></div>
+                <div id="cardposition_1_3_{PLAYER_ID}"class="cardposition" style="top: 129%; left: 2.3%;"></div>
+                <div id="cardposition_1_4_{PLAYER_ID}"class="cardposition" style="top: 143%; left: 2.3%;"></div>
+                <div id="cardposition_1_5_{PLAYER_ID}"class="cardposition" style="top: 157%; left: 2.3%;"></div>
+                <div id="cardposition_1_6_{PLAYER_ID}"class="cardposition" style="top: 171%; left: 2.3%;"></div>
+                <div id="cardposition_1_7_{PLAYER_ID}"class="cardposition" style="top: 185%; left: 2.3%;"></div>
+                <div id="cardposition_2_1_{PLAYER_ID}"class="cardposition" style="top: 101%; left: 19.2%;"></div>
+                <div id="cardposition_3_1_{PLAYER_ID}"class="cardposition" style="top: 101%; left: 35.9%;"></div>
+                <div id="cardposition_4_1_{PLAYER_ID}"class="cardposition" style="top: 101%; left: 52.7%;"></div>
+                <div id="cardposition_5_1_{PLAYER_ID}"class="cardposition" style="top: 101%; left: 69.4%;"></div>
+                <div id="cardposition_6_1_{PLAYER_ID}"class="cardposition" style="top: 101%; left: 86.2%;"></div>
+            </div>
         </div>
         <!-- END player -->
     

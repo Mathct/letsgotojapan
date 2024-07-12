@@ -45,6 +45,14 @@ class letsgotojapan extends Table
 
         self::$instance = $this;
 
+        $this->tokyo = self::getNew( "module.common.deck" );
+        $this->tokyo->init( "tokyo" );
+        $this->tokyo->autoreshuffle = true;
+
+        $this->kyoto = self::getNew( "module.common.deck" );
+        $this->kyoto->init( "kyoto" );
+        $this->kyoto->autoreshuffle = true;
+
         
 	}
 	
@@ -94,6 +102,38 @@ class letsgotojapan extends Table
 /////////////////////////////////////////////////////////////////////////////////    
 
 
+        $tokyo = array();
+        for ($i = 1; $i <= 80; $i++)
+        {
+            
+            $tokyo[] = array( 'type' => $i, 'type_arg' => 1, 'nbr' => 1);
+           
+        }
+
+        $this->tokyo->createCards( $tokyo, 'deck' );
+        $this->tokyo->shuffle( 'deck' );
+
+        $kyoto = array();
+        for ($i = 1; $i <= 80; $i++)
+        {
+            
+            $kyoto[] = array( 'type' => $i, 'type_arg' => 1, 'nbr' => 1);
+           
+        }
+
+        $this->kyoto->createCards( $kyoto, 'deck' );
+        $this->kyoto->shuffle( 'deck' );
+
+        foreach( $players as $player_id => $player )
+        {
+            
+            $this->tokyo->pickCardForLocation( 'deck', 'playerhand', $player_id);
+            $this->kyoto->pickCardForLocation( 'deck', 'playerhand', $player_id);
+
+        }
+
+
+
         foreach( $players as $player_id => $player )
         {
             $this->addPendingFirst($player_id, "NormalTurn");
@@ -129,6 +169,9 @@ class letsgotojapan extends Table
 
         $result['listplayers'] = self::getObjectListFromDB( "SELECT player_id id FROM player", true );
         $result['countplayers'][] = count(self::getObjectListFromDB( "SELECT player_id id FROM player", true ));
+
+        $result['tokyo'] = self::getObjectListFromDB( "SELECT card_id id, card_type type, card_type_arg type_arg, card_location location, card_location_arg location_arg FROM tokyo WHERE card_location != 'deck' and card_location != 'discard'");
+        $result['kyoto'] = self::getObjectListFromDB( "SELECT card_id id, card_type type, card_type_arg type_arg, card_location location, card_location_arg location_arg FROM kyoto WHERE card_location != 'deck' and card_location != 'discard'");
 
         
 
@@ -447,6 +490,7 @@ function zombieTurn( $state, $active_player )
     if ($state['type'] === "multipleactiveplayer") {
         // Make sure player is in a non blocking status for role turn
         $this->gamestate->setPlayerNonMultiactive( $active_player, '' );
+        $this->gamestate->nextState( 'end');
         
         return;
     }

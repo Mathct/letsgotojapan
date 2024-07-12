@@ -207,7 +207,21 @@
     background-image: url('img/card_verso.png');
     background-size: 200% 100%;
     background-position-x: 0%;
-    height: 250px;
+    height: 257px;
     width: 150px;
+    border-radius: 8px;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+ }
+
+ .cardposition {
+    height: 257px;
+    width: 150px;
+    position: absolute;
+    background-image: url('img/card_verso.png');
+    background-size: 200% 100%;
+    background-position-x: 0%;
+    border-radius: 8px;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+
  }
 
