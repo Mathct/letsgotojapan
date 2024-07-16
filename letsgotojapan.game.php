@@ -399,23 +399,7 @@ function Condenser($id, $new)
 
                 }
 
-                /*if ($count ==3)
-                {
-                    $card3 = self::getUniqueValueFromDB("SELECT card_id FROM tokyo WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_6'");
-                    if ($card3 != null)
-                    {
-                        letsgotojapan::$instance->tokyo->moveCard( $card3, 'cardposition_'.$jour.'_3', $id);
-                    }
-                    if ($card3 == null)
-                    {
-                        $card3 = self::getUniqueValueFromDB("SELECT card_id FROM kyoto WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_6'");
-                        $ville3 =2;
-                        letsgotojapan::$instance->kyoto->moveCard( $card3, 'cardposition_'.$jour.'_3', $id);
-                    }
-
-                }*/
-
-
+                
                 letsgotojapan::$instance->notifyAllPlayers('condensersansmodif','', array(
                     'jour' =>  $jour,
                     'count' => $count,
@@ -481,22 +465,7 @@ function Condenser($id, $new)
 
                 }
 
-                /*if ($count ==3)
-                {
-                    $card3 = self::getUniqueValueFromDB("SELECT card_id FROM tokyo WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_6'");
-                    if ($card3 != null)
-                    {
-                        letsgotojapan::$instance->tokyo->moveCard( $card3, 'cardposition_'.$jour.'_3', $id);
-                    }
-                    if ($card3 == null)
-                    {
-                        $card3 = self::getUniqueValueFromDB("SELECT card_id FROM kyoto WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_6'");
-                        $ville3 =2;
-                        letsgotojapan::$instance->kyoto->moveCard( $card3, 'cardposition_'.$jour.'_3', $id);
-                    }
-
-                }*/
-
+                
 
                 letsgotojapan::$instance->notifyAllPlayers('condenseravecmodif','', array(
                     'jour' =>  $jour,
