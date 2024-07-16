@@ -118,6 +118,9 @@ function (dojo, declare) {
                         elements.forEach(function(element) {
                             element.style.top = "161px"; 
                           });
+
+                        var global = document.getElementById('global');
+                        global.style.height = "1160px"; 
                     }
 
 
