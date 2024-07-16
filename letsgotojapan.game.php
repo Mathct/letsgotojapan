@@ -710,7 +710,6 @@ $id = self::getCurrentPlayerId();
 $pending =  self::getObjectFromDB( "SELECT* FROM pending WHERE player_id = {$id} order by id desc limit 1");
 $this->callPending($pending, true, $arg1);
 self::DbQuery("delete from pending where id=".$pending['id']);
-$this->giveExtraTime(self::getCurrentPlayerId());
 $this->gamestate->nextState( 'next');
 
 }
@@ -725,7 +724,6 @@ $id = self::getCurrentPlayerId();
 $pending =  self::getObjectFromDB( "SELECT* FROM pending WHERE player_id = {$id} order by id desc limit 1");
 $this->callPending($pending, true, $arg1);
 self::DbQuery("delete from pending where id=".$pending['id']);
-$this->giveExtraTime(self::getCurrentPlayerId());
 $this->gamestate->nextState( 'next');
 
 }
