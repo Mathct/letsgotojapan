@@ -119,6 +119,7 @@
 
 <script type="text/javascript">
 
+var jstpl_titre='<div id="titre"></div>';
 var jstpl_eye='<div id="eye_${id}" class="eye" style="display: inline-block;"></div>';
 var jstpl_card='<div id="card_${ville}_${id}" class="card" style="background-image: url(${imgfull}); background-position-x: ${x}%; background-position-y: ${y}%;"></div>';
 var jstpl_turn='<div id="turn" class="turn"></div>';

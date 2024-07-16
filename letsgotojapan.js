@@ -32,6 +32,13 @@ function (dojo, declare) {
 
         },
 
+    updatePlayerOrdering() {
+        
+        this.inherited(arguments);
+        dojo.place(this.format_block('jstpl_titre', {}), 'player_boards', 'first');
+
+    }, 
+
       
         
         /*
@@ -107,6 +114,10 @@ function (dojo, declare) {
                         dojo.query(".playerhandtitle").addClass("masque");
                         dojo.query(".playerhand").addClass("masque");
 
+                        var elements = document.querySelectorAll("[id^='playerview']");
+                        elements.forEach(function(element) {
+                            element.style.top = "161px"; 
+                          });
                     }
 
 

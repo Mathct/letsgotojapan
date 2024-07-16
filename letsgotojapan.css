@@ -56,7 +56,16 @@
 
 }
 
-/*  EYE PANEL PLAYER */
+#titre {
+    width: 200px;
+    height: 80px;
+    background-image: url('img/titre.png');
+    background-size: 100% 100%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 5px;
+    
+ }
 
 .eye {
     width: 25px;
