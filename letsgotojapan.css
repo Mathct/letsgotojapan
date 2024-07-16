@@ -56,6 +56,34 @@
 
 }
 
+/*  EYE PANEL PLAYER */
+
+.eye {
+    width: 25px;
+    height: 25px;
+    position: relative;
+    background-image: url('img/eye30gray.png');
+    background-size: 100% 100%;
+    top: 5px;
+    cursor: pointer;
+    pointer-events: auto !important;
+           
+ }
+ 
+ .eye:hover {
+    width: 25px;
+    height: 25px;
+    position: relative;
+    background-image: url('img/eye30.png');
+    background-size: 100% 100%;
+    top: 5px;
+    cursor: pointer;
+    pointer-events: auto !important;
+        
+ }
+
+ 
+
 .turn_board {
    
     background-image: url('img/turn_board.jpg');

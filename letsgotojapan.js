@@ -71,6 +71,22 @@ function (dojo, declare) {
                              
                     // TODO: Setting up players boards if needed
                 }
+
+                for( var player_id in gamedatas.players )   
+                {
+                                        
+                    var eyes = document.getElementById('eye_'+player_id);
+                    if (eyes !== null)
+                    {
+                        dojo.destroy('eye_'+player_id)
+                    }
+                    
+                    var player_board_div = $('player_board_'+player_id);
+                    var elementScore = player_board_div.querySelector(".player_score");
+                    dojo.place(this.format_block('jstpl_eye', {id: player_id }), elementScore);
+  
+                }
+
                 
                 for( var player_id in gamedatas.players )
                     {
@@ -162,6 +178,7 @@ function (dojo, declare) {
                 dojo.query(".left").connect('onclick', this, 'onPrev' );
                 dojo.query(".right").connect('onclick', this, 'onNext' );
                 dojo.query(".cardposition").connect('onclick', this, 'onSelect' );
+                dojo.query(".eye").connect('onclick', this, 'onEye' );
 
                 
     
@@ -1134,6 +1151,32 @@ function (dojo, declare) {
 
                 }
     
+
+            },
+
+            onEye: function(evt)
+            {        	 
+                // Preventing default browser reaction
+                dojo.stopEvent( evt );
+
+                var selection = evt.currentTarget.id;
+                var nombre = selection.match(/\d+/);
+
+                var elements = document.querySelectorAll('[id^="playerview"]:not(.masque)');
+                var idsSansMasque = [];
+                elements.forEach(function(element) {
+                        // Obtenez l'ID de chaque élément
+                        var id = element.id;
+                        
+                        // Ajoutez l'ID à la liste
+                        idsSansMasque.push(id);
+                });
+
+                    dojo.query("#"+idsSansMasque[0]).addClass("masque");
+                    dojo.query("#playerview_"+nombre[0]).removeClass("masque");
+
+                
+                
 
             },
     
