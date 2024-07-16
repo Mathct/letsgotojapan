@@ -191,7 +191,7 @@ class Pending extends APP_GameClass
 
             }
 
-            letsgotojapan::$instance->notifyAllPlayers( 'simplePause', '', [ 'time' => 700] ); 
+            letsgotojapan::$instance->notifyAllPlayers( 'simplePause', '', [ 'time' => 1000] ); 
             letsgotojapan::$instance->Condenser($this->player_id, $varg1);
 
             letsgotojapan::$instance->giveExtraTime($this->player_id);

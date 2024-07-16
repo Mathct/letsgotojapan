@@ -142,26 +142,8 @@ class letsgotojapan extends Table
         self::DbQuery( "INSERT INTO tokens (type, name, level) VALUES ('general', 'y', 0)" );
         self::DbQuery( "INSERT INTO tokens (type, name, level) VALUES ('general', 'b', 0)" );
         self::DbQuery( "INSERT INTO tokens (type, name, level) VALUES ('general', 's', 0)" );
+
         
-        foreach( $players as $player_id => $player )
-        {
-          
-            self::DbQuery( "INSERT INTO tokens (type, name, player_id, level) VALUES ('smile', 'smile', $player_id, 0)" );
-            self::DbQuery( "INSERT INTO tokens (type, name, player_id, level) VALUES ('smileplus', 'smileplus', $player_id, 0)" );
-            self::DbQuery( "INSERT INTO tokens (type, name, player_id, level) VALUES ('smilemoins', 'smilemoins', $player_id, 0)" );
-            self::DbQuery( "INSERT INTO tokens (type, name, player_id, level) VALUES ('r', 'r', $player_id, 0)" );
-            self::DbQuery( "INSERT INTO tokens (type, name, player_id, level) VALUES ('g', 'g', $player_id, 0)" );
-            self::DbQuery( "INSERT INTO tokens (type, name, player_id, level) VALUES ('p', 'p', $player_id, 0)" );
-            self::DbQuery( "INSERT INTO tokens (type, name, player_id, level) VALUES ('y', 'y', $player_id, 0)" );
-            self::DbQuery( "INSERT INTO tokens (type, name, player_id, level) VALUES ('b', 'b', $player_id, 0)" );
-            
-         
-        }
-
-
-
-
-
         foreach( $players as $player_id => $player )
         {
             $this->addPendingFirst($player_id, "Phase1Step1");

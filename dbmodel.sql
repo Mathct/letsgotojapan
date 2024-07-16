@@ -71,3 +71,12 @@ CREATE TABLE IF NOT EXISTS `tokens` (
   `level` int(10) NULL,  
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+ALTER TABLE `player` ADD `smile` int(2) DEFAULT 0;
+ALTER TABLE `player` ADD `smileplus` int(2) unsigned DEFAULT 0;
+ALTER TABLE `player` ADD `smilemoins` int(2) unsigned DEFAULT 0;
+ALTER TABLE `player` ADD `r` int(2) unsigned DEFAULT 0;
+ALTER TABLE `player` ADD `g` int(2) unsigned DEFAULT 0;
+ALTER TABLE `player` ADD `p` int(2) unsigned DEFAULT 0; 
+ALTER TABLE `player` ADD `y` int(2) unsigned DEFAULT 0;
+ALTER TABLE `player` ADD `b` int(2) unsigned DEFAULT 0;
