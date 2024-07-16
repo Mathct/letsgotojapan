@@ -11,6 +11,8 @@ class Pending extends APP_GameClass
         $this->player_score = $p['player_score'];
         $this->player_color = $p['player_color'];
     }
+
+    /////////////////////// PHASE 1 //////////////////////////
     
     function argPhase1Step1($parg1, $parg2)
     {
@@ -199,7 +201,42 @@ class Pending extends APP_GameClass
 
     }
 
+
+
+
+
+
     
+
+    /////////////////////// PHASE 2 //////////////////////////
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
