@@ -129,12 +129,36 @@ class letsgotojapan extends Table
             
             $this->tokyo->pickCardForLocation( 'deck', 'playerhand', $player_id);
             $this->kyoto->pickCardForLocation( 'deck', 'playerhand', $player_id);
-            //$this->tokyo->pickCardForLocation( 'deck', 'playerhand', $player_id);
-            //$this->kyoto->pickCardForLocation( 'deck', 'playerhand', $player_id);
+            
 
         }
 
+        //////// TOKENS ///////
+
         self::DbQuery( "INSERT INTO tokens (type, name, level) VALUES ('turn', 'turn', 1)" );
+        self::DbQuery( "INSERT INTO tokens (type, name, level) VALUES ('general', 'r', 0)" );
+        self::DbQuery( "INSERT INTO tokens (type, name, level) VALUES ('general', 'g', 0)" );
+        self::DbQuery( "INSERT INTO tokens (type, name, level) VALUES ('general', 'p', 0)" );
+        self::DbQuery( "INSERT INTO tokens (type, name, level) VALUES ('general', 'y', 0)" );
+        self::DbQuery( "INSERT INTO tokens (type, name, level) VALUES ('general', 'b', 0)" );
+        self::DbQuery( "INSERT INTO tokens (type, name, level) VALUES ('general', 's', 0)" );
+        
+        foreach( $players as $player_id => $player )
+        {
+          
+            self::DbQuery( "INSERT INTO tokens (type, name, player_id, level) VALUES ('smile', 'smile', $player_id, 0)" );
+            self::DbQuery( "INSERT INTO tokens (type, name, player_id, level) VALUES ('smileplus', 'smileplus', $player_id, 0)" );
+            self::DbQuery( "INSERT INTO tokens (type, name, player_id, level) VALUES ('smilemoins', 'smilemoins', $player_id, 0)" );
+            self::DbQuery( "INSERT INTO tokens (type, name, player_id, level) VALUES ('r', 'r', $player_id, 0)" );
+            self::DbQuery( "INSERT INTO tokens (type, name, player_id, level) VALUES ('g', 'g', $player_id, 0)" );
+            self::DbQuery( "INSERT INTO tokens (type, name, player_id, level) VALUES ('p', 'p', $player_id, 0)" );
+            self::DbQuery( "INSERT INTO tokens (type, name, player_id, level) VALUES ('y', 'y', $player_id, 0)" );
+            self::DbQuery( "INSERT INTO tokens (type, name, player_id, level) VALUES ('b', 'b', $player_id, 0)" );
+            
+         
+        }
+
+
 
 
 
