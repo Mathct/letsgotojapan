@@ -50,23 +50,15 @@
         <!-- BEGIN playerhand -->
         
             <div id="playerhandtitle_{PLAYER_ID}" class="playerhandtitle" style="color:#{COLOR}; outline: 0.5px solid #{COLOR};">Your Hand</div>
-            <div id="playerhand_{PLAYER_ID}" class="playerhand color_{COLOR}">
-            <div class="card"></div>
-            <div class="card"></div>
-            <div class="card"></div>
-            <div class="card"></div>
-            <div class="card"></div>
-            <div class="card"></div>
-            <div class="card"></div>
-            
-            </div>
+            <div id="playerhand_{PLAYER_ID}" class="playerhand"></div>
         
         <!-- END playerhand -->
 
         <!-- BEGIN player -->
         <div id="playerview_{PLAYER_ID}" class="playerview">
-            <div id="playername_{PLAYER_ID}" class="playername" style="color:#{COLOR}; outline: 0.5px solid #{COLOR};"><div class="left"><<<&nbsp;&nbsp;&nbsp;</div>{PLAYER_NAME}<div class="right">&nbsp;&nbsp;&nbsp;>>></div></div>
+            <div id="nameplayer_{PLAYER_ID}" class="nameplayer" style="color:#{COLOR}; outline: 0.5px solid #{COLOR};"><div class="left"><<<&nbsp;&nbsp;&nbsp;</div>{PLAYER_NAME}<div class="right">&nbsp;&nbsp;&nbsp;>>></div></div>
             <div id="playerboard_{PLAYER_ID}" class="playerboard color_{COLOR}">
+
                 <div id="cardposition_1_1_{PLAYER_ID}"class="cardposition" style="top: 101%; left: 2.3%;"></div>
                 <div id="cardposition_1_2_{PLAYER_ID}"class="cardposition" style="top: 115%; left: 2.3%;"></div>
                 <div id="cardposition_1_3_{PLAYER_ID}"class="cardposition" style="top: 129%; left: 2.3%;"></div>
@@ -74,11 +66,47 @@
                 <div id="cardposition_1_5_{PLAYER_ID}"class="cardposition" style="top: 157%; left: 2.3%;"></div>
                 <div id="cardposition_1_6_{PLAYER_ID}"class="cardposition" style="top: 171%; left: 2.3%;"></div>
                 <div id="cardposition_1_7_{PLAYER_ID}"class="cardposition" style="top: 185%; left: 2.3%;"></div>
+
                 <div id="cardposition_2_1_{PLAYER_ID}"class="cardposition" style="top: 101%; left: 19.2%;"></div>
+                <div id="cardposition_2_2_{PLAYER_ID}"class="cardposition" style="top: 115%; left: 19.2%;"></div>
+                <div id="cardposition_2_3_{PLAYER_ID}"class="cardposition" style="top: 129%; left: 19.2%;"></div>
+                <div id="cardposition_2_4_{PLAYER_ID}"class="cardposition" style="top: 143%; left: 19.2%;"></div>
+                <div id="cardposition_2_5_{PLAYER_ID}"class="cardposition" style="top: 157%; left: 19.2%;"></div>
+                <div id="cardposition_2_6_{PLAYER_ID}"class="cardposition" style="top: 171%; left: 19.2%;"></div>
+                <div id="cardposition_2_7_{PLAYER_ID}"class="cardposition" style="top: 185%; left: 19.2%;"></div>
+
                 <div id="cardposition_3_1_{PLAYER_ID}"class="cardposition" style="top: 101%; left: 35.9%;"></div>
+                <div id="cardposition_3_2_{PLAYER_ID}"class="cardposition" style="top: 115%; left: 35.9%;"></div>
+                <div id="cardposition_3_3_{PLAYER_ID}"class="cardposition" style="top: 129%; left: 35.9%;"></div>
+                <div id="cardposition_3_4_{PLAYER_ID}"class="cardposition" style="top: 143%; left: 35.9%;"></div>
+                <div id="cardposition_3_5_{PLAYER_ID}"class="cardposition" style="top: 157%; left: 35.9%;"></div>
+                <div id="cardposition_3_6_{PLAYER_ID}"class="cardposition" style="top: 171%; left: 35.9%;"></div>
+                <div id="cardposition_3_7_{PLAYER_ID}"class="cardposition" style="top: 185%; left: 35.9%;"></div>
+
                 <div id="cardposition_4_1_{PLAYER_ID}"class="cardposition" style="top: 101%; left: 52.7%;"></div>
+                <div id="cardposition_4_2_{PLAYER_ID}"class="cardposition" style="top: 115%; left: 52.7%;"></div>
+                <div id="cardposition_4_3_{PLAYER_ID}"class="cardposition" style="top: 129%; left: 52.7%;"></div>
+                <div id="cardposition_4_4_{PLAYER_ID}"class="cardposition" style="top: 143%; left: 52.7%;"></div>
+                <div id="cardposition_4_5_{PLAYER_ID}"class="cardposition" style="top: 157%; left: 52.7%;"></div>
+                <div id="cardposition_4_6_{PLAYER_ID}"class="cardposition" style="top: 171%; left: 52.7%;"></div>
+                <div id="cardposition_4_7_{PLAYER_ID}"class="cardposition" style="top: 185%; left: 52.7%;"></div>
+
                 <div id="cardposition_5_1_{PLAYER_ID}"class="cardposition" style="top: 101%; left: 69.4%;"></div>
+                <div id="cardposition_5_2_{PLAYER_ID}"class="cardposition" style="top: 115%; left: 69.4%;"></div>
+                <div id="cardposition_5_3_{PLAYER_ID}"class="cardposition" style="top: 129%; left: 69.4%;"></div>
+                <div id="cardposition_5_4_{PLAYER_ID}"class="cardposition" style="top: 143%; left: 69.4%;"></div>
+                <div id="cardposition_5_5_{PLAYER_ID}"class="cardposition" style="top: 157%; left: 69.4%;"></div>
+                <div id="cardposition_5_6_{PLAYER_ID}"class="cardposition" style="top: 171%; left: 69.4%;"></div>
+                <div id="cardposition_5_7_{PLAYER_ID}"class="cardposition" style="top: 185%; left: 69.4%;"></div>
+
                 <div id="cardposition_6_1_{PLAYER_ID}"class="cardposition" style="top: 101%; left: 86.2%;"></div>
+                <div id="cardposition_6_2_{PLAYER_ID}"class="cardposition" style="top: 115%; left: 86.2%;"></div>
+                <div id="cardposition_6_3_{PLAYER_ID}"class="cardposition" style="top: 129%; left: 86.2%;"></div>
+                <div id="cardposition_6_4_{PLAYER_ID}"class="cardposition" style="top: 143%; left: 86.2%;"></div>
+                <div id="cardposition_6_5_{PLAYER_ID}"class="cardposition" style="top: 157%; left: 86.2%;"></div>
+                <div id="cardposition_6_6_{PLAYER_ID}"class="cardposition" style="top: 171%; left: 86.2%;"></div>
+                <div id="cardposition_6_7_{PLAYER_ID}"class="cardposition" style="top: 185%; left: 86.2%;"></div>
+
             </div>
         </div>
         <!-- END player -->
@@ -91,6 +119,8 @@
 
 <script type="text/javascript">
 
+var jstpl_card='<div id="card_${ville}_${id}" class="card" style="background-image: url(${imgfull}); background-position-x: ${x}%; background-position-y: ${y}%;"></div>';
+var jstpl_turn='<div id="turn" class="turn"></div>';
 
 </script>  
 

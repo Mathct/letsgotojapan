@@ -17,15 +17,26 @@ class Pending extends APP_GameClass
         
         $ret = array();
         $ret["selectable"] = array();
+        $ret["selected"] = array();
         $ret['buttons'] = array();
         $ret['titleyou'] = clienttranslate('${you} must choose a card to place');
 
 
-        
-       
+        $tokyocard = self::getObjectListFromDB( "SELECT card_id id FROM tokyo WHERE card_location ='playerhand' AND card_location_arg = {$this->player_id}", true );
+        $kyotocard = self::getObjectListFromDB( "SELECT card_id id FROM kyoto WHERE card_location ='playerhand' AND card_location_arg = {$this->player_id}", true );
+
+        foreach ($tokyocard as $id1)
+        {
+            $ret["selectable"][] = 'card_1_'.$id1;
+        }   
+
+        foreach ($kyotocard as $id2)
+        {
+            $ret["selectable"][] = 'card_2_'.$id2;
+        }
 
         
-        $ret['buttons'][]='pass';
+        
 
         
         
@@ -37,21 +48,13 @@ class Pending extends APP_GameClass
 
         
         
-        if($varg1 == "cancel")
-        {
-            letsgotojapan::$instance->addPending($this->player_id, "NormalTurn");
-        }
-        elseif ($varg1 == "pass")
-        {
-            letsgotojapan::$instance->addPendingFirst($this->player_id, "NormalTurn");
-            letsgotojapan::$instance->gamestate->setPlayerNonMultiactive($this->player_id, 'stop');
-        }
+        
+           
+            letsgotojapan::$instance->Deployer($this->player_id);
+            
 
-        else
-
-        {
-            letsgotojapan::$instance->addPending($this->player_id, "Step2");
-        }
+            letsgotojapan::$instance->addPending($this->player_id, "Step2", $varg1);
+       
 
         
 
@@ -62,14 +65,41 @@ class Pending extends APP_GameClass
     {
         $ret = array();
         $ret["selectable"] = array();
+        $ret["selected"] = array();
         $ret['buttons'] = array();
         $ret['titleyou'] = clienttranslate('${you} must choose a location in your trip');
 
+        $ret["selected"][] = $parg1;
+
+        $counttrip = letsgotojapan::$instance->CountTrip($this->player_id);
+        $jour = 0;
+
+        foreach ($counttrip as $count)
+        {
+            $jour = $jour+1;
+            if($count == 0)
+            {
+                $ret["selectable"][] = 'cardposition_'.$jour.'_1_'.$this->player_id;
+            }
+            if($count == 1)
+            {
+                $ret["selectable"][] = 'cardposition_'.$jour.'_1_'.$this->player_id;
+                $ret["selectable"][] = 'cardposition_'.$jour.'_3_'.$this->player_id;
+            }
+            if($count == 2)
+            {
+                $ret["selectable"][] = 'cardposition_'.$jour.'_1_'.$this->player_id;
+                $ret["selectable"][] = 'cardposition_'.$jour.'_3_'.$this->player_id;
+                $ret["selectable"][] = 'cardposition_'.$jour.'_5_'.$this->player_id;
+            }
+        }
         
        
+        
+        
 
         $ret['buttons'][]='cancel';
-        $ret['buttons'][]='pass';
+        
 
 
         
@@ -81,50 +111,95 @@ class Pending extends APP_GameClass
         
         if($varg1 == "cancel")
         {
+            
+            letsgotojapan::$instance->Condenser($this->player_id, 0);
             letsgotojapan::$instance->addPending($this->player_id, "NormalTurn");
         }
-        elseif ($varg1 == "pass")
-        {
-            letsgotojapan::$instance->addPendingFirst($this->player_id, "NormalTurn");
-            letsgotojapan::$instance->gamestate->setPlayerNonMultiactive($this->player_id, 'stop');
-            
-        }
-
+        
         else
 
         {
+
+            $explode = explode("_", $parg1);
+            $explode2 = explode("_", $varg1);
+
+            if($explode[1] == 1)
+            {
+                $card = self::getUniqueValueFromDB("SELECT card_type FROM tokyo WHERE card_id={$explode[2]}");
+                letsgotojapan::$instance->tokyo->moveCard( $explode[2], $explode2[0].'_'.$explode2[1].'_'.$explode2[2], $this->player_id );
+            }
+
+            if($explode[1] == 2)
+            {
+                $card = self::getUniqueValueFromDB("SELECT card_type FROM kyoto WHERE card_id={$explode[2]}");
+                letsgotojapan::$instance->kyoto->moveCard( $explode[2], $explode2[0].'_'.$explode2[1].'_'.$explode2[2], $this->player_id );
+            }
+
             
-            letsgotojapan::$instance->addPending($this->player_id, "Step3");
+
+            letsgotojapan::$instance->notifyAllPlayers('movecard',clienttranslate( '${player_name} places a card' ), array(
+                'mobile' =>  $parg1,
+                'parent' => $varg1,
+                'player_name' => $this->player_name,
+                'color' => $this->player_color,
+                'id' => $explode[2],
+                'ville' => $explode[1],
+                'card' => $card,
+                'playerid' => $this->player_id,
+                'location' => $explode2[0].'_'.$explode2[1].'_'.$explode2[2],
+
+                )
+                );
+
+            $tokyocard = self::getObjectListFromDB( "SELECT card_id id FROM tokyo WHERE card_location ='playerhand' AND card_location_arg = {$this->player_id}", true );
+            $kyotocard = self::getObjectListFromDB( "SELECT card_id id FROM kyoto WHERE card_location ='playerhand' AND card_location_arg = {$this->player_id}", true );
+            $counttokyocard = count($tokyocard);
+            $countkyotocard = count($kyotocard);
+
+            if ($counttokyocard != 0)
+            {
+                    foreach($tokyocard as $cardid)
+                    {
+
+                    letsgotojapan::$instance->tokyo->moveCard( $cardid, 'discardboard', $this->player_id );
+                    letsgotojapan::$instance->notifyAllPlayers('passcard','', array(
+                        'id' => $cardid,
+                        'ville' => 1,
+                        'playerid' => $this->player_id,
+
+                        )
+                        );
+                    }
+
+            }
+
+            if ($countkyotocard != 0)
+            {
+                    foreach($kyotocard as $cardid)
+                    {
+                    letsgotojapan::$instance->kyoto->moveCard( $cardid, 'discardboard', $this->player_id );
+                    letsgotojapan::$instance->notifyAllPlayers('passcard','', array(
+                        'id' => $cardid,
+                        'ville' => 2,
+                        'playerid' => $this->player_id,
+
+                        )
+                        );
+                    }
+
+            }
+
+            letsgotojapan::$instance->notifyAllPlayers( 'simplePause', '', [ 'time' => 700] ); 
+            letsgotojapan::$instance->Condenser($this->player_id, $varg1);
+
+            letsgotojapan::$instance->gamestate->setPlayerNonMultiactive($this->player_id, 'stop');
             
             
         }
 
     }
 
-    function argStep3($parg1, $parg2)
-    {
-        $ret = array();
-        $ret["selectable"] = array();
-        $ret['buttons'] = array();
-        $ret['titleyou'] = clienttranslate('${you} devez cliquer sur cancel');
-
-        //$ret['buttons'][]='cancel';
-
-        return $ret;
-    }
-
-    function Step3($parg1, $parg2, $varg1, $varg2)
-    {
-               
-        
-
-            letsgotojapan::$instance->addPendingFirst($this->player_id, "NormalTurn");
-            letsgotojapan::$instance->gamestate->setPlayerNonMultiactive($this->player_id, 'stop');
-            
-            
-        
-
-    }
+    
 
 
 

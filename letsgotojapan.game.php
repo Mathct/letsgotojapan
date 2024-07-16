@@ -117,7 +117,7 @@ class letsgotojapan extends Table
         for ($i = 1; $i <= 80; $i++)
         {
             
-            $kyoto[] = array( 'type' => $i, 'type_arg' => 1, 'nbr' => 1);
+            $kyoto[] = array( 'type' => $i, 'type_arg' => 2, 'nbr' => 1);
            
         }
 
@@ -129,8 +129,12 @@ class letsgotojapan extends Table
             
             $this->tokyo->pickCardForLocation( 'deck', 'playerhand', $player_id);
             $this->kyoto->pickCardForLocation( 'deck', 'playerhand', $player_id);
+            //$this->tokyo->pickCardForLocation( 'deck', 'playerhand', $player_id);
+            //$this->kyoto->pickCardForLocation( 'deck', 'playerhand', $player_id);
 
         }
+
+        self::DbQuery( "INSERT INTO tokens (type, name, level) VALUES ('turn', 'turn', 1)" );
 
 
 
@@ -173,6 +177,7 @@ class letsgotojapan extends Table
         $result['tokyo'] = self::getObjectListFromDB( "SELECT card_id id, card_type type, card_type_arg type_arg, card_location location, card_location_arg location_arg FROM tokyo WHERE card_location != 'deck' and card_location != 'discard'");
         $result['kyoto'] = self::getObjectListFromDB( "SELECT card_id id, card_type type, card_type_arg type_arg, card_location location, card_location_arg location_arg FROM kyoto WHERE card_location != 'deck' and card_location != 'discard'");
 
+        $result['turn'] = self::getUniqueValueFromDB("SELECT level FROM tokens WHERE name = 'turn'");
         
 
         return $result;
@@ -269,6 +274,448 @@ function getPlayerRelativePositions()  // permet de mettre dans view.php les jou
         return $result;
     }
 
+function CountTrip($id)
+{
+    $count1 = count(array_merge(self::getObjectListFromDB( "SELECT card_location FROM tokyo WHERE card_location_arg = {$id} AND card_location LIKE 'cardposition_1%'", true ),self::getObjectListFromDB( "SELECT card_location FROM kyoto WHERE card_location_arg = {$id} AND card_location LIKE 'cardposition_1%'", true )));
+    $count2 = count(array_merge(self::getObjectListFromDB( "SELECT card_location FROM tokyo WHERE card_location_arg = {$id} AND card_location LIKE 'cardposition_2%'", true ),self::getObjectListFromDB( "SELECT card_location FROM kyoto WHERE card_location_arg = {$id} AND card_location LIKE 'cardposition_2%'", true )));
+    $count3 = count(array_merge(self::getObjectListFromDB( "SELECT card_location FROM tokyo WHERE card_location_arg = {$id} AND card_location LIKE 'cardposition_3%'", true ),self::getObjectListFromDB( "SELECT card_location FROM kyoto WHERE card_location_arg = {$id} AND card_location LIKE 'cardposition_3%'", true )));
+    $count4 = count(array_merge(self::getObjectListFromDB( "SELECT card_location FROM tokyo WHERE card_location_arg = {$id} AND card_location LIKE 'cardposition_4%'", true ),self::getObjectListFromDB( "SELECT card_location FROM kyoto WHERE card_location_arg = {$id} AND card_location LIKE 'cardposition_4%'", true )));
+    $count5 = count(array_merge(self::getObjectListFromDB( "SELECT card_location FROM tokyo WHERE card_location_arg = {$id} AND card_location LIKE 'cardposition_5%'", true ),self::getObjectListFromDB( "SELECT card_location FROM kyoto WHERE card_location_arg = {$id} AND card_location LIKE 'cardposition_5%'", true )));
+    $count6 = count(array_merge(self::getObjectListFromDB( "SELECT card_location FROM tokyo WHERE card_location_arg = {$id} AND card_location LIKE 'cardposition_6%'", true ),self::getObjectListFromDB( "SELECT card_location FROM kyoto WHERE card_location_arg = {$id} AND card_location LIKE 'cardposition_6%'", true )));
+    $ret = [$count1,$count2,$count3,$count4,$count5,$count6];
+
+    return $ret;
+ 
+}
+
+function Deployer($id)
+{
+    $counttrip = letsgotojapan::$instance->CountTrip($id);
+    $jour = 0;
+    $card1 = null;
+    $card2 = null;
+
+    foreach ($counttrip as $count)
+    {
+        $jour = $jour+1;
+        if (($count>=1)&&($count <= 2))
+        {
+            $ville1 =1;
+            $ville2 =1;
+
+            if ($count == 2)
+            {
+                $card2 = self::getUniqueValueFromDB("SELECT card_id FROM tokyo WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_2'");
+                if ($card2 != null)
+                {
+                letsgotojapan::$instance->tokyo->moveCard( $card2, 'cardposition_'.$jour.'_4', $id);
+                }
+                if ($card2 == null)
+                {
+                    $card2 = self::getUniqueValueFromDB("SELECT card_id FROM kyoto WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_2'");
+                    $ville2 =2;
+                    letsgotojapan::$instance->kyoto->moveCard( $card2, 'cardposition_'.$jour.'_4', $id);
+                }
+
+            }
+
+            $card1 = self::getUniqueValueFromDB("SELECT card_id FROM tokyo WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_1'");
+            if ($card1 != null)
+            {
+                letsgotojapan::$instance->tokyo->moveCard( $card1, 'cardposition_'.$jour.'_2', $id);
+            }
+            if ($card1 == null)
+            {
+                $card1 = self::getUniqueValueFromDB("SELECT card_id FROM kyoto WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_1'");
+                $ville1 =2;
+                letsgotojapan::$instance->kyoto->moveCard( $card1, 'cardposition_'.$jour.'_2', $id);
+            }
+
+            
+
+
+            letsgotojapan::$instance->notifyAllPlayers('deployer','', array(
+                'jour' =>  $jour,
+                'count' => $count,
+                'card1' => $card1,
+                'card2' => $card2,
+                'ville1' => $ville1,
+                'ville2' => $ville2,
+                'playerid' => $id,
+                    
+                )
+                );
+        }
+    
+    }
+}
+
+function Condenser($id, $new)
+{
+    $counttrip = letsgotojapan::$instance->CountTrip($id);
+    $jour = 0;
+    
+
+    if ($new == 0)
+    {
+
+        foreach ($counttrip as $count)
+        {
+            $jour = $jour+1;
+            if (($count>=1)&&($count<=2))
+            {
+                $card1 = null;
+                $card2 = null;
+                $card3 = null;
+                $ville1 =1;
+                $ville2 =1;
+                $ville3 =1;
+
+                $card1 = self::getUniqueValueFromDB("SELECT card_id FROM tokyo WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_2'");
+                if ($card1 != null)
+                {
+                    letsgotojapan::$instance->tokyo->moveCard( $card1, 'cardposition_'.$jour.'_1', $id);
+                }
+                if ($card1 == null)
+                {
+                    $card1 = self::getUniqueValueFromDB("SELECT card_id FROM kyoto WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_2'");
+                    $ville1 =2;
+                    letsgotojapan::$instance->kyoto->moveCard( $card1, 'cardposition_'.$jour.'_1', $id);
+                }
+
+                if ($count >=2)
+                {
+                    $card2 = self::getUniqueValueFromDB("SELECT card_id FROM tokyo WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_4'");
+                    if ($card2 != null)
+                    {
+                        letsgotojapan::$instance->tokyo->moveCard( $card2, 'cardposition_'.$jour.'_2', $id);
+                    }
+                    if ($card2 == null)
+                    {
+                        $card2 = self::getUniqueValueFromDB("SELECT card_id FROM kyoto WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_4'");
+                        $ville2 =2;
+                        letsgotojapan::$instance->kyoto->moveCard( $card2, 'cardposition_'.$jour.'_2', $id);
+                    }
+
+                }
+
+                /*if ($count ==3)
+                {
+                    $card3 = self::getUniqueValueFromDB("SELECT card_id FROM tokyo WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_6'");
+                    if ($card3 != null)
+                    {
+                        letsgotojapan::$instance->tokyo->moveCard( $card3, 'cardposition_'.$jour.'_3', $id);
+                    }
+                    if ($card3 == null)
+                    {
+                        $card3 = self::getUniqueValueFromDB("SELECT card_id FROM kyoto WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_6'");
+                        $ville3 =2;
+                        letsgotojapan::$instance->kyoto->moveCard( $card3, 'cardposition_'.$jour.'_3', $id);
+                    }
+
+                }*/
+
+
+                letsgotojapan::$instance->notifyAllPlayers('condensersansmodif','', array(
+                    'jour' =>  $jour,
+                    'count' => $count,
+                    'card1' => $card1,
+                    'card2' => $card2,
+                    'card3' => $card3,
+                    'ville1' => $ville1,
+                    'ville2' => $ville2,
+                    'ville3' => $ville3,
+                    'playerid' => $id,
+                        
+                    )
+                    );
+            }
+        
+        }
+    }
+
+    else
+    {
+        $explode = explode('_',$new);
+        $jouradd = $explode[1];
+        $positionadd = $explode[2];
+
+        foreach ($counttrip as $count)
+        {
+            $jour = $jour+1;
+
+            if (($count>=1)&&($count <= 2)&&($jour!=$jouradd))
+            {
+                $card1 = null;
+                $card2 = null;
+                $card3 = null;
+                $ville1 =1;
+                $ville2 =1;
+                $ville3 =1;
+
+                $card1 = self::getUniqueValueFromDB("SELECT card_id FROM tokyo WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_2'");
+                if ($card1 != null)
+                {
+                    letsgotojapan::$instance->tokyo->moveCard( $card1, 'cardposition_'.$jour.'_1', $id);
+                }
+                if ($card1 == null)
+                {
+                    $card1 = self::getUniqueValueFromDB("SELECT card_id FROM kyoto WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_2'");
+                    $ville1 =2;
+                    letsgotojapan::$instance->kyoto->moveCard( $card1, 'cardposition_'.$jour.'_1', $id);
+                }
+
+                if ($count >=2)
+                {
+                    $card2 = self::getUniqueValueFromDB("SELECT card_id FROM tokyo WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_4'");
+                    if ($card2 != null)
+                    {
+                        letsgotojapan::$instance->tokyo->moveCard( $card2, 'cardposition_'.$jour.'_2', $id);
+                    }
+                    if ($card2 == null)
+                    {
+                        $card2 = self::getUniqueValueFromDB("SELECT card_id FROM kyoto WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_4'");
+                        $ville2 =2;
+                        letsgotojapan::$instance->kyoto->moveCard( $card2, 'cardposition_'.$jour.'_2', $id);
+                    }
+
+                }
+
+                /*if ($count ==3)
+                {
+                    $card3 = self::getUniqueValueFromDB("SELECT card_id FROM tokyo WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_6'");
+                    if ($card3 != null)
+                    {
+                        letsgotojapan::$instance->tokyo->moveCard( $card3, 'cardposition_'.$jour.'_3', $id);
+                    }
+                    if ($card3 == null)
+                    {
+                        $card3 = self::getUniqueValueFromDB("SELECT card_id FROM kyoto WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_6'");
+                        $ville3 =2;
+                        letsgotojapan::$instance->kyoto->moveCard( $card3, 'cardposition_'.$jour.'_3', $id);
+                    }
+
+                }*/
+
+
+                letsgotojapan::$instance->notifyAllPlayers('condenseravecmodif','', array(
+                    'jour' =>  $jour,
+                    'count' => $count,
+                    'card1' => $card1,
+                    'card2' => $card2,
+                    'card3' => $card3,
+                    'ville1' => $ville1,
+                    'ville2' => $ville2,
+                    'ville3' => $ville3,
+                    'playerid' => $id,
+                        
+                    )
+                    );
+            }
+
+
+            if (($count>=1)&&($count <= 3)&&($jour==$jouradd))
+            {   
+                $card1 = null;
+                $card2 = null;
+                $card3 = null;
+                $ville1 =1;
+                $ville2 =1;
+                $ville3 =1;
+
+                if($count == 2)
+                {
+                    if($positionadd==3)
+                    {
+                        $card1 = self::getUniqueValueFromDB("SELECT card_id FROM tokyo WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_2'");
+                        if ($card1 != null)
+                        {
+                            letsgotojapan::$instance->tokyo->moveCard( $card1, 'cardposition_'.$jour.'_1', $id);
+                        }
+                        if ($card1 == null)
+                        {
+                            $card1 = self::getUniqueValueFromDB("SELECT card_id FROM kyoto WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_2'");
+                            $ville1 =2;
+                            letsgotojapan::$instance->kyoto->moveCard( $card1, 'cardposition_'.$jour.'_1', $id);
+                        }
+
+                        $card2 = self::getUniqueValueFromDB("SELECT card_id FROM tokyo WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_3'");
+                        if ($card2 != null)
+                        {
+                            letsgotojapan::$instance->tokyo->moveCard( $card2, 'cardposition_'.$jour.'_2', $id);
+                        }
+                        if ($card2 == null)
+                        {
+                            $card2 = self::getUniqueValueFromDB("SELECT card_id FROM kyoto WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_3'");
+                            $ville2 =2;
+                            letsgotojapan::$instance->kyoto->moveCard( $card2, 'cardposition_'.$jour.'_2', $id);
+                        }
+
+                        letsgotojapan::$instance->notifyAllPlayers('condenseravecmodif','', array(
+                            'jour' =>  $jour,
+                            'count' => $count,
+                            'card1' => $card1,
+                            'card2' => $card2,
+                            'card3' => $card3,
+                            'ville1' => $ville1,
+                            'ville2' => $ville2,
+                            'ville3' => $ville3,
+                            'playerid' => $id,
+                                
+                            )
+                            );
+                        
+                    }
+
+
+                }
+
+                if($count == 3)
+                {
+                    if($positionadd==1)
+                    {
+                        $card1 = self::getUniqueValueFromDB("SELECT card_id FROM tokyo WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_1'");
+                        if ($card1 != null)
+                        {
+                            letsgotojapan::$instance->tokyo->moveCard( $card1, 'cardposition_'.$jour.'_1', $id);
+                        }
+                        if ($card1 == null)
+                        {
+                            $card1 = self::getUniqueValueFromDB("SELECT card_id FROM kyoto WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_1'");
+                            $ville1 =2;
+                            letsgotojapan::$instance->kyoto->moveCard( $card1, 'cardposition_'.$jour.'_1', $id);
+                        }
+
+                        $card2 = self::getUniqueValueFromDB("SELECT card_id FROM tokyo WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_2'");
+                        if ($card2 != null)
+                        {
+                            letsgotojapan::$instance->tokyo->moveCard( $card2, 'cardposition_'.$jour.'_2', $id);
+                        }
+                        if ($card2 == null)
+                        {
+                            $card2 = self::getUniqueValueFromDB("SELECT card_id FROM kyoto WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_2'");
+                            $ville2 =2;
+                            letsgotojapan::$instance->kyoto->moveCard( $card2, 'cardposition_'.$jour.'_2', $id);
+                        }
+
+                        $card3 = self::getUniqueValueFromDB("SELECT card_id FROM tokyo WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_4'");
+                        if ($card3 != null)
+                        {
+                            letsgotojapan::$instance->tokyo->moveCard( $card3, 'cardposition_'.$jour.'_3', $id);
+                        }
+                        if ($card3 == null)
+                        {
+                            $card3 = self::getUniqueValueFromDB("SELECT card_id FROM kyoto WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_4'");
+                            $ville3 =2;
+                            letsgotojapan::$instance->kyoto->moveCard( $card3, 'cardposition_'.$jour.'_3', $id);
+                        }
+                    }
+
+                    if($positionadd==3)
+                    {
+                        $card1 = self::getUniqueValueFromDB("SELECT card_id FROM tokyo WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_2'");
+                        if ($card1 != null)
+                        {
+                            letsgotojapan::$instance->tokyo->moveCard( $card1, 'cardposition_'.$jour.'_1', $id);
+                        }
+                        if ($card1 == null)
+                        {
+                            $card1 = self::getUniqueValueFromDB("SELECT card_id FROM kyoto WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_2'");
+                            $ville1 =2;
+                            letsgotojapan::$instance->kyoto->moveCard( $card1, 'cardposition_'.$jour.'_1', $id);
+                        }
+
+                        $card2 = self::getUniqueValueFromDB("SELECT card_id FROM tokyo WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_3'");
+                        if ($card2 != null)
+                        {
+                            letsgotojapan::$instance->tokyo->moveCard( $card2, 'cardposition_'.$jour.'_2', $id);
+                        }
+                        if ($card2 == null)
+                        {
+                            $card2 = self::getUniqueValueFromDB("SELECT card_id FROM kyoto WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_3'");
+                            $ville2 =2;
+                            letsgotojapan::$instance->kyoto->moveCard( $card2, 'cardposition_'.$jour.'_2', $id);
+                        }
+
+                        $card3 = self::getUniqueValueFromDB("SELECT card_id FROM tokyo WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_4'");
+                        if ($card3 != null)
+                        {
+                            letsgotojapan::$instance->tokyo->moveCard( $card3, 'cardposition_'.$jour.'_3', $id);
+                        }
+                        if ($card3 == null)
+                        {
+                            $card3 = self::getUniqueValueFromDB("SELECT card_id FROM kyoto WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_4'");
+                            $ville3 =2;
+                            letsgotojapan::$instance->kyoto->moveCard( $card3, 'cardposition_'.$jour.'_3', $id);
+                        }
+                    }
+
+                    if($positionadd==5)
+                    {
+                        $card1 = self::getUniqueValueFromDB("SELECT card_id FROM tokyo WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_2'");
+                        if ($card1 != null)
+                        {
+                            letsgotojapan::$instance->tokyo->moveCard( $card1, 'cardposition_'.$jour.'_1', $id);
+                        }
+                        if ($card1 == null)
+                        {
+                            $card1 = self::getUniqueValueFromDB("SELECT card_id FROM kyoto WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_2'");
+                            $ville1 =2;
+                            letsgotojapan::$instance->kyoto->moveCard( $card1, 'cardposition_'.$jour.'_1', $id);
+                        }
+
+                        $card2 = self::getUniqueValueFromDB("SELECT card_id FROM tokyo WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_4'");
+                        if ($card2 != null)
+                        {
+                            letsgotojapan::$instance->tokyo->moveCard( $card2, 'cardposition_'.$jour.'_2', $id);
+                        }
+                        if ($card2 == null)
+                        {
+                            $card2 = self::getUniqueValueFromDB("SELECT card_id FROM kyoto WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_4'");
+                            $ville2 =2;
+                            letsgotojapan::$instance->kyoto->moveCard( $card2, 'cardposition_'.$jour.'_2', $id);
+                        }
+
+                        $card3 = self::getUniqueValueFromDB("SELECT card_id FROM tokyo WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_5'");
+                        if ($card3 != null)
+                        {
+                            letsgotojapan::$instance->tokyo->moveCard( $card3, 'cardposition_'.$jour.'_3', $id);
+                        }
+                        if ($card3 == null)
+                        {
+                            $card3 = self::getUniqueValueFromDB("SELECT card_id FROM kyoto WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_5'");
+                            $ville3 =2;
+                            letsgotojapan::$instance->kyoto->moveCard( $card3, 'cardposition_'.$jour.'_3', $id);
+                        }
+                    }
+
+                    
+
+                        letsgotojapan::$instance->notifyAllPlayers('condenseravecmodif','', array(
+                            'jour' =>  $jour,
+                            'count' => $count,
+                            'card1' => $card1,
+                            'card2' => $card2,
+                            'card3' => $card3,
+                            'ville1' => $ville1,
+                            'ville2' => $ville2,
+                            'ville3' => $ville3,
+                            'playerid' => $id,
+                                
+                            )
+                            );
+                
+
+                }
+
+
+            }
+
+
+        }
+
+    }
+}
 
 
 
@@ -341,9 +788,15 @@ function argPlayerTurn()
 
     try {
         
+        
         $pending =  self::getObjectFromDB( "SELECT* FROM pending WHERE player_id = {$player_id} order by id desc limit 1");
-        $arg = $this->callPending($pending, false);
-        $ret[$player_id][]= $arg;
+        if($pending != null)
+        {
+        $args = $this->callPending($pending, false);
+
+        $ret[$player_id][]= $args;
+        
+        }
         
         
         
@@ -374,19 +827,73 @@ function argPlayerTurn()
 
 function st_MultiPlayerActivation() 
 {
-    
+    $turn = self::getUniqueValueFromDB("SELECT level FROM tokens WHERE name = 'turn'");
+    self::DbQuery( "UPDATE tokens set level = level + 1  WHERE name ='turn'" );
+    letsgotojapan::$instance->notifyAllPlayers('turn','', array(
+        'turn' =>$turn+1,
+
+        )
+        );
+
+
+
+
+
+    $listplayers = self::getObjectListFromDB( "SELECT player_id id FROM player", true );
+    foreach ($listplayers as $player_id)
+    {
+        $this->tokyo->pickCardForLocation( 'deck', 'playerhand', $player_id);
+        $this->kyoto->pickCardForLocation( 'deck', 'playerhand', $player_id);
+
+        $tokyocard = self::getObjectListFromDB( "SELECT card_id id, card_type type FROM tokyo WHERE card_location ='playerhand' AND card_location_arg = {$player_id}");
+        $kyotocard = self::getObjectListFromDB( "SELECT card_id id, card_type type FROM kyoto WHERE card_location ='playerhand' AND card_location_arg = {$player_id}");
+        
+        
+        foreach($tokyocard as $card1)
+        {
+        letsgotojapan::$instance->notifyAllPlayers('drawcard','', array(
+            'id' => $card1['id'],
+            'card' => $card1['type'],
+            'ville' => 1,
+            'playerid' => $player_id,
+            'location' => 'playerhand',
+
+            )
+            );
+        }
+        
+
+        foreach($kyotocard as $card2)
+        {
+        letsgotojapan::$instance->notifyAllPlayers('drawcard','', array(
+            'id' => $card2['id'],
+            'card' => $card2['type'],
+            'ville' => 2,
+            'playerid' => $player_id,
+            'location' => 'playerhand',
+            )
+            );
+        }
+
+        $this->addPending($player_id, "NormalTurn");
+    }
+
     $this->gamestate->setAllPlayersMultiactive();
     $this->gamestate->nextState( 'next');
     
 }
 
-function st_Pending() 
+/*function st_Pending() 
 {
     
     try {
     $player_id = $this->getCurrentPlayerId();
     $pending =  self::getObjectFromDB( "SELECT* FROM pending WHERE player_id = {$player_id} order by id desc limit 1");
+    if($pending != null)
+        {
     $args = $this->callPending($pending, false);
+
+    
     
     if($args == null || (count($args['selectable']) == 0 && count($args['buttons']) == 0))
        {
@@ -401,13 +908,19 @@ function st_Pending()
     {
         $this->gamestate->nextState( 'next');
     }
+}
+
+else
+    {
+        $this->gamestate->nextState( 'next');
+    }
 
     }
     catch (Exception $e){}
 
 
     
-}
+}*/
 
 
 function callPending($pending, $execute, $arg1 = null, $arg2 = null)

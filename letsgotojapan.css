@@ -67,14 +67,27 @@
     margin-left: auto;
     margin-top: 10px;
     margin-bottom: 10px;
+    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.9));
+    -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.9));
 }
 
 .turnboard_marqueur {
     width: 38px;
     height: 38px;
     border-radius: 50%;
-    background-color: rgba(0, 0, 0, 0.466);
     position: absolute;
+}
+
+.turn {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    position: absolute;
+    background-color: rgb(173, 172, 172);
+    border: 1px solid black;
+    box-sizing: border-box;
+    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.9));
+    -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.9));
 }
 
 .playerview {
@@ -87,7 +100,7 @@
 
 }
 
-.playername{
+.nameplayer{
     width: 1200px;
     height: 20px;
     position: absolute;
@@ -127,7 +140,8 @@
     align-items: center;
     margin-right: auto;
     margin-left: auto;
-    gap :10px
+    gap :10px;
+    
 
 }
 
@@ -142,6 +156,8 @@
     z-index: 1;
     top: 30px;
     left: 0;
+    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.9));
+    -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.9));
     
 }
 
@@ -168,10 +184,25 @@
 
 
 
-.selectable {
-    border: 2px solid black;
+.selectable.card {
+    border: 2px solid rgb(255, 0, 0);
     cursor: pointer;
-    box-sizing: border-box;
+    
+    
+}
+
+.selected.card {
+    border: 2px solid rgb(0, 26, 255);
+    
+   
+}
+
+.selectable.cardposition {
+    border: none !important;
+    background-color:  rgba(255, 0, 0, 0.6);
+    cursor: pointer;
+    z-index: 10 !important;
+    
 }
 
 
@@ -181,17 +212,20 @@
     
     cursor: pointer;
     pointer-events: auto !important;
+    font-weight: normal;
   }
 
   .right {
     
     cursor: pointer;
     pointer-events: auto !important;
+    font-weight: normal;
   }
 
   .left:hover {
     
    font-weight: bold;
+   
  }
 
  .right:hover {
@@ -199,29 +233,39 @@
    
    font-weight: bold;
    
+   
  }
 
  /* CARD */
 
  .card {
-    background-image: url('img/card_verso.png');
-    background-size: 200% 100%;
-    background-position-x: 0%;
+    
+    background-size: 1000% 400%;
     height: 257px;
     width: 150px;
     border-radius: 8px;
-    border: 1px solid rgba(0, 0, 0, 0.3);
+    position: absolute;
+    /*border: 1px solid rgba(0, 0, 0, 0.3);*/
+    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.9));
+    -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.9));
+    box-sizing: border-box;
+    
+
+    
+ }
+
+ .playerhand .card {
+
+    position: relative !important;
  }
 
  .cardposition {
     height: 257px;
     width: 150px;
     position: absolute;
-    background-image: url('img/card_verso.png');
-    background-size: 200% 100%;
-    background-position-x: 0%;
     border-radius: 8px;
-    border: 1px solid rgba(0, 0, 0, 0.3);
+    z-index: 1;
+    
 
  }
 

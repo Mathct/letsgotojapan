@@ -35,7 +35,7 @@
 
 CREATE TABLE IF NOT EXISTS `pending` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
-  `player_id` int(10) NULL,  
+  `player_id` int(16) NULL,  
   `function` varchar(50) NULL,
   `target` varchar(50) NULL,
   `arg` varchar(50) NULL,  
@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS `pending` (
 
 CREATE TABLE IF NOT EXISTS `tokyo` (
   `card_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `card_type` varchar(16) NOT NULL,
+  `card_type` int(11) NOT NULL,
   `card_type_arg` int(11) NOT NULL,
   `card_location` varchar(50) NOT NULL,
   `card_location_arg` int(11) NOT NULL,
@@ -56,17 +56,17 @@ CREATE TABLE IF NOT EXISTS `tokyo` (
 
 CREATE TABLE IF NOT EXISTS `kyoto` (
   `card_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `card_type` varchar(16) NOT NULL,
+  `card_type` int(11) NOT NULL,
   `card_type_arg` int(11) NOT NULL,
   `card_location` varchar(50) NOT NULL,
-  `card_location_arg` int(11) NOT NULL,
+  `card_location_arg` int(16) NOT NULL,
   PRIMARY KEY (`card_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 CREATE TABLE IF NOT EXISTS `tokens` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
-  `type` varchar(16) NULL,  
-  `name` varchar(16) NULL,  
+  `type` varchar(50) NULL,  
+  `name` varchar(50) NULL,  
   `player_id` int(16) NULL,
   `level` int(10) NULL,  
   PRIMARY KEY (`id`)

@@ -58,7 +58,7 @@ $machinestates = array(
         "description" => "",
         "type" => "manager",
         "action" => "stGameSetup",
-        "transitions" => array( "" => 2 )
+        "transitions" => array( "" => 3 )
     ),
     
     // Note: ID=2 => your first state
@@ -79,21 +79,21 @@ $machinestates = array(
         "description" => clienttranslate('The other players must perform their actions'),
         "descriptionmyturn" => clienttranslate('${you} must take an action or pass'),
         "type" => "multipleactiveplayer",
-        "args" => "argPlayerTurn",  
+        "args" => "argPlayerTurn",
         "possibleactions" => array( "actSelect"),
-        "transitions" => array( "stop" => 2, "next" => 4, "same" => 3, "zombiePass" => 2, "end" => 99)
+        "transitions" => array( "stop" => 2, "next" => 3, "same" => 3, "zombiePass" => 2, "end" => 99)
     ),
 
-    4 => array(
+    /*4 => array(
         "name" => "fonctionauto",
         "description" => clienttranslate('The other players must perform their actions'),
         "descriptionmyturn" => clienttranslate('${you} must take an action or pass'),
         "type" => "multipleactiveplayer",
         "action" => 'st_Pending',
         "updateGameProgression" => true,
-        "transitions" => array( "stop" => 2, "next" => 3, "zombiePass" => 2, "end" => 99)
+        "transitions" => array( "stop" => 2, "next" => 3, "same" => 4, "zombiePass" => 2, "end" => 99)
         
-    ),
+    ),*/
    
     // Final state.
     // Please do not modify (and do not overload action/args methods).
