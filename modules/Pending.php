@@ -12,7 +12,7 @@ class Pending extends APP_GameClass
         $this->player_color = $p['player_color'];
     }
     
-    function argNormalTurn($parg1, $parg2)
+    function argPhase1Step1($parg1, $parg2)
     {
         
         $ret = array();
@@ -43,7 +43,7 @@ class Pending extends APP_GameClass
         return $ret;
     }
 
-    function NormalTurn($parg1, $parg2, $varg1, $varg2)
+    function Phase1Step1($parg1, $parg2, $varg1, $varg2)
     {
 
         
@@ -53,7 +53,7 @@ class Pending extends APP_GameClass
             letsgotojapan::$instance->Deployer($this->player_id);
             
 
-            letsgotojapan::$instance->addPending($this->player_id, "Step2", $varg1);
+            letsgotojapan::$instance->addPending($this->player_id, "Phase1Step2", $varg1);
        
 
         
@@ -61,7 +61,7 @@ class Pending extends APP_GameClass
             
     }
 
-    function argStep2($parg1, $parg2)
+    function argPhase1Step2($parg1, $parg2)
     {
         $ret = array();
         $ret["selectable"] = array();
@@ -106,14 +106,14 @@ class Pending extends APP_GameClass
         return $ret;
     }
 
-    function Step2($parg1, $parg2, $varg1, $varg2)
+    function Phase1Step2($parg1, $parg2, $varg1, $varg2)
     {
         
         if($varg1 == "cancel")
         {
             
             letsgotojapan::$instance->Condenser($this->player_id, 0);
-            letsgotojapan::$instance->addPending($this->player_id, "NormalTurn");
+            letsgotojapan::$instance->addPending($this->player_id, "Phase1Step1");
         }
         
         else

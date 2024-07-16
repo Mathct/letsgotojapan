@@ -140,7 +140,7 @@ class letsgotojapan extends Table
 
         foreach( $players as $player_id => $player )
         {
-            $this->addPendingFirst($player_id, "NormalTurn");
+            $this->addPendingFirst($player_id, "Phase1Step1");
         }
 
         $this->gamestate->setAllPlayersMultiactive();
@@ -844,7 +844,7 @@ function st_MultiPlayerActivation()
             );
         }
 
-        $this->addPending($player_id, "NormalTurn");
+        $this->addPending($player_id, "Phase1Step1");
     }
 
     $this->gamestate->setAllPlayersMultiactive();

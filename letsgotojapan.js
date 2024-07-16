@@ -1345,7 +1345,12 @@ function (dojo, declare) {
             {
                 
                 
-
+                if (notif.args.count == 1)
+                {
+                    this.attachToNewParentNoDestroy( 'card_'+notif.args.ville1+'_'+notif.args.card1, 'cardposition_'+notif.args.jour+'_1_'+notif.args.playerid );
+                    this.slideToObject( 'card_'+notif.args.ville1+'_'+notif.args.card1 , 'cardposition_'+notif.args.jour+'_1_'+notif.args.playerid ).play();
+                                        
+                }
 
                if (notif.args.count == 2)
                 {
@@ -1369,7 +1374,16 @@ function (dojo, declare) {
 
                 
 
-                
+                if (notif.args.count == 1)
+                {
+                    var element1 = document.getElementById('cardposition_'+notif.args.jour+'_1_'+notif.args.playerid);
+                    element1.style.zIndex = "10";
+                    var element2 = document.getElementById('cardposition_'+notif.args.jour+'_2_'+notif.args.playerid);
+                    element2.style.zIndex = "0";
+                    
+
+                }
+            
                 if (notif.args.count == 2)
                 {
                     var element1 = document.getElementById('cardposition_'+notif.args.jour+'_1_'+notif.args.playerid);
