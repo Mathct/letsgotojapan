@@ -803,48 +803,49 @@ function st_MultiPlayerActivation()
 
         )
         );
+    $newturn = $turn+1;
 
-
-
-
-
-    $listplayers = self::getObjectListFromDB( "SELECT player_id id FROM player", true );
-    foreach ($listplayers as $player_id)
+    if ($newturn < 14)   ////// A CHANGER /////
     {
-        $this->tokyo->pickCardForLocation( 'deck', 'playerhand', $player_id);
-        $this->kyoto->pickCardForLocation( 'deck', 'playerhand', $player_id);
 
-        $tokyocard = self::getObjectListFromDB( "SELECT card_id id, card_type type FROM tokyo WHERE card_location ='playerhand' AND card_location_arg = {$player_id}");
-        $kyotocard = self::getObjectListFromDB( "SELECT card_id id, card_type type FROM kyoto WHERE card_location ='playerhand' AND card_location_arg = {$player_id}");
-        
-        
-        foreach($tokyocard as $card1)
+        $listplayers = self::getObjectListFromDB( "SELECT player_id id FROM player", true );
+        foreach ($listplayers as $player_id)
         {
-        letsgotojapan::$instance->notifyAllPlayers('drawcard','', array(
-            'id' => $card1['id'],
-            'card' => $card1['type'],
-            'ville' => 1,
-            'playerid' => $player_id,
-            'location' => 'playerhand',
+            $this->tokyo->pickCardForLocation( 'deck', 'playerhand', $player_id);
+            $this->kyoto->pickCardForLocation( 'deck', 'playerhand', $player_id);
 
-            )
-            );
+            $tokyocard = self::getObjectListFromDB( "SELECT card_id id, card_type type FROM tokyo WHERE card_location ='playerhand' AND card_location_arg = {$player_id}");
+            $kyotocard = self::getObjectListFromDB( "SELECT card_id id, card_type type FROM kyoto WHERE card_location ='playerhand' AND card_location_arg = {$player_id}");
+            
+            
+            foreach($tokyocard as $card1)
+            {
+            letsgotojapan::$instance->notifyAllPlayers('drawcard','', array(
+                'id' => $card1['id'],
+                'card' => $card1['type'],
+                'ville' => 1,
+                'playerid' => $player_id,
+                'location' => 'playerhand',
+
+                )
+                );
+            }
+            
+
+            foreach($kyotocard as $card2)
+            {
+            letsgotojapan::$instance->notifyAllPlayers('drawcard','', array(
+                'id' => $card2['id'],
+                'card' => $card2['type'],
+                'ville' => 2,
+                'playerid' => $player_id,
+                'location' => 'playerhand',
+                )
+                );
+            }
+
+            $this->addPending($player_id, "Phase1Step1");
         }
-        
-
-        foreach($kyotocard as $card2)
-        {
-        letsgotojapan::$instance->notifyAllPlayers('drawcard','', array(
-            'id' => $card2['id'],
-            'card' => $card2['type'],
-            'ville' => 2,
-            'playerid' => $player_id,
-            'location' => 'playerhand',
-            )
-            );
-        }
-
-        $this->addPending($player_id, "Phase1Step1");
     }
 
     $this->gamestate->setAllPlayersMultiactive();
