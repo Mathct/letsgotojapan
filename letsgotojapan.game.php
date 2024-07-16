@@ -797,16 +797,19 @@ function argPlayerTurn()
 function st_MultiPlayerActivation() 
 {
     $turn = self::getUniqueValueFromDB("SELECT level FROM tokens WHERE name = 'turn'");
-    self::DbQuery( "UPDATE tokens set level = level + 1  WHERE name ='turn'" );
-    letsgotojapan::$instance->notifyAllPlayers('turn','', array(
-        'turn' =>$turn+1,
-
-        )
-        );
     $newturn = $turn+1;
 
     if ($newturn < 14)   ////// A CHANGER /////
     {
+        /// changement de turn ////
+        self::DbQuery( "UPDATE tokens set level = level + 1  WHERE name ='turn'" );
+        letsgotojapan::$instance->notifyAllPlayers('turn','', array(
+        'turn' =>$newturn,
+        )
+        );
+
+
+
 
         $listplayers = self::getObjectListFromDB( "SELECT player_id id FROM player", true );
         foreach ($listplayers as $player_id)
