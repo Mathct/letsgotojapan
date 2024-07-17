@@ -29,8 +29,8 @@
 
 <div id="global">
     
-        <div class="mask_turn"></div>
-        <div class="mask_hand"></div>
+        <div id="mask_turn"></div>
+        <div id="mask_hand"></div>
     
         <div class="turn_board">
             <div id="turnboard_marqueur_1" class = "turnboard_marqueur" style="left: 1.6%; top: 5.5%;"></div>

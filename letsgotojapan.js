@@ -193,6 +193,8 @@ function (dojo, declare) {
                 dojo.query(".right").connect('onclick', this, 'onNext' );
                 dojo.query(".cardposition").connect('onclick', this, 'onSelect' );
                 dojo.query(".eye").connect('onclick', this, 'onEye' );
+                dojo.query("#mask_turn").connect('onclick', this, 'onMaskTurn' );
+                dojo.query("#mask_hand").connect('onclick', this, 'onMaskHand' );
 
                 
     
@@ -1188,6 +1190,81 @@ function (dojo, declare) {
 
                     dojo.query("#"+idsSansMasque[0]).addClass("masque");
                     dojo.query("#playerview_"+nombre[0]).removeClass("masque");
+
+                
+                
+
+            },
+
+            onMaskTurn: function(evt)
+            {        	 
+                // Preventing default browser reaction
+                dojo.stopEvent( evt );
+
+                const element = document.querySelector('.turn_board');
+                var playerviews = document.querySelectorAll('.playerview');
+                var global = document.getElementById("global");
+                var currentHeight = global.clientHeight;
+                
+                if (element && element.classList.contains('hidden')) 
+                {
+                    dojo.query(".turn_board").removeClass("hidden");
+                    playerviews.forEach(function(playerview) {
+                        var currentTop = playerview.offsetTop;
+                        
+                        playerview.style.top = (currentTop + 150) + "px";
+                      });
+                      global.style.height = (currentHeight + 160) + "px";
+                    
+                } 
+
+                else 
+                {
+                    dojo.query(".turn_board").addClass("hidden");
+                        playerviews.forEach(function(playerview) {
+                        var currentTop = playerview.offsetTop;
+                        
+                        playerview.style.top = (currentTop - 170) + "px";
+                      });
+                      global.style.height = (currentHeight - 160) + "px";
+                }
+   
+
+            },
+
+            onMaskHand: function(evt)
+            {        	 
+                // Preventing default browser reaction
+                dojo.stopEvent( evt );
+
+                const element = document.querySelector('.playerhand');
+                var playerviews = document.querySelectorAll('.playerview');
+                var global = document.getElementById("global");
+                var currentHeight = global.clientHeight;
+                
+                if (element && element.classList.contains('hidden')) 
+                {
+                    dojo.query(".playerhand").removeClass("hidden");
+                    dojo.query(".playerhandtitle").removeClass("hidden");
+                    playerviews.forEach(function(playerview) {
+                        var currentTop = playerview.offsetTop;
+                        
+                        playerview.style.top = (currentTop + 290) + "px";
+                      });
+                      global.style.height = (currentHeight + 300) + "px";
+                } 
+                
+                else 
+                {
+                    dojo.query(".playerhand").addClass("hidden");
+                    dojo.query(".playerhandtitle").addClass("hidden");
+                    playerviews.forEach(function(playerview) {
+                        var currentTop = playerview.offsetTop;
+                        
+                        playerview.style.top = (currentTop - 310) + "px";
+                      });
+                      global.style.height = (currentHeight - 300) + "px";
+                }
 
                 
                 
