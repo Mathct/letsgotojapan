@@ -1348,6 +1348,9 @@ function (dojo, declare) {
                 dojo.subscribe( 'deployer', this, "notif_deployer" );
                 dojo.subscribe( 'condensersansmodif', this, "notif_condensersansmodif" );
                 dojo.subscribe( 'condenseravecmodif', this, "notif_condenseravecmodif" );
+                dojo.subscribe( 'smile', this, "notif_smile" )
+                dojo.subscribe( 'happy', this, "notif_happy" )
+                dojo.subscribe( 'angry', this, "notif_angry" )
 
                 
             },  
@@ -1433,6 +1436,24 @@ function (dojo, declare) {
             {
                 this.attachToNewParentNoDestroy( 'turn', 'turnboard_marqueur_'+notif.args.turn );
                 this.slideToObject( 'turn', 'turnboard_marqueur_'+notif.args.turn ).play();
+            },
+
+            notif_smile: function( notif )
+            {
+                this.attachToNewParentNoDestroy( 'smile_'+notif.args.player, 'smileposition_'+notif.args.position+'_'+notif.args.player);
+                this.slideToObject( 'smile_'+notif.args.player, 'smileposition_'+notif.args.position+'_'+notif.args.player ).play();
+            },
+
+            notif_happy: function( notif )
+            {
+                this.attachToNewParentNoDestroy( 'happy_'+notif.args.player, 'happyposition_'+notif.args.position+'_'+notif.args.player);
+                this.slideToObject( 'happy_'+notif.args.player, 'happyposition_'+notif.args.position+'_'+notif.args.player ).play();
+            },
+
+            notif_angry: function( notif )
+            {
+                this.attachToNewParentNoDestroy( 'angry_'+notif.args.player, 'angryposition_'+notif.args.position+'_'+notif.args.player);
+                this.slideToObject( 'angry_'+notif.args.player, 'angryposition_'+notif.args.position+'_'+notif.args.player ).play();
             },
 
             notif_deployer: function( notif )

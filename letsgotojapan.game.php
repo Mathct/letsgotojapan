@@ -724,6 +724,99 @@ function Condenser($id, $new)
     }
 }
 
+function Smile($gain, $player)
+{
+    if ($gain>0)
+    {
+        for($i=1; $i<=$gain; $i++)
+        {
+            self::DbQuery( "UPDATE player set smile = smile + 1  WHERE player_id = {$player}" );
+            $newsmile = self::getUniqueValueFromDB("SELECT smile FROM player WHERE player_id={$player}");
+            letsgotojapan::$instance->notifyAllPlayers('smile','', array(
+                'position' => $newsmile,
+                'player' => $player,
+                )
+                );
+            self::notifyAllPlayers( 'simplePause', '', [ 'time' => 500] );
+
+            if ($newsmile == 3)
+            {
+                self::DbQuery( "UPDATE player set smile = 0  WHERE player_id = {$player}" );
+                $newsmile = self::getUniqueValueFromDB("SELECT smile FROM player WHERE player_id={$player}");
+                letsgotojapan::$instance->notifyAllPlayers('smile','', array(
+                    'position' => $newsmile,
+                    'player' => $player,
+                    )
+                    );
+                self::notifyAllPlayers( 'simplePause', '', [ 'time' => 500] );
+                
+                $happy = self::getUniqueValueFromDB("SELECT happy FROM player WHERE player_id={$player}");
+                if($happy < 3)
+                {
+                    self::DbQuery( "UPDATE player set happy = happy+1  WHERE player_id = {$player}" );
+                    $newhappy = self::getUniqueValueFromDB("SELECT happy FROM player WHERE player_id={$player}");
+                    letsgotojapan::$instance->notifyAllPlayers('happy','', array(
+                        'position' => $newhappy,
+                        'player' => $player,
+                        )
+                        );
+
+                }
+
+
+            }
+
+
+        }
+
+    }
+
+    if ($gain<0)
+    {
+        for($i=-1; $i>=$gain; $i--)
+        {
+            self::DbQuery( "UPDATE player set smile = smile - 1  WHERE player_id = {$player}" );
+            $newsmile = self::getUniqueValueFromDB("SELECT smile FROM player WHERE player_id={$player}");
+            letsgotojapan::$instance->notifyAllPlayers('smile','', array(
+                'position' => $newsmile,
+                'player' => $player,
+                )
+                );
+            self::notifyAllPlayers( 'simplePause', '', [ 'time' => 500] );
+
+            if ($newsmile == -3)
+            {
+                self::DbQuery( "UPDATE player set smile = 0  WHERE player_id = {$player}" );
+                $newsmile = self::getUniqueValueFromDB("SELECT smile FROM player WHERE player_id={$player}");
+                letsgotojapan::$instance->notifyAllPlayers('smile','', array(
+                    'position' => $newsmile,
+                    'player' => $player,
+                    )
+                    );
+                self::notifyAllPlayers( 'simplePause', '', [ 'time' => 500] );
+
+                $angry = self::getUniqueValueFromDB("SELECT angry FROM player WHERE player_id={$player}");
+                if($angry < 3)
+                {
+                    self::DbQuery( "UPDATE player set angry = angry+1  WHERE player_id = {$player}" );
+                    $newangry = self::getUniqueValueFromDB("SELECT angry FROM player WHERE player_id={$player}");
+                    letsgotojapan::$instance->notifyAllPlayers('angry','', array(
+                        'position' => $newangry,
+                        'player' => $player,
+                        )
+                        );
+
+                }
+
+            }
+
+
+        }
+
+    }
+
+}
+
 
 
 ///////////////////////////////////////////////////////////////////////////////// 
