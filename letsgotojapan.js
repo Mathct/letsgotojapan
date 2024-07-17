@@ -181,19 +181,21 @@ function (dojo, declare) {
                         
                     }
     
-
-               
+                for( var player_id in gamedatas.players )
+                    {
+                        var smile = gamedatas.smile[player_id];
+                        var happy = gamedatas.happy[player_id];
+                        var angry = gamedatas.angry[player_id];
+                        
+                        this.addHappy(smile, happy, angry, player_id);
+                        
+                                                    
+                        
+                    }
+                    
                 
 
-
-               
-
-
                 
-                
-
-
-
 
                 
                 
@@ -413,7 +415,6 @@ function (dojo, declare) {
             },
 
             addTokenJour: function( jour, couleur)
-
             {   
                 
                 dojo.place( this.format_block( 'jstpl_tokenjour', {
@@ -425,13 +426,32 @@ function (dojo, declare) {
             },
 
             addTurn: function( turn)
-
             {   
                 
                 dojo.place( this.format_block( 'jstpl_turn', {
                     
                                         
                 } ) , 'turnboard_marqueur_'+turn );
+
+            },
+
+            addHappy: function(smile, happy, angry, player)
+            {   
+                
+                dojo.place( this.format_block( 'jstpl_smile', {
+                   id: player, 
+                                        
+                } ) , 'smileposition_'+smile+'_'+player );
+
+                dojo.place( this.format_block( 'jstpl_happy', {
+                    id: player, 
+                                         
+                 } ) , 'happyposition_'+happy+'_'+player );
+
+                 dojo.place( this.format_block( 'jstpl_angry', {
+                    id: player, 
+                                         
+                 } ) , 'angryposition_'+angry+'_'+player );
 
             },
 

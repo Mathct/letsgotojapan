@@ -275,6 +275,42 @@
 
 }
 
+.smileposition {
+    position: absolute;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    
+    
+}
+
+.smile {
+    position: absolute;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: black;
+    
+}
+
+.happy {
+    position: absolute;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: black;
+    
+}
+
+.angry {
+    position: absolute;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: black;
+    
+}
+
 .masque{
 
     visibility: hidden;

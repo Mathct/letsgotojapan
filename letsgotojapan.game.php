@@ -207,6 +207,15 @@ class letsgotojapan extends Table
         $result['turn'] = self::getUniqueValueFromDB("SELECT level FROM tokens WHERE name = 'turn'");
 
         $result['tokenjour'] = self::getObjectListFromDB( "SELECT name name, level level FROM tokens WHERE type = 'general'");
+
+        $listplayers = self::getObjectListFromDB("SELECT player_id id FROM player", true);
+        foreach($listplayers as $player)
+        {
+            $result['smile'][$player] = self::getUniqueValueFromDB("SELECT smile FROM player WHERE player_id={$player}");
+            $result['happy'][$player] = self::getUniqueValueFromDB("SELECT happy FROM player WHERE player_id={$player}");
+            $result['angry'][$player] = self::getUniqueValueFromDB("SELECT angry FROM player WHERE player_id={$player}");
+
+        }
         
 
         return $result;

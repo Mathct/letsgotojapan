@@ -73,8 +73,8 @@ CREATE TABLE IF NOT EXISTS `tokens` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 ALTER TABLE `player` ADD `smile` int(2) DEFAULT 0;
-ALTER TABLE `player` ADD `smileplus` int(2) unsigned DEFAULT 0;
-ALTER TABLE `player` ADD `smilemoins` int(2) unsigned DEFAULT 0;
+ALTER TABLE `player` ADD `happy` int(2) unsigned DEFAULT 0;
+ALTER TABLE `player` ADD `angry` int(2) unsigned DEFAULT 0;
 ALTER TABLE `player` ADD `r` int(2) unsigned DEFAULT 0;
 ALTER TABLE `player` ADD `g` int(2) unsigned DEFAULT 0;
 ALTER TABLE `player` ADD `p` int(2) unsigned DEFAULT 0; 
