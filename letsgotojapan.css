@@ -56,6 +56,64 @@
 
 }
 
+.mask_turn {
+    position: absolute;
+    top: 0px;
+    right: 10px;
+    width: 100px;
+    height: 50px;
+    background-image: url('img/icon_mask_turn.png');
+    background-size: 100% 100%;
+    cursor: pointer;
+    pointer-events: auto !important;
+      
+
+}
+
+.mask_turn:hover {
+    position: absolute;
+    top: 0px;
+    right: 10px;
+    width: 100px;
+    height: 50px;
+    background-image: url('img/icon_mask_turn_h.png');
+    background-size: 100% 100%;
+    cursor: pointer;
+    pointer-events: auto !important;
+    
+
+}
+
+
+.mask_hand {
+    position: absolute;
+    top: 50px;
+    right: 10px;
+    width: 100px;
+    height: 50px;
+    background-image: url('img/icon_mask_hand.png');
+    background-size: 100% 100%;
+    cursor: pointer;
+    pointer-events: auto !important;
+    
+
+}
+
+.mask_hand:hover {
+    position: absolute;
+    top: 50px;
+    right: 10px;
+    width: 100px;
+    height: 50px;
+    background-image: url('img/icon_mask_hand_h.png');
+    background-size: 100% 100%;
+    cursor: pointer;
+    pointer-events: auto !important;
+    
+
+}
+
+
 #titre {
     width: 200px;
     height: 80px;
