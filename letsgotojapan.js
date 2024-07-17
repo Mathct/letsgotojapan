@@ -113,6 +113,8 @@ function (dojo, declare) {
                         dojo.query("#playerview_"+player).removeClass("masque");
                         dojo.query(".playerhandtitle").addClass("masque");
                         dojo.query(".playerhand").addClass("masque");
+                        dojo.query("#mask_turn").addClass("masque");
+                        dojo.query("#mask_hand").addClass("masque");
 
                         var elements = document.querySelectorAll("[id^='playerview']");
                         elements.forEach(function(element) {
