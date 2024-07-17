@@ -172,6 +172,16 @@ function (dojo, declare) {
                         
                     }
 
+                
+                for( var jour in gamedatas.tokenjour)
+                    {
+                        var tokenjour = gamedatas.tokenjour[jour];
+
+                        this.addTokenJour(tokenjour.name, tokenjour.level);
+                        
+                    }
+    
+
                
                 
 
@@ -400,6 +410,18 @@ function (dojo, declare) {
                 box.t += box.h - cbox.h;
                 mobile.offsetTop;//force re-flow
                 return box;
+            },
+
+            addTokenJour: function( jour, couleur)
+
+            {   
+                
+                dojo.place( this.format_block( 'jstpl_tokenjour', {
+                x: (couleur-1)*(-100),
+                jour: jour,
+                                        
+                } ) , 'tokenjourposition_'+jour );
+
             },
 
             addTurn: function( turn)

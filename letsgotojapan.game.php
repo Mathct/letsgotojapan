@@ -136,12 +136,33 @@ class letsgotojapan extends Table
         //////// TOKENS ///////
 
         self::DbQuery( "INSERT INTO tokens (type, name, level) VALUES ('turn', 'turn', 1)" );
-        self::DbQuery( "INSERT INTO tokens (type, name, level) VALUES ('general', 'r', 0)" );
-        self::DbQuery( "INSERT INTO tokens (type, name, level) VALUES ('general', 'g', 0)" );
-        self::DbQuery( "INSERT INTO tokens (type, name, level) VALUES ('general', 'p', 0)" );
-        self::DbQuery( "INSERT INTO tokens (type, name, level) VALUES ('general', 'y', 0)" );
-        self::DbQuery( "INSERT INTO tokens (type, name, level) VALUES ('general', 'b', 0)" );
-        self::DbQuery( "INSERT INTO tokens (type, name, level) VALUES ('general', 's', 0)" );
+
+        $valeurs = [1, 2, 3, 4, 5, 6];
+        function tirerEtRetirerValeur(&$tableau) {
+            // Choisir un index aléatoire
+            $indexAleatoire = array_rand($tableau);
+            // Récupérer la valeur à cet index
+            $valeur = $tableau[$indexAleatoire];
+            // Retirer la valeur du tableau
+            unset($tableau[$indexAleatoire]);
+            // Ré-indexer le tableau
+            $tableau = array_values($tableau);
+            // Retourner la valeur
+            return $valeur;
+        }
+        $valeur1 = tirerEtRetirerValeur($valeurs);
+        $valeur2 = tirerEtRetirerValeur($valeurs);
+        $valeur3 = tirerEtRetirerValeur($valeurs);
+        $valeur4 = tirerEtRetirerValeur($valeurs);
+        $valeur5 = tirerEtRetirerValeur($valeurs);
+        $valeur6 = tirerEtRetirerValeur($valeurs);
+
+        self::DbQuery( "INSERT INTO tokens (type, name, level) VALUES ('general', '1', $valeur1)" );
+        self::DbQuery( "INSERT INTO tokens (type, name, level) VALUES ('general', '2', $valeur2)" );
+        self::DbQuery( "INSERT INTO tokens (type, name, level) VALUES ('general', '3', $valeur3)" );
+        self::DbQuery( "INSERT INTO tokens (type, name, level) VALUES ('general', '4', $valeur4)" );
+        self::DbQuery( "INSERT INTO tokens (type, name, level) VALUES ('general', '5', $valeur5)" );
+        self::DbQuery( "INSERT INTO tokens (type, name, level) VALUES ('general', '6', $valeur6)" );
 
         
         foreach( $players as $player_id => $player )
@@ -184,6 +205,8 @@ class letsgotojapan extends Table
         $result['kyoto'] = self::getObjectListFromDB( "SELECT card_id id, card_type type, card_type_arg type_arg, card_location location, card_location_arg location_arg FROM kyoto WHERE card_location != 'deck' and card_location != 'discard'");
 
         $result['turn'] = self::getUniqueValueFromDB("SELECT level FROM tokens WHERE name = 'turn'");
+
+        $result['tokenjour'] = self::getObjectListFromDB( "SELECT name name, level level FROM tokens WHERE type = 'general'");
         
 
         return $result;

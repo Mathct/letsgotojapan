@@ -257,6 +257,24 @@
     
 }
 
+.tokenjourposition {
+    position: absolute;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    
+}
+
+.tokenjour {
+    position: absolute;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-image: url('img/tokenjour.png');
+    background-size: 600% 100%;
+
+}
+
 .masque{
 
     visibility: hidden;

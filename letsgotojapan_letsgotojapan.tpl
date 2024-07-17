@@ -60,6 +60,15 @@
             <div id="nameplayer_{PLAYER_ID}" class="nameplayer" style="color:#{COLOR}; outline: 0.5px solid #{COLOR};"><div class="left"><<<&nbsp;&nbsp;&nbsp;</div>{PLAYER_NAME}<div class="right">&nbsp;&nbsp;&nbsp;>>></div></div>
             <div id="playerboard_{PLAYER_ID}" class="playerboard color_{COLOR}">
 
+
+                <div id="tokenjourposition_1" class="tokenjourposition" style="top: 85.5%; left: 1.2%;"></div>
+                <div id="tokenjourposition_2" class="tokenjourposition" style="top: 85.5%; left: 16.4%;"></div>
+                <div id="tokenjourposition_3" class="tokenjourposition" style="top: 85.5%; left: 33.3%;"></div>
+                <div id="tokenjourposition_4" class="tokenjourposition" style="top: 85.5%; left: 50.5%;"></div>
+                <div id="tokenjourposition_5" class="tokenjourposition" style="top: 85.5%; left: 66.7%;"></div>
+                <div id="tokenjourposition_6" class="tokenjourposition" style="top: 85.5%; left: 83.8%;"></div>
+
+
                 <div id="cardposition_1_1_{PLAYER_ID}"class="cardposition" style="top: 101%; left: 2.3%;"></div>
                 <div id="cardposition_1_2_{PLAYER_ID}"class="cardposition" style="top: 115%; left: 2.3%;"></div>
                 <div id="cardposition_1_3_{PLAYER_ID}"class="cardposition" style="top: 129%; left: 2.3%;"></div>
@@ -122,6 +131,7 @@
 
 var jstpl_titre='<div id="titre"></div>';
 var jstpl_eye='<div id="eye_${id}" class="eye" style="display: inline-block;"></div>';
+var jstpl_tokenjour='<div id="tokenjour_${jour}" class="tokenjour" style="background-position-x: ${x}%;"></div>';
 var jstpl_card='<div id="card_${ville}_${id}" class="card" style="background-image: url(${imgfull}); background-position-x: ${x}%; background-position-y: ${y}%;"></div>';
 var jstpl_turn='<div id="turn" class="turn"></div>';
 
