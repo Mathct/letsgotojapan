@@ -20,6 +20,7 @@
 require_once( APP_GAMEMODULE_PATH.'module/table/table.game.php' );
 include('modules/Pending.php');
 
+
 class letsgotojapan extends Table
 {
     public static $instance = null;

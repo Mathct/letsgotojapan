@@ -1,4 +1,8 @@
 <?php
+
+require('CardTokyo.php');
+require('CardKyoto.php');
+
 class Pending extends APP_GameClass
 {
     public function __construct($player_id)
@@ -193,7 +197,7 @@ class Pending extends APP_GameClass
 
             letsgotojapan::$instance->notifyAllPlayers( 'simplePause', '', [ 'time' => 1000] ); 
             letsgotojapan::$instance->Condenser($this->player_id, $varg1);
-
+           
             letsgotojapan::$instance->giveExtraTime($this->player_id);
             letsgotojapan::$instance->gamestate->setPlayerNonMultiactive($this->player_id, 'stop');
             
