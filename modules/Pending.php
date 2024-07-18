@@ -1,7 +1,7 @@
 <?php
 
-require('CardTokyo.php');
-require('CardKyoto.php');
+/*require('CardTokyo.php');
+require('CardKyoto.php');*/
 
 class Pending extends APP_GameClass
 {
@@ -53,7 +53,7 @@ class Pending extends APP_GameClass
     {
 
         
-        
+        //CardTokyo::Tokyo_1($this->player_id);
         
            
             letsgotojapan::$instance->Deployer($this->player_id);

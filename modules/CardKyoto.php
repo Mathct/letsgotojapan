@@ -1,11 +1,19 @@
 <?php 
         
-    function Kyoto_1()
+  
+    class CardKyoto extends APP_GameClass
+{
+    
+    
+    public static function Kyoto_1($player_id)
     {
-        var_dump("bonjour");
+        
+        
+        letsgotojapan::$instance->Smile(10, $player_id);
+        
     }
-
-    function Kyoto_2()
-    {
-        var_dump("bonjour2");
-    }
+    
+    
+    
+    
+}

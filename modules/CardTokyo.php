@@ -1,14 +1,22 @@
 <?php 
         
-    function Tokyo_1()
+  
+    class CardTokyo extends APP_GameClass
+{
+    
+    
+    public static function Tokyo_1($player_id)
     {
-        var_dump("bonjour");
+        
+        
+        letsgotojapan::$instance->Smile(10, $player_id);
+        
     }
-
-    function Tokyo_2()
-    {
-        var_dump("bonjour2");
-    }
+    
+    
+    
+    
+}
 
    
     

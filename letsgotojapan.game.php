@@ -19,6 +19,10 @@
 
 require_once( APP_GAMEMODULE_PATH.'module/table/table.game.php' );
 include('modules/Pending.php');
+include('modules/CardTokyo.php');
+include('modules/CardKyoto.php');
+
+
 
 
 class letsgotojapan extends Table
