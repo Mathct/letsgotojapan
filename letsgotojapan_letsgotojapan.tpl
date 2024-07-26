@@ -45,19 +45,19 @@
             <div id="turnboard_marqueur_10" class = "turnboard_marqueur" style="left: 68.2%; top: 5.5%;"></div>
             <div id="turnboard_marqueur_11" class = "turnboard_marqueur" style="left: 75.4%; top: 5.5%;"></div>
             <div id="turnboard_marqueur_12" class = "turnboard_marqueur" style="left: 82.6%; top: 5.5%;"></div>
-            <div id "turnboard_marqueur_13" class = "turnboard_marqueur" style="left: 89.9%; top: 5.5%;"></div>
+            <div id="turnboard_marqueur_13" class = "turnboard_marqueur" style="left: 89.9%; top: 5.5%;"></div>
         </div>
 
         <!-- BEGIN playerhand -->
         
-            <div id="playerhandtitle_{PLAYER_ID}" class="playerhandtitle" style="color:#{COLOR}; outline: 0.5px solid #{COLOR};">Your Hand</div>
+            <div id="playerhandtitle_{PLAYER_ID}" class="playerhandtitle" style="color:#{COLOR}; outline: 0.5px solid #{COLOR};">{HAND}</div>
             <div id="playerhand_{PLAYER_ID}" class="playerhand"></div>
         
         <!-- END playerhand -->
 
         <!-- BEGIN player -->
         <div id="playerview_{PLAYER_ID}" class="playerview">
-            <div id="nameplayer_{PLAYER_ID}" class="nameplayer" style="color:#{COLOR}; outline: 0.5px solid #{COLOR};"><div class="left"><<<&nbsp;&nbsp;&nbsp;</div>{PLAYER_NAME}<div class="right">&nbsp;&nbsp;&nbsp;>>></div></div>
+            <div id="nameplayer_{PLAYER_ID}" class="nameplayer" style="color:#{COLOR}; outline: 0.5px solid #{COLOR};"><div class="left"><<<&nbsp;&nbsp;&nbsp;</div><span style="font-weight: bold;">{PLAYER_NAME}</span><div class="right">&nbsp;&nbsp;&nbsp;>>></div></div>
             <div id="playerboard_{PLAYER_ID}" class="playerboard color_{COLOR}">
 
                 <div id="smileposition_-3_{PLAYER_ID}" class="smileposition" style="top: 10.4%; left: 36.1%;"></div>

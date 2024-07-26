@@ -58,8 +58,8 @@
 
 #mask_turn {
     position: absolute;
-    top: 0px;
-    right: 10px;
+    top: -10px;
+    right: 115px;
     width: 100px;
     height: 50px;
     background-image: url('img/icon_mask_turn.png');
@@ -72,8 +72,8 @@
 
 #mask_turn:hover {
     position: absolute;
-    top: 0px;
-    right: 10px;
+    top: -10px;
+    right: 115px;
     width: 100px;
     height: 50px;
     background-image: url('img/icon_mask_turn_h.png');
@@ -87,7 +87,7 @@
 
 #mask_hand {
     position: absolute;
-    top: 50px;
+    top: -10px;
     right: 10px;
     width: 100px;
     height: 50px;
@@ -101,7 +101,7 @@
 
 #mask_hand:hover {
     position: absolute;
-    top: 50px;
+    top: -10px;
     right: 10px;
     width: 100px;
     height: 50px;
@@ -155,14 +155,16 @@
    
     background-image: url('img/turn_board.jpg');
     background-size: 100% 100%;
-    position: relative;
+    position: absolute;
     width: 750px;
     height: 150px;
     margin-right: auto;
     margin-left: auto;
-    margin-top: 10px;
+    /*margin-top: 10px;*/
     filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.9));
     -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.9));
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 .turnboard_marqueur {
@@ -196,7 +198,7 @@
 }
 
 .nameplayer{
-    width: 1200px;
+    width: 600px;
     height: 20px;
     position: absolute;
     background-color: rgba(255, 255, 255, 0.5);
@@ -204,23 +206,29 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    left: 50%;
+    transform: translateX(-50%);
+    
    
   }
 
 .playerhandtitle {
     width: 600px;
     height: 20px;
-    position: relative;
+    position: absolute;
     background-color: rgba(255, 255, 255, 0.5);
     border-radius: 8px;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-right: auto;
-    margin-left: auto;
+    /*margin-right: auto;
+    margin-left: auto;*/
     font-weight: bold;
-    margin-top: 10px;
-    margin-bottom: 10px;
+    /*margin-top: 10px;
+    margin-bottom: 10px;*/
+    left: 50%;
+    transform: translateX(-50%);
+    top: 162px;
    
 }
 
@@ -228,15 +236,18 @@
 
     width: 1200px;
     height: 260px;
-    position: relative;
+    position: absolute;
     background-color: rgba(255, 255, 255, 0.3);
     border-radius: 8px;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-right: auto;
-    margin-left: auto;
+    /*margin-right: auto;
+    margin-left: auto;*/
     gap :10px;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 190px;
     
 
 }

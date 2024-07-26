@@ -118,11 +118,11 @@ function (dojo, declare) {
 
                         var elements = document.querySelectorAll("[id^='playerview']");
                         elements.forEach(function(element) {
-                            element.style.top = "161px"; 
+                            element.style.top = "151px"; 
                           });
 
                         var global = document.getElementById('global');
-                        global.style.height = "1160px"; 
+                        global.style.height = "1150px"; 
                     }
 
 
@@ -1246,6 +1246,8 @@ function (dojo, declare) {
                 dojo.stopEvent( evt );
 
                 const element = document.querySelector('.turn_board');
+                const element2 = document.querySelector('.playerhandtitle');
+                const element3 = document.querySelector('.playerhand');
                 var playerviews = document.querySelectorAll('.playerview');
                 var global = document.getElementById("global");
                 var currentHeight = global.clientHeight;
@@ -1253,10 +1255,15 @@ function (dojo, declare) {
                 if (element && element.classList.contains('hidden')) 
                 {
                     dojo.query(".turn_board").removeClass("hidden");
+
+                    element2.style.top = "162px";
+                    element3.style.top = "190px";
+
+
                     playerviews.forEach(function(playerview) {
                         var currentTop = playerview.offsetTop;
                         
-                        playerview.style.top = (currentTop + 150) + "px";
+                        playerview.style.top = (currentTop + 135) + "px";
                       });
                       global.style.height = (currentHeight + 160) + "px";
                     
@@ -1265,10 +1272,14 @@ function (dojo, declare) {
                 else 
                 {
                     dojo.query(".turn_board").addClass("hidden");
+                    
+                    element2.style.top = "15px";
+                    element3.style.top = "43px";
+                    
                         playerviews.forEach(function(playerview) {
                         var currentTop = playerview.offsetTop;
                         
-                        playerview.style.top = (currentTop - 170) + "px";
+                        playerview.style.top = (currentTop - 155) + "px";
                       });
                       global.style.height = (currentHeight - 160) + "px";
                 }

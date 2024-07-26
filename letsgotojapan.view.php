@@ -49,6 +49,8 @@ class view_letsgotojapan_letsgotojapan extends game_view
 
         /*********** Place your code below:  ************/
 
+        $this->tpl['HAND'] = self::_("Your Hand");
+
         if($spectator === false)
         {
         $this->page->begin_block($template, "playerhand");

@@ -54,6 +54,20 @@ class Pending extends APP_GameClass
 
         
         //CardTokyo::Tokyo_1($this->player_id);
+
+        /*$explode = explode("_", $varg1);
+        if($explode[1] == 1)
+        {
+            $card = self::getUniqueValueFromDB("SELECT card_type FROM tokyo WHERE card_id={$explode[2]}");
+            var_dump(letsgotojapan::$instance->tokyocards[$card]);
+        }
+
+        if($explode[1] == 2)
+        {
+            $card = self::getUniqueValueFromDB("SELECT card_type FROM kyoto WHERE card_id={$explode[2]}");
+            var_dump(letsgotojapan::$instance->kyotocards[$card]);
+        }*/
+
         
            
             letsgotojapan::$instance->Deployer($this->player_id);
@@ -197,9 +211,59 @@ class Pending extends APP_GameClass
 
             letsgotojapan::$instance->notifyAllPlayers( 'simplePause', '', [ 'time' => 1000] ); 
             letsgotojapan::$instance->Condenser($this->player_id, $varg1);
-           
+
+
+            $counttrip = letsgotojapan::$instance->CountTrip($this->player_id);
+            
+            $day = $explode2[1];
+
+            if ($counttrip[$day-1] == 3)
+            {
+                $colorday = self::getUniqueValueFromDB("SELECT level FROM tokens WHERE name={$day}");
+
+                $scorecards = array();
+
+                $tokyo = self::getObjectListFromDB( "SELECT card_type type FROM tokyo WHERE  card_location_arg = {$this->player_id} AND card_location LIKE 'cardposition_{$day}%'", true );
+                $kyoto = self::getObjectListFromDB( "SELECT card_type type FROM kyoto WHERE  card_location_arg = {$this->player_id} AND card_location LIKE 'cardposition_{$day}%'", true );
+
+                if ($tokyo != null)
+                {
+                    foreach ($tokyo as $type)
+                    {
+                        $scorecards[] = letsgotojapan::$instance->tokyocards[$type]['bonus'];
+                    }
+
+                }
+
+                if ($kyoto != null)
+                {
+
+                    foreach ($kyoto as $type)
+                    {
+                        $scorecards[] = letsgotojapan::$instance->kyotocards[$type]['bonus'];
+                    }
+                    
+                }
+
+                $result = array_map(function(...$numbers) {
+                    return array_sum($numbers);
+                }, ...$scorecards);
+
+
+                var_dump ($result);
+
+
+                
+                letsgotojapan::$instance->giveExtraTime($this->player_id);
+                letsgotojapan::$instance->gamestate->setPlayerNonMultiactive($this->player_id, 'stop');
+                //letsgotojapan::$instance->addPending($this->player_id, "BonusChoose");
+            }
+
+            else
+            {
             letsgotojapan::$instance->giveExtraTime($this->player_id);
             letsgotojapan::$instance->gamestate->setPlayerNonMultiactive($this->player_id, 'stop');
+            }
             
             
         }
@@ -214,6 +278,33 @@ class Pending extends APP_GameClass
 
 
     /////////////////////// PHASE 2 //////////////////////////
+
+
+
+    /////////////////////// BONUS JOURNEE //////////////////////////
+
+    function argBonusChoose($parg1, $parg2)
+    {
+        $ret = array();
+        $ret["selectable"] = array();
+        $ret["selected"] = array();
+        $ret['buttons'] = array();
+        $ret['titleyou'] = clienttranslate('${you} must choose a bonus');
+
+        
+        
+
+
+        
+        return $ret;
+    }
+
+    function BonusChoose($parg1, $parg2, $varg1, $varg2)
+    {
+        
+        
+
+    }
 
 
 
