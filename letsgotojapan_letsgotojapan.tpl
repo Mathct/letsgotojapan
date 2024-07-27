@@ -78,9 +78,9 @@
                 <div id="angryposition_2_{PLAYER_ID}" class="smileposition" style="top: 26.2%; left: 42.1%;"></div>
                 <div id="angryposition_3_{PLAYER_ID}" class="smileposition" style="top: 26.2%; left: 45.2%;"></div>
 
-                <div id="bonusjournee_1_{PLAYER_ID}" class="bonusjournee" style="top: 5.5%; left: 7.2%;"></div>
+                <div id="bonusjournee_1_{PLAYER_ID}" class="bonusjournee" style="top: 5.5%; left: 7.25%;"></div>
                 <div id="bonusjournee_2_{PLAYER_ID}" class="bonusjournee" style="top: 5.5%; left: 16.5%;"></div>
-                <div id="bonusjournee_3_{PLAYER_ID}" class="bonusjournee" style="top: 5.5%; left: 25.8%;"></div>
+                <div id="bonusjournee_3_{PLAYER_ID}" class="bonusjournee" style="top: 5.5%; left: 25.7%;"></div>
 
                 <div id="tokenjourposition_1" class="tokenjourposition" style="top: 85.5%; left: 1.2%;"></div>
                 <div id="tokenjourposition_2" class="tokenjourposition" style="top: 85.5%; left: 16.4%;"></div>

@@ -210,6 +210,7 @@ function (dojo, declare) {
                 dojo.query(".eye").connect('onclick', this, 'onEye' );
                 dojo.query("#mask_turn").connect('onclick', this, 'onMaskTurn' );
                 dojo.query("#mask_hand").connect('onclick', this, 'onMaskHand' );
+                dojo.query(".bonusjournee").connect('onclick', this, 'onSelect' );
 
                 
     

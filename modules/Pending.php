@@ -219,7 +219,8 @@ class Pending extends APP_GameClass
 
             if ($counttrip[$day-1] == 3)
             {
-                $colorday = self::getUniqueValueFromDB("SELECT level FROM tokens WHERE name={$day}");
+                $colorday = intval(self::getUniqueValueFromDB("SELECT level FROM tokens WHERE name={$day}"));
+                
 
                 $scorecards = array();
 
@@ -249,32 +250,39 @@ class Pending extends APP_GameClass
                     return array_sum($numbers);
                 }, ...$scorecards);
 
-
+                
                 if (($colorday>=1)&&($colorday<=5))
                 {
-                    if($scorecards[$colorday-1]==0)
+                    if($result[$colorday-1]==0)
                     {
                         letsgotojapan::$instance->giveExtraTime($this->player_id);
                         letsgotojapan::$instance->gamestate->setPlayerNonMultiactive($this->player_id, 'stop');
                     }
 
-                    if($scorecards[$colorday-1]==1)
+                    if($result[$colorday-1]==1)
                     {
                         letsgotojapan::$instance->Smile(1,$this->player_id);
+                        
+                        letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} gains smile' ), array(
+                            'player_name' => $this->player_name,
+                            )
+                            );
+                        
                         letsgotojapan::$instance->giveExtraTime($this->player_id);
                         letsgotojapan::$instance->gamestate->setPlayerNonMultiactive($this->player_id, 'stop');
                     }
 
-                    if($scorecards[$colorday-1]>=2)
+                    if($result[$colorday-1]>=2)
                     {
-                        letsgotojapan::$instance->addPending($this->player_id, "BonusChoose", $scorecards[$colorday-1]);
+                       
+                        letsgotojapan::$instance->addPending($this->player_id, "BonusChoose", $result[$colorday-1]);
                     }
 
                 }
 
                 if ($colorday == 6)
                 {
-                    $calculhappy = $scorecards[5]+$scorecards[6];
+                    $calculhappy = $result[5]+$result[6];
 
                     if($calculhappy==0)
                     {
@@ -285,6 +293,12 @@ class Pending extends APP_GameClass
                     if($calculhappy==1)
                     {
                         letsgotojapan::$instance->Smile(1,$this->player_id);
+
+                        letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} gains smile' ), array(
+                            'player_name' => $this->player_name,
+                            )
+                            );
+
                         letsgotojapan::$instance->giveExtraTime($this->player_id);
                         letsgotojapan::$instance->gamestate->setPlayerNonMultiactive($this->player_id, 'stop');
                     }
@@ -329,11 +343,15 @@ class Pending extends APP_GameClass
         $ret["selectable"] = array();
         $ret["selected"] = array();
         $ret['buttons'] = array();
-        $ret['titleyou'] = clienttranslate('${you} must choose a bonus');
+        $ret['titleyou'] = clienttranslate('${you} must choose a bonus of the day');
 
+        $ret["selectable"][] = 'bonusjournee_1_'.$this->player_id;
+        $ret["selectable"][] = 'bonusjournee_2_'.$this->player_id;
         
-        
-
+        if($parg1 >= 3)
+        {
+            $ret["selectable"][] = 'bonusjournee_3_'.$this->player_id;
+        }
 
         
         return $ret;
@@ -341,6 +359,21 @@ class Pending extends APP_GameClass
 
     function BonusChoose($parg1, $parg2, $varg1, $varg2)
     {
+
+        if ($varg1 === 'bonusjournee_1_' . $this->player_id) 
+        {
+            letsgotojapan::$instance->Smile(1,$this->player_id);
+            letsgotojapan::$instance->giveExtraTime($this->player_id);
+            letsgotojapan::$instance->gamestate->setPlayerNonMultiactive($this->player_id, 'stop');
+
+        }
+
+        else
+        {
+            letsgotojapan::$instance->giveExtraTime($this->player_id);
+            letsgotojapan::$instance->gamestate->setPlayerNonMultiactive($this->player_id, 'stop');
+
+        }
         
         
 

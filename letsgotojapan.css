@@ -387,6 +387,14 @@ display: none;
     
 }
 
+.selectable.bonusjournee {
+    background-color:  rgba(255, 0, 0, 0.6);
+    border: 1px solid rgba(255, 0, 0, 0.5);
+    cursor: pointer;
+    
+    
+}
+
 .selected.card {
     border: 2px solid rgb(0, 26, 255);
     
