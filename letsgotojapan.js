@@ -186,8 +186,9 @@ function (dojo, declare) {
                         var smile = gamedatas.smile[player_id];
                         var happy = gamedatas.happy[player_id];
                         var angry = gamedatas.angry[player_id];
+                        var color = gamedatas.color[player_id];
                         
-                        this.addHappy(smile, happy, angry, player_id);
+                        this.addHappy(smile, happy, angry, player_id, color);
                         
                                                     
                         
@@ -435,11 +436,12 @@ function (dojo, declare) {
 
             },
 
-            addHappy: function(smile, happy, angry, player)
+            addHappy: function(smile, happy, angry, player, color)
             {   
                 
                 dojo.place( this.format_block( 'jstpl_smile', {
-                   id: player, 
+                   id: player,
+                   color: color, 
                                         
                 } ) , 'smileposition_'+smile+'_'+player );
 

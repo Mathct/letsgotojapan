@@ -78,6 +78,10 @@
                 <div id="angryposition_2_{PLAYER_ID}" class="smileposition" style="top: 26.2%; left: 42.1%;"></div>
                 <div id="angryposition_3_{PLAYER_ID}" class="smileposition" style="top: 26.2%; left: 45.2%;"></div>
 
+                <div id="bonusjournee_1_{PLAYER_ID}" class="bonusjournee" style="top: 5.5%; left: 7.2%;"></div>
+                <div id="bonusjournee_2_{PLAYER_ID}" class="bonusjournee" style="top: 5.5%; left: 16.5%;"></div>
+                <div id="bonusjournee_3_{PLAYER_ID}" class="bonusjournee" style="top: 5.5%; left: 25.8%;"></div>
+
                 <div id="tokenjourposition_1" class="tokenjourposition" style="top: 85.5%; left: 1.2%;"></div>
                 <div id="tokenjourposition_2" class="tokenjourposition" style="top: 85.5%; left: 16.4%;"></div>
                 <div id="tokenjourposition_3" class="tokenjourposition" style="top: 85.5%; left: 33.3%;"></div>
@@ -148,7 +152,7 @@
 var jstpl_titre='<div id="titre"></div>';
 var jstpl_eye='<div id="eye_${id}" class="eye" style="display: inline-block;"></div>';
 var jstpl_tokenjour='<div id="tokenjour_${jour}" class="tokenjour" style="background-position-x: ${x}%;"></div>';
-var jstpl_smile='<div id="smile_${id}" class="smile"></div>';
+var jstpl_smile='<div id="smile_${id}" class="smile" style="background-color: #${color}"></div>';
 var jstpl_happy='<div id="happy_${id}" class="happy"></div>';
 var jstpl_angry='<div id="angry_${id}" class="angry"></div>';
 var jstpl_card='<div id="card_${ville}_${id}" class="card" style="background-image: url(${imgfull}); background-position-x: ${x}%; background-position-y: ${y}%;"></div>';

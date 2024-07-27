@@ -250,13 +250,53 @@ class Pending extends APP_GameClass
                 }, ...$scorecards);
 
 
-                var_dump ($result);
+                if (($colorday>=1)&&($colorday<=5))
+                {
+                    if($scorecards[$colorday-1]==0)
+                    {
+                        letsgotojapan::$instance->giveExtraTime($this->player_id);
+                        letsgotojapan::$instance->gamestate->setPlayerNonMultiactive($this->player_id, 'stop');
+                    }
 
+                    if($scorecards[$colorday-1]==1)
+                    {
+                        letsgotojapan::$instance->Smile(1,$this->player_id);
+                        letsgotojapan::$instance->giveExtraTime($this->player_id);
+                        letsgotojapan::$instance->gamestate->setPlayerNonMultiactive($this->player_id, 'stop');
+                    }
 
-                
-                letsgotojapan::$instance->giveExtraTime($this->player_id);
-                letsgotojapan::$instance->gamestate->setPlayerNonMultiactive($this->player_id, 'stop');
-                //letsgotojapan::$instance->addPending($this->player_id, "BonusChoose");
+                    if($scorecards[$colorday-1]>=2)
+                    {
+                        letsgotojapan::$instance->addPending($this->player_id, "BonusChoose", $scorecards[$colorday-1]);
+                    }
+
+                }
+
+                if ($colorday == 6)
+                {
+                    $calculhappy = $scorecards[5]+$scorecards[6];
+
+                    if($calculhappy==0)
+                    {
+                        letsgotojapan::$instance->giveExtraTime($this->player_id);
+                        letsgotojapan::$instance->gamestate->setPlayerNonMultiactive($this->player_id, 'stop');
+                    }
+
+                    if($calculhappy==1)
+                    {
+                        letsgotojapan::$instance->Smile(1,$this->player_id);
+                        letsgotojapan::$instance->giveExtraTime($this->player_id);
+                        letsgotojapan::$instance->gamestate->setPlayerNonMultiactive($this->player_id, 'stop');
+                    }
+
+                    if($calculhappy>=2)
+                    {
+                        letsgotojapan::$instance->addPending($this->player_id, "BonusChoose", $calculhappy);
+                    }
+                    
+                }
+
+               
             }
 
             else
