@@ -32,6 +32,34 @@ $this->card_types = array(
 
 */
 
+$this->days = [
+  '1' => [
+    'name' => clienttranslate("Monday"),
+  ],
+ 
+  '2' => [
+    'name' => clienttranslate("Tuesday"),
+  ],
+
+  '3' => [
+    'name' => clienttranslate("Wednesday"),
+  ],
+
+  '4' => [
+    'name' => clienttranslate("Thursday"),
+  ],
+
+  '5' => [
+    'name' => clienttranslate("Friday"),
+  ],
+
+  '6' => [
+    'name' => clienttranslate("Saturday"),
+  ],
+
+
+];
+
 $this->tokyocards = [
   '1' => [
     'bonus' => [0, 0, 0, 1, 1, 0, 0, 0, 0],

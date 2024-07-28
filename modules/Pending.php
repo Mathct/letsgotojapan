@@ -157,7 +157,7 @@ class Pending extends APP_GameClass
 
             
 
-            letsgotojapan::$instance->notifyAllPlayers('movecard',clienttranslate( '${player_name} places a card' ), array(
+            letsgotojapan::$instance->notifyAllPlayers('movecard',clienttranslate( '${player_name} places a card on ${day}'), array(
                 'mobile' =>  $parg1,
                 'parent' => $varg1,
                 'player_name' => $this->player_name,
@@ -167,6 +167,7 @@ class Pending extends APP_GameClass
                 'card' => $card,
                 'playerid' => $this->player_id,
                 'location' => $explode2[0].'_'.$explode2[1].'_'.$explode2[2],
+                'day' => letsgotojapan::$instance->days[$explode2[1]]['name'],
 
                 )
                 );
@@ -363,6 +364,12 @@ class Pending extends APP_GameClass
         if ($varg1 === 'bonusjournee_1_' . $this->player_id) 
         {
             letsgotojapan::$instance->Smile(1,$this->player_id);
+
+            letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} gains smile' ), array(
+                'player_name' => $this->player_name,
+                )
+                );
+
             letsgotojapan::$instance->giveExtraTime($this->player_id);
             letsgotojapan::$instance->gamestate->setPlayerNonMultiactive($this->player_id, 'stop');
 
