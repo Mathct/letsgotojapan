@@ -82,6 +82,11 @@
                 <div id="bonusjournee_2_{PLAYER_ID}" class="bonusjournee" style="top: 5.5%; left: 16.5%;"></div>
                 <div id="bonusjournee_3_{PLAYER_ID}" class="bonusjournee" style="top: 5.5%; left: 25.7%;"></div>
 
+                <div id="bonusjournee_2_1_{PLAYER_ID}" class="bonusjournee2" style="top: 16.8%; left: 14.1%;"></div>
+                <div id="bonusjournee_2_2_{PLAYER_ID}" class="bonusjournee2" style="top: 30.1%; left: 14.1%;"></div>
+                <div id="bonusjournee_3_1_{PLAYER_ID}" class="bonusjournee2" style="top: 16.4%; left: 23.3%;"></div>
+                <div id="bonusjournee_3_2_{PLAYER_ID}" class="bonusjournee2" style="top: 30.1%; left: 23.3%;"></div>
+
                 <div id="tokenjourposition_1" class="tokenjourposition" style="top: 85.5%; left: 1.2%;"></div>
                 <div id="tokenjourposition_2" class="tokenjourposition" style="top: 85.5%; left: 16.4%;"></div>
                 <div id="tokenjourposition_3" class="tokenjourposition" style="top: 85.5%; left: 33.3%;"></div>
@@ -157,6 +162,18 @@ var jstpl_happy='<div id="happy_${id}" class="happy"></div>';
 var jstpl_angry='<div id="angry_${id}" class="angry"></div>';
 var jstpl_card='<div id="card_${ville}_${id}" class="card" style="background-image: url(${imgfull}); background-position-x: ${x}%; background-position-y: ${y}%;"></div>';
 var jstpl_turn='<div id="turn" class="turn"></div>';
+
+var jstpl_player_compteurs = '<div class="player_compteurs" id="player_compteurs_${id}" style="display: flex; align-items: center; flex-direction: column; justify-content: center; z-index: 100; position: relative;">\
+<div id="icons_player_compteurs_${id}" style="text-align: center; align-items: center; display: flex; margin-top: 10px; margin-bottom: 5px;">\
+<div id="iconrecherche_${id}" class="iconrecherche" style="display: inline-block; margin-right: 5px;"></div>\
+<div id="nbrerecherche_${id}" class="nbrerecherche" style="display: inline-block; margin-right: 10px;"></div>\
+<div id="icontrain_${id}" class="icontrain" style="display: inline-block; margin-right: 5px;"></div>\
+<div id="nbretrain_${id}" class="nbretrain" style="display: inline-block; margin-right: 10px;"></div>\
+<div id="iconwild_${id}" class="iconwild" style="display: inline-block; margin-right: 5px;"></div>\
+<div id="nbrewild_${id}" class="nbrewild" style="display: inline-block; margin-right: 10px;"></div>\
+</div>\
+</div>';
+
 
 </script>  
 

@@ -80,6 +80,28 @@ function (dojo, declare) {
                 }
 
                 for( var player_id in gamedatas.players )   
+                    {
+                                         
+                        var player_board_div = $('player_board_'+player_id);
+                        dojo.place( this.format_block('jstpl_player_compteurs', {id: player_id} ), player_board_div );
+                        
+                        
+                    }
+
+                for( var player_id in gamedatas.players )   
+                    {
+                                            
+                        
+                        $('nbrerecherche_'+player_id).innerHTML = gamedatas.nbrerecherche[player_id];
+                        $('nbretrain_'+player_id).innerHTML = gamedatas.nbretrain[player_id];
+                        $('nbrewild_'+player_id).innerHTML = gamedatas.nbrewild[player_id];
+                        
+                        
+                    }
+
+
+
+                for( var player_id in gamedatas.players )   
                 {
                                         
                     var eyes = document.getElementById('eye_'+player_id);
@@ -211,6 +233,7 @@ function (dojo, declare) {
                 dojo.query("#mask_turn").connect('onclick', this, 'onMaskTurn' );
                 dojo.query("#mask_hand").connect('onclick', this, 'onMaskHand' );
                 dojo.query(".bonusjournee").connect('onclick', this, 'onSelect' );
+                dojo.query(".bonusjournee2").connect('onclick', this, 'onSelect' );
 
                 
     
@@ -331,12 +354,21 @@ function (dojo, declare) {
                                     
                                     if(args[this.getCurrentPlayerId()][0].buttons[nb] == "cancel")
                                     {
-                                        this.addActionButton( 'cancel', _("Cancel") ,'onOpButton', null, null, 'gray' );
+                                        this.addActionButton( 'cancel', _("Cancel") ,'onOpButton', null, null, 'red' );
                                     }
                                     if(args[this.getCurrentPlayerId()][0].buttons[nb] == "pass")
                                     {
-                                        this.addActionButton( 'pass', _("Pass") ,'onOpButton', null, null, 'gray' );
+                                        this.addActionButton( 'pass', _("Pass") ,'onOpButton', null, null, 'red' );
                                     }
+                                    if(args[this.getCurrentPlayerId()][0].buttons[nb] == "walk")
+                                    {
+                                        this.addActionButton( 'walk', `<div class="iconwalk"></div>` ,'onOpButton', null, null, 'none' );
+                                    }
+                                    if(args[this.getCurrentPlayerId()][0].buttons[nb] == "recherche")
+                                    {
+                                        this.addActionButton( 'recherche', `<div class="iconrecherche"></div>` ,'onOpButton', null, null, 'none' );
+                                    }
+                                    
                             }
                         }   
                             
@@ -1362,12 +1394,22 @@ function (dojo, declare) {
                 dojo.subscribe( 'deployer', this, "notif_deployer" );
                 dojo.subscribe( 'condensersansmodif', this, "notif_condensersansmodif" );
                 dojo.subscribe( 'condenseravecmodif', this, "notif_condenseravecmodif" );
-                dojo.subscribe( 'smile', this, "notif_smile" )
-                dojo.subscribe( 'happy', this, "notif_happy" )
-                dojo.subscribe( 'angry', this, "notif_angry" )
+                dojo.subscribe( 'smile', this, "notif_smile" );
+                dojo.subscribe( 'happy', this, "notif_happy" );
+                dojo.subscribe( 'angry', this, "notif_angry" );
+                dojo.subscribe( 'majpannel', this, "notif_majpannel" );
+                
 
                 
             },  
+
+            notif_majpannel: function( notif )
+            {
+                $('nbrerecherche_'+notif.args.id).innerHTML = notif.args.recherche;
+                $('nbretrain_'+notif.args.id).innerHTML = notif.args.train;
+                $('nbrewild_'+notif.args.id).innerHTML = notif.args.wild;
+            },
+
             
             
             notif_movecard: function( notif )

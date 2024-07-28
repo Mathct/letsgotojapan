@@ -220,6 +220,10 @@ class letsgotojapan extends Table
             $result['happy'][$player] = self::getUniqueValueFromDB("SELECT happy FROM player WHERE player_id={$player}");
             $result['angry'][$player] = self::getUniqueValueFromDB("SELECT angry FROM player WHERE player_id={$player}");
             $result['color'][$player] = self::getUniqueValueFromDB("SELECT player_color FROM player WHERE player_id={$player}");
+            $result['nbrerecherche'][$player] = self::getUniqueValueFromDB("SELECT recherche FROM player WHERE player_id={$player}");
+            $result['nbretrain'][$player] = self::getUniqueValueFromDB("SELECT train FROM player WHERE player_id={$player}");
+            $result['nbrewild'][$player] = self::getUniqueValueFromDB("SELECT wild FROM player WHERE player_id={$player}");
+
 
         }
         
@@ -820,6 +824,26 @@ function Smile($gain, $player)
         }
 
     }
+
+}
+
+function MajPannel ($id)
+{
+
+    $recherche = self::getUniqueValueFromDB("SELECT recherche FROM player WHERE player_id={$id}");
+    $train = self::getUniqueValueFromDB("SELECT train FROM player WHERE player_id={$id}");
+    $wild = self::getUniqueValueFromDB("SELECT wild FROM player WHERE player_id={$id}");
+
+    letsgotojapan::$instance->notifyAllPlayers('majpannel','', array(
+        'id' =>  $id,
+        'recherche' => $recherche,
+        'train' => $train,
+        'wild' => $wild,
+        
+        )
+        );
+
+
 
 }
 

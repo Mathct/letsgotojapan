@@ -80,3 +80,6 @@ ALTER TABLE `player` ADD `g` int(2) unsigned DEFAULT 0;
 ALTER TABLE `player` ADD `p` int(2) unsigned DEFAULT 0; 
 ALTER TABLE `player` ADD `y` int(2) unsigned DEFAULT 0;
 ALTER TABLE `player` ADD `b` int(2) unsigned DEFAULT 0;
+ALTER TABLE `player` ADD `recherche` int(2) unsigned DEFAULT 0;
+ALTER TABLE `player` ADD `train` int(2) unsigned DEFAULT 0;
+ALTER TABLE `player` ADD `wild` int(2) unsigned DEFAULT 0;

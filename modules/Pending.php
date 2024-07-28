@@ -14,6 +14,10 @@ class Pending extends APP_GameClass
         $this->player_name = $p['player_name'];
         $this->player_score = $p['player_score'];
         $this->player_color = $p['player_color'];
+
+        $this->player_recherche = $p['recherche'];
+        $this->player_train = $p['train'];
+        $this->player_wild = $p['wild'];
     }
 
     /////////////////////// PHASE 1 //////////////////////////
@@ -25,7 +29,7 @@ class Pending extends APP_GameClass
         $ret["selectable"] = array();
         $ret["selected"] = array();
         $ret['buttons'] = array();
-        $ret['titleyou'] = clienttranslate('${you} must choose a card to place');
+        $ret['titleyou'] = clienttranslate('${you} must choose a card to place or');
 
 
         $tokyocard = self::getObjectListFromDB( "SELECT card_id id FROM tokyo WHERE card_location ='playerhand' AND card_location_arg = {$this->player_id}", true );
@@ -41,7 +45,12 @@ class Pending extends APP_GameClass
             $ret["selectable"][] = 'card_2_'.$id2;
         }
 
-        
+        $ret['buttons'][]='walk';
+
+        if ($this->player_recherche >= 1)
+        {
+            $ret['buttons'][]='recherche';
+        }
         
 
         
@@ -55,30 +64,10 @@ class Pending extends APP_GameClass
         
         //CardTokyo::Tokyo_1($this->player_id);
 
-        /*$explode = explode("_", $varg1);
-        if($explode[1] == 1)
-        {
-            $card = self::getUniqueValueFromDB("SELECT card_type FROM tokyo WHERE card_id={$explode[2]}");
-            var_dump(letsgotojapan::$instance->tokyocards[$card]);
-        }
-
-        if($explode[1] == 2)
-        {
-            $card = self::getUniqueValueFromDB("SELECT card_type FROM kyoto WHERE card_id={$explode[2]}");
-            var_dump(letsgotojapan::$instance->kyotocards[$card]);
-        }*/
-
-        
-           
-            letsgotojapan::$instance->Deployer($this->player_id);
-            
-
-            letsgotojapan::$instance->addPending($this->player_id, "Phase1Step2", $varg1);
+        letsgotojapan::$instance->Deployer($this->player_id);
+        letsgotojapan::$instance->addPending($this->player_id, "Phase1Step2", $varg1);
        
-
-        
-
-            
+      
     }
 
     function argPhase1Step2($parg1, $parg2)
@@ -276,7 +265,7 @@ class Pending extends APP_GameClass
                     if($result[$colorday-1]>=2)
                     {
                        
-                        letsgotojapan::$instance->addPending($this->player_id, "BonusChoose", $result[$colorday-1]);
+                        letsgotojapan::$instance->addPending($this->player_id, "BonusChoose", $result[$colorday-1], $day);
                     }
 
                 }
@@ -306,7 +295,7 @@ class Pending extends APP_GameClass
 
                     if($calculhappy>=2)
                     {
-                        letsgotojapan::$instance->addPending($this->player_id, "BonusChoose", $calculhappy);
+                        letsgotojapan::$instance->addPending($this->player_id, "BonusChoose", $calculhappy, $day);
                     }
                     
                 }
@@ -365,7 +354,7 @@ class Pending extends APP_GameClass
         {
             letsgotojapan::$instance->Smile(1,$this->player_id);
 
-            letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} gains smile' ), array(
+            letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} gains 1 smile' ), array(
                 'player_name' => $this->player_name,
                 )
                 );
@@ -375,8 +364,68 @@ class Pending extends APP_GameClass
 
         }
 
-        else
+        if ($varg1 === 'bonusjournee_2_' . $this->player_id) 
         {
+            letsgotojapan::$instance->addPending($this->player_id, "BonusChoose2", $parg1);
+
+        }
+
+        if ($varg1 === 'bonusjournee_3_' . $this->player_id) 
+        {
+            letsgotojapan::$instance->addPending($this->player_id, "BonusChoose3", $parg1, $parg2);
+
+        }
+        
+
+    }
+
+    function argBonusChoose2($parg1, $parg2)
+    {
+        $ret = array();
+        $ret["selectable"] = array();
+        $ret["selected"] = array();
+        $ret['buttons'] = array();
+        $ret['titleyou'] = clienttranslate('${you} must choose a bonus of the day');
+
+        $ret["selectable"][] = 'bonusjournee_2_1_'.$this->player_id;
+        $ret["selectable"][] = 'bonusjournee_2_2_'.$this->player_id;
+
+        $ret['buttons'][]='cancel';
+        return $ret;
+    }
+
+    function BonusChoose2($parg1, $parg2, $varg1, $varg2)
+    {
+
+        if($varg1 == "cancel")
+        {
+            
+            letsgotojapan::$instance->addPending($this->player_id, "BonusChoose", $parg1, $parg2);
+        }
+        
+        if ($varg1 === 'bonusjournee_2_1_' . $this->player_id) 
+        {
+            self::DbQuery( "UPDATE player set recherche = recherche + 2  WHERE player_id = {$this->player_id}" );
+            letsgotojapan::$instance->MajPannel($this->player_id);
+            letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} gains 2 recherches' ), array(
+                'player_name' => $this->player_name,
+                )
+                );
+
+            letsgotojapan::$instance->giveExtraTime($this->player_id);
+            letsgotojapan::$instance->gamestate->setPlayerNonMultiactive($this->player_id, 'stop');
+
+        }
+
+        if ($varg1 === 'bonusjournee_2_2_' . $this->player_id) 
+        {
+            self::DbQuery( "UPDATE player set wild = wild + 1  WHERE player_id = {$this->player_id}" );
+            letsgotojapan::$instance->MajPannel($this->player_id);
+            letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} gains 1 wild' ), array(
+                'player_name' => $this->player_name,
+                )
+                );
+
             letsgotojapan::$instance->giveExtraTime($this->player_id);
             letsgotojapan::$instance->gamestate->setPlayerNonMultiactive($this->player_id, 'stop');
 
@@ -385,6 +434,61 @@ class Pending extends APP_GameClass
         
 
     }
+
+    function argBonusChoose3($parg1, $parg2)
+    {
+        $ret = array();
+        $ret["selectable"] = array();
+        $ret["selected"] = array();
+        $ret['buttons'] = array();
+        $ret['titleyou'] = clienttranslate('${you} must choose a bonus of the day');
+
+        $ret["selectable"][] = 'bonusjournee_3_1_'.$this->player_id;
+        $ret["selectable"][] = 'bonusjournee_3_2_'.$this->player_id;
+
+        $ret['buttons'][]='cancel';
+        return $ret;
+    }
+
+    function BonusChoose3($parg1, $parg2, $varg1, $varg2)
+    {
+
+        if($varg1 == "cancel")
+        {
+            
+            letsgotojapan::$instance->addPending($this->player_id, "BonusChoose", $parg1, $parg2);
+        } 
+
+        if ($varg1 === 'bonusjournee_3_1_' . $this->player_id) 
+        {
+            self::DbQuery( "UPDATE player set train = train + 1  WHERE player_id = {$this->player_id}" );
+            letsgotojapan::$instance->MajPannel($this->player_id);
+            letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} gains 1 train' ), array(
+                'player_name' => $this->player_name,
+                )
+                );
+
+            letsgotojapan::$instance->giveExtraTime($this->player_id);
+            letsgotojapan::$instance->gamestate->setPlayerNonMultiactive($this->player_id, 'stop');
+
+        }
+
+        if ($varg1 === 'bonusjournee_3_2_' . $this->player_id) 
+        {
+            
+            
+            letsgotojapan::$instance->giveExtraTime($this->player_id);
+            letsgotojapan::$instance->gamestate->setPlayerNonMultiactive($this->player_id, 'stop');
+
+        }
+
+
+       
+        
+
+    }
+
+
 
 
 
