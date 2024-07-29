@@ -582,7 +582,7 @@ display: none;
     filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.5));
      -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.5));
      font-size: 14px;
-     
+    
   
   }
 
@@ -596,5 +596,10 @@ display: none;
      -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.5));
      font-size: 14px;
      
+     
   
   }
+
+ .action-button {
+    text-decoration: none !important;
+ }
