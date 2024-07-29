@@ -167,7 +167,7 @@ function (dojo, declare) {
                         if (tokyo.location.startsWith("cardposition"))
                         {
                         
-                            this.addCardTokyoTrip(tokyo.id, tokyo.type, tokyo.type_arg, tokyo.location, tokyo.location_arg);
+                            this.addCardTokyoTrip(tokyo.id, tokyo.type, tokyo.type_arg, tokyo.location, tokyo.location_arg, tokyo.walk);
 
                         }
                         
@@ -188,7 +188,7 @@ function (dojo, declare) {
                         if (kyoto.location.startsWith("cardposition"))
                             {
                             
-                            this.addCardKyotoTrip(kyoto.id, kyoto.type, kyoto.type_arg, kyoto.location, kyoto.location_arg);
+                            this.addCardKyotoTrip(kyoto.id, kyoto.type, kyoto.type_arg, kyoto.location, kyoto.location_arg, kyoto.walk);
                             }
                         
                         
@@ -367,6 +367,14 @@ function (dojo, declare) {
                                     if(args[this.getCurrentPlayerId()][0].buttons[nb] == "recherche")
                                     {
                                         this.addActionButton( 'recherche', `<div class="iconrecherche"></div>` ,'onOpButton', null, null, 'none' );
+                                    }
+                                    if(args[this.getCurrentPlayerId()][0].buttons[nb] == "tokyo")
+                                    {
+                                        this.addActionButton( 'tokyo', `<div class="boutontokyo">Tokyo</div>` ,'onOpButton', null, null, 'none' );
+                                    }
+                                    if(args[this.getCurrentPlayerId()][0].buttons[nb] == "kyoto")
+                                    {
+                                        this.addActionButton( 'kyoto', `<div class="boutonkyoto">Kyoto</div>` ,'onOpButton', null, null, 'none' );
                                     }
                                     
                             }
@@ -790,9 +798,10 @@ function (dojo, declare) {
 
             },
 
-            addCardTokyoTrip: function( id, card, ville, location, player )  
+            addCardTokyoTrip: function( id, card, ville, location, player, walk )  
             {
-                
+                if(walk == 0)
+                {
                     if((card>=1)&&(card <= 10))
                     {
                         var img = g_gamethemeurl+"img/tokyo1.jpg";
@@ -918,10 +927,26 @@ function (dojo, declare) {
                     //dojo.query("#"+location+'_'+player).removeClass("masque");
                     var element = document.getElementById(location+'_'+player);
                     element.style.zIndex = "10";
-                    
+                }   
 
 
+                if(walk == 1)
+                {
+                    var img = g_gamethemeurl+"img/card_verso.png";
+                        dojo.place( this.format_block( 'jstpl_cardverso', {
+                            id: id,
+                            player_id: player,
+                            imgfull: img,
+                            x: -100,
+                            y: 0,
+                            ville: ville,
+                                                
+                        } ) , location+'_'+player );
 
+                        var element = document.getElementById(location+'_'+player);
+                        element.style.zIndex = "10";
+
+                }
                     
                 
     
@@ -929,9 +954,10 @@ function (dojo, declare) {
             },
 
 
-            addCardKyotoTrip: function( id, card, ville, location, player )  
+            addCardKyotoTrip: function( id, card, ville, location, player, walk )  
             {
-                
+                if(walk == 0)
+                    {
     
                     if((card>=1)&&(card <= 10))
                     {
@@ -1060,7 +1086,26 @@ function (dojo, declare) {
 
 
     
+                }
+
+                if(walk == 1)
+                    {
+                        var img = g_gamethemeurl+"img/card_verso.png";
+                            dojo.place( this.format_block( 'jstpl_cardverso', {
+                                id: id,
+                                player_id: player,
+                                imgfull: img,
+                                x: 0,
+                                y: 0,
+                                ville: ville,
+                                                    
+                            } ) , location+'_'+player );
     
+                            var element = document.getElementById(location+'_'+player);
+                            element.style.zIndex = "10";
+    
+                    }
+                        
               
         
     
@@ -1398,6 +1443,8 @@ function (dojo, declare) {
                 dojo.subscribe( 'happy', this, "notif_happy" );
                 dojo.subscribe( 'angry', this, "notif_angry" );
                 dojo.subscribe( 'majpannel', this, "notif_majpannel" );
+                dojo.subscribe( 'discard', this, "notif_discard" );
+                dojo.subscribe( 'addwalk', this, "notif_addwalk" );
                 
 
                 
@@ -1424,16 +1471,25 @@ function (dojo, declare) {
                 {
                     if(notif.args.ville == 1)
                     {
-                    this.addCardTokyoTrip( notif.args.id, notif.args.card, notif.args.ville, notif.args.location, notif.args.playerid );
+                    this.addCardTokyoTrip( notif.args.id, notif.args.card, notif.args.ville, notif.args.location, notif.args.playerid, 0 );
                     }
                     if(notif.args.ville == 2)
                     {
-                    this.addCardKyotoTrip( notif.args.id, notif.args.card, notif.args.ville, notif.args.location, notif.args.playerid );
+                    this.addCardKyotoTrip( notif.args.id, notif.args.card, notif.args.ville, notif.args.location, notif.args.playerid, 0 );
                     }
                 }
 
                 var element = document.getElementById(notif.args.location+'_'+notif.args.playerid);
                 element.style.zIndex = "10";
+
+            },
+
+            notif_discard: function( notif )
+            {
+                if (notif.args.playerid == this.getCurrentPlayerId()) 
+                {
+                    dojo.destroy(notif.args.carddiscard);
+                }
 
             },
 
@@ -1472,6 +1528,28 @@ function (dojo, declare) {
                     
                 }
 
+            },
+
+            notif_addwalk: function( notif )
+            {
+                if(notif.args.ville==1)
+                {
+                    this.addCardTokyoTrip( notif.args.cardid, 0, notif.args.ville, notif.args.location, notif.args.playerid, 1 );
+                    if (notif.args.playerid == this.getCurrentPlayerId()) 
+                    {
+                        this.placeOnObject( 'card_'+notif.args.ville+'_'+notif.args.cardid, 'player_boards' );
+                        this.slideToObject( 'card_'+notif.args.ville+'_'+notif.args.cardid, notif.args.location+'_'+notif.args.playerid).play();
+                    }
+                }
+                if(notif.args.ville==2)
+                {
+                    this.addCardKyotoTrip( notif.args.cardid, 0, notif.args.ville, notif.args.location, notif.args.playerid, 1 );
+                    if (notif.args.playerid == this.getCurrentPlayerId()) 
+                        {
+                            this.placeOnObject( 'card_'+notif.args.ville+'_'+notif.args.cardid, 'player_boards' );
+                            this.slideToObject( 'card_'+notif.args.ville+'_'+notif.args.cardid, notif.args.location+'_'+notif.args.playerid).play();
+                        }
+                }
             },
 
             notif_passcard: function( notif )

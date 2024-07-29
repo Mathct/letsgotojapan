@@ -161,6 +161,7 @@ var jstpl_smile='<div id="smile_${id}" class="smile" style="background-color: #$
 var jstpl_happy='<div id="happy_${id}" class="happy"></div>';
 var jstpl_angry='<div id="angry_${id}" class="angry"></div>';
 var jstpl_card='<div id="card_${ville}_${id}" class="card" style="background-image: url(${imgfull}); background-position-x: ${x}%; background-position-y: ${y}%;"></div>';
+var jstpl_cardverso='<div id="card_${ville}_${id}" class="cardverso" style="background-image: url(${imgfull}); background-position-x: ${x}%; background-position-y: ${y}%;"></div>';
 var jstpl_turn='<div id="turn" class="turn"></div>';
 
 var jstpl_player_compteurs = '<div class="player_compteurs" id="player_compteurs_${id}" style="display: flex; align-items: center; flex-direction: column; justify-content: center; z-index: 100; position: relative;">\

@@ -5,7 +5,7 @@
 {
     
     
-    public static function Tokyo_1($player_id)
+    public static function Tokyo_1($player_id, $day)
     {
         
         

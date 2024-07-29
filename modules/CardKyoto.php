@@ -5,7 +5,7 @@
 {
     
     
-    public static function Kyoto_1($player_id)
+    public static function Kyoto_1($player_id, $day)
     {
         
         

@@ -51,6 +51,7 @@ CREATE TABLE IF NOT EXISTS `tokyo` (
   `card_type_arg` int(11) NOT NULL,
   `card_location` varchar(50) NOT NULL,
   `card_location_arg` int(11) NOT NULL,
+  `walk` int(2) unsigned DEFAULT 0,
   PRIMARY KEY (`card_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
@@ -60,6 +61,7 @@ CREATE TABLE IF NOT EXISTS `kyoto` (
   `card_type_arg` int(11) NOT NULL,
   `card_location` varchar(50) NOT NULL,
   `card_location_arg` int(16) NOT NULL,
+  `walk` int(2) unsigned DEFAULT 0,
   PRIMARY KEY (`card_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
