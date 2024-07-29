@@ -1514,15 +1514,16 @@ function (dojo, declare) {
                     if(notif.args.ville == 1)
                     {
                         this.addCardTokyoHand (notif.args.id, notif.args.card, notif.args.ville, notif.args.location, notif.args.playerid );
-                        /*this.placeOnObject( 'card_'+notif.args.ville+'_'+notif.args.id, 'player_boards' );
-                        this.slideToObject( 'card_'+notif.args.ville+'_'+notif.args.id, notif.args.location+'_'+notif.args.playerid).play();*/
-                    }
+                        //this.placeOnObject( 'card_'+notif.args.ville+'_'+notif.args.id, 'player_boards' );
+                        //this.slideToObject( 'card_'+notif.args.ville+'_'+notif.args.id, notif.args.location+'_'+notif.args.playerid).play();
+                    }   
 
                     if(notif.args.ville == 2)
                     {
                         this.addCardKyotoHand (notif.args.id, notif.args.card, notif.args.ville, notif.args.location, notif.args.playerid );
-                        /*this.placeOnObject( 'card_'+notif.args.ville+'_'+notif.args.id, 'player_boards' );
-                        this.slideToObject( 'card_'+notif.args.ville+'_'+notif.args.id, notif.args.location+'_'+notif.args.playerid).play();*/
+                        //this.placeOnObject( 'card_'+notif.args.ville+'_'+notif.args.id, 'player_boards' );
+                        //this.slideToObject( 'card_'+notif.args.ville+'_'+notif.args.id, notif.args.location+'_'+notif.args.playerid).play();
+
                     }
                 
                     

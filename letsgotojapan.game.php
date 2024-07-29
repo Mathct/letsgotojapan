@@ -1015,44 +1015,6 @@ function st_MultiPlayerActivation()
     
 }
 
-/*function st_Pending() 
-{
-    
-    try {
-    $player_id = $this->getCurrentPlayerId();
-    $pending =  self::getObjectFromDB( "SELECT* FROM pending WHERE player_id = {$player_id} order by id desc limit 1");
-    if($pending != null)
-        {
-    $args = $this->callPending($pending, false);
-
-    
-    
-    if($args == null || (count($args['selectable']) == 0 && count($args['buttons']) == 0))
-       {
-           
-           //no args required, execute
-           $this->callPending($pending, true);
-           self::DbQuery("delete from pending where id= {$pending['id']}");
-           $this->gamestate->nextState( 'next');
-       }
-
-    else
-    {
-        $this->gamestate->nextState( 'next');
-    }
-}
-
-else
-    {
-        $this->gamestate->nextState( 'next');
-    }
-
-    }
-    catch (Exception $e){}
-
-
-    
-}*/
 
 
 function callPending($pending, $execute, $arg1 = null, $arg2 = null)

@@ -171,7 +171,7 @@ var jstpl_player_compteurs = '<div class="player_compteurs" id="player_compteurs
 <div id="icontrain_${id}" class="icontrain" style="display: inline-block; margin-right: 5px;"></div>\
 <div id="nbretrain_${id}" class="nbretrain" style="display: inline-block; margin-right: 10px;"></div>\
 <div id="iconwild_${id}" class="iconwild" style="display: inline-block; margin-right: 5px;"></div>\
-<div id="nbrewild_${id}" class="nbrewild" style="display: inline-block; margin-right: 10px;"></div>\
+<div id="nbrewild_${id}" class="nbrewild" style="display: inline-block; margin-right: 0px;"></div>\
 </div>\
 </div>';
 
