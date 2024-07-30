@@ -428,6 +428,20 @@ display: none;
     
 }
 
+.selectable3discard {
+    
+    cursor: pointer;
+    pointer-events: auto !important;
+  }
+
+.selected3discard.card {
+
+    border: 2px solid rgb(255, 0, 0);
+    cursor: pointer;
+    pointer-events: auto !important;
+}
+
+
 
 /* SWITCH PLAYER */
 
@@ -472,6 +486,7 @@ display: none;
     filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.9));
     -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.9));
     box-sizing: border-box;
+    
     
 
     

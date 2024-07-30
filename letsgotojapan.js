@@ -234,6 +234,8 @@ function (dojo, declare) {
                 dojo.query("#mask_hand").connect('onclick', this, 'onMaskHand' );
                 dojo.query(".bonusjournee").connect('onclick', this, 'onSelect' );
                 dojo.query(".bonusjournee2").connect('onclick', this, 'onSelect' );
+                dojo.query(".selectable3discard").connect('onclick', this, 'onSelect' );
+                dojo.query(".selected3discard").connect('onclick', this, 'onSelect' );
 
                 
     
@@ -260,6 +262,8 @@ function (dojo, declare) {
     
                 dojo.query(".selectable").removeClass("selectable"); 
                 dojo.query(".selected").removeClass("selected"); 
+                dojo.query(".selectable3discard").removeClass("selectable3discard"); 
+                dojo.query(".selected3discard").removeClass("selected3discard"); 
                 
                 switch( stateName )
                 {
@@ -277,6 +281,16 @@ function (dojo, declare) {
     
                                 }
                             }
+
+                            if (this.args[this.getCurrentPlayerId()][0].selectable3discard)
+                                {
+                                for( var sid in this.args[this.getCurrentPlayerId()][0].selectable3discard)
+                                    {
+                                            dojo.query("#"+this.args[this.getCurrentPlayerId()][0].selectable3discard[sid]).addClass("selectable3discard");
+                                           
+        
+                                    }
+                                }
 
 
                             if (this.args[this.getCurrentPlayerId()][0].selected)
@@ -369,6 +383,11 @@ function (dojo, declare) {
                                     if(args[this.getCurrentPlayerId()][0].buttons[nb] == "kyoto")
                                     {
                                         this.addActionButton( 'kyoto', `<div class="boutonkyoto">Kyoto</div>` ,'onOpButton', null, null, 'none' );
+                                    }
+                                    if(args[this.getCurrentPlayerId()][0].buttons[nb] == "validate3discard")
+                                    {
+                                    this.addActionButton( 'validate3discard', _("Validate selection") ,'onOpValidate3Discard', null, null, 'blue' );
+                                    dojo.addClass( 'validate3discard', 'disabled');
                                     }
                                     
                             }
@@ -1128,13 +1147,15 @@ function (dojo, declare) {
                 // Preventing default browser reaction
                  dojo.stopEvent( evt );
     
-                
-                if( this.isSpectator || !(evt.currentTarget.classList.contains('selectable')) )
+                 
+
+                if( this.isSpectator || (!(evt.currentTarget.classList.contains('selectable')) && !(evt.currentTarget.classList.contains('selectable3discard')) && !(evt.currentTarget.classList.contains('selected3discard')) ))
                 {   
+                    
                     return; 
                 }
                 
-                if(!this.isSpectator && evt.currentTarget.classList.contains('selectable') && this.checkAction( "actSelect" ))
+                if(!this.isSpectator && evt.currentTarget.classList.contains('selectable') && this.checkAction( "actSelect" ) && !(evt.currentTarget.classList.contains('selectable3discard')) && !(evt.currentTarget.classList.contains('selected3discard')))
                 {
                     if(this.isCurrentPlayerActive())
                     {
@@ -1150,7 +1171,7 @@ function (dojo, declare) {
 
                             dojo.query("#"+idsSansMasque[0]).addClass("masque");
                             dojo.query("#playerview_"+this.getCurrentPlayerId()).removeClass("masque");
-                        }
+                    }
 
 
                     
@@ -1161,6 +1182,71 @@ function (dojo, declare) {
                      }, 
                      this, function( result ) {}, function( is_error) {} );
                 }
+
+                if(!this.isSpectator && !(evt.currentTarget.classList.contains('selectable')) && this.checkAction( "actSelect" ) && evt.currentTarget.classList.contains('selectable3discard') && !(evt.currentTarget.classList.contains('selected3discard')))
+                    {
+                        
+                        
+                        dojo.query("#"+evt.currentTarget.id).removeClass("selectable3discard");
+                        dojo.query("#"+evt.currentTarget.id).addClass("selected3discard");
+
+                        var elements = document.querySelectorAll('.selected3discard');
+                        var nombreElements = elements.length;
+                        var boutonvalidate = document.getElementById('validate3discard');
+
+                        
+                        if (boutonvalidate !== null)
+                            {
+                                if (nombreElements == 3)
+                                {
+                                dojo.removeClass( 'validate3discard', 'disabled');
+                                }
+                                if (nombreElements != 3)
+                                {
+                                dojo.addClass( 'validate3discard', 'disabled');
+                                }
+                            }
+
+                        return; 
+
+
+                        
+    
+    
+                        
+                        
+                    }
+
+                if(!this.isSpectator && !(evt.currentTarget.classList.contains('selectable')) && this.checkAction( "actSelect" ) && !(evt.currentTarget.classList.contains('selectable3discard')) && evt.currentTarget.classList.contains('selected3discard'))
+                    {
+                        
+                        
+                        dojo.query("#"+evt.currentTarget.id).removeClass("selected3discard");
+                        dojo.query("#"+evt.currentTarget.id).addClass("selectable3discard");
+
+                        var elements = document.querySelectorAll('.selected3discard');
+                        var nombreElements = elements.length;
+                        var boutonvalidate = document.getElementById('validate3discard');
+
+                        
+                        if (boutonvalidate !== null)
+                            {
+                                if (nombreElements == 3)
+                                {
+                                dojo.removeClass( 'validate3discard', 'disabled');
+                                }
+                                if (nombreElements != 3)
+                                {
+                                dojo.addClass( 'validate3discard', 'disabled');
+                                }
+                            }
+
+                        return; 
+
+   
+                        
+                        
+                    }
     
                 
     
@@ -1399,6 +1485,29 @@ function (dojo, declare) {
                 
 
             },
+
+            onOpValidate3Discard: function(evt)
+            {
+
+                dojo.stopEvent( evt );
+
+                // Sélectionnez tous les éléments avec la classe spécifiée
+                const elementsAvecClasse = document.querySelectorAll(".selected3discard");
+
+                // Convertissez la NodeList en un tableau et extrayez les IDs
+                const ids = Array.from(elementsAvecClasse, element => element.id);
+
+                                        
+                this.ajaxcall( "/letsgotojapan/letsgotojapan/actValidate3Discard.html", { 
+                        lock: true,
+                        arg1: ids[0],
+                        arg2: ids[1],
+                        arg3: ids[2]
+                                    
+                        }, 
+                this, function( result ) {}, function( is_error) {} );
+
+            },
     
             
 ///////////////////////////////////////////////////////////////////////////////// 
@@ -1440,7 +1549,7 @@ function (dojo, declare) {
                 dojo.subscribe( 'discard', this, "notif_discard" );
                 dojo.subscribe( 'addwalk', this, "notif_addwalk" );
                 
-
+                
                 
             },  
 
@@ -1508,16 +1617,34 @@ function (dojo, declare) {
                     if(notif.args.ville == 1)
                     {
                         this.addCardTokyoHand (notif.args.id, notif.args.card, notif.args.ville, notif.args.location, notif.args.playerid );
-                        //this.placeOnObject( 'card_'+notif.args.ville+'_'+notif.args.id, 'player_boards' );
-                        //this.slideToObject( 'card_'+notif.args.ville+'_'+notif.args.id, notif.args.location+'_'+notif.args.playerid).play();
-                    }   
+                        this.placeOnObject( 'card_'+notif.args.ville+'_'+notif.args.id, 'player_boards' );
+                        this.slideToObject( 'card_'+notif.args.ville+'_'+notif.args.id, notif.args.location+'_'+notif.args.playerid).play();
+                        setTimeout(() => 
+                            {
+                                            
+                                var element= document.getElementById('card_'+notif.args.ville+'_'+notif.args.id);
+                                element.style.left = "0px"; 
+                            
+                            
+                            }, "500");
+                        
+                    }    
 
                     if(notif.args.ville == 2)
                     {
                         this.addCardKyotoHand (notif.args.id, notif.args.card, notif.args.ville, notif.args.location, notif.args.playerid );
-                        //this.placeOnObject( 'card_'+notif.args.ville+'_'+notif.args.id, 'player_boards' );
-                        //this.slideToObject( 'card_'+notif.args.ville+'_'+notif.args.id, notif.args.location+'_'+notif.args.playerid).play();
-
+                        this.placeOnObject( 'card_'+notif.args.ville+'_'+notif.args.id, 'player_boards' );
+                        this.slideToObject( 'card_'+notif.args.ville+'_'+notif.args.id, notif.args.location+'_'+notif.args.playerid).play();
+                        setTimeout(() => 
+                            {
+                                            
+                                var element= document.getElementById('card_'+notif.args.ville+'_'+notif.args.id);
+                                element.style.left = "0px"; 
+                            
+                            
+                            }, "500");
+                        
+                        
                     }
                 
                     

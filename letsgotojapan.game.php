@@ -889,6 +889,103 @@ $this->gamestate->nextState( 'next');
 
 }
 
+function actValidate3Discard( $arg1, $arg2, $arg3)
+{
+   
+    self::checkAction( 'actSelect' );
+    $id = self::getCurrentPlayerId();
+    
+    $explode1 = explode("_", $arg1);
+    $explode2 = explode("_", $arg2);
+    $explode3 = explode("_", $arg3);
+
+    if($explode1[1] == 1)
+    {
+        letsgotojapan::$instance->tokyo->moveCard( $explode1[2], 'discard' ); 
+        letsgotojapan::$instance->notifyAllPlayers('discard','', array(
+            'carddiscard' => $arg1,
+            'playerid' => $id,
+            
+            )
+            );
+    }
+
+    if($explode1[1] == 2)
+    {
+        letsgotojapan::$instance->kyoto->moveCard( $explode1[2], 'discard' ); 
+        letsgotojapan::$instance->notifyAllPlayers('discard','', array(
+            'carddiscard' => $arg1,
+            'playerid' => $id,
+            
+            )
+            );
+    }
+
+    if($explode2[1] == 1)
+    {
+        letsgotojapan::$instance->tokyo->moveCard( $explode2[2], 'discard' ); 
+        letsgotojapan::$instance->notifyAllPlayers('discard','', array(
+            'carddiscard' => $arg2,
+            'playerid' => $id,
+            
+            )
+            );
+    }
+
+    if($explode2[1] == 2)
+    {
+        letsgotojapan::$instance->kyoto->moveCard( $explode2[2], 'discard' ); 
+        letsgotojapan::$instance->notifyAllPlayers('discard','', array(
+            'carddiscard' => $arg2,
+            'playerid' => $id,
+            
+            )
+            );
+    }
+    
+
+    if($explode3[1] == 1)
+    {
+        letsgotojapan::$instance->tokyo->moveCard( $explode3[2], 'discard' ); 
+        letsgotojapan::$instance->notifyAllPlayers('discard','', array(
+            'carddiscard' => $arg3,
+            'playerid' => $id,
+            
+            )
+            );
+    }
+
+    if($explode3[1] == 2)
+    {
+        letsgotojapan::$instance->kyoto->moveCard( $explode3[2], 'discard' ); 
+        letsgotojapan::$instance->notifyAllPlayers('discard','', array(
+            'carddiscard' => $arg3,
+            'playerid' => $id,
+            
+            )
+            );
+    }
+    
+    self::DbQuery( "UPDATE player set recherche = recherche - 1  WHERE player_id = {$id}" );
+    letsgotojapan::$instance->MajPannel($id);
+    $name = self::getUniqueValueFromDB("SELECT player_name FROM player WHERE player_id = {$id}");
+    letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} uses 1 recherche' ), array(
+        'player_name' => $name,
+        )
+        );
+    
+    
+    
+    $pending =  self::getObjectFromDB( "SELECT* FROM pending WHERE player_id = {$id} order by id desc limit 1");
+    self::DbQuery("delete from pending where id=".$pending['id']);
+    letsgotojapan::$instance->addPending($id, "Phase1Step1");
+    $this->gamestate->nextState( 'next');
+    
+        
+    
+}
+
+
 
     
 ///////////////////////////////////////////////////////////////////////////////// 
@@ -982,6 +1079,8 @@ function st_MultiPlayerActivation()
             
             foreach($tokyocard as $card1)
             {
+                
+
             letsgotojapan::$instance->notifyAllPlayers('drawcard','', array(
                 'id' => $card1['id'],
                 'card' => $card1['type'],
@@ -991,11 +1090,14 @@ function st_MultiPlayerActivation()
 
                 )
                 );
+                 
             }
             
 
             foreach($kyotocard as $card2)
             {
+                
+
             letsgotojapan::$instance->notifyAllPlayers('drawcard','', array(
                 'id' => $card2['id'],
                 'card' => $card2['type'],
@@ -1004,6 +1106,7 @@ function st_MultiPlayerActivation()
                 'location' => 'playerhand',
                 )
                 );
+                
             }
 
             $this->addPending($player_id, "Phase1Step1");

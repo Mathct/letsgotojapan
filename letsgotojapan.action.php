@@ -85,6 +85,19 @@
   	    self::ajaxResponse( );
   	}
 
+      public function actValidate3Discard()
+  	{
+  	    self::setAjaxMode();
+  	    
+  	    $arg1 = self::getArg( "arg1", AT_alphanum );
+  	    $arg2 = self::getArg( "arg2", AT_alphanum );
+		$arg3 = self::getArg( "arg3", AT_alphanum );
+		  	    
+  	    $this->game->actValidate3Discard( $arg1, $arg2, $arg3);
+  	    
+  	    self::ajaxResponse( );
+  	}
+
   }
   
 
