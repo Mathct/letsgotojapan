@@ -551,12 +551,12 @@ class Pending extends APP_GameClass
 
         foreach ($tokyocard as $id1)
         {
-            $ret["selectable"][] = 'card_1_'.$id1;
+            $ret["selectable2"][] = 'card_1_'.$id1;
         }   
 
         foreach ($kyotocard as $id2)
         {
-            $ret["selectable"][] = 'card_2_'.$id2;
+            $ret["selectable2"][] = 'card_2_'.$id2;
         }        
 
         $ret['buttons'][]='cancel';
@@ -625,8 +625,11 @@ class Pending extends APP_GameClass
         $ret["selectable"] = array();
         $ret["selectable2"] = array();
         $ret["selected"] = array();
+        $ret["selected2"] = array();
         $ret['buttons'] = array();
         $ret['titleyou'] = clienttranslate('${you} must choose a location in your trip');
+
+        $ret["selected2"][] = $parg1;
 
         $counttrip = letsgotojapan::$instance->CountTrip($this->player_id);
         $jour = 0;

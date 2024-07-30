@@ -261,6 +261,8 @@ function (dojo, declare) {
     
                 dojo.query(".selectable").removeClass("selectable"); 
                 dojo.query(".selected").removeClass("selected"); 
+                dojo.query(".selectable2").removeClass("selectable2"); 
+                dojo.query(".selected2").removeClass("selected2"); 
                 dojo.query(".selectable3discard").removeClass("selectable3discard"); 
                 dojo.query(".selected3discard").removeClass("selected3discard"); 
                 
@@ -281,6 +283,16 @@ function (dojo, declare) {
                                 }
                             }
 
+                            if (this.args[this.getCurrentPlayerId()][0].selectable2)
+                                {
+                                for( var sid in this.args[this.getCurrentPlayerId()][0].selectable2)
+                                    {
+                                            dojo.query("#"+this.args[this.getCurrentPlayerId()][0].selectable2[sid]).addClass("selectable2");
+                                           
+        
+                                    }
+                                }
+
                             if (this.args[this.getCurrentPlayerId()][0].selectable3discard)
                                 {
                                 for( var sid in this.args[this.getCurrentPlayerId()][0].selectable3discard)
@@ -299,6 +311,17 @@ function (dojo, declare) {
                                         
                                             
                                             dojo.query("#"+this.args[this.getCurrentPlayerId()][0].selected[sid]).addClass("selected");
+        
+                                    }
+                                }
+
+                            if (this.args[this.getCurrentPlayerId()][0].selected2)
+                                {
+                                for( var sid in this.args[this.getCurrentPlayerId()][0].selected2)
+                                    {
+                                        
+                                            
+                                            dojo.query("#"+this.args[this.getCurrentPlayerId()][0].selected2[sid]).addClass("selected2");
         
                                     }
                                 }
@@ -1148,13 +1171,13 @@ function (dojo, declare) {
     
                  
 
-                if( this.isSpectator || (!(evt.currentTarget.classList.contains('selectable')) && !(evt.currentTarget.classList.contains('selectable3discard')) && !(evt.currentTarget.classList.contains('selected3discard')) ))
+                if( this.isSpectator || (!(evt.currentTarget.classList.contains('selectable')) && !(evt.currentTarget.classList.contains('selectable2')) && !(evt.currentTarget.classList.contains('selectable3discard')) && !(evt.currentTarget.classList.contains('selected3discard')) ))
                 {   
                     
                     return; 
                 }
                 
-                if(!this.isSpectator && evt.currentTarget.classList.contains('selectable') && this.checkAction( "actSelect" ) && !(evt.currentTarget.classList.contains('selectable3discard')) && !(evt.currentTarget.classList.contains('selected3discard')))
+                if(!this.isSpectator && (evt.currentTarget.classList.contains('selectable') || evt.currentTarget.classList.contains('selectable2')) && this.checkAction( "actSelect" ) && !(evt.currentTarget.classList.contains('selectable3discard')) && !(evt.currentTarget.classList.contains('selected3discard')))
                 {
                     if(this.isCurrentPlayerActive())
                     {
@@ -1182,7 +1205,7 @@ function (dojo, declare) {
                      this, function( result ) {}, function( is_error) {} );
                 }
 
-                if(!this.isSpectator && !(evt.currentTarget.classList.contains('selectable')) && this.checkAction( "actSelect" ) && evt.currentTarget.classList.contains('selectable3discard') && !(evt.currentTarget.classList.contains('selected3discard')))
+                if(!this.isSpectator && !(evt.currentTarget.classList.contains('selectable')) && !(evt.currentTarget.classList.contains('selectable2')) && this.checkAction( "actSelect" ) && evt.currentTarget.classList.contains('selectable3discard') && !(evt.currentTarget.classList.contains('selected3discard')))
                     {
                         
                         
@@ -1216,7 +1239,7 @@ function (dojo, declare) {
                         
                     }
 
-                if(!this.isSpectator && !(evt.currentTarget.classList.contains('selectable')) && this.checkAction( "actSelect" ) && !(evt.currentTarget.classList.contains('selectable3discard')) && evt.currentTarget.classList.contains('selected3discard'))
+                if(!this.isSpectator && !(evt.currentTarget.classList.contains('selectable')) && !(evt.currentTarget.classList.contains('selectable2')) && this.checkAction( "actSelect" ) && !(evt.currentTarget.classList.contains('selectable3discard')) && evt.currentTarget.classList.contains('selected3discard'))
                     {
                         
                         

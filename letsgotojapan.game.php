@@ -289,7 +289,7 @@ function checkArgs($arg1)
         $id = self::getCurrentPlayerId();
 
             
-        if(!in_array($arg1,$ret[$id][0]['selectable']) && !in_array($arg1,$ret[$id][0]['buttons']))
+        if(!in_array($arg1,$ret[$id][0]['selectable']) && !in_array($arg1,$ret[$id][0]['selectable2']) && !in_array($arg1,$ret[$id][0]['buttons']))
         {
             throw new feException( "Not a valid selection");
         }
@@ -747,7 +747,7 @@ function Smile($gain, $player)
                 'player' => $player,
                 )
                 );
-            self::notifyAllPlayers( 'simplePause', '', [ 'time' => 500] );
+            //self::notifyAllPlayers( 'simplePause', '', [ 'time' => 500] );
 
             if ($newsmile == 3)
             {
@@ -758,7 +758,7 @@ function Smile($gain, $player)
                     'player' => $player,
                     )
                     );
-                self::notifyAllPlayers( 'simplePause', '', [ 'time' => 500] );
+                //self::notifyAllPlayers( 'simplePause', '', [ 'time' => 500] );
                 
                 $happy = self::getUniqueValueFromDB("SELECT happy FROM player WHERE player_id={$player}");
                 if($happy < 3)
@@ -792,7 +792,7 @@ function Smile($gain, $player)
                 'player' => $player,
                 )
                 );
-            self::notifyAllPlayers( 'simplePause', '', [ 'time' => 500] );
+            //self::notifyAllPlayers( 'simplePause', '', [ 'time' => 500] );
 
             if ($newsmile == -3)
             {
@@ -803,7 +803,7 @@ function Smile($gain, $player)
                     'player' => $player,
                     )
                     );
-                self::notifyAllPlayers( 'simplePause', '', [ 'time' => 500] );
+                //self::notifyAllPlayers( 'simplePause', '', [ 'time' => 500] );
 
                 $angry = self::getUniqueValueFromDB("SELECT angry FROM player WHERE player_id={$player}");
                 if($angry < 3)
@@ -990,8 +990,9 @@ function actValidate3Discard( $arg1, $arg2, $arg3)
     self::DbQuery( "UPDATE player set recherche = recherche - 1  WHERE player_id = {$id}" );
     letsgotojapan::$instance->MajPannel($id);
     $name = self::getUniqueValueFromDB("SELECT player_name FROM player WHERE player_id = {$id}");
-    letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} uses 1 recherche' ), array(
+    letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} uses ${log}' ), array(
         'player_name' => $name,
+        'log' => letsgotojapan::$instance->getLogsType(2),
         )
         );
     
