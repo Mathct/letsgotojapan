@@ -273,13 +273,7 @@ function (dojo, declare) {
                             for( var sid in this.args[this.getCurrentPlayerId()][0].selectable)
                                 {
                                         dojo.query("#"+this.args[this.getCurrentPlayerId()][0].selectable[sid]).addClass("selectable");
-                                        /*if(this.args[this.getCurrentPlayerId()][0].selectable[sid].startsWith("cardposition"))
-                                        {
-                                            var element = document.getElementById(this.args[this.getCurrentPlayerId()][0].selectable[sid]);
-                                            var currentZIndex = window.getComputedStyle(element).getPropertyValue("z-index");
-                                            var newZIndex = parseInt(currentZIndex, 10) + 10;
-                                            element.style.zIndex = newZIndex;
-                                        }*/
+                                       
     
                                 }
                             }

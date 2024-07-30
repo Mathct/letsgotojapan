@@ -391,7 +391,8 @@ display: none;
 
 
 .selectable.card {
-    border: 2px solid rgb(255, 0, 0);
+    
+    border: 2px solid rgb(0, 26, 255);
     cursor: pointer;
     
     
@@ -414,7 +415,7 @@ display: none;
 }
 
 .selected.card {
-    border: 2px solid rgb(0, 26, 255);
+    border: 2px solid rgb(255, 0, 0);
     
    
 }
@@ -523,8 +524,8 @@ display: none;
   }
 
   .icontrain{
-    width: 30px;
-    height: 30px;
+    width: 40px;
+    height: 46px;
     background-image: url('img/icon_pannel.png');
     background-size: 300% 100%;
     background-position-x: -100%;
@@ -579,9 +580,12 @@ display: none;
     border-radius: 6px;
     border: 1px solid black;
     padding: 0px 12px;
-    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.5));
-     -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.5));
+    box-shadow: 0 1px 0 #0000007e;
+    /*filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.5));
+     -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.5));*/
      font-size: 14px;
+     height: 31px;
+     box-sizing: border-box;
     
   
   }
@@ -592,9 +596,13 @@ display: none;
     border-radius: 6px;
     border: 1px solid black;
     padding: 0px 12px;
-    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.5));
-     -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.5));
+    box-shadow: 0 1px 0 #0000007e;
+    /*filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.5));
+     -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.5));*/
      font-size: 14px;
+     height: 31px;
+     box-sizing: border-box;
+     
      
      
   

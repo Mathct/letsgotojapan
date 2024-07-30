@@ -576,7 +576,7 @@ class Pending extends APP_GameClass
         $ret["selectable"] = array();
         $ret["selected"] = array();
         $ret['buttons'] = array();
-        $ret['titleyou'] = clienttranslate('${you} must choose the location of the walk');
+        $ret['titleyou'] = clienttranslate('${you} must choose the location of the walk:');
 
         $ret["selected"][] = $parg1;
 
