@@ -234,8 +234,7 @@ function (dojo, declare) {
                 dojo.query("#mask_hand").connect('onclick', this, 'onMaskHand' );
                 dojo.query(".bonusjournee").connect('onclick', this, 'onSelect' );
                 dojo.query(".bonusjournee2").connect('onclick', this, 'onSelect' );
-                dojo.query(".selectable3discard").connect('onclick', this, 'onSelect' );
-                dojo.query(".selected3discard").connect('onclick', this, 'onSelect' );
+                
 
                 
     
@@ -1626,7 +1625,7 @@ function (dojo, declare) {
                                 element.style.left = "0px"; 
                             
                             
-                            }, "500");
+                            }, "600");
                         
                     }    
 
@@ -1642,7 +1641,7 @@ function (dojo, declare) {
                                 element.style.left = "0px"; 
                             
                             
-                            }, "500");
+                            }, "600");
                         
                         
                     }

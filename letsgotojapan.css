@@ -398,6 +398,27 @@ display: none;
     
 }
 
+.selectable2.card {
+    
+    border: 2px solid rgb(255, 0, 0);
+    cursor: pointer;
+    
+    
+}
+
+.selected.card {
+    border: 2px solid rgb(255, 0, 0);
+    
+   
+}
+
+.selected2card {
+    border: 2px solid rgb(0, 26, 255);
+    
+   
+}
+
+
 .selectable.bonusjournee {
     background-color:  rgba(255, 0, 0, 0.6);
     border: 1px solid rgba(255, 0, 0, 0.5);
@@ -414,11 +435,7 @@ display: none;
     
 }
 
-.selected.card {
-    border: 2px solid rgb(255, 0, 0);
-    
-   
-}
+
 
 .selectable.cardposition {
     border: none !important;
@@ -626,3 +643,110 @@ display: none;
  .action-button {
     text-decoration: none !important;
  }
+
+ /* ICONS LOGS */
+
+ .logsmile{
+    width: 20px;
+    height: 20px;
+    background-image: url('img/logtoken.png');
+    background-size: 400% 100%;
+    display: inline-block;
+    margin-left: 2px;
+    margin-right: 2px;
+    margin-top: 3px;
+    filter: drop-shadow(1px 1px 2px black);
+    -webkit-filter: drop-shadow(1px 1px 2px black);
+    background-position-x: 0%;
+      
+  }
+
+  .logrecherche{
+    width: 20px;
+    height: 20px;
+    background-image: url('img/logtoken.png');
+    background-size: 400% 100%;
+    display: inline-block;
+    margin-left: 2px;
+    margin-right: 2px;
+    margin-top: 3px;
+    filter: drop-shadow(1px 1px 2px black);
+    -webkit-filter: drop-shadow(1px 1px 2px black);
+    background-position-x: -100%;
+      
+  }
+
+  .logwild{
+    width: 20px;
+    height: 20px;
+    background-image: url('img/logtoken.png');
+    background-size: 400% 100%;
+    display: inline-block;
+    margin-left: 2px;
+    margin-right: 2px;
+    margin-top: 3px;
+    filter: drop-shadow(1px 1px 2px black);
+    -webkit-filter: drop-shadow(1px 1px 2px black);
+    background-position-x: -200%;
+      
+  }
+
+  .logwalk{
+    width: 20px;
+    height: 20px;
+    background-image: url('img/logtoken.png');
+    background-size: 400% 100%;
+    display: inline-block;
+    margin-left: 2px;
+    margin-right: 2px;
+    margin-top: 3px;
+    filter: drop-shadow(1px 1px 2px black);
+    -webkit-filter: drop-shadow(1px 1px 2px black);
+    background-position-x: -300%;
+      
+  }
+
+  .logtrainstart{
+    width: 32px;
+    height: 20px;
+    background-image: url('img/logtrain.png');
+    background-size: 300% 100%;
+    display: inline-block;
+    margin-left: 2px;
+    margin-right: 2px;
+    margin-top: 3px;
+    filter: drop-shadow(1px 1px 2px black);
+    -webkit-filter: drop-shadow(1px 1px 2px black);
+    background-position-x: 0%;
+      
+  }
+
+  .logtrainbonus{
+    width: 32px;
+    height: 20px;
+    background-image: url('img/logtrain.png');
+    background-size: 300% 100%;
+    display: inline-block;
+    margin-left: 2px;
+    margin-right: 2px;
+    margin-top: 3px;
+    filter: drop-shadow(1px 1px 2px black);
+    -webkit-filter: drop-shadow(1px 1px 2px black);
+    background-position-x: -100%;
+      
+  }
+
+  .logtrainmalus{
+    width: 32px;
+    height: 20px;
+    background-image: url('img/logtrain.png');
+    background-size: 300% 100%;
+    display: inline-block;
+    margin-left: 2px;
+    margin-right: 2px;
+    margin-top: 3px;
+    filter: drop-shadow(1px 1px 2px black);
+    -webkit-filter: drop-shadow(1px 1px 2px black);
+    background-position-x: -200%;
+      
+  }

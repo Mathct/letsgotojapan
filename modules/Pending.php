@@ -27,6 +27,7 @@ class Pending extends APP_GameClass
         
         $ret = array();
         $ret["selectable"] = array();
+        $ret["selectable2"] = array();
         $ret["selected"] = array();
         $ret['buttons'] = array();
         $ret['titleyou'] = clienttranslate('${you} must choose a card to place or');
@@ -88,6 +89,7 @@ class Pending extends APP_GameClass
     {
         $ret = array();
         $ret["selectable"] = array();
+        $ret["selectable2"] = array();
         $ret["selected"] = array();
         $ret['buttons'] = array();
         $ret['titleyou'] = clienttranslate('${you} must choose a location in your trip');
@@ -288,8 +290,9 @@ class Pending extends APP_GameClass
                     {
                         letsgotojapan::$instance->Smile(1,$this->player_id);
                         
-                        letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} gains smile' ), array(
+                        letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} gains ${log}' ), array(
                             'player_name' => $this->player_name,
+                            'log' => letsgotojapan::$instance->getLogsType(1),
                             )
                             );
                         
@@ -319,8 +322,9 @@ class Pending extends APP_GameClass
                     {
                         letsgotojapan::$instance->Smile(1,$this->player_id);
 
-                        letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} gains smile' ), array(
+                        letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} gains ${log}' ), array(
                             'player_name' => $this->player_name,
+                            'log' => letsgotojapan::$instance->getLogsType(1),
                             )
                             );
 
@@ -366,6 +370,7 @@ class Pending extends APP_GameClass
     {
         $ret = array();
         $ret["selectable"] = array();
+        $ret["selectable2"] = array();
         $ret["selected"] = array();
         $ret['buttons'] = array();
         $ret['titleyou'] = clienttranslate('${you} must choose a bonus of the day');
@@ -389,8 +394,9 @@ class Pending extends APP_GameClass
         {
             letsgotojapan::$instance->Smile(1,$this->player_id);
 
-            letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} gains 1 smile' ), array(
+            letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} gains ${log}' ), array(
                 'player_name' => $this->player_name,
+                'log' => letsgotojapan::$instance->getLogsType(1),
                 )
                 );
 
@@ -418,6 +424,7 @@ class Pending extends APP_GameClass
     {
         $ret = array();
         $ret["selectable"] = array();
+        $ret["selectable2"] = array();
         $ret["selected"] = array();
         $ret['buttons'] = array();
         $ret['titleyou'] = clienttranslate('${you} must choose a bonus of the day');
@@ -442,8 +449,9 @@ class Pending extends APP_GameClass
         {
             self::DbQuery( "UPDATE player set recherche = recherche + 2  WHERE player_id = {$this->player_id}" );
             letsgotojapan::$instance->MajPannel($this->player_id);
-            letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} gains 2 recherches' ), array(
+            letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} gains ${log} ${log}' ), array(
                 'player_name' => $this->player_name,
+                'log' => letsgotojapan::$instance->getLogsType(2),
                 )
                 );
 
@@ -456,8 +464,9 @@ class Pending extends APP_GameClass
         {
             self::DbQuery( "UPDATE player set wild = wild + 1  WHERE player_id = {$this->player_id}" );
             letsgotojapan::$instance->MajPannel($this->player_id);
-            letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} gains 1 wild' ), array(
+            letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} gains ${log}' ), array(
                 'player_name' => $this->player_name,
+                'log' => letsgotojapan::$instance->getLogsType(3),
                 )
                 );
 
@@ -474,6 +483,7 @@ class Pending extends APP_GameClass
     {
         $ret = array();
         $ret["selectable"] = array();
+        $ret["selectable2"] = array();
         $ret["selected"] = array();
         $ret['buttons'] = array();
         $ret['titleyou'] = clienttranslate('${you} must choose a bonus of the day');
@@ -498,8 +508,9 @@ class Pending extends APP_GameClass
         {
             self::DbQuery( "UPDATE player set train = train + 1  WHERE player_id = {$this->player_id}" );
             letsgotojapan::$instance->MajPannel($this->player_id);
-            letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} gains 1 train' ), array(
+            letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} gains ${log}' ), array(
                 'player_name' => $this->player_name,
+                'log' => letsgotojapan::$instance->getLogsType(6),
                 )
                 );
 
@@ -530,6 +541,7 @@ class Pending extends APP_GameClass
     {
         $ret = array();
         $ret["selectable"] = array();
+        $ret["selectable2"] = array();
         $ret["selected"] = array();
         $ret['buttons'] = array();
         $ret['titleyou'] = clienttranslate('${you} must choose the card to discard');
@@ -574,6 +586,7 @@ class Pending extends APP_GameClass
     {
         $ret = array();
         $ret["selectable"] = array();
+        $ret["selectable2"] = array();
         $ret["selected"] = array();
         $ret['buttons'] = array();
         $ret['titleyou'] = clienttranslate('${you} must choose the location of the walk:');
@@ -610,6 +623,7 @@ class Pending extends APP_GameClass
     {
         $ret = array();
         $ret["selectable"] = array();
+        $ret["selectable2"] = array();
         $ret["selected"] = array();
         $ret['buttons'] = array();
         $ret['titleyou'] = clienttranslate('${you} must choose a location in your trip');
@@ -670,7 +684,7 @@ class Pending extends APP_GameClass
                 letsgotojapan::$instance->tokyo->pickCardForLocation( 'deck', $explode2[0].'_'.$explode2[1].'_'.$explode2[2], $this->player_id);
                 $newcardid= self::getUniqueValueFromDB("SELECT card_id FROM tokyo WHERE card_location_arg = {$this->player_id} AND card_location = '" . $explode2[0] . "_" . $explode2[1] . "_" . $explode2[2] . "'");
                 self::DbQuery( "UPDATE tokyo set walk = 1  WHERE card_id ={$newcardid}" );
-                letsgotojapan::$instance->notifyAllPlayers('addwalk',clienttranslate( '${player_name} places a walk on ${day}'), array(
+                letsgotojapan::$instance->notifyAllPlayers('addwalk',clienttranslate( '${player_name} places ${log} on ${day}'), array(
                     'parent' => $varg1,
                     'player_name' => $this->player_name,
                     'ville' => 1,
@@ -678,6 +692,7 @@ class Pending extends APP_GameClass
                     'playerid' => $this->player_id,
                     'location' => $explode2[0].'_'.$explode2[1].'_'.$explode2[2],
                     'day' => letsgotojapan::$instance->days[$explode2[1]]['name'],
+                    'log' => letsgotojapan::$instance->getLogsType(4),
     
                     )
                     );
@@ -746,7 +761,7 @@ class Pending extends APP_GameClass
                 letsgotojapan::$instance->kyoto->pickCardForLocation( 'deck', $explode2[0].'_'.$explode2[1].'_'.$explode2[2], $this->player_id);
                 $newcardid= self::getUniqueValueFromDB("SELECT card_id FROM kyoto WHERE card_location_arg = {$this->player_id} AND card_location = '" . $explode2[0] . "_" . $explode2[1] . "_" . $explode2[2] . "'");
                 self::DbQuery( "UPDATE kyoto set walk = 1  WHERE card_id ={$newcardid}" );
-                letsgotojapan::$instance->notifyAllPlayers('addwalk',clienttranslate( '${player_name} places a walk on ${day}'), array(
+                letsgotojapan::$instance->notifyAllPlayers('addwalk',clienttranslate( '${player_name} places ${log} on ${day}'), array(
                     'parent' => $varg1,
                     'player_name' => $this->player_name,
                     'ville' => 2,
@@ -754,6 +769,7 @@ class Pending extends APP_GameClass
                     'playerid' => $this->player_id,
                     'location' => $explode2[0].'_'.$explode2[1].'_'.$explode2[2],
                     'day' => letsgotojapan::$instance->days[$explode2[1]]['name'],
+                    'log' => letsgotojapan::$instance->getLogsType(4),
     
                     )
                     );
@@ -805,11 +821,12 @@ class Pending extends APP_GameClass
 
             } 
 
-
+                
                 self::DbQuery( "UPDATE player set recherche = recherche + 1  WHERE player_id = {$this->player_id}" );
                 letsgotojapan::$instance->MajPannel($this->player_id);
-                letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} gains 1 recherche' ), array(
+                letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} gains ${log}' ), array(
                     'player_name' => $this->player_name,
+                    'log' => letsgotojapan::$instance->getLogsType(2),
                     )
                     );
 
@@ -888,8 +905,9 @@ class Pending extends APP_GameClass
                         {
                             letsgotojapan::$instance->Smile(1,$this->player_id);
                             
-                            letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} gains smile' ), array(
+                            letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} gains ${log}' ), array(
                                 'player_name' => $this->player_name,
+                                'log' => letsgotojapan::$instance->getLogsType(1),
                                 )
                                 );
                             
@@ -919,8 +937,9 @@ class Pending extends APP_GameClass
                         {
                             letsgotojapan::$instance->Smile(1,$this->player_id);
 
-                            letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} gains smile' ), array(
+                            letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} gains ${log}' ), array(
                                 'player_name' => $this->player_name,
+                                'log' => letsgotojapan::$instance->getLogsType(1),
                                 )
                                 );
 
@@ -966,6 +985,7 @@ class Pending extends APP_GameClass
     {
         $ret = array();
         $ret["selectable"] = array();
+        $ret["selectable2"] = array();
         $ret["selected"] = array();
         $ret['buttons'] = array();
         $ret['titleyou'] = clienttranslate('${you} must choose your 1st card:');
@@ -1012,6 +1032,7 @@ class Pending extends APP_GameClass
     {
         $ret = array();
         $ret["selectable"] = array();
+        $ret["selectable2"] = array();
         $ret["selected"] = array();
         $ret['buttons'] = array();
         $ret['titleyou'] = clienttranslate('${you} must choose your 2nd card:');
@@ -1081,6 +1102,7 @@ class Pending extends APP_GameClass
     {
         $ret = array();
         $ret["selectable"] = array();
+        $ret["selectable2"] = array();
         $ret["selected"] = array();
         $ret['buttons'] = array();
         $ret['titleyou'] = clienttranslate('${you} must choose your 3rd card:');
@@ -1244,6 +1266,7 @@ class Pending extends APP_GameClass
     {
         $ret = array();
         $ret["selectable"] = array();
+        $ret["selectable2"] = array();
         $ret["selectable3discard"] = array();
         $ret["selected"] = array();
         $ret['buttons'] = array();

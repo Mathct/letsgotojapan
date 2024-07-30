@@ -847,6 +847,27 @@ function MajPannel ($id)
 
 }
 
+function getLogsType( $type ) 
+{
+    if($type == 1)
+    {return "<div class='logsmile' title=''></div>";}
+    if($type == 2)
+    {return "<div class='logrecherche' title=''></div>";}
+    if($type == 3)
+    {return "<div class='logwild' title=''></div>";}
+    if($type == 4)
+    {return "<div class='logwalk' title=''></div>";}
+    if($type == 5)
+    {return "<div class='logtrainstart' title=''></div>";}
+    if($type == 6)
+    {return "<div class='logtrainbonus' title=''></div>";}
+    if($type == 7)
+    {return "<div class='logtrainmalus' title=''></div>";}
+    
+        
+
+}
+
 
 
 ///////////////////////////////////////////////////////////////////////////////// 
