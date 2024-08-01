@@ -157,6 +157,8 @@ function (dojo, declare) {
                     {
                         
                         var tokyo = gamedatas.tokyo[tokyo];
+
+                        
                         
                         if (tokyo.location.startsWith("playerhand"))
                         {
@@ -1562,8 +1564,10 @@ function (dojo, declare) {
                 dojo.subscribe( 'drawcard', this, "notif_drawcard" );
                 dojo.subscribe( 'turn', this, "notif_turn" );
                 dojo.subscribe( 'deployer', this, "notif_deployer" );
+                dojo.subscribe( 'deployerextrawalk', this, "notif_deployerextrawalk" );
                 dojo.subscribe( 'condensersansmodif', this, "notif_condensersansmodif" );
                 dojo.subscribe( 'condenseravecmodif', this, "notif_condenseravecmodif" );
+                dojo.subscribe( 'condenserextrawalkavecmodif', this, "notif_condenserextrawalkavecmodif" );
                 dojo.subscribe( 'smile', this, "notif_smile" );
                 dojo.subscribe( 'happy', this, "notif_happy" );
                 dojo.subscribe( 'angry', this, "notif_angry" );
@@ -1755,6 +1759,30 @@ function (dojo, declare) {
 
             },
 
+
+            notif_deployerextrawalk: function( notif )
+            {
+                this.attachToNewParentNoDestroy( 'card_'+notif.args.ville1+'_'+notif.args.card1, 'cardposition_'+notif.args.jour+'_2_'+notif.args.playerid );
+                this.slideToObject( 'card_'+notif.args.ville1+'_'+notif.args.card1 , 'cardposition_'+notif.args.jour+'_2_'+notif.args.playerid ).play();
+                var element1 = document.getElementById('cardposition_'+notif.args.jour+'_2_'+notif.args.playerid);
+                element1.style.zIndex = "10";
+
+                this.attachToNewParentNoDestroy( 'card_'+notif.args.ville2+'_'+notif.args.card2, 'cardposition_'+notif.args.jour+'_4_'+notif.args.playerid );
+                this.slideToObject( 'card_'+notif.args.ville2+'_'+notif.args.card2 , 'cardposition_'+notif.args.jour+'_4_'+notif.args.playerid ).play();
+                var element2 = document.getElementById('cardposition_'+notif.args.jour+'_4_'+notif.args.playerid);
+                element2.style.zIndex = "10";
+
+                this.attachToNewParentNoDestroy( 'card_'+notif.args.ville3+'_'+notif.args.card3, 'cardposition_'+notif.args.jour+'_6_'+notif.args.playerid );
+                this.slideToObject( 'card_'+notif.args.ville3+'_'+notif.args.card3 , 'cardposition_'+notif.args.jour+'_6_'+notif.args.playerid ).play();
+                var element3 = document.getElementById('cardposition_'+notif.args.jour+'_6_'+notif.args.playerid);
+                element3.style.zIndex = "10";
+
+
+               
+               
+
+            },
+
             notif_condensersansmodif: function( notif )
             {
                 this.attachToNewParentNoDestroy( 'card_'+notif.args.ville1+'_'+notif.args.card1, 'cardposition_'+notif.args.jour+'_1_'+notif.args.playerid );
@@ -1811,7 +1839,7 @@ function (dojo, declare) {
                         var element5 = document.getElementById('cardposition_'+notif.args.jour+'_5_'+notif.args.playerid);
                         element5.style.zIndex = "0";
                         var element6 = document.getElementById('cardposition_'+notif.args.jour+'_6_'+notif.args.playerid);
-                        element5.style.zIndex = "6";
+                        element6.style.zIndex = "0";
     
                     }
                
@@ -1887,9 +1915,43 @@ function (dojo, declare) {
                         var element5 = document.getElementById('cardposition_'+notif.args.jour+'_5_'+notif.args.playerid);
                         element5.style.zIndex = "0";
                         var element6 = document.getElementById('cardposition_'+notif.args.jour+'_6_'+notif.args.playerid);
-                        element5.style.zIndex = "6";
+                        element6.style.zIndex = "0";
     
                     }
+               
+
+            },
+
+            notif_condenserextrawalkavecmodif: function( notif )
+            {
+                
+                
+                
+                    this.attachToNewParentNoDestroy( 'card_'+notif.args.ville1+'_'+notif.args.card1, 'cardposition_'+notif.args.jour+'_1_'+notif.args.playerid );
+                    this.slideToObject( 'card_'+notif.args.ville1+'_'+notif.args.card1 , 'cardposition_'+notif.args.jour+'_1_'+notif.args.playerid ).play();
+                    this.attachToNewParentNoDestroy( 'card_'+notif.args.ville2+'_'+notif.args.card2, 'cardposition_'+notif.args.jour+'_2_'+notif.args.playerid );
+                    this.slideToObject( 'card_'+notif.args.ville2+'_'+notif.args.card2 , 'cardposition_'+notif.args.jour+'_2_'+notif.args.playerid ).play();
+                    this.attachToNewParentNoDestroy( 'card_'+notif.args.ville3+'_'+notif.args.card3, 'cardposition_'+notif.args.jour+'_3_'+notif.args.playerid );
+                    this.slideToObject( 'card_'+notif.args.ville3+'_'+notif.args.card3 , 'cardposition_'+notif.args.jour+'_3_'+notif.args.playerid ).play();
+                    this.attachToNewParentNoDestroy( 'card_'+notif.args.ville4+'_'+notif.args.card4, 'cardposition_'+notif.args.jour+'_4_'+notif.args.playerid );
+                    this.slideToObject( 'card_'+notif.args.ville4+'_'+notif.args.card4 , 'cardposition_'+notif.args.jour+'_4_'+notif.args.playerid ).play();
+                
+                    var element1 = document.getElementById('cardposition_'+notif.args.jour+'_1_'+notif.args.playerid);
+                    element1.style.zIndex = "10";
+                    var element2 = document.getElementById('cardposition_'+notif.args.jour+'_2_'+notif.args.playerid);
+                    element2.style.zIndex = "10";
+                    var element3 = document.getElementById('cardposition_'+notif.args.jour+'_3_'+notif.args.playerid);
+                    element3.style.zIndex = "10";
+                    var element4 = document.getElementById('cardposition_'+notif.args.jour+'_4_'+notif.args.playerid);
+                    element4.style.zIndex = "10";
+                    var element5 = document.getElementById('cardposition_'+notif.args.jour+'_5_'+notif.args.playerid);
+                    element5.style.zIndex = "0";
+                    var element6 = document.getElementById('cardposition_'+notif.args.jour+'_6_'+notif.args.playerid);
+                    element6.style.zIndex = "0";
+                    var element7 = document.getElementById('cardposition_'+notif.args.jour+'_7_'+notif.args.playerid);
+                    element7.style.zIndex = "0";
+    
+                    
                
 
             },
