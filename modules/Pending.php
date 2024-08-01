@@ -1162,8 +1162,19 @@ function ExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
 
         if($varg1 == "cancel")
         {
-            
+            if($this->playerhandcount == 2)
+            {
             letsgotojapan::$instance->addPending($this->player_id, "Phase1Step1");
+            }
+            if($this->playerhandcount == 4)
+            {
+            letsgotojapan::$instance->addPending($this->player_id, "Phase2Step1");
+            }
+            if($this->playerhandcount == 3)
+            {
+            letsgotojapan::$instance->addPending($this->player_id, "Phase2Step1");
+            }
+        
         } 
 
         if($varg1 == "tokyo")
@@ -1235,7 +1246,18 @@ function ExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
                 }
 
 
+            if($this->playerhandcount == 2)
+            {
             letsgotojapan::$instance->addPending($this->player_id, "Phase1Step1");
+            }
+            if($this->playerhandcount == 4)
+            {
+            letsgotojapan::$instance->addPending($this->player_id, "Phase2Step1");
+            }
+            if($this->playerhandcount == 3)
+            {
+            letsgotojapan::$instance->addPending($this->player_id, "Phase2Step1");
+            }
         } 
 
         if($varg1 == "tokyo")
@@ -1305,7 +1327,18 @@ function ExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
                 }
 
 
+            if($this->playerhandcount == 2)
+            {
             letsgotojapan::$instance->addPending($this->player_id, "Phase1Step1");
+            }
+            if($this->playerhandcount == 4)
+            {
+            letsgotojapan::$instance->addPending($this->player_id, "Phase2Step1");
+            }
+            if($this->playerhandcount == 3)
+            {
+            letsgotojapan::$instance->addPending($this->player_id, "Phase2Step1");
+            }
         } 
 
         if($varg1 == "tokyo")
@@ -1500,8 +1533,7 @@ function ExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
 
     function Phase2Step1($parg1, $parg2, $varg1, $varg2)
     {
-        //CardTokyo::Tokyo_1($this->player_id, $day);
-        
+                
         if($varg1 == "walk")
         {
             letsgotojapan::$instance->addPending($this->player_id, "Walk");
@@ -1517,11 +1549,286 @@ function ExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
         else
         {
             letsgotojapan::$instance->Deployer($this->player_id);
-            letsgotojapan::$instance->addPending($this->player_id, "Phase1Step2", $varg1);
+            letsgotojapan::$instance->addPending($this->player_id, "Phase2Step2", $varg1);
         }
         
        
       
+    }
+
+    function argPhase2Step2($parg1, $parg2)
+    {
+        $ret = array();
+        $ret["selectable"] = array();
+        $ret["selectable2"] = array();
+        $ret["selected"] = array();
+        $ret['buttons'] = array();
+        $ret['titleyou'] = clienttranslate('${you} must choose a location in your trip');
+
+        $ret["selected"][] = $parg1;
+
+        $counttrip = letsgotojapan::$instance->CountTrip($this->player_id);
+        $jour = 0;
+
+        foreach ($counttrip as $count)
+        {
+            $jour = $jour+1;
+            if($count == 0)
+            {
+                $ret["selectable"][] = 'cardposition_'.$jour.'_1_'.$this->player_id;
+            }
+            if($count == 1)
+            {
+                $ret["selectable"][] = 'cardposition_'.$jour.'_1_'.$this->player_id;
+                $ret["selectable"][] = 'cardposition_'.$jour.'_3_'.$this->player_id;
+            }
+            if($count == 2)
+            {
+                $ret["selectable"][] = 'cardposition_'.$jour.'_1_'.$this->player_id;
+                $ret["selectable"][] = 'cardposition_'.$jour.'_3_'.$this->player_id;
+                $ret["selectable"][] = 'cardposition_'.$jour.'_5_'.$this->player_id;
+            }
+        }
+        
+       
+        
+        
+
+        $ret['buttons'][]='cancel';
+        
+
+
+        
+        return $ret;
+    }
+
+    function Phase2Step2($parg1, $parg2, $varg1, $varg2)
+    {
+        
+        if($varg1 == "cancel")
+        {
+            
+            letsgotojapan::$instance->Condenser($this->player_id, 0);
+            letsgotojapan::$instance->addPending($this->player_id, "Phase2Step1");
+        }
+        
+        else
+
+        {
+
+            $explode = explode("_", $parg1);
+            $explode2 = explode("_", $varg1);
+
+            if($explode[1] == 1)
+            {
+                $card = self::getUniqueValueFromDB("SELECT card_type FROM tokyo WHERE card_id={$explode[2]}");
+                letsgotojapan::$instance->tokyo->moveCard( $explode[2], $explode2[0].'_'.$explode2[1].'_'.$explode2[2], $this->player_id );
+            }
+
+            if($explode[1] == 2)
+            {
+                $card = self::getUniqueValueFromDB("SELECT card_type FROM kyoto WHERE card_id={$explode[2]}");
+                letsgotojapan::$instance->kyoto->moveCard( $explode[2], $explode2[0].'_'.$explode2[1].'_'.$explode2[2], $this->player_id );
+            }
+
+            
+
+            letsgotojapan::$instance->notifyAllPlayers('movecard',clienttranslate( '${player_name} places a card on ${day}'), array(
+                'mobile' =>  $parg1,
+                'parent' => $varg1,
+                'player_name' => $this->player_name,
+                'color' => $this->player_color,
+                'id' => $explode[2],
+                'ville' => $explode[1],
+                'card' => $card,
+                'playerid' => $this->player_id,
+                'location' => $explode2[0].'_'.$explode2[1].'_'.$explode2[2],
+                'day' => letsgotojapan::$instance->days[$explode2[1]]['name'],
+
+                )
+                );
+
+
+            /*
+            $tokyocard = self::getObjectListFromDB( "SELECT card_id id FROM tokyo WHERE card_location ='playerhand' AND card_location_arg = {$this->player_id}", true );
+            $kyotocard = self::getObjectListFromDB( "SELECT card_id id FROM kyoto WHERE card_location ='playerhand' AND card_location_arg = {$this->player_id}", true );
+            $counttokyocard = count($tokyocard);
+            $countkyotocard = count($kyotocard);
+
+            if ($counttokyocard != 0)
+            {
+                $nextplayer = letsgotojapan::$instance->getPlayerAfter( $this->player_id );
+
+                    foreach($tokyocard as $cardid)
+                    {
+
+                    letsgotojapan::$instance->tokyo->moveCard( $cardid, 'discardboardhidden', $nextplayer );
+                    letsgotojapan::$instance->notifyAllPlayers('passcard','', array(
+                        'id' => $cardid,
+                        'ville' => 1,
+                        'playerid' => $this->player_id,
+
+                        )
+                        );
+                    }
+
+            }
+
+            if ($countkyotocard != 0)
+            {
+                $nextplayer = letsgotojapan::$instance->getPlayerAfter( $this->player_id );
+
+                    foreach($kyotocard as $cardid)
+                    {
+                    letsgotojapan::$instance->kyoto->moveCard( $cardid, 'discardboardhidden', $nextplayer );
+                    letsgotojapan::$instance->notifyAllPlayers('passcard','', array(
+                        'id' => $cardid,
+                        'ville' => 2,
+                        'playerid' => $this->player_id,
+
+                        )
+                        );
+                    }
+
+            }
+*/
+            
+
+
+            letsgotojapan::$instance->Condenser($this->player_id, $varg1);
+            $counttrip = letsgotojapan::$instance->CountTrip($this->player_id);
+            
+            $day = $explode2[1];
+
+            /*
+            if ($counttrip[$day-1] == 3)
+            {
+                $colorday = intval(self::getUniqueValueFromDB("SELECT level FROM tokens WHERE name={$day}"));
+                
+
+                $scorecards = array();
+
+                $tokyo = self::getObjectListFromDB( "SELECT card_type type FROM tokyo WHERE  card_location_arg = {$this->player_id} AND walk =0 AND card_location LIKE 'cardposition_{$day}%'", true );
+                $kyoto = self::getObjectListFromDB( "SELECT card_type type FROM kyoto WHERE  card_location_arg = {$this->player_id} AND walk =0 AND card_location LIKE 'cardposition_{$day}%'", true );
+                $tokyowalk = self::getObjectListFromDB( "SELECT card_type type FROM tokyo WHERE  card_location_arg = {$this->player_id} AND walk =1 AND card_location LIKE 'cardposition_{$day}%'", true );
+                $kyotowalk = self::getObjectListFromDB( "SELECT card_type type FROM kyoto WHERE  card_location_arg = {$this->player_id} AND walk =1 AND card_location LIKE 'cardposition_{$day}%'", true );
+
+                if ($tokyo != null)
+                {
+                    foreach ($tokyo as $type)
+                    {
+                        $scorecards[] = letsgotojapan::$instance->tokyocards[$type]['bonus'];
+                    }
+
+                }
+
+                if ($tokyowalk != null)
+                {
+                    foreach ($tokyowalk as $type)
+                    {
+                        $scorecards[] = letsgotojapan::$instance->walk[0]['bonus'];
+                    }
+
+                }
+
+                if ($kyoto != null)
+                {
+
+                    foreach ($kyoto as $type)
+                    {
+                        $scorecards[] = letsgotojapan::$instance->kyotocards[$type]['bonus'];
+                    }
+                    
+                }
+
+                if ($kyotowalk != null)
+                {
+                    foreach ($kyotowalk as $type)
+                    {
+                        $scorecards[] = letsgotojapan::$instance->walk[0]['bonus'];
+                    }
+
+                }
+
+
+                $result = array_map(function(...$numbers) {
+                    return array_sum($numbers);
+                }, ...$scorecards);
+
+                
+                if (($colorday>=1)&&($colorday<=5))
+                {
+                    if($result[$colorday-1]==0)
+                    {
+                        letsgotojapan::$instance->giveExtraTime($this->player_id);
+                        letsgotojapan::$instance->gamestate->setPlayerNonMultiactive($this->player_id, 'stop');
+                    }
+
+                    if($result[$colorday-1]==1)
+                    {
+                        letsgotojapan::$instance->Smile(1,$this->player_id);
+                        
+                        letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} gains ${log}' ), array(
+                            'player_name' => $this->player_name,
+                            'log' => letsgotojapan::$instance->getLogsType(1),
+                            )
+                            );
+                        
+                        letsgotojapan::$instance->giveExtraTime($this->player_id);
+                        letsgotojapan::$instance->gamestate->setPlayerNonMultiactive($this->player_id, 'stop');
+                    }
+
+                    if($result[$colorday-1]>=2)
+                    {
+                       
+                        letsgotojapan::$instance->addPending($this->player_id, "BonusChoose", $result[$colorday-1], $day);
+                    }
+
+                }
+
+                if ($colorday == 6)
+                {
+                    $calculhappy = $result[5]+$result[6];
+
+                    if($calculhappy==0)
+                    {
+                        letsgotojapan::$instance->giveExtraTime($this->player_id);
+                        letsgotojapan::$instance->gamestate->setPlayerNonMultiactive($this->player_id, 'stop');
+                    }
+
+                    if($calculhappy==1)
+                    {
+                        letsgotojapan::$instance->Smile(1,$this->player_id);
+
+                        letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} gains ${log}' ), array(
+                            'player_name' => $this->player_name,
+                            'log' => letsgotojapan::$instance->getLogsType(1),
+                            )
+                            );
+
+                        letsgotojapan::$instance->giveExtraTime($this->player_id);
+                        letsgotojapan::$instance->gamestate->setPlayerNonMultiactive($this->player_id, 'stop');
+                    }
+
+                    if($calculhappy>=2)
+                    {
+                        letsgotojapan::$instance->addPending($this->player_id, "BonusChoose", $calculhappy, $day);
+                    }
+                    
+                }
+
+               
+            }*/
+
+            //else
+            //{
+            letsgotojapan::$instance->giveExtraTime($this->player_id);
+            letsgotojapan::$instance->addPending($this->player_id, "Phase2Step1");
+            //}
+            
+            
+        }
+
     }
 
 

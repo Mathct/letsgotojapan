@@ -1384,8 +1384,28 @@ function actValidate3Discard( $arg1, $arg2, $arg3)
     
     $pending =  self::getObjectFromDB( "SELECT* FROM pending WHERE player_id = {$id} order by id desc limit 1");
     self::DbQuery("delete from pending where id=".$pending['id']);
+
+    $counthandtokyocard = count(self::getObjectListFromDB( "SELECT card_id id FROM tokyo WHERE card_location ='playerhand' AND card_location_arg = {$id}", true ));
+    $counthandkyotocard = count(self::getObjectListFromDB( "SELECT card_id id FROM kyoto WHERE card_location ='playerhand' AND card_location_arg = {$id}", true ));
+    $playerhandcount = $counthandtokyocard + $counthandkyotocard;
+
+    if ($playerhandcount == 2)
+    {
     letsgotojapan::$instance->addPending($id, "Phase1Step1");
     $this->gamestate->nextState( 'next');
+    }
+
+    if ($playerhandcount == 4)
+    {
+    letsgotojapan::$instance->addPending($id, "Phase2Step1");
+    $this->gamestate->nextState( 'next');
+    }
+
+    if ($playerhandcount == 3)
+    {
+    letsgotojapan::$instance->addPending($id, "Phase2Step1");
+    $this->gamestate->nextState( 'next');
+    }
     
         
     
