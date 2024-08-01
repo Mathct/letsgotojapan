@@ -99,6 +99,17 @@ function (dojo, declare) {
                         
                     }
 
+                for( var player_id in gamedatas.players )   
+                    {
+                                            
+                        
+                        $('compteurcardtokyodiscard_'+player_id).innerHTML = gamedatas.compteurcardtokyodiscard[player_id];
+                        $('compteurcardkyotodiscard_'+player_id).innerHTML = gamedatas.compteurcardkyotodiscard[player_id];
+                        
+                        
+                        
+                    }
+
 
 
                 for( var player_id in gamedatas.players )   
@@ -1572,6 +1583,7 @@ function (dojo, declare) {
                 dojo.subscribe( 'happy', this, "notif_happy" );
                 dojo.subscribe( 'angry', this, "notif_angry" );
                 dojo.subscribe( 'majpannel', this, "notif_majpannel" );
+                dojo.subscribe( 'majcompteurdiscard', this, "notif_majcompteurdiscard" );
                 dojo.subscribe( 'discard', this, "notif_discard" );
                 dojo.subscribe( 'addwalk', this, "notif_addwalk" );
                 
@@ -1584,6 +1596,12 @@ function (dojo, declare) {
                 $('nbrerecherche_'+notif.args.id).innerHTML = notif.args.recherche;
                 $('nbretrain_'+notif.args.id).innerHTML = notif.args.train;
                 $('nbrewild_'+notif.args.id).innerHTML = notif.args.wild;
+            },
+
+            notif_majcompteurdiscard: function( notif )
+            {
+                $('compteurcardtokyodiscard_'+notif.args.playerid).innerHTML = notif.args.count1;
+                $('compteurcardkyotodiscard_'+notif.args.playerid).innerHTML = notif.args.count2;
             },
 
             

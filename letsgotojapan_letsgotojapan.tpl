@@ -142,6 +142,14 @@
                 <div id="cardposition_6_6_{PLAYER_ID}"class="cardposition" style="top: 171%; left: 86.2%;"></div>
                 <div id="cardposition_6_7_{PLAYER_ID}"class="cardposition" style="top: 185%; left: 86.2%;"></div>
 
+                <div class="cardtokyodiscard" style="top: 7%; left: 77.4%;"></div>
+                <div class="cardkyotodiscard" style="top: 7%; left: 91.5%;"></div>
+
+                <div id="compteurcardtokyodiscard_{PLAYER_ID}" class="compteurdiscard" style="top: 34.7%; left: 82.3%;"></div>
+                <div id="compteurcardkyotodiscard_{PLAYER_ID}" class="compteurdiscard" style="top: 34.7%; left: 90.3%;"></div>
+
+
+
             </div>
         </div>
         <!-- END player -->
