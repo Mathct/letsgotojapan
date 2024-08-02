@@ -19,10 +19,10 @@ class Pending extends APP_GameClass
         $this->player_train = $p['train'];
         $this->player_wild = $p['wild'];
 
-        $counthandtokyocard = count(self::getObjectListFromDB( "SELECT card_id id FROM tokyo WHERE card_location ='playerhand' AND card_location_arg = {$this->player_id}", true ));
-        $counthandkyotocard = count(self::getObjectListFromDB( "SELECT card_id id FROM kyoto WHERE card_location ='playerhand' AND card_location_arg = {$this->player_id}", true ));
+        $counthandtokyocard1 = count(self::getObjectListFromDB( "SELECT card_id id FROM tokyo WHERE card_location ='playerhand' AND card_location_arg = {$this->player_id}", true ));
+        $counthandkyotocard1 = count(self::getObjectListFromDB( "SELECT card_id id FROM kyoto WHERE card_location ='playerhand' AND card_location_arg = {$this->player_id}", true ));
 
-        $this->playerhandcount = $counthandtokyocard + $counthandkyotocard;
+        $this->playerhandcount = $counthandtokyocard1 + $counthandkyotocard1;
     }
 
     /////////////////////// PHASE 1 //////////////////////////
@@ -398,6 +398,9 @@ class Pending extends APP_GameClass
 
     function BonusChoose($parg1, $parg2, $varg1, $varg2)
     {
+        $counthandtokyocard2 = count(self::getObjectListFromDB( "SELECT card_id id FROM tokyo WHERE card_location ='playerhand' AND card_location_arg = {$this->player_id}", true ));
+        $counthandkyotocard2 = count(self::getObjectListFromDB( "SELECT card_id id FROM kyoto WHERE card_location ='playerhand' AND card_location_arg = {$this->player_id}", true ));
+        $playerhandcount2 = $counthandtokyocard2 + $counthandkyotocard2;
 
         if ($varg1 === 'bonusjournee_1_' . $this->player_id) 
         {
@@ -408,9 +411,17 @@ class Pending extends APP_GameClass
                 'log' => letsgotojapan::$instance->getLogsType(1),
                 )
                 );
-
-            letsgotojapan::$instance->giveExtraTime($this->player_id);
-            letsgotojapan::$instance->gamestate->setPlayerNonMultiactive($this->player_id, 'stop');
+            
+            if ($playerhandcount2 == 0)
+            {
+                letsgotojapan::$instance->giveExtraTime($this->player_id);
+                letsgotojapan::$instance->gamestate->setPlayerNonMultiactive($this->player_id, 'stop');
+            }
+            else
+            {
+                letsgotojapan::$instance->giveExtraTime($this->player_id);
+                letsgotojapan::$instance->addPending($this->player_id, "Phase2Step1");
+            }
 
         }
 
@@ -447,6 +458,9 @@ class Pending extends APP_GameClass
 
     function BonusChoose2($parg1, $parg2, $varg1, $varg2)
     {
+        $counthandtokyocard2 = count(self::getObjectListFromDB( "SELECT card_id id FROM tokyo WHERE card_location ='playerhand' AND card_location_arg = {$this->player_id}", true ));
+        $counthandkyotocard2 = count(self::getObjectListFromDB( "SELECT card_id id FROM kyoto WHERE card_location ='playerhand' AND card_location_arg = {$this->player_id}", true ));
+        $playerhandcount2 = $counthandtokyocard2 + $counthandkyotocard2;
 
         if($varg1 == "cancel")
         {
@@ -464,8 +478,16 @@ class Pending extends APP_GameClass
                 )
                 );
 
-            letsgotojapan::$instance->giveExtraTime($this->player_id);
-            letsgotojapan::$instance->gamestate->setPlayerNonMultiactive($this->player_id, 'stop');
+                if ($playerhandcount2 == 0)
+                {
+                    letsgotojapan::$instance->giveExtraTime($this->player_id);
+                    letsgotojapan::$instance->gamestate->setPlayerNonMultiactive($this->player_id, 'stop');
+                }
+                else
+                {
+                    letsgotojapan::$instance->giveExtraTime($this->player_id);
+                    letsgotojapan::$instance->addPending($this->player_id, "Phase2Step1");
+                }
 
         }
 
@@ -479,8 +501,16 @@ class Pending extends APP_GameClass
                 )
                 );
 
-            letsgotojapan::$instance->giveExtraTime($this->player_id);
-            letsgotojapan::$instance->gamestate->setPlayerNonMultiactive($this->player_id, 'stop');
+                if ($playerhandcount2 == 0)
+                {
+                    letsgotojapan::$instance->giveExtraTime($this->player_id);
+                    letsgotojapan::$instance->gamestate->setPlayerNonMultiactive($this->player_id, 'stop');
+                }
+                else
+                {
+                    letsgotojapan::$instance->giveExtraTime($this->player_id);
+                    letsgotojapan::$instance->addPending($this->player_id, "Phase2Step1");
+                }
 
         }
         
@@ -506,6 +536,9 @@ class Pending extends APP_GameClass
 
     function BonusChoose3($parg1, $parg2, $varg1, $varg2)
     {
+        $counthandtokyocard2 = count(self::getObjectListFromDB( "SELECT card_id id FROM tokyo WHERE card_location ='playerhand' AND card_location_arg = {$this->player_id}", true ));
+        $counthandkyotocard2 = count(self::getObjectListFromDB( "SELECT card_id id FROM kyoto WHERE card_location ='playerhand' AND card_location_arg = {$this->player_id}", true ));
+        $playerhandcount2 = $counthandtokyocard2 + $counthandkyotocard2;
 
         if($varg1 == "cancel")
         {
@@ -523,8 +556,17 @@ class Pending extends APP_GameClass
                 )
                 );
 
-            letsgotojapan::$instance->giveExtraTime($this->player_id);
-            letsgotojapan::$instance->gamestate->setPlayerNonMultiactive($this->player_id, 'stop');
+                if ($playerhandcount2 == 0)
+                {
+                    letsgotojapan::$instance->giveExtraTime($this->player_id);
+                    letsgotojapan::$instance->gamestate->setPlayerNonMultiactive($this->player_id, 'stop');
+                }
+                else
+                {
+                    letsgotojapan::$instance->giveExtraTime($this->player_id);
+                    letsgotojapan::$instance->addPending($this->player_id, "Phase2Step1");
+                }
+
 
         }
 
@@ -576,7 +618,18 @@ class Pending extends APP_GameClass
         if($varg1 == "cancel")
         {
             
+            if($this->playerhandcount == 2)
+            {
             letsgotojapan::$instance->addPending($this->player_id, "Phase1Step1");
+            }
+            if($this->playerhandcount == 4)
+            {
+            letsgotojapan::$instance->addPending($this->player_id, "Phase2Step1");
+            }
+            if($this->playerhandcount == 3)
+            {
+            letsgotojapan::$instance->addPending($this->player_id, "Phase2Step1");
+            }
         }
         else
         {
@@ -613,7 +666,18 @@ class Pending extends APP_GameClass
         if($varg1 == "cancel")
         {
             
+            if($this->playerhandcount == 2)
+            {
             letsgotojapan::$instance->addPending($this->player_id, "Phase1Step1");
+            }
+            if($this->playerhandcount == 4)
+            {
+            letsgotojapan::$instance->addPending($this->player_id, "Phase2Step1");
+            }
+            if($this->playerhandcount == 3)
+            {
+            letsgotojapan::$instance->addPending($this->player_id, "Phase2Step1");
+            }
         }
         else
         {
@@ -670,8 +734,22 @@ class Pending extends APP_GameClass
 
         if($varg1 == "cancel")
         {
-            letsgotojapan::$instance->Condenser($this->player_id, 0);
+            if($this->playerhandcount == 2)
+            {
+                letsgotojapan::$instance->Condenser($this->player_id, 0);
             letsgotojapan::$instance->addPending($this->player_id, "Phase1Step1");
+            }
+            if($this->playerhandcount == 4)
+            {
+                letsgotojapan::$instance->Condenser($this->player_id, 0);
+            letsgotojapan::$instance->addPending($this->player_id, "Phase2Step1");
+            }
+            if($this->playerhandcount == 3)
+            {
+                letsgotojapan::$instance->Condenser($this->player_id, 0);
+            letsgotojapan::$instance->addPending($this->player_id, "Phase2Step1");
+            }
+            
         }
         else
         {
@@ -697,6 +775,10 @@ class Pending extends APP_GameClass
                     )
                     );
 
+            $counthandtokyocard2 = count(self::getObjectListFromDB( "SELECT card_id id FROM tokyo WHERE card_location ='playerhand' AND card_location_arg = {$this->player_id}", true ));
+            $counthandkyotocard2 = count(self::getObjectListFromDB( "SELECT card_id id FROM kyoto WHERE card_location ='playerhand' AND card_location_arg = {$this->player_id}", true ));
+            $playerhandcount2 = $counthandtokyocard2 + $counthandkyotocard2;
+
             if($parg2 == "tokyo") 
             {
                 
@@ -719,6 +801,9 @@ class Pending extends APP_GameClass
                     );
 
                     
+
+                    if($playerhandcount2 <= 2)
+                    {
 
                     $tokyocard = self::getObjectListFromDB( "SELECT card_id id FROM tokyo WHERE card_location ='playerhand' AND card_location_arg = {$this->player_id}", true );
                     $kyotocard = self::getObjectListFromDB( "SELECT card_id id FROM kyoto WHERE card_location ='playerhand' AND card_location_arg = {$this->player_id}", true );
@@ -763,6 +848,10 @@ class Pending extends APP_GameClass
                     }
 
                 
+                
+
+                }
+
                 letsgotojapan::$instance->Condenser($this->player_id, $varg1);
 
                 
@@ -792,6 +881,9 @@ class Pending extends APP_GameClass
                     );
 
                     
+
+                    if($playerhandcount2 <= 2)
+                    {
 
                     $tokyocard = self::getObjectListFromDB( "SELECT card_id id FROM tokyo WHERE card_location ='playerhand' AND card_location_arg = {$this->player_id}", true );
                     $kyotocard = self::getObjectListFromDB( "SELECT card_id id FROM kyoto WHERE card_location ='playerhand' AND card_location_arg = {$this->player_id}", true );
@@ -833,6 +925,8 @@ class Pending extends APP_GameClass
         
                     }
 
+                    }
+
                 
                 letsgotojapan::$instance->Condenser($this->player_id, $varg1);
 
@@ -850,7 +944,9 @@ class Pending extends APP_GameClass
                     );
 
 
-
+                $counthandtokyocard2 = count(self::getObjectListFromDB( "SELECT card_id id FROM tokyo WHERE card_location ='playerhand' AND card_location_arg = {$this->player_id}", true ));
+                $counthandkyotocard2 = count(self::getObjectListFromDB( "SELECT card_id id FROM kyoto WHERE card_location ='playerhand' AND card_location_arg = {$this->player_id}", true ));
+                $playerhandcount2 = $counthandtokyocard2 + $counthandkyotocard2;
 
 
                 
@@ -916,8 +1012,17 @@ class Pending extends APP_GameClass
                     {
                         if($result[$colorday-1]==0)
                         {
+                            if ($playerhandcount2 == 0)
+                            {
                             letsgotojapan::$instance->giveExtraTime($this->player_id);
                             letsgotojapan::$instance->gamestate->setPlayerNonMultiactive($this->player_id, 'stop');
+                            }
+                            else
+                            {
+                                letsgotojapan::$instance->giveExtraTime($this->player_id);
+                                letsgotojapan::$instance->addPending($this->player_id, "Phase2Step1");
+
+                            }
                         }
 
                         if($result[$colorday-1]==1)
@@ -930,8 +1035,17 @@ class Pending extends APP_GameClass
                                 )
                                 );
                             
-                            letsgotojapan::$instance->giveExtraTime($this->player_id);
-                            letsgotojapan::$instance->gamestate->setPlayerNonMultiactive($this->player_id, 'stop');
+                                if ($playerhandcount2 == 0)
+                                {
+                                letsgotojapan::$instance->giveExtraTime($this->player_id);
+                                letsgotojapan::$instance->gamestate->setPlayerNonMultiactive($this->player_id, 'stop');
+                                }
+                                else
+                                {
+                                    letsgotojapan::$instance->giveExtraTime($this->player_id);
+                                    letsgotojapan::$instance->addPending($this->player_id, "Phase2Step1");
+    
+                                }
                         }
 
                         if($result[$colorday-1]>=2)
@@ -948,8 +1062,17 @@ class Pending extends APP_GameClass
 
                         if($calculhappy==0)
                         {
+                            if ($playerhandcount2 == 0)
+                            {
                             letsgotojapan::$instance->giveExtraTime($this->player_id);
                             letsgotojapan::$instance->gamestate->setPlayerNonMultiactive($this->player_id, 'stop');
+                            }
+                            else
+                            {
+                                letsgotojapan::$instance->giveExtraTime($this->player_id);
+                                letsgotojapan::$instance->addPending($this->player_id, "Phase2Step1");
+
+                            }
                         }
 
                         if($calculhappy==1)
@@ -962,8 +1085,17 @@ class Pending extends APP_GameClass
                                 )
                                 );
 
+                            if ($playerhandcount2 == 0)
+                            {
                             letsgotojapan::$instance->giveExtraTime($this->player_id);
                             letsgotojapan::$instance->gamestate->setPlayerNonMultiactive($this->player_id, 'stop');
+                            }
+                            else
+                            {
+                                letsgotojapan::$instance->giveExtraTime($this->player_id);
+                                letsgotojapan::$instance->addPending($this->player_id, "Phase2Step1");
+
+                            }
                         }
 
                         if($calculhappy>=2)
@@ -978,8 +1110,17 @@ class Pending extends APP_GameClass
 
                 else
                 {
+                    if ($playerhandcount2 == 0)
+                    {
                     letsgotojapan::$instance->giveExtraTime($this->player_id);
                     letsgotojapan::$instance->gamestate->setPlayerNonMultiactive($this->player_id, 'stop');
+                    }
+                    else
+                    {
+                        letsgotojapan::$instance->giveExtraTime($this->player_id);
+                        letsgotojapan::$instance->addPending($this->player_id, "Phase2Step1");
+
+                    }
                 }
 
 
@@ -1024,14 +1165,14 @@ function ExtraWalk($parg1, $parg2, $varg1, $varg2)
     if($varg1 == "tokyo")
     {
         letsgotojapan::$instance->DeployerExtraWalk($this->player_id, $parg2);
-        letsgotojapan::$instance->tokyo->pickCardForLocation( 'deck', 'playernewhand', $this->player_id);
+        
         letsgotojapan::$instance->addPending($this->player_id, "ExtraWalkStep2", 1, $parg2);
     } 
 
     if($varg1 == "kyoto")
     {
         letsgotojapan::$instance->DeployerExtraWalk($this->player_id, $parg2);
-        letsgotojapan::$instance->kyoto->pickCardForLocation( 'deck', 'playernewhand', $this->player_id);
+        
         letsgotojapan::$instance->addPending($this->player_id, "ExtraWalkStep2", 2, $parg2);
     } 
    
@@ -1058,6 +1199,9 @@ function argExtraWalkStep2($parg1, $parg2)
 
 function ExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
 {
+    $counthandtokyocard2 = count(self::getObjectListFromDB( "SELECT card_id id FROM tokyo WHERE card_location ='playerhand' AND card_location_arg = {$this->player_id}", true ));
+    $counthandkyotocard2 = count(self::getObjectListFromDB( "SELECT card_id id FROM kyoto WHERE card_location ='playerhand' AND card_location_arg = {$this->player_id}", true ));
+    $playerhandcount2 = $counthandtokyocard2 + $counthandkyotocard2;
 
     if($varg1 == "cancel")
     {
@@ -1118,8 +1262,17 @@ function ExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
         letsgotojapan::$instance->CondenserExtraWalk($this->player_id, $parg2, $varg1);
         }
 
-        letsgotojapan::$instance->giveExtraTime($this->player_id);
-        letsgotojapan::$instance->gamestate->setPlayerNonMultiactive($this->player_id, 'stop');
+        if ($playerhandcount2 == 0)
+                {
+                    letsgotojapan::$instance->giveExtraTime($this->player_id);
+                    letsgotojapan::$instance->gamestate->setPlayerNonMultiactive($this->player_id, 'stop');
+                }
+                else
+                {
+                    letsgotojapan::$instance->giveExtraTime($this->player_id);
+                    letsgotojapan::$instance->addPending($this->player_id, "Phase2Step1");
+                }
+
 
 
 
@@ -1648,50 +1801,57 @@ function ExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
                 )
                 );
 
+            $counthandtokyocard2 = count(self::getObjectListFromDB( "SELECT card_id id FROM tokyo WHERE card_location ='playerhand' AND card_location_arg = {$this->player_id}", true ));
+            $counthandkyotocard2 = count(self::getObjectListFromDB( "SELECT card_id id FROM kyoto WHERE card_location ='playerhand' AND card_location_arg = {$this->player_id}", true ));
+            $playerhandcount2 = $counthandtokyocard2 + $counthandkyotocard2;
 
-            /*
-            $tokyocard = self::getObjectListFromDB( "SELECT card_id id FROM tokyo WHERE card_location ='playerhand' AND card_location_arg = {$this->player_id}", true );
-            $kyotocard = self::getObjectListFromDB( "SELECT card_id id FROM kyoto WHERE card_location ='playerhand' AND card_location_arg = {$this->player_id}", true );
-            $counttokyocard = count($tokyocard);
-            $countkyotocard = count($kyotocard);
+                if($playerhandcount2 == 2)
+                {
+            
+                $tokyocard = self::getObjectListFromDB( "SELECT card_id id FROM tokyo WHERE card_location ='playerhand' AND card_location_arg = {$this->player_id}", true );
+                $kyotocard = self::getObjectListFromDB( "SELECT card_id id FROM kyoto WHERE card_location ='playerhand' AND card_location_arg = {$this->player_id}", true );
+                $counttokyocard = count($tokyocard);
+                $countkyotocard = count($kyotocard);
 
-            if ($counttokyocard != 0)
-            {
-                $nextplayer = letsgotojapan::$instance->getPlayerAfter( $this->player_id );
+                if ($counttokyocard != 0)
+                {
+                    $nextplayer = letsgotojapan::$instance->getPlayerAfter( $this->player_id );
 
-                    foreach($tokyocard as $cardid)
-                    {
+                        foreach($tokyocard as $cardid)
+                        {
 
-                    letsgotojapan::$instance->tokyo->moveCard( $cardid, 'discardboardhidden', $nextplayer );
-                    letsgotojapan::$instance->notifyAllPlayers('passcard','', array(
-                        'id' => $cardid,
-                        'ville' => 1,
-                        'playerid' => $this->player_id,
+                        letsgotojapan::$instance->tokyo->moveCard( $cardid, 'discardboardhidden', $nextplayer );
+                        letsgotojapan::$instance->notifyAllPlayers('passcard','', array(
+                            'id' => $cardid,
+                            'ville' => 1,
+                            'playerid' => $this->player_id,
 
-                        )
-                        );
-                    }
+                            )
+                            );
+                        }
 
-            }
+                }
 
-            if ($countkyotocard != 0)
-            {
-                $nextplayer = letsgotojapan::$instance->getPlayerAfter( $this->player_id );
+                if ($countkyotocard != 0)
+                {
+                    $nextplayer = letsgotojapan::$instance->getPlayerAfter( $this->player_id );
 
-                    foreach($kyotocard as $cardid)
-                    {
-                    letsgotojapan::$instance->kyoto->moveCard( $cardid, 'discardboardhidden', $nextplayer );
-                    letsgotojapan::$instance->notifyAllPlayers('passcard','', array(
-                        'id' => $cardid,
-                        'ville' => 2,
-                        'playerid' => $this->player_id,
+                        foreach($kyotocard as $cardid)
+                        {
+                        letsgotojapan::$instance->kyoto->moveCard( $cardid, 'discardboardhidden', $nextplayer );
+                        letsgotojapan::$instance->notifyAllPlayers('passcard','', array(
+                            'id' => $cardid,
+                            'ville' => 2,
+                            'playerid' => $this->player_id,
 
-                        )
-                        );
-                    }
+                            )
+                            );
+                        }
 
-            }
-*/
+                }
+                
+                }
+
             
 
 
@@ -1700,14 +1860,15 @@ function ExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
             
             $day = $explode2[1];
 
-            /*
+            
+
+            
+
             if ($counttrip[$day-1] == 3)
             {
                 $colorday = intval(self::getUniqueValueFromDB("SELECT level FROM tokens WHERE name={$day}"));
                 
-
-                $scorecards = array();
-
+                
                 $tokyo = self::getObjectListFromDB( "SELECT card_type type FROM tokyo WHERE  card_location_arg = {$this->player_id} AND walk =0 AND card_location LIKE 'cardposition_{$day}%'", true );
                 $kyoto = self::getObjectListFromDB( "SELECT card_type type FROM kyoto WHERE  card_location_arg = {$this->player_id} AND walk =0 AND card_location LIKE 'cardposition_{$day}%'", true );
                 $tokyowalk = self::getObjectListFromDB( "SELECT card_type type FROM tokyo WHERE  card_location_arg = {$this->player_id} AND walk =1 AND card_location LIKE 'cardposition_{$day}%'", true );
@@ -1760,8 +1921,16 @@ function ExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
                 {
                     if($result[$colorday-1]==0)
                     {
-                        letsgotojapan::$instance->giveExtraTime($this->player_id);
-                        letsgotojapan::$instance->gamestate->setPlayerNonMultiactive($this->player_id, 'stop');
+                        if($playerhandcount2 != 2)
+                        {
+                            letsgotojapan::$instance->giveExtraTime($this->player_id);
+                            letsgotojapan::$instance->addPending($this->player_id, "Phase2Step1");
+                        }
+                        if($playerhandcount2 == 2)
+                        {
+                            letsgotojapan::$instance->giveExtraTime($this->player_id);
+                            letsgotojapan::$instance->gamestate->setPlayerNonMultiactive($this->player_id, 'stop');
+                        }
                     }
 
                     if($result[$colorday-1]==1)
@@ -1774,13 +1943,20 @@ function ExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
                             )
                             );
                         
-                        letsgotojapan::$instance->giveExtraTime($this->player_id);
-                        letsgotojapan::$instance->gamestate->setPlayerNonMultiactive($this->player_id, 'stop');
+                            if($playerhandcount2 != 2)
+                            {
+                                letsgotojapan::$instance->giveExtraTime($this->player_id);
+                                letsgotojapan::$instance->addPending($this->player_id, "Phase2Step1");
+                            }
+                            if($playerhandcount2 == 2)
+                            {
+                                letsgotojapan::$instance->giveExtraTime($this->player_id);
+                                letsgotojapan::$instance->gamestate->setPlayerNonMultiactive($this->player_id, 'stop');
+                            }
                     }
 
                     if($result[$colorday-1]>=2)
                     {
-                       
                         letsgotojapan::$instance->addPending($this->player_id, "BonusChoose", $result[$colorday-1], $day);
                     }
 
@@ -1792,8 +1968,16 @@ function ExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
 
                     if($calculhappy==0)
                     {
-                        letsgotojapan::$instance->giveExtraTime($this->player_id);
-                        letsgotojapan::$instance->gamestate->setPlayerNonMultiactive($this->player_id, 'stop');
+                        if($playerhandcount2 != 2)
+                        {
+                            letsgotojapan::$instance->giveExtraTime($this->player_id);
+                            letsgotojapan::$instance->addPending($this->player_id, "Phase2Step1");
+                        }
+                        if($playerhandcount2 == 2)
+                        {
+                            letsgotojapan::$instance->giveExtraTime($this->player_id);
+                            letsgotojapan::$instance->gamestate->setPlayerNonMultiactive($this->player_id, 'stop');
+                        }
                     }
 
                     if($calculhappy==1)
@@ -1806,8 +1990,16 @@ function ExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
                             )
                             );
 
-                        letsgotojapan::$instance->giveExtraTime($this->player_id);
-                        letsgotojapan::$instance->gamestate->setPlayerNonMultiactive($this->player_id, 'stop');
+                            if($playerhandcount2 != 2)
+                            {
+                                letsgotojapan::$instance->giveExtraTime($this->player_id);
+                                letsgotojapan::$instance->addPending($this->player_id, "Phase2Step1");
+                            }
+                            if($playerhandcount2 == 2)
+                            {
+                                letsgotojapan::$instance->giveExtraTime($this->player_id);
+                                letsgotojapan::$instance->gamestate->setPlayerNonMultiactive($this->player_id, 'stop');
+                            }
                     }
 
                     if($calculhappy>=2)
@@ -1818,16 +2010,78 @@ function ExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
                 }
 
                
-            }*/
+            }
 
-            //else
-            //{
-            letsgotojapan::$instance->giveExtraTime($this->player_id);
-            letsgotojapan::$instance->addPending($this->player_id, "Phase2Step1");
-            //}
+            else
+            {
+                if($playerhandcount2 != 2)
+                    {
+                    letsgotojapan::$instance->giveExtraTime($this->player_id);
+                    letsgotojapan::$instance->addPending($this->player_id, "Phase2Step1");
+                    }
+                if($playerhandcount2 == 2)
+                {
+                    letsgotojapan::$instance->giveExtraTime($this->player_id);
+                    letsgotojapan::$instance->gamestate->setPlayerNonMultiactive($this->player_id, 'stop');
+                }
+
+
+            }
             
             
         }
+
+    }
+
+
+
+    function argLastTurn($parg1, $parg2)
+    {
+        $ret = array();
+        $ret["selectable"] = array();
+        $ret["selectable2"] = array();
+        $ret["selected"] = array();
+        $ret['buttons'] = array();
+        $ret['titleyou'] = clienttranslate('${you} must choose the card to draw:');
+
+        
+        $ret['buttons'][]='tokyo';
+        $ret['buttons'][]='kyoto';
+        
+        
+        return $ret;
+    }
+
+    function LastTurn($parg1, $parg2, $varg1, $varg2)
+    {
+
+        if($varg1 == "tokyo")
+        {
+            
+            $newcard = letsgotojapan::$instance->tokyo->pickCardForLocation( 'deck', 'playerhand', $player_id);
+
+
+  var_dump ($newcard);
+            
+            
+            letsgotojapan::$instance->addPending($this->player_id, "Phase1Step1");
+            
+        }
+        if($varg1 == "kyoto")
+        {
+            
+            $newcard = letsgotojapan::$instance->kyoto->pickCardForLocation( 'deck', 'playerhand', $player_id);
+
+
+
+
+            letsgotojapan::$instance->addPending($this->player_id, "Phase1Step1");
+            
+        }
+        
+
+              
+        
 
     }
 

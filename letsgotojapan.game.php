@@ -1481,7 +1481,7 @@ function st_MultiPlayerActivation()
     $turn = self::getUniqueValueFromDB("SELECT level FROM tokens WHERE name = 'turn'");
     $newturn = $turn+1;
 
-    if ($newturn < 5)   ////// A CHANGER /////
+    if (($newturn < 5)||($newturn == 11))   ////// A CHANGER /////
     {
         /// changement de turn ////
         self::DbQuery( "UPDATE tokens set level = level + 1  WHERE name ='turn'" );
@@ -1576,7 +1576,7 @@ function st_MultiPlayerActivation()
         }
     }
 
-    if ($newturn == 5)   ////// A CHANGER /////
+    if (($newturn == 5)||($newturn == 7)||($newturn == 9))  ////// A CHANGER /////
     {
         /// changement de turn ////
         self::DbQuery( "UPDATE tokens set level = level + 1  WHERE name ='turn'" );
@@ -1677,7 +1677,7 @@ function st_MultiPlayerActivation()
         }
     }
 
-    if (($newturn >= 6)&&($newturn < 10))  ////// A CHANGER /////
+    if (($newturn == 6)||($newturn == 8))  ////// A CHANGER /////
     {
         /// changement de turn ////
         self::DbQuery( "UPDATE tokens set level = level + 1  WHERE name ='turn'" );
@@ -1692,6 +1692,8 @@ function st_MultiPlayerActivation()
         foreach ($listplayers as $player_id)
         {
             $this->tokyo->pickCardForLocation( 'deck', 'playerhand', $player_id);
+            $this->tokyo->pickCardForLocation( 'deck', 'playerhand', $player_id);
+            $this->kyoto->pickCardForLocation( 'deck', 'playerhand', $player_id);
             $this->kyoto->pickCardForLocation( 'deck', 'playerhand', $player_id);
 
             $tokyocard = self::getObjectListFromDB( "SELECT card_id id, card_type type FROM tokyo WHERE card_location ='playerhand' AND card_location_arg = {$player_id}");
@@ -1772,7 +1774,7 @@ function st_MultiPlayerActivation()
         }
     }
 
-    if (($newturn >= 10)&&($newturn < 14))  ////// A CHANGER /////
+    if (($newturn == 10)||($newturn == 12))  ////// A CHANGER /////
     {
         /// changement de turn ////
         self::DbQuery( "UPDATE tokens set level = level + 1  WHERE name ='turn'" );
@@ -1781,52 +1783,11 @@ function st_MultiPlayerActivation()
         )
         );
 
-
+        
         $listplayers = self::getObjectListFromDB( "SELECT player_id id FROM player", true );
 
         foreach ($listplayers as $player_id)
         {
-            $this->tokyo->pickCardForLocation( 'deck', 'playerhand', $player_id);
-            $this->kyoto->pickCardForLocation( 'deck', 'playerhand', $player_id);
-
-            $tokyocard = self::getObjectListFromDB( "SELECT card_id id, card_type type FROM tokyo WHERE card_location ='playerhand' AND card_location_arg = {$player_id}");
-            $kyotocard = self::getObjectListFromDB( "SELECT card_id id, card_type type FROM kyoto WHERE card_location ='playerhand' AND card_location_arg = {$player_id}");
-            
-            
-            foreach($tokyocard as $card1)
-            {
-                
-
-            letsgotojapan::$instance->notifyAllPlayers('drawcard','', array(
-                'id' => $card1['id'],
-                'card' => $card1['type'],
-                'ville' => 1,
-                'playerid' => $player_id,
-                'location' => 'playerhand',
-
-                )
-                );
-                 
-            }
-            
-
-            foreach($kyotocard as $card2)
-            {
-                
-
-            letsgotojapan::$instance->notifyAllPlayers('drawcard','', array(
-                'id' => $card2['id'],
-                'card' => $card2['type'],
-                'ville' => 2,
-                'playerid' => $player_id,
-                'location' => 'playerhand',
-                )
-                );
-                
-            }
-
-            //////////////// Compteur discard ///////////////
-
             $tokyocarddiscard = self::getObjectListFromDB( "SELECT card_id id FROM tokyo WHERE card_location ='discardboardhidden' AND card_location_arg = {$player_id}", true);
             $kyotocarddiscard = self::getObjectListFromDB( "SELECT card_id id FROM kyoto WHERE card_location ='discardboardhidden' AND card_location_arg = {$player_id}", true);
             $tokyocarddiscardcount = count($tokyocarddiscard);
@@ -1850,12 +1811,59 @@ function st_MultiPlayerActivation()
 
             }
 
-            $newtokyocarddiscardcount = count(self::getObjectListFromDB( "SELECT card_id id FROM tokyo WHERE card_location ='discardboard' AND card_location_arg = {$player_id}", true));
-            $newkyotocarddiscardcount = count(self::getObjectListFromDB( "SELECT card_id id FROM kyoto WHERE card_location ='discardboard' AND card_location_arg = {$player_id}", true));
+
+            
+            $tokyodiscardboard = self::getObjectListFromDB( "SELECT card_id id, card_type type FROM tokyo WHERE card_location ='discardboard' AND card_location_arg = {$player_id}");
+            $kyotodiscardboard = self::getObjectListFromDB( "SELECT card_id id, card_type type FROM kyoto WHERE card_location ='discardboard' AND card_location_arg = {$player_id}");
+
+            
+            if($tokyodiscardboard != null)
+            {
+            
+                foreach($tokyodiscardboard as $card1)
+                {
+                    
+                letsgotojapan::$instance->tokyo->moveCard( $card1['id'], 'playerhand', $player_id );
+                letsgotojapan::$instance->notifyAllPlayers('drawcard','', array(
+                    'id' => $card1['id'],
+                    'card' => $card1['type'],
+                    'ville' => 1,
+                    'playerid' => $player_id,
+                    'location' => 'playerhand',
+
+                    )
+                    );
+                    
+                }
+
+            }
+
+            if($kyotodiscardboard != null)
+            {
+            
+
+                foreach($kyotodiscardboard as $card2)
+                {
+                    
+                letsgotojapan::$instance->kyoto->moveCard( $card2['id'], 'playerhand', $player_id );
+                letsgotojapan::$instance->notifyAllPlayers('drawcard','', array(
+                    'id' => $card2['id'],
+                    'card' => $card2['type'],
+                    'ville' => 2,
+                    'playerid' => $player_id,
+                    'location' => 'playerhand',
+                    )
+                    );
+                    
+                }
+
+            }
+
+            //////////////// Compteur discard ///////////////
 
             letsgotojapan::$instance->notifyAllPlayers('majcompteurdiscard','', array(
-                'count1' => $newtokyocarddiscardcount,
-                'count2' => $newkyotocarddiscardcount,
+                'count1' => 0,
+                'count2' => 0,
                 'playerid' => $player_id,
                 
                 )
@@ -1866,6 +1874,110 @@ function st_MultiPlayerActivation()
             $this->addPending($player_id, "Phase1Step1");
         }
     }
+
+    if ($newturn == 13) ////// A CHANGER /////
+    {
+        /// changement de turn ////
+        self::DbQuery( "UPDATE tokens set level = level + 1  WHERE name ='turn'" );
+        letsgotojapan::$instance->notifyAllPlayers('turn','', array(
+        'turn' =>$newturn,
+        )
+        );
+
+        
+        $listplayers = self::getObjectListFromDB( "SELECT player_id id FROM player", true );
+
+        foreach ($listplayers as $player_id)
+        {
+            $tokyocarddiscard = self::getObjectListFromDB( "SELECT card_id id FROM tokyo WHERE card_location ='discardboardhidden' AND card_location_arg = {$player_id}", true);
+            $kyotocarddiscard = self::getObjectListFromDB( "SELECT card_id id FROM kyoto WHERE card_location ='discardboardhidden' AND card_location_arg = {$player_id}", true);
+            $tokyocarddiscardcount = count($tokyocarddiscard);
+            $kyotocarddiscardcount = count($kyotocarddiscard);
+
+            if ($tokyocarddiscardcount != 0)
+            {
+                foreach($tokyocarddiscard as $cardid1)
+                {
+                    letsgotojapan::$instance->tokyo->moveCard( $cardid1, 'discardboard', $player_id );
+                }
+
+            }
+
+            if ($kyotocarddiscardcount != 0)
+            {
+                foreach($kyotocarddiscard as $cardid2)
+                {
+                    letsgotojapan::$instance->kyoto->moveCard( $cardid2, 'discardboard', $player_id );
+                }
+
+            }
+
+
+            
+            $tokyodiscardboard = self::getObjectListFromDB( "SELECT card_id id, card_type type FROM tokyo WHERE card_location ='discardboard' AND card_location_arg = {$player_id}");
+            $kyotodiscardboard = self::getObjectListFromDB( "SELECT card_id id, card_type type FROM kyoto WHERE card_location ='discardboard' AND card_location_arg = {$player_id}");
+
+            
+            if($tokyodiscardboard != null)
+            {
+            
+                foreach($tokyodiscardboard as $card1)
+                {
+                    
+                letsgotojapan::$instance->tokyo->moveCard( $card1['id'], 'playerhand', $player_id );
+                letsgotojapan::$instance->notifyAllPlayers('drawcard','', array(
+                    'id' => $card1['id'],
+                    'card' => $card1['type'],
+                    'ville' => 1,
+                    'playerid' => $player_id,
+                    'location' => 'playerhand',
+
+                    )
+                    );
+                    
+                }
+
+            }
+
+            if($kyotodiscardboard != null)
+            {
+            
+
+                foreach($kyotodiscardboard as $card2)
+                {
+                    
+                letsgotojapan::$instance->kyoto->moveCard( $card2['id'], 'playerhand', $player_id );
+                letsgotojapan::$instance->notifyAllPlayers('drawcard','', array(
+                    'id' => $card2['id'],
+                    'card' => $card2['type'],
+                    'ville' => 2,
+                    'playerid' => $player_id,
+                    'location' => 'playerhand',
+                    )
+                    );
+                    
+                }
+
+            }
+
+            //////////////// Compteur discard ///////////////
+
+            letsgotojapan::$instance->notifyAllPlayers('majcompteurdiscard','', array(
+                'count1' => 0,
+                'count2' => 0,
+                'playerid' => $player_id,
+                
+                )
+                );
+                
+            
+
+            $this->addPending($player_id, "LastTurn");
+        }
+    }
+
+
+
 
     $this->gamestate->setAllPlayersMultiactive();
     $this->gamestate->nextState( 'next');
