@@ -2173,6 +2173,8 @@ function ExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
     }
 
 
+/////////////////////// FINAL PHASE ///////////////////
+
 
 
 

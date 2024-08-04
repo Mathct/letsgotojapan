@@ -169,6 +169,12 @@ class letsgotojapan extends Table
         self::DbQuery( "INSERT INTO tokens (type, name, level) VALUES ('general', '5', $valeur5)" );
         self::DbQuery( "INSERT INTO tokens (type, name, level) VALUES ('general', '6', $valeur6)" );
 
+        for ($i=72; $i<=80; $i++)
+        {
+            self::DbQuery( "UPDATE tokyo set finallocation = 0  WHERE card_type = {$i}" );
+            self::DbQuery( "UPDATE kyoto set finallocation = 0  WHERE card_type = {$i}" );
+        }
+
         
         foreach( $players as $player_id => $player )
         {
