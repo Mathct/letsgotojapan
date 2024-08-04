@@ -189,7 +189,15 @@ class Pending extends APP_GameClass
 
             if ($counttokyocard != 0)
             {
+                $turn = self::getUniqueValueFromDB("SELECT level FROM tokens WHERE name = 'turn'");
+                if ($turn<=6)
+                {
                 $nextplayer = letsgotojapan::$instance->getPlayerAfter( $this->player_id );
+                }
+                if ($turn>=7)
+                {
+                $nextplayer = letsgotojapan::$instance->getPlayerBefore( $this->player_id );
+                }
 
                     foreach($tokyocard as $cardid)
                     {
@@ -208,8 +216,15 @@ class Pending extends APP_GameClass
 
             if ($countkyotocard != 0)
             {
+                $turn = self::getUniqueValueFromDB("SELECT level FROM tokens WHERE name = 'turn'");
+                if ($turn<=6)
+                {
                 $nextplayer = letsgotojapan::$instance->getPlayerAfter( $this->player_id );
-
+                }
+                if ($turn>=7)
+                {
+                $nextplayer = letsgotojapan::$instance->getPlayerBefore( $this->player_id );
+                }
                     foreach($kyotocard as $cardid)
                     {
                     letsgotojapan::$instance->kyoto->moveCard( $cardid, 'discardboardhidden', $nextplayer );
@@ -814,7 +829,16 @@ class Pending extends APP_GameClass
         
                     if ($counttokyocard != 0)
                     {
-                        $nextplayer = letsgotojapan::$instance->getPlayerAfter( $this->player_id );
+                        $turn = self::getUniqueValueFromDB("SELECT level FROM tokens WHERE name = 'turn'");
+                            if ($turn<=6)
+                            {
+                            $nextplayer = letsgotojapan::$instance->getPlayerAfter( $this->player_id );
+                            }
+                            if ($turn>=7)
+                            {
+                            $nextplayer = letsgotojapan::$instance->getPlayerBefore( $this->player_id );
+                            }
+
                             foreach($tokyocard as $cardid1)
                             {
         
@@ -832,7 +856,16 @@ class Pending extends APP_GameClass
         
                     if ($countkyotocard != 0)
                     {
-                        $nextplayer = letsgotojapan::$instance->getPlayerAfter( $this->player_id );
+                        $turn = self::getUniqueValueFromDB("SELECT level FROM tokens WHERE name = 'turn'");
+                            if ($turn<=6)
+                            {
+                            $nextplayer = letsgotojapan::$instance->getPlayerAfter( $this->player_id );
+                            }
+                            if ($turn>=7)
+                            {
+                            $nextplayer = letsgotojapan::$instance->getPlayerBefore( $this->player_id );
+                            }
+
                             foreach($kyotocard as $cardid2)
                             {
                             letsgotojapan::$instance->kyoto->moveCard( $cardid2, 'discardboardhidden', $nextplayer  );
@@ -892,7 +925,16 @@ class Pending extends APP_GameClass
         
                     if ($counttokyocard != 0)
                     {
-                        $nextplayer = letsgotojapan::$instance->getPlayerAfter( $this->player_id );
+                        $turn = self::getUniqueValueFromDB("SELECT level FROM tokens WHERE name = 'turn'");
+                            if ($turn<=6)
+                            {
+                            $nextplayer = letsgotojapan::$instance->getPlayerAfter( $this->player_id );
+                            }
+                            if ($turn>=7)
+                            {
+                            $nextplayer = letsgotojapan::$instance->getPlayerBefore( $this->player_id );
+                            }
+
                             foreach($tokyocard as $cardid1)
                             {
         
@@ -910,7 +952,16 @@ class Pending extends APP_GameClass
         
                     if ($countkyotocard != 0)
                     {
-                        $nextplayer = letsgotojapan::$instance->getPlayerAfter( $this->player_id );
+                        $turn = self::getUniqueValueFromDB("SELECT level FROM tokens WHERE name = 'turn'");
+                            if ($turn<=6)
+                            {
+                            $nextplayer = letsgotojapan::$instance->getPlayerAfter( $this->player_id );
+                            }
+                            if ($turn>=7)
+                            {
+                            $nextplayer = letsgotojapan::$instance->getPlayerBefore( $this->player_id );
+                            }
+
                             foreach($kyotocard as $cardid2)
                             {
                             letsgotojapan::$instance->kyoto->moveCard( $cardid2, 'discardboardhidden', $nextplayer );
@@ -1815,7 +1866,15 @@ function ExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
 
                 if ($counttokyocard != 0)
                 {
-                    $nextplayer = letsgotojapan::$instance->getPlayerAfter( $this->player_id );
+                    $turn = self::getUniqueValueFromDB("SELECT level FROM tokens WHERE name = 'turn'");
+                        if ($turn<=6)
+                        {
+                        $nextplayer = letsgotojapan::$instance->getPlayerAfter( $this->player_id );
+                        }
+                        if ($turn>=7)
+                        {
+                        $nextplayer = letsgotojapan::$instance->getPlayerBefore( $this->player_id );
+                        }
 
                         foreach($tokyocard as $cardid)
                         {
@@ -1834,7 +1893,15 @@ function ExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
 
                 if ($countkyotocard != 0)
                 {
-                    $nextplayer = letsgotojapan::$instance->getPlayerAfter( $this->player_id );
+                    $turn = self::getUniqueValueFromDB("SELECT level FROM tokens WHERE name = 'turn'");
+                        if ($turn<=6)
+                        {
+                        $nextplayer = letsgotojapan::$instance->getPlayerAfter( $this->player_id );
+                        }
+                        if ($turn>=7)
+                        {
+                        $nextplayer = letsgotojapan::$instance->getPlayerBefore( $this->player_id );
+                        }
 
                         foreach($kyotocard as $cardid)
                         {
@@ -2058,10 +2125,20 @@ function ExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
         if($varg1 == "tokyo")
         {
             
-            $newcard = letsgotojapan::$instance->tokyo->pickCardForLocation( 'deck', 'playerhand', $player_id);
+            $newcard = letsgotojapan::$instance->tokyo->pickCardForLocation( 'deck', 'playerhand', $this->player_id);
 
+            letsgotojapan::$instance->notifyAllPlayers('drawcard','', array(
+                'id' =>$newcard['id'],
+                'card' => $newcard['type'],
+                'ville' => 1,
+                'playerid' => $this->player_id,
+                'location' => 'playerhand',
 
-  var_dump ($newcard);
+                )
+                );
+                 
+            
+  
             
             
             letsgotojapan::$instance->addPending($this->player_id, "Phase1Step1");
@@ -2070,9 +2147,19 @@ function ExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
         if($varg1 == "kyoto")
         {
             
-            $newcard = letsgotojapan::$instance->kyoto->pickCardForLocation( 'deck', 'playerhand', $player_id);
+            $newcard = letsgotojapan::$instance->kyoto->pickCardForLocation( 'deck', 'playerhand', $this->player_id);
 
+            letsgotojapan::$instance->notifyAllPlayers('drawcard','', array(
+                'id' =>$newcard['id'],
+                'card' => $newcard['type'],
+                'ville' => 2,
+                'playerid' => $this->player_id,
+                'location' => 'playerhand',
 
+                )
+                );
+                 
+            
 
 
             letsgotojapan::$instance->addPending($this->player_id, "Phase1Step1");
