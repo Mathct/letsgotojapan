@@ -2,7 +2,7 @@
 /**
  *------
  * BGA framework: Gregory Isabelli & Emmanuel Colin & BoardGameArena
- * letsgotojapan implementation : © <Your name here> <Your email address here>
+ * letsgotojapan implementation : © <Mathieu Chatrain> <mathieu.chatrain@gmail.com>
  *
  * This code has been produced on the BGA studio platform for use on https://boardgamearena.com.
  * See http://en.doc.boardgamearena.com/Studio for more information.

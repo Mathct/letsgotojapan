@@ -3,7 +3,7 @@
 <!-- 
 --------
 -- BGA framework: Gregory Isabelli & Emmanuel Colin & BoardGameArena
--- letsgotojapan implementation : © <Your name here> <Your email address here>
+-- letsgotojapan implementation : © <Mathieu Chatrain> <mathieu.chatrain@gmail.com>
 -- 
 -- This code has been produced on the BGA studio platform for use on http://boardgamearena.com.
 -- See http://en.boardgamearena.com/#!doc/Studio for more information.
@@ -182,6 +182,9 @@ var jstpl_player_compteurs = '<div class="player_compteurs" id="player_compteurs
 <div id="nbrewild_${id}" class="nbrewild" style="display: inline-block; margin-right: 0px;"></div>\
 </div>\
 </div>';
+
+var jstpl_finaltokyo='<div class="finaltokyo">T</div>';
+var jstpl_finalkyoto='<div class="finalkyoto">K</div>';
 
 
 </script>  

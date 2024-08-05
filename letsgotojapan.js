@@ -1,7 +1,7 @@
 /**
  *------
  * BGA framework: Gregory Isabelli & Emmanuel Colin & BoardGameArena
- * letsgotojapan implementation : © <Your name here> <Your email address here>
+ * letsgotojapan implementation : © <Mathieu Chatrain> <mathieu.chatrain@gmail.com>
  *
  * This code has been produced on the BGA studio platform for use on http://boardgamearena.com.
  * See http://en.boardgamearena.com/#!doc/Studio for more information.
@@ -148,18 +148,49 @@ function (dojo, declare) {
                         dojo.query(".playerhand").addClass("masque");
                         dojo.query("#mask_turn").addClass("masque");
                         dojo.query("#mask_hand").addClass("masque");
-
+                        if (gamedatas.turn < 14)
+                        {
                         var elements = document.querySelectorAll("[id^='playerview']");
                         elements.forEach(function(element) {
                             element.style.top = "151px"; 
                           });
 
                         var global = document.getElementById('global');
-                        global.style.height = "1150px"; 
+                        global.style.height = "1170px"; 
+                        }
+
+                        if (gamedatas.turn >= 14)
+                        {
+                        dojo.query(".turn_board").addClass("hidden");
+
+                        var elements = document.querySelectorAll("[id^='playerview']");
+                        elements.forEach(function(element) {
+                            element.style.top = "5px"; 
+                            });
+
+                        var global = document.getElementById('global');
+                        global.style.height = "1020px"; 
+                        }
+
                     }
 
 
                 this.addTurn(gamedatas.turn);
+
+                if ((gamedatas.turn >= 14)&&(!this.isSpectator))
+                {
+                    
+
+                    this.addMaskTurn();
+                    this.addMaskHand();
+
+                    dojo.query("#mask_turn").addClass("masque");
+                    dojo.query("#mask_hand").addClass("masque");
+
+
+
+
+                }
 
                 ////////////////////////////////   CARD PLAYER HAND AND TRIP   ///////////////////////////////
 
@@ -180,7 +211,7 @@ function (dojo, declare) {
                         if (tokyo.location.startsWith("cardposition"))
                         {
                         
-                            this.addCardTokyoTrip(tokyo.id, tokyo.type, tokyo.type_arg, tokyo.location, tokyo.location_arg, tokyo.walk);
+                            this.addCardTokyoTrip(tokyo.id, tokyo.type, tokyo.type_arg, tokyo.location, tokyo.location_arg, tokyo.walk, tokyo.finallocation);
 
                         }
                         
@@ -201,7 +232,7 @@ function (dojo, declare) {
                         if (kyoto.location.startsWith("cardposition"))
                             {
                             
-                            this.addCardKyotoTrip(kyoto.id, kyoto.type, kyoto.type_arg, kyoto.location, kyoto.location_arg, kyoto.walk);
+                            this.addCardKyotoTrip(kyoto.id, kyoto.type, kyoto.type_arg, kyoto.location, kyoto.location_arg, kyoto.walk, kyoto.finallocation);
                             }
                         
                         
@@ -275,7 +306,8 @@ function (dojo, declare) {
                 dojo.query(".selectable").removeClass("selectable"); 
                 dojo.query(".selected").removeClass("selected"); 
                 dojo.query(".selectable2").removeClass("selectable2"); 
-                dojo.query(".selected2").removeClass("selected2"); 
+                dojo.query(".selected2").removeClass("selected2");
+                dojo.query(".selected3").removeClass("selected3");  
                 dojo.query(".selectable3discard").removeClass("selectable3discard"); 
                 dojo.query(".selected3discard").removeClass("selected3discard"); 
                 
@@ -338,6 +370,17 @@ function (dojo, declare) {
         
                                     }
                                 }
+
+                                if (this.args[this.getCurrentPlayerId()][0].selected3)
+                                    {
+                                    for( var sid in this.args[this.getCurrentPlayerId()][0].selected3)
+                                        {
+                                            
+                                                
+                                                dojo.query("#"+this.args[this.getCurrentPlayerId()][0].selected3[sid]).addClass("selected3");
+            
+                                        }
+                                    }
     
                             
                             if(this.args[this.getCurrentPlayerId()][0].titleyou != null)
@@ -424,6 +467,45 @@ function (dojo, declare) {
                                     this.addActionButton( 'validate3discard', _("Validate selection") ,'onOpValidate3Discard', null, null, 'blue' );
                                     dojo.addClass( 'validate3discard', 'disabled');
                                     }
+                                    if(args[this.getCurrentPlayerId()][0].buttons[nb] == "continue")
+                                    {
+                                        this.addActionButton( 'continue', _("Continue") ,'onOpButton', null, null, 'gray' );
+                                    }
+
+                                    if(args[this.getCurrentPlayerId()][0].buttons[nb] == "cardtokyoverso")
+                                        {
+                                                                                        
+                                            this.addActionButton(args[this.getCurrentPlayerId()][0].buttons[nb], `<div class="cardtokyoversobouton"></div>`, 'onOpButton', null, null, 'none');
+                                        }
+                                    if(args[this.getCurrentPlayerId()][0].buttons[nb] == "cardkyotoverso")
+                                        {
+                                                                                        
+                                            this.addActionButton(args[this.getCurrentPlayerId()][0].buttons[nb], `<div class="cardkyotoversobouton"></div>`, 'onOpButton', null, null, 'none');
+                                        }
+                                    if(args[this.getCurrentPlayerId()][0].buttons[nb].startsWith("cardbouton_1"))
+                                        {
+                                            var card = args[this.getCurrentPlayerId()][0].buttons[nb].split("_");
+                                            if((card[3]>=1)&&(card[3] <= 10))
+                                            {
+                                                var img = g_gamethemeurl+"img/tokyo1.jpg";
+                                                    this.addActionButton(args[this.getCurrentPlayerId()][0].buttons[nb], `<div class="cardbouton" style="background-image: url(${img}); background-position-y: 0%; background-position-x: ${((card[3]-1)*(-100))}%;"></div>`, 'onOpButton', null, null, 'none');
+                                            }
+
+                                            if((card[3]>=31)&&(card[3] <= 40))
+                                                {
+                                                    var img = g_gamethemeurl+"img/tokyo1.jpg";
+                                                    this.addActionButton(args[this.getCurrentPlayerId()][0].buttons[nb], `<div class="cardbouton" style="background-image: url(${img}); background-position-y: -300%; background-position-x: ${((card[3]-31)*(-100))}%;"></div>`, 'onOpButton', null, null, 'none');
+                                                }
+                                            
+                                                                                        
+                                            
+                                        }
+                                    if(args[this.getCurrentPlayerId()][0].buttons[nb].startsWith("cardbouton_2"))
+                                        {
+                                                                                        
+                                            this.addActionButton(args[this.getCurrentPlayerId()][0].buttons[nb], `<div class="cardbouton"></div>`, 'onOpButton', null, null, 'none');
+                                        }
+                            
                                     
                             }
                         }   
@@ -517,11 +599,13 @@ function (dojo, declare) {
 
             addTurn: function( turn)
             {   
-                
+                if(turn <=13)
+                {
                 dojo.place( this.format_block( 'jstpl_turn', {
                     
                                         
                 } ) , 'turnboard_marqueur_'+turn );
+                }
 
             },
 
@@ -846,7 +930,7 @@ function (dojo, declare) {
 
             },
 
-            addCardTokyoTrip: function( id, card, ville, location, player, walk )  
+            addCardTokyoTrip: function( id, card, ville, location, player, walk, finallocation )  
             {
                 if(walk == 0)
                 {
@@ -955,6 +1039,8 @@ function (dojo, declare) {
                         
                     }
 
+                   
+
                     if((card >=71)&&(card <=80))
                     {
                         var img = g_gamethemeurl+"img/tokyo2.jpg";
@@ -969,6 +1055,26 @@ function (dojo, declare) {
                         } ) , location+'_'+player );
                         
                     }
+
+                    if((card >=72)&&(card <=80)&&(finallocation ==1))
+                    {
+                        
+                        dojo.place( this.format_block( 'jstpl_finaltokyo', {
+                            
+                                                
+                        } ) , 'card_1_'+id );
+
+                    }
+
+                    if((card >=72)&&(card <=80)&&(finallocation ==2))
+                        {
+                            
+                            dojo.place( this.format_block( 'jstpl_finalkyoto', {
+                                
+                                                    
+                            } ) , 'card_1_'+id );
+    
+                        }
                         
                     
 
@@ -1002,7 +1108,7 @@ function (dojo, declare) {
             },
 
 
-            addCardKyotoTrip: function( id, card, ville, location, player, walk )  
+            addCardKyotoTrip: function( id, card, ville, location, player, walk, finallocation )  
             {
                 if(walk == 0)
                     {
@@ -1126,6 +1232,24 @@ function (dojo, declare) {
                         } ) , location+'_'+player );
                         
                     }
+
+                    if((card >=72)&&(card <=80)&&(finallocation ==1))
+                        {
+                            dojo.place( this.format_block( 'jstpl_finaltokyo', {
+                                
+                                                    
+                            } ) , 'card_2_'+id );
+    
+                        }
+
+                        if((card >=72)&&(card <=80)&&(finallocation ==2))
+                            {
+                                dojo.place( this.format_block( 'jstpl_finalkyoto', {
+                                    
+                                                        
+                                } ) , 'card_2_'+id );
+        
+                            }
                         
                       
                     //dojo.query("#"+location+'_'+player).removeClass("masque");
@@ -1160,6 +1284,73 @@ function (dojo, declare) {
                 
     
     
+
+            },
+
+            addMaskTurn: function()
+            {        	 
+                
+                
+
+                const element = document.querySelector('.turn_board');
+                const element2 = document.querySelector('.playerhandtitle');
+                const element3 = document.querySelector('.playerhand');
+                var playerviews = document.querySelectorAll('.playerview');
+                var global = document.getElementById("global");
+                var currentHeight = global.clientHeight;
+                
+                if (element && element.classList.contains('hidden')) 
+                {
+                    
+                    
+                } 
+
+                else 
+                {
+                    dojo.query(".turn_board").addClass("hidden");
+                    
+                    element2.style.top = "15px";
+                    element3.style.top = "43px";
+                    
+                        playerviews.forEach(function(playerview) {
+                        var currentTop = playerview.offsetTop;
+                        
+                        playerview.style.top = (currentTop - 155) + "px";
+                      });
+                      global.style.height = (currentHeight - 150) + "px";
+                }
+   
+
+            },
+
+            addMaskHand: function()
+            {        	 
+                
+
+                const element = document.querySelector('.playerhand');
+                var playerviews = document.querySelectorAll('.playerview');
+                var global = document.getElementById("global");
+                var currentHeight = global.clientHeight;
+                
+                if (element && element.classList.contains('hidden')) 
+                {
+                    
+                } 
+                
+                else 
+                {
+                    dojo.query(".playerhand").addClass("hidden");
+                    dojo.query(".playerhandtitle").addClass("hidden");
+                    playerviews.forEach(function(playerview) {
+                        var currentTop = playerview.offsetTop;
+                        
+                        playerview.style.top = (currentTop - 310) + "px";
+                      });
+                      global.style.height = (currentHeight - 300) + "px";
+                }
+
+                
+                
 
             },
     
@@ -1460,7 +1651,7 @@ function (dojo, declare) {
                         
                         playerview.style.top = (currentTop + 135) + "px";
                       });
-                      global.style.height = (currentHeight + 160) + "px";
+                      global.style.height = (currentHeight + 150) + "px";
                     
                 } 
 
@@ -1476,7 +1667,7 @@ function (dojo, declare) {
                         
                         playerview.style.top = (currentTop - 155) + "px";
                       });
-                      global.style.height = (currentHeight - 160) + "px";
+                      global.style.height = (currentHeight - 150) + "px";
                 }
    
 
@@ -1520,7 +1711,7 @@ function (dojo, declare) {
                 
 
             },
-
+            
             onOpValidate3Discard: function(evt)
             {
 
@@ -1586,10 +1777,39 @@ function (dojo, declare) {
                 dojo.subscribe( 'majcompteurdiscard', this, "notif_majcompteurdiscard" );
                 dojo.subscribe( 'discard', this, "notif_discard" );
                 dojo.subscribe( 'addwalk', this, "notif_addwalk" );
+                dojo.subscribe( 'masque', this, "notif_masque" );
+                dojo.subscribe( 'finallocation', this, "notif_finallocation" );
                 
-                
+                this.notifqueue.setSynchronous( 'smile', 500 );
                 
             },  
+
+            notif_masque: function( notif )
+            {
+                if(!this.isSpectator)
+                { 
+                    this.addMaskTurn();
+                    this.addMaskHand();
+
+                    dojo.query("#mask_turn").addClass("masque");
+                    dojo.query("#mask_hand").addClass("masque");
+                }
+
+                if(this.isSpectator)
+                    { 
+                        dojo.query(".turn_board").addClass("hidden");
+
+                        var elements = document.querySelectorAll("[id^='playerview']");
+                        elements.forEach(function(element) {
+                            element.style.top = "5px"; 
+                            });
+
+                        var global = document.getElementById('global');
+                        global.style.height = "1020px"; 
+                    }
+
+
+            },
 
             notif_majpannel: function( notif )
             {
@@ -1618,11 +1838,11 @@ function (dojo, declare) {
                 {
                     if(notif.args.ville == 1)
                     {
-                    this.addCardTokyoTrip( notif.args.id, notif.args.card, notif.args.ville, notif.args.location, notif.args.playerid, 0 );
+                    this.addCardTokyoTrip( notif.args.id, notif.args.card, notif.args.ville, notif.args.location, notif.args.playerid, 0, 1 );
                     }
                     if(notif.args.ville == 2)
                     {
-                    this.addCardKyotoTrip( notif.args.id, notif.args.card, notif.args.ville, notif.args.location, notif.args.playerid, 0 );
+                    this.addCardKyotoTrip( notif.args.id, notif.args.card, notif.args.ville, notif.args.location, notif.args.playerid, 0, 2 );
                     }
                 }
 
@@ -1700,7 +1920,7 @@ function (dojo, declare) {
             {
                 if(notif.args.ville==1)
                 {
-                    this.addCardTokyoTrip( notif.args.cardid, 0, notif.args.ville, notif.args.location, notif.args.playerid, 1 );
+                    this.addCardTokyoTrip( notif.args.cardid, 0, notif.args.ville, notif.args.location, notif.args.playerid, 1, 1 );
                     if (notif.args.playerid == this.getCurrentPlayerId()) 
                     {
                         this.placeOnObject( 'card_'+notif.args.ville+'_'+notif.args.cardid, 'player_boards' );
@@ -1709,7 +1929,7 @@ function (dojo, declare) {
                 }
                 if(notif.args.ville==2)
                 {
-                    this.addCardKyotoTrip( notif.args.cardid, 0, notif.args.ville, notif.args.location, notif.args.playerid, 1 );
+                    this.addCardKyotoTrip( notif.args.cardid, 0, notif.args.ville, notif.args.location, notif.args.playerid, 1, 2 );
                     if (notif.args.playerid == this.getCurrentPlayerId()) 
                         {
                             this.placeOnObject( 'card_'+notif.args.ville+'_'+notif.args.cardid, 'player_boards' );
@@ -1973,6 +2193,26 @@ function (dojo, declare) {
                
 
             },
+
+            notif_finallocation: function( notif )
+            {
+                if (notif.args.ville == 1)
+                {
+                    dojo.place( this.format_block( 'jstpl_finaltokyo', {
+                                    
+                                                        
+                    } ) , notif.args.card );
+                }
+                if (notif.args.ville == 2)
+                {
+                    dojo.place( this.format_block( 'jstpl_finalkyoto', {
+                                    
+                                                        
+                    } ) , notif.args.card );
+                }
+                
+            },
+
     
     
        });             

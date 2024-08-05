@@ -2,7 +2,7 @@
  /**
   *------
   * BGA framework: Gregory Isabelli & Emmanuel Colin & BoardGameArena
-  * letsgotojapan implementation : © <Your name here> <Your email address here>
+  * letsgotojapan implementation : © <Mathieu Chatrain> <mathieu.chatrain@gmail.com>
   * 
   * This code has been produced on the BGA studio platform for use on http://boardgamearena.com.
   * See http://en.boardgamearena.com/#!doc/Studio for more information.
@@ -212,8 +212,8 @@ class letsgotojapan extends Table
         $result['listplayers'] = self::getObjectListFromDB( "SELECT player_id id FROM player", true );
         $result['countplayers'][] = count(self::getObjectListFromDB( "SELECT player_id id FROM player", true ));
 
-        $result['tokyo'] = self::getObjectListFromDB( "SELECT card_id id, card_type type, card_type_arg type_arg, card_location location, card_location_arg location_arg, walk walk FROM tokyo WHERE card_location != 'deck' and card_location != 'discard'");
-        $result['kyoto'] = self::getObjectListFromDB( "SELECT card_id id, card_type type, card_type_arg type_arg, card_location location, card_location_arg location_arg, walk walk FROM kyoto WHERE card_location != 'deck' and card_location != 'discard'");
+        $result['tokyo'] = self::getObjectListFromDB( "SELECT card_id id, card_type type, card_type_arg type_arg, card_location location, card_location_arg location_arg, walk walk, finallocation finallocation FROM tokyo WHERE card_location != 'deck' and card_location != 'discard'");
+        $result['kyoto'] = self::getObjectListFromDB( "SELECT card_id id, card_type type, card_type_arg type_arg, card_location location, card_location_arg location_arg, walk walk, finallocation finallocation FROM kyoto WHERE card_location != 'deck' and card_location != 'discard'");
 
         $result['turn'] = self::getUniqueValueFromDB("SELECT level FROM tokens WHERE name = 'turn'");
 
@@ -1487,7 +1487,7 @@ function st_MultiPlayerActivation()
     $turn = self::getUniqueValueFromDB("SELECT level FROM tokens WHERE name = 'turn'");
     $newturn = $turn+1;
 
-    if (($newturn < 5)||($newturn == 11))   ////// A CHANGER /////
+    if (($newturn < 5)||($newturn == 11))  
     {
         /// changement de turn ////
         self::DbQuery( "UPDATE tokens set level = level + 1  WHERE name ='turn'" );
@@ -1582,7 +1582,7 @@ function st_MultiPlayerActivation()
         }
     }
 
-    if (($newturn == 5)||($newturn == 7)||($newturn == 9))  ////// A CHANGER /////
+    if (($newturn == 5)||($newturn == 7)||($newturn == 9)) 
     {
         /// changement de turn ////
         self::DbQuery( "UPDATE tokens set level = level + 1  WHERE name ='turn'" );
@@ -1683,7 +1683,7 @@ function st_MultiPlayerActivation()
         }
     }
 
-    if (($newturn == 6)||($newturn == 8))  ////// A CHANGER /////
+    if (($newturn == 6)||($newturn == 8))
     {
         /// changement de turn ////
         self::DbQuery( "UPDATE tokens set level = level + 1  WHERE name ='turn'" );
@@ -1780,7 +1780,7 @@ function st_MultiPlayerActivation()
         }
     }
 
-    if (($newturn == 10)||($newturn == 12))  ////// A CHANGER /////
+    if (($newturn == 10)||($newturn == 12))  
     {
         /// changement de turn ////
         self::DbQuery( "UPDATE tokens set level = level + 1  WHERE name ='turn'" );
@@ -1881,7 +1881,7 @@ function st_MultiPlayerActivation()
         }
     }
 
-    if ($newturn == 13) ////// A CHANGER /////
+    if ($newturn == 13) 
     {
         /// changement de turn ////
         self::DbQuery( "UPDATE tokens set level = level + 1  WHERE name ='turn'" );
@@ -1980,6 +1980,26 @@ function st_MultiPlayerActivation()
 
             $this->addPending($player_id, "LastTurn");
         }
+    }
+
+
+    if ($newturn == 14) 
+    {
+        letsgotojapan::$instance->notifyAllPlayers('masque','', array(
+            
+            
+            )
+            );
+
+        self::DbQuery( "UPDATE tokens set level = level + 1  WHERE name ='turn'" );
+        $listplayers = self::getObjectListFromDB( "SELECT player_id id FROM player", true );
+
+        foreach ($listplayers as $player_id)
+        {
+            
+            $this->addPending($player_id, "FinalStep1");
+        }
+        
     }
 
 

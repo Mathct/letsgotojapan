@@ -1,7 +1,7 @@
 
 -- ------
 -- BGA framework: Gregory Isabelli & Emmanuel Colin & BoardGameArena
--- letsgotojapan implementation : © <Your name here> <Your email address here>
+-- letsgotojapan implementation : © <Mathieu Chatrain> <mathieu.chatrain@gmail.com>
 -- 
 -- This code has been produced on the BGA studio platform for use on http://boardgamearena.com.
 -- See http://en.boardgamearena.com/#!doc/Studio for more information.
@@ -53,6 +53,7 @@ CREATE TABLE IF NOT EXISTS `tokyo` (
   `card_location_arg` int(11) NOT NULL,
   `walk` int(2) unsigned DEFAULT 0,
   `finallocation` int(2) unsigned DEFAULT 1,
+  `finalwalk` int(2) unsigned DEFAULT 0,
   PRIMARY KEY (`card_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
@@ -64,6 +65,7 @@ CREATE TABLE IF NOT EXISTS `kyoto` (
   `card_location_arg` int(16) NOT NULL,
   `walk` int(2) unsigned DEFAULT 0,
   `finallocation` int(2) unsigned DEFAULT 2,
+  `finalwalk` int(2) unsigned DEFAULT 0,
   PRIMARY KEY (`card_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
