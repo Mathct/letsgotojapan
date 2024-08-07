@@ -54,6 +54,7 @@ CREATE TABLE IF NOT EXISTS `tokyo` (
   `walk` int(2) unsigned DEFAULT 0,
   `finallocation` int(2) unsigned DEFAULT 1,
   `finalwalk` int(2) unsigned DEFAULT 0,
+  `train` int(2) unsigned DEFAULT 0,
   PRIMARY KEY (`card_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
@@ -66,6 +67,7 @@ CREATE TABLE IF NOT EXISTS `kyoto` (
   `walk` int(2) unsigned DEFAULT 0,
   `finallocation` int(2) unsigned DEFAULT 2,
   `finalwalk` int(2) unsigned DEFAULT 0,
+  `train` int(2) unsigned DEFAULT 0,
   PRIMARY KEY (`card_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
@@ -86,6 +88,11 @@ ALTER TABLE `player` ADD `g` int(2) unsigned DEFAULT 0;
 ALTER TABLE `player` ADD `p` int(2) unsigned DEFAULT 0; 
 ALTER TABLE `player` ADD `y` int(2) unsigned DEFAULT 0;
 ALTER TABLE `player` ADD `b` int(2) unsigned DEFAULT 0;
+ALTER TABLE `player` ADD `happy1` int(2) unsigned DEFAULT 0;
+ALTER TABLE `player` ADD `happy2` int(2) unsigned DEFAULT 0;
+ALTER TABLE `player` ADD `angry1` int(2) unsigned DEFAULT 0;
+ALTER TABLE `player` ADD `angry2` int(2) unsigned DEFAULT 0;
 ALTER TABLE `player` ADD `recherche` int(2) unsigned DEFAULT 0;
+ALTER TABLE `player` ADD `trainstart` int(2) unsigned DEFAULT 1;
 ALTER TABLE `player` ADD `train` int(2) unsigned DEFAULT 0;
 ALTER TABLE `player` ADD `wild` int(2) unsigned DEFAULT 0;

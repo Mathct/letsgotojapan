@@ -211,7 +211,7 @@ function (dojo, declare) {
                         if (tokyo.location.startsWith("cardposition"))
                         {
                         
-                            this.addCardTokyoTrip(tokyo.id, tokyo.type, tokyo.type_arg, tokyo.location, tokyo.location_arg, tokyo.walk, tokyo.finallocation);
+                            this.addCardTokyoTrip(tokyo.id, tokyo.type, tokyo.type_arg, tokyo.location, tokyo.location_arg, tokyo.walk, tokyo.finallocation, tokyo.finalwalk);
 
                         }
                         
@@ -232,7 +232,7 @@ function (dojo, declare) {
                         if (kyoto.location.startsWith("cardposition"))
                             {
                             
-                            this.addCardKyotoTrip(kyoto.id, kyoto.type, kyoto.type_arg, kyoto.location, kyoto.location_arg, kyoto.walk, kyoto.finallocation);
+                            this.addCardKyotoTrip(kyoto.id, kyoto.type, kyoto.type_arg, kyoto.location, kyoto.location_arg, kyoto.walk, kyoto.finallocation, kyoto.finalwalk);
                             }
                         
                         
@@ -491,10 +491,48 @@ function (dojo, declare) {
                                                     this.addActionButton(args[this.getCurrentPlayerId()][0].buttons[nb], `<div class="cardbouton" style="background-image: url(${img}); background-position-y: 0%; background-position-x: ${((card[3]-1)*(-100))}%;"></div>`, 'onOpButton', null, null, 'none');
                                             }
 
+                                            if((card[3]>=11)&&(card[3] <= 20))
+                                                {
+                                                    var img = g_gamethemeurl+"img/tokyo1.jpg";
+                                                    this.addActionButton(args[this.getCurrentPlayerId()][0].buttons[nb], `<div class="cardbouton" style="background-image: url(${img}); background-position-y: -100%; background-position-x: ${((card[3]-11)*(-100))}%;"></div>`, 'onOpButton', null, null, 'none');
+                                                }
+
+                                            if((card[3]>=21)&&(card[3] <= 30))
+                                                {
+                                                    var img = g_gamethemeurl+"img/tokyo1.jpg";
+                                                    this.addActionButton(args[this.getCurrentPlayerId()][0].buttons[nb], `<div class="cardbouton" style="background-image: url(${img}); background-position-y: -200%; background-position-x: ${((card[3]-21)*(-100))}%;"></div>`, 'onOpButton', null, null, 'none');
+                                                }
+    
+
                                             if((card[3]>=31)&&(card[3] <= 40))
                                                 {
                                                     var img = g_gamethemeurl+"img/tokyo1.jpg";
                                                     this.addActionButton(args[this.getCurrentPlayerId()][0].buttons[nb], `<div class="cardbouton" style="background-image: url(${img}); background-position-y: -300%; background-position-x: ${((card[3]-31)*(-100))}%;"></div>`, 'onOpButton', null, null, 'none');
+                                                }
+
+                                            if((card[3]>=41)&&(card[3] <= 50))
+                                                {
+                                                    var img = g_gamethemeurl+"img/tokyo2.jpg";
+                                                        this.addActionButton(args[this.getCurrentPlayerId()][0].buttons[nb], `<div class="cardbouton" style="background-image: url(${img}); background-position-y: 0%; background-position-x: ${((card[3]-41)*(-100))}%;"></div>`, 'onOpButton', null, null, 'none');
+                                                }
+    
+                                            if((card[3]>=51)&&(card[3] <= 60))
+                                                {
+                                                    var img = g_gamethemeurl+"img/tokyo2.jpg";
+                                                    this.addActionButton(args[this.getCurrentPlayerId()][0].buttons[nb], `<div class="cardbouton" style="background-image: url(${img}); background-position-y: -100%; background-position-x: ${((card[3]-51)*(-100))}%;"></div>`, 'onOpButton', null, null, 'none');
+                                                }
+
+                                            if((card[3]>=61)&&(card[3] <= 70))
+                                                {
+                                                    var img = g_gamethemeurl+"img/tokyo2.jpg";
+                                                    this.addActionButton(args[this.getCurrentPlayerId()][0].buttons[nb], `<div class="cardbouton" style="background-image: url(${img}); background-position-y: -200%; background-position-x: ${((card[3]-61)*(-100))}%;"></div>`, 'onOpButton', null, null, 'none');
+                                                }
+    
+
+                                            if((card[3]>=71)&&(card[3] <= 80))
+                                                {
+                                                    var img = g_gamethemeurl+"img/tokyo2.jpg";
+                                                    this.addActionButton(args[this.getCurrentPlayerId()][0].buttons[nb], `<div class="cardbouton" style="background-image: url(${img}); background-position-y: -300%; background-position-x: ${((card[3]-71)*(-100))}%;"></div>`, 'onOpButton', null, null, 'none');
                                                 }
                                             
                                                                                         
@@ -503,7 +541,56 @@ function (dojo, declare) {
                                     if(args[this.getCurrentPlayerId()][0].buttons[nb].startsWith("cardbouton_2"))
                                         {
                                                                                         
-                                            this.addActionButton(args[this.getCurrentPlayerId()][0].buttons[nb], `<div class="cardbouton"></div>`, 'onOpButton', null, null, 'none');
+                                            var card = args[this.getCurrentPlayerId()][0].buttons[nb].split("_");
+                                            if((card[3]>=1)&&(card[3] <= 10))
+                                            {
+                                                var img = g_gamethemeurl+"img/kyoto1.jpg";
+                                                    this.addActionButton(args[this.getCurrentPlayerId()][0].buttons[nb], `<div class="cardbouton" style="background-image: url(${img}); background-position-y: 0%; background-position-x: ${((card[3]-1)*(-100))}%;"></div>`, 'onOpButton', null, null, 'none');
+                                            }
+
+                                            if((card[3]>=11)&&(card[3] <= 20))
+                                                {
+                                                    var img = g_gamethemeurl+"img/kyoto1.jpg";
+                                                    this.addActionButton(args[this.getCurrentPlayerId()][0].buttons[nb], `<div class="cardbouton" style="background-image: url(${img}); background-position-y: -100%; background-position-x: ${((card[3]-11)*(-100))}%;"></div>`, 'onOpButton', null, null, 'none');
+                                                }
+
+                                            if((card[3]>=21)&&(card[3] <= 30))
+                                                {
+                                                    var img = g_gamethemeurl+"img/kyoto1.jpg";
+                                                    this.addActionButton(args[this.getCurrentPlayerId()][0].buttons[nb], `<div class="cardbouton" style="background-image: url(${img}); background-position-y: -200%; background-position-x: ${((card[3]-21)*(-100))}%;"></div>`, 'onOpButton', null, null, 'none');
+                                                }
+    
+
+                                            if((card[3]>=31)&&(card[3] <= 40))
+                                                {
+                                                    var img = g_gamethemeurl+"img/kyoto1.jpg";
+                                                    this.addActionButton(args[this.getCurrentPlayerId()][0].buttons[nb], `<div class="cardbouton" style="background-image: url(${img}); background-position-y: -300%; background-position-x: ${((card[3]-31)*(-100))}%;"></div>`, 'onOpButton', null, null, 'none');
+                                                }
+
+                                            if((card[3]>=41)&&(card[3] <= 50))
+                                                {
+                                                    var img = g_gamethemeurl+"img/kyoto2.jpg";
+                                                        this.addActionButton(args[this.getCurrentPlayerId()][0].buttons[nb], `<div class="cardbouton" style="background-image: url(${img}); background-position-y: 0%; background-position-x: ${((card[3]-41)*(-100))}%;"></div>`, 'onOpButton', null, null, 'none');
+                                                }
+    
+                                            if((card[3]>=51)&&(card[3] <= 60))
+                                                {
+                                                    var img = g_gamethemeurl+"img/kyoto2.jpg";
+                                                    this.addActionButton(args[this.getCurrentPlayerId()][0].buttons[nb], `<div class="cardbouton" style="background-image: url(${img}); background-position-y: -100%; background-position-x: ${((card[3]-51)*(-100))}%;"></div>`, 'onOpButton', null, null, 'none');
+                                                }
+
+                                            if((card[3]>=61)&&(card[3] <= 70))
+                                                {
+                                                    var img = g_gamethemeurl+"img/kyoto2.jpg";
+                                                    this.addActionButton(args[this.getCurrentPlayerId()][0].buttons[nb], `<div class="cardbouton" style="background-image: url(${img}); background-position-y: -200%; background-position-x: ${((card[3]-61)*(-100))}%;"></div>`, 'onOpButton', null, null, 'none');
+                                                }
+    
+
+                                            if((card[3]>=71)&&(card[3] <= 80))
+                                                {
+                                                    var img = g_gamethemeurl+"img/kyoto2.jpg";
+                                                    this.addActionButton(args[this.getCurrentPlayerId()][0].buttons[nb], `<div class="cardbouton" style="background-image: url(${img}); background-position-y: -300%; background-position-x: ${((card[3]-71)*(-100))}%;"></div>`, 'onOpButton', null, null, 'none');
+                                                }
                                         }
                             
                                     
@@ -930,7 +1017,7 @@ function (dojo, declare) {
 
             },
 
-            addCardTokyoTrip: function( id, card, ville, location, player, walk, finallocation )  
+            addCardTokyoTrip: function( id, card, ville, location, player, walk, finallocation, finalwalk=0 )  
             {
                 if(walk == 0)
                 {
@@ -1075,6 +1162,16 @@ function (dojo, declare) {
                             } ) , 'card_1_'+id );
     
                         }
+
+                    if(finalwalk ==1)
+                        {
+                            
+                            dojo.place( this.format_block( 'jstpl_finalwalk', {
+                                
+                                                    
+                            } ) , 'card_1_'+id );
+    
+                        }
                         
                     
 
@@ -1108,7 +1205,7 @@ function (dojo, declare) {
             },
 
 
-            addCardKyotoTrip: function( id, card, ville, location, player, walk, finallocation )  
+            addCardKyotoTrip: function( id, card, ville, location, player, walk, finallocation, finalwalk=0 )  
             {
                 if(walk == 0)
                     {
@@ -1242,14 +1339,24 @@ function (dojo, declare) {
     
                         }
 
-                        if((card >=72)&&(card <=80)&&(finallocation ==2))
-                            {
-                                dojo.place( this.format_block( 'jstpl_finalkyoto', {
-                                    
-                                                        
-                                } ) , 'card_2_'+id );
-        
-                            }
+                    if((card >=72)&&(card <=80)&&(finallocation ==2))
+                        {
+                            dojo.place( this.format_block( 'jstpl_finalkyoto', {
+                                
+                                                    
+                            } ) , 'card_2_'+id );
+    
+                        }
+                            
+                    if(finalwalk ==1)
+                        {
+                            
+                            dojo.place( this.format_block( 'jstpl_finalwalk', {
+                                
+                                                    
+                            } ) , 'card_2_'+id );
+    
+                        }
                         
                       
                     //dojo.query("#"+location+'_'+player).removeClass("masque");
@@ -1779,6 +1886,8 @@ function (dojo, declare) {
                 dojo.subscribe( 'addwalk', this, "notif_addwalk" );
                 dojo.subscribe( 'masque', this, "notif_masque" );
                 dojo.subscribe( 'finallocation', this, "notif_finallocation" );
+                dojo.subscribe( 'changecard', this, "notif_changecard" );
+                dojo.subscribe( 'finalwalk', this, "notif_finalwalk" );
                 
                 this.notifqueue.setSynchronous( 'smile', 500 );
                 
@@ -2210,6 +2319,35 @@ function (dojo, declare) {
                                                         
                     } ) , notif.args.card );
                 }
+                
+            },
+
+            notif_changecard: function( notif )
+            {
+                dojo.destroy(notif.args.cardid);
+
+                if (notif.args.ville == 1)
+                    {
+                        this.addCardTokyoTrip( notif.args.id, notif.args.type, 1, notif.args.location, notif.args.playerid, 0, 1 );
+                        
+                    }
+                    if (notif.args.ville == 2)
+                    {
+                        this.addCardKyotoTrip( notif.args.id, notif.args.type, 2, notif.args.location, notif.args.playerid, 0, 2 );
+                    
+                    }
+            },
+
+            notif_finalwalk: function( notif )
+            {
+                
+                    dojo.place( this.format_block( 'jstpl_finalwalk', {
+                                    
+                                                        
+                    } ) , notif.args.card );
+                
+                
+                
                 
             },
 
