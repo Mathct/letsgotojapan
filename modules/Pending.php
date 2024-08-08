@@ -2275,6 +2275,11 @@ function argFinalStep1($parg1, $parg2)
 
         if($varg1 == "continue")
         {
+            letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} managed the generic activities' ), array(
+                'player_name' => $this->player_name,
+                
+                )
+                );
             
             letsgotojapan::$instance->addPending($this->player_id, "FinalStep2");
             
@@ -2455,7 +2460,11 @@ function argFinalStep1($parg1, $parg2)
 
         if($varg1 == "continue")
         {
-            
+            letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} managed the walks' ), array(
+                'player_name' => $this->player_name,
+                
+                )
+                );
             letsgotojapan::$instance->addPending($this->player_id, "FinalStep3");
             
         }
@@ -2675,8 +2684,13 @@ function argFinalStep1($parg1, $parg2)
 
         if($varg1 == "continue")
         {
+            letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} managed the trains' ), array(
+                'player_name' => $this->player_name,
+                
+                )
+                );
             
-            letsgotojapan::$instance->addPending($this->player_id, "FinalStep4");
+            letsgotojapan::$instance->addPending($this->player_id, "FinalStepLundi");
             
         }
 
@@ -2859,10 +2873,30 @@ function argFinalStep1($parg1, $parg2)
         }
        
 
-              
+    }
 
-              
+
+
+    function argFinalStepLundi($parg1, $parg2)
+    {
+        $ret = array();
+        $ret["selectable"] = array();
+        $ret["selectable2"] = array();
+        $ret["selected"] = array();
+        $ret['buttons'] = array();
+        $ret['titleyou'] = clienttranslate('${you} ');
+
+       
+     
+
+        return $ret;
+    }
+
+    function FinalStepLundi($parg1, $parg2, $varg1, $varg2)
+    {
         
+
+
 
     }
 

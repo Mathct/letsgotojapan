@@ -231,6 +231,15 @@ class letsgotojapan extends Table
             $result['nbrewild'][$player] = self::getUniqueValueFromDB("SELECT wild FROM player WHERE player_id={$player}");
             $result['compteurcardtokyodiscard'][$player] = count(self::getObjectListFromDB( "SELECT card_id id FROM tokyo WHERE card_location = 'discardboard' and card_location_arg = {$player}", true));
             $result['compteurcardkyotodiscard'][$player] = count(self::getObjectListFromDB( "SELECT card_id id FROM kyoto WHERE card_location = 'discardboard' and card_location_arg = {$player}", true));
+            $result['r'][$player] = self::getUniqueValueFromDB("SELECT r FROM player WHERE player_id={$player}");
+            $result['g'][$player] = self::getUniqueValueFromDB("SELECT g FROM player WHERE player_id={$player}");
+            $result['p'][$player] = self::getUniqueValueFromDB("SELECT p FROM player WHERE player_id={$player}");
+            $result['y'][$player] = self::getUniqueValueFromDB("SELECT y FROM player WHERE player_id={$player}");
+            $result['b'][$player] = self::getUniqueValueFromDB("SELECT b FROM player WHERE player_id={$player}");
+            $result['happy1'][$player] = self::getUniqueValueFromDB("SELECT happy1 FROM player WHERE player_id={$player}");
+            $result['happy2'][$player] = self::getUniqueValueFromDB("SELECT happy2 FROM player WHERE player_id={$player}");
+            $result['angry1'][$player] = self::getUniqueValueFromDB("SELECT angry1 FROM player WHERE player_id={$player}");
+            $result['angry2'][$player] = self::getUniqueValueFromDB("SELECT angry2 FROM player WHERE player_id={$player}");
 
         }
         
@@ -1256,6 +1265,313 @@ function getLogsType( $type )
     
         
 
+}
+
+function Gain($type, $player, $pv=0, $jour=0)
+{
+    if($type == 'r')
+    {
+        self::DbQuery( "UPDATE player set r = r +1   WHERE player_id = {$player}" );
+        $new = self::getUniqueValueFromDB("SELECT r FROM player WHERE player_id = {$player}");
+
+        
+        if($new < 12)
+        {
+        letsgotojapan::$instance->notifyAllPlayers('movetoken','', array(
+            'type' =>  'r',
+            'score' => $new,
+            'player' => $player,
+            'plus' => 0,
+                        
+            )
+            );
+        }
+        if ($new == 12)
+        {
+            letsgotojapan::$instance->notifyAllPlayers('movetoken','', array(
+                'type' =>  'r',
+                'score' => $new,
+                'player' => $player,
+                'plus' => 0,
+                            
+                )
+                );
+
+            letsgotojapan::$instance->notifyAllPlayers('movetoken','', array(
+                'type' =>  'r',
+                'score' => 0,
+                'player' => $player,
+                'plus' => 1,
+                            
+                )
+                );
+
+        }
+
+        if(($new > 12)&&($new<=24))
+        {
+        letsgotojapan::$instance->notifyAllPlayers('movetoken','', array(
+            'type' =>  'r',
+            'score' => $new-12,
+            'player' => $player,
+            'plus' => 1,
+                        
+            )
+            );
+        }
+
+    }
+
+    if($type == 'g')
+    {
+        self::DbQuery( "UPDATE player set g = g +1   WHERE player_id = {$player}" );
+        $new = self::getUniqueValueFromDB("SELECT g FROM player WHERE player_id = {$player}");
+        
+        if($new < 12)
+        {
+        letsgotojapan::$instance->notifyAllPlayers('movetoken','', array(
+            'type' =>  'g',
+            'score' => $new,
+            'player' => $player,
+            'plus' => 0,
+                        
+            )
+            );
+        }
+        if ($new == 12)
+        {
+            letsgotojapan::$instance->notifyAllPlayers('movetoken','', array(
+                'type' =>  'g',
+                'score' => $new,
+                'player' => $player,
+                'plus' => 0,
+                            
+                )
+                );
+
+            letsgotojapan::$instance->notifyAllPlayers('movetoken','', array(
+                'type' =>  'g',
+                'score' => 0,
+                'player' => $player,
+                'plus' => 1,
+                            
+                )
+                );
+
+        }
+
+        if(($new > 12)&&($new<=24))
+        {
+        letsgotojapan::$instance->notifyAllPlayers('movetoken','', array(
+            'type' =>  'g',
+            'score' => $new-12,
+            'player' => $player,
+            'plus' => 1,
+                        
+            )
+            );
+        }
+        
+    }
+
+    if($type == 'p')
+    {
+        self::DbQuery( "UPDATE player set p = p +1   WHERE player_id = {$player}" );
+        $new = self::getUniqueValueFromDB("SELECT p FROM player WHERE player_id = {$player}");
+
+        if($new < 12)
+        {
+        letsgotojapan::$instance->notifyAllPlayers('movetoken','', array(
+            'type' =>  'p',
+            'score' => $new,
+            'player' => $player,
+            'plus' => 0,
+                        
+            )
+            );
+        }
+        if ($new == 12)
+        {
+            letsgotojapan::$instance->notifyAllPlayers('movetoken','', array(
+                'type' =>  'p',
+                'score' => $new,
+                'player' => $player,
+                'plus' => 0,
+                            
+                )
+                );
+
+            letsgotojapan::$instance->notifyAllPlayers('movetoken','', array(
+                'type' =>  'p',
+                'score' => 0,
+                'player' => $player,
+                'plus' => 1,
+                            
+                )
+                );
+
+        }
+
+        if(($new > 12)&&($new<=24))
+        {
+        letsgotojapan::$instance->notifyAllPlayers('movetoken','', array(
+            'type' =>  'p',
+            'score' => $new-12,
+            'player' => $player,
+            'plus' => 1,
+                        
+            )
+            );
+        }
+    }
+
+    if($type == 'y')
+    {
+        self::DbQuery( "UPDATE player set y = y +1   WHERE player_id = {$player}" );
+        $new = self::getUniqueValueFromDB("SELECT y FROM player WHERE player_id = {$player}");
+
+        if($new < 12)
+        {
+        letsgotojapan::$instance->notifyAllPlayers('movetoken','', array(
+            'type' =>  'y',
+            'score' => $new,
+            'player' => $player,
+            'plus' => 0,
+                        
+            )
+            );
+        }
+        if ($new == 12)
+        {
+            letsgotojapan::$instance->notifyAllPlayers('movetoken','', array(
+                'type' =>  'y',
+                'score' => $new,
+                'player' => $player,
+                'plus' => 0,
+                            
+                )
+                );
+
+            letsgotojapan::$instance->notifyAllPlayers('movetoken','', array(
+                'type' =>  'y',
+                'score' => 0,
+                'player' => $player,
+                'plus' => 1,
+                            
+                )
+                );
+
+        }
+
+        if(($new > 12)&&($new<=24))
+        {
+        letsgotojapan::$instance->notifyAllPlayers('movetoken','', array(
+            'type' =>  'y',
+            'score' => $new-12,
+            'player' => $player,
+            'plus' => 1,
+                        
+            )
+            );
+        }
+    }
+
+    if($type == 'b')
+    {
+        self::DbQuery( "UPDATE player set b = b +1   WHERE player_id = {$player}" );
+        $new = self::getUniqueValueFromDB("SELECT b FROM player WHERE player_id = {$player}");
+
+        if($new < 12)
+        {
+        letsgotojapan::$instance->notifyAllPlayers('movetoken','', array(
+            'type' =>  'b',
+            'score' => $new,
+            'player' => $player,
+            'plus' => 0,
+                        
+            )
+            );
+        }
+        if ($new == 12)
+        {
+            letsgotojapan::$instance->notifyAllPlayers('movetoken','', array(
+                'type' =>  'b',
+                'score' => $new,
+                'player' => $player,
+                'plus' => 0,
+                            
+                )
+                );
+
+            letsgotojapan::$instance->notifyAllPlayers('movetoken','', array(
+                'type' =>  'b',
+                'score' => 0,
+                'player' => $player,
+                'plus' => 1,
+                            
+                )
+                );
+
+        }
+
+        if(($new > 12)&&($new<=24))
+        {
+        letsgotojapan::$instance->notifyAllPlayers('movetoken','', array(
+            'type' =>  'b',
+            'score' => $new-12,
+            'player' => $player,
+            'plus' => 1,
+                        
+            )
+            );
+        }
+    }
+
+    if($type == 'h1')
+    {
+        self::DbQuery( "UPDATE player set happy1 = happy1 +1   WHERE player_id = {$player}" );
+        letsgotojapan::$instance->Smile(1,$player);
+        
+    }
+
+    if($type == 'h2')
+    {
+        self::DbQuery( "UPDATE player set happy2 = happy2 +1   WHERE player_id = {$player}" );
+        letsgotojapan::$instance->Smile(1,$player);
+    }
+
+    if($type == 'a1')
+    {
+        self::DbQuery( "UPDATE player set angry1 = angry1 +1   WHERE player_id = {$player}" );
+        letsgotojapan::$instance->Smile(-1,$player);
+    }
+
+    if($type == 'a2')
+    {
+        self::DbQuery( "UPDATE player set angry2 = angry2 +1   WHERE player_id = {$player}" );
+        letsgotojapan::$instance->Smile(-1,$player);
+    }
+
+    if($type == 'train')
+    {
+        self::DbQuery( "UPDATE player set trainday = trainday +1   WHERE player_id = {$player}" );
+
+    }
+
+    if($type == 'walk')
+    {
+        self::DbQuery( "UPDATE player set walkday = walkday +1   WHERE player_id = {$player}" );
+
+    }
+
+    if($type == 'pv')
+    {
+        self::DbQuery( "UPDATE player set {$jour} = {$jour} + {$pv}   WHERE player_id = {$player}" );
+
+    }
+    
+    
+ 
 }
 
 

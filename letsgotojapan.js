@@ -248,14 +248,16 @@ function (dojo, declare) {
                         
                     }
 
-                
-                for( var jour in gamedatas.tokenjour)
-                    {
-                        var tokenjour = gamedatas.tokenjour[jour];
+                    for( var player_id in gamedatas.players )
+                        {
+                            for( var jour in gamedatas.tokenjour)
+                                {
+                                    var tokenjour = gamedatas.tokenjour[jour];
 
-                        this.addTokenJour(tokenjour.name, tokenjour.level);
-                        
-                    }
+                                    this.addTokenJour(tokenjour.name, tokenjour.level, player_id);
+                                    
+                                }
+                        }
     
                 for( var player_id in gamedatas.players )
                     {
@@ -265,7 +267,15 @@ function (dojo, declare) {
                         var color = gamedatas.color[player_id];
                         
                         this.addHappy(smile, happy, angry, player_id, color);
-                        
+
+                        var r = gamedatas.r[player_id];
+                        var g = gamedatas.g[player_id];
+                        var p = gamedatas.p[player_id];
+                        var y = gamedatas.y[player_id];
+                        var b = gamedatas.b[player_id];
+
+                        this.addMarqueur(r, g, p, y, b, player_id);
+                                                
                                                     
                         
                     }
@@ -698,14 +708,14 @@ function (dojo, declare) {
                 return box;
             },
 
-            addTokenJour: function( jour, couleur)
+            addTokenJour: function( jour, couleur, id)
             {   
                 
                 dojo.place( this.format_block( 'jstpl_tokenjour', {
                 x: (couleur-1)*(-100),
                 jour: jour,
                                         
-                } ) , 'tokenjourposition_'+jour );
+                } ) , 'tokenjourposition_'+jour+'_'+id );
 
             },
 
@@ -1498,6 +1508,180 @@ function (dojo, declare) {
                 
 
             },
+
+            addMarqueur: function(r, g, p, y, b, id)
+            {        	 
+                if(r<12)
+                {
+                    dojo.place( this.format_block( 'jstpl_marqueur', {
+                        id: id,
+                        type: 'r',
+                        x: 0,
+                                                                
+                    } ) , 'marqueurposition_'+r+'_1_'+id);
+                }
+
+                if((r>=12)&&(r<=24))
+                {
+
+                    dojo.place( this.format_block( 'jstpl_marqueur', {
+                        id: id,
+                        type: 'r',
+                        x: 0,
+                                                                
+                    } ) , 'marqueurposition_'+(r-12)+'_1_'+id);
+
+                    $('marqueur_r_'+id).innerHTML = '+12';
+                }
+
+                if (r>24)
+                {
+
+                    dojo.place( this.format_block( 'jstpl_marqueur', {
+                        id: id,
+                        type: 'r',
+                        x: 0,
+                                                                
+                    } ) , 'marqueurposition_12_1_'+id);
+
+                    $('marqueur_r_'+id).innerHTML = '+12';
+                }
+
+
+                if(g<12)
+                {
+                    dojo.place( this.format_block( 'jstpl_marqueur', {
+                        id: id,
+                        type: 'g',
+                        x: -100,
+                                                                
+                    } ) , 'marqueurposition_'+g+'_2_'+id);
+                }
+
+                if((g>=12)&&(g<=24))
+                {    
+                    dojo.place( this.format_block( 'jstpl_marqueur', {
+                        id: id,
+                        type: 'g',
+                        x: -100,
+                                                                
+                    } ) , 'marqueurposition_'+(g-12)+'_2_'+id);
+                    $('marqueur_g_'+id).innerHTML = '+12';
+                }
+
+                if (g>24)
+                {
+                    dojo.place( this.format_block( 'jstpl_marqueur', {
+                        id: id,
+                        type: 'g',
+                        x: -100,
+                                                                
+                    } ) , 'marqueurposition_12_2_'+id);
+                    $('marqueur_g_'+id).innerHTML = '+12';
+                }
+
+
+
+                if(p<12)
+                {
+                    dojo.place( this.format_block( 'jstpl_marqueur', {
+                        id: id,
+                        type: 'p',
+                        x: -200,
+                                                                
+                    } ) , 'marqueurposition_'+p+'_3_'+id);
+                }
+
+                if((p>=12)&&(p<=24))
+                {  
+                    dojo.place( this.format_block( 'jstpl_marqueur', {
+                        id: id,
+                        type: 'p',
+                        x: -200,
+                                                                
+                    } ) , 'marqueurposition_'+(p-12)+'_3_'+id);
+                    $('marqueur_p_'+id).innerHTML = '+12';
+                }
+
+                if (p>24)
+                {
+                    dojo.place( this.format_block( 'jstpl_marqueur', {
+                        id: id,
+                        type: 'p',
+                        x: -200,
+                                                                
+                    } ) , 'marqueurposition_12_3_'+id);
+                    $('marqueur_p_'+id).innerHTML = '+12';
+                }
+
+
+                
+                if(y<12)
+                {
+                    dojo.place( this.format_block( 'jstpl_marqueur', {
+                        id: id,
+                        type: 'y',
+                        x: -300,
+                                                                
+                    } ) , 'marqueurposition_'+y+'_4_'+id);
+                }
+
+                if((y>=12)&&(y<=24))
+                {
+                    dojo.place( this.format_block( 'jstpl_marqueur', {
+                        id: id,
+                        type: 'y',
+                        x: -300,
+                                                                
+                    } ) , 'marqueurposition_'+(y-12)+'_4_'+id);
+
+                    $('marqueur_y_'+id).innerHTML = '+12';
+                }
+                if (y>24)
+                {
+                    dojo.place( this.format_block( 'jstpl_marqueur', {
+                        id: id,
+                        type: 'y',
+                        x: -300,
+                                                                
+                    } ) , 'marqueurposition_12_4_'+id);
+
+                    $('marqueur_y_'+id).innerHTML = '+12';
+
+                }
+
+                if(b<12)
+                {
+                    dojo.place( this.format_block( 'jstpl_marqueur', {
+                        id: id,
+                        type: 'b',
+                        x: -400,
+                                                                
+                    } ) , 'marqueurposition_'+b+'_5_'+id);
+                }
+
+                if((b>=12)&&(b<=24))
+                {
+                    dojo.place( this.format_block( 'jstpl_marqueur', {
+                        id: id,
+                        type: 'b',
+                        x: -400,
+                                                                
+                    } ) , 'marqueurposition_'+(b-12)+'_5_'+id);
+                    $('marqueur_b_'+id).innerHTML = '+12';
+                }
+
+                if (y>24)
+                {
+                    dojo.place( this.format_block( 'jstpl_marqueur', {
+                        id: id,
+                        type: 'b',
+                        x: -400,
+                                                                
+                    } ) , 'marqueurposition_12_5_'+id);
+                    $('marqueur_b_'+id).innerHTML = '+12';
+                }
+            },
     
     
 /////////////////////////////////////////////////////////////////////////////////  
@@ -1927,8 +2111,10 @@ function (dojo, declare) {
                 dojo.subscribe( 'changecard', this, "notif_changecard" );
                 dojo.subscribe( 'finalwalk', this, "notif_finalwalk" );
                 dojo.subscribe( 'train', this, "notif_train" );
+                dojo.subscribe( 'movetoken', this, "notif_movetoken" );
                 
                 this.notifqueue.setSynchronous( 'smile', 500 );
+                this.notifqueue.setSynchronous( 'movetoken', 500 );
                 
             },  
 
@@ -2395,6 +2581,69 @@ function (dojo, declare) {
                 
                 this.addTrain(notif.args.id, notif.args.ville, notif.args.train );
 
+            },
+
+            notif_movetoken: function( notif )
+            {
+                
+                if(notif.args.type == 'r')
+                {
+                    this.attachToNewParentNoDestroy( 'marqueur_r_'+notif.args.player, 'marqueurposition_'+notif.args.score+'_1_'+notif.args.player);
+                    this.slideToObject( 'marqueur_r_'+notif.args.player, 'marqueurposition_'+notif.args.score+'_1_'+notif.args.player).play();
+
+                    if(notif.args.plus == 1)
+                        {
+                            $('marqueur_r_'+notif.args.player).innerHTML = '+12';
+                        }
+                }
+
+                if(notif.args.type == 'g')
+                    {
+                        this.attachToNewParentNoDestroy( 'marqueur_g_'+notif.args.player, 'marqueurposition_'+notif.args.score+'_2_'+notif.args.player);
+                        this.slideToObject( 'marqueur_g_'+notif.args.player, 'marqueurposition_'+notif.args.score+'_2_'+notif.args.player).play();
+    
+                        if(notif.args.plus == 1)
+                            {
+                                $('marqueur_g_'+notif.args.player).innerHTML = '+12';
+                            }
+                    }
+
+                if(notif.args.type == 'p')
+                    {
+                        this.attachToNewParentNoDestroy( 'marqueur_p_'+notif.args.player, 'marqueurposition_'+notif.args.score+'_3_'+notif.args.player);
+                        this.slideToObject( 'marqueur_p_'+notif.args.player, 'marqueurposition_'+notif.args.score+'_3_'+notif.args.player).play();
+    
+                        if(notif.args.plus == 1)
+                            {
+                                $('marqueur_p_'+notif.args.player).innerHTML = '+12';
+                            }
+                    }
+
+                if(notif.args.type == 'y')
+                    {
+                        this.attachToNewParentNoDestroy( 'marqueur_y_'+notif.args.player, 'marqueurposition_'+notif.args.score+'_4_'+notif.args.player);
+                        this.slideToObject( 'marqueur_y_'+notif.args.player, 'marqueurposition_'+notif.args.score+'_4_'+notif.args.player).play();
+                        if(notif.args.plus == 1)
+                        {
+                            $('marqueur_y_'+notif.args.player).innerHTML = '+12';
+                        }
+    
+                    }
+
+                if(notif.args.type == 'b')
+                    {
+                        this.attachToNewParentNoDestroy( 'marqueur_b_'+notif.args.player, 'marqueurposition_'+notif.args.score+'_5_'+notif.args.player);
+                        this.slideToObject( 'marqueur_b_'+notif.args.player, 'marqueurposition_'+notif.args.score+'_5_'+notif.args.player).play();
+    
+                        if(notif.args.plus == 1)
+                            {
+                                $('marqueur_b_'+notif.args.player).innerHTML = '+12';
+                            }
+                    }
+                        
+                    
+                    
+                
             },
 
     
