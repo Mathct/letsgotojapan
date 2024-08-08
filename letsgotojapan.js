@@ -214,6 +214,11 @@ function (dojo, declare) {
                             this.addCardTokyoTrip(tokyo.id, tokyo.type, tokyo.type_arg, tokyo.location, tokyo.location_arg, tokyo.walk, tokyo.finallocation, tokyo.finalwalk);
 
                         }
+
+                        if(tokyo.train != 0)
+                        {
+                            this.addTrain (tokyo.id, tokyo.type_arg, tokyo.train)
+                        }
                         
                         
                         
@@ -233,6 +238,11 @@ function (dojo, declare) {
                             {
                             
                             this.addCardKyotoTrip(kyoto.id, kyoto.type, kyoto.type_arg, kyoto.location, kyoto.location_arg, kyoto.walk, kyoto.finallocation, kyoto.finalwalk);
+                            }
+
+                        if(kyoto.train != 0)
+                            {
+                                this.addTrain (kyoto.id, kyoto.type_arg, kyoto.train)
                             }
                         
                         
@@ -592,7 +602,22 @@ function (dojo, declare) {
                                                     this.addActionButton(args[this.getCurrentPlayerId()][0].buttons[nb], `<div class="cardbouton" style="background-image: url(${img}); background-position-y: -300%; background-position-x: ${((card[3]-71)*(-100))}%;"></div>`, 'onOpButton', null, null, 'none');
                                                 }
                                         }
-                            
+
+                                        if(args[this.getCurrentPlayerId()][0].buttons[nb] == "trainstart")
+                                            {
+                                                this.addActionButton( 'trainstart', `<div class="boutontrain_1"></div>` ,'onOpButton', null, null, 'none' );
+                                            }
+
+                                        if(args[this.getCurrentPlayerId()][0].buttons[nb] == "train")
+                                            {
+                                                this.addActionButton( 'train', `<div class="boutontrain_2"></div>` ,'onOpButton', null, null, 'none' );
+                                            }
+
+                                        if(args[this.getCurrentPlayerId()][0].buttons[nb] == "normaltrain")
+                                            {
+                                                this.addActionButton( 'normaltrain', `<div class="boutontrain_3"></div>` ,'onOpButton', null, null, 'none' );
+                                            }
+                    
                                     
                             }
                         }   
@@ -1394,6 +1419,19 @@ function (dojo, declare) {
 
             },
 
+            addTrain: function(id, ville, train)
+            {        	 
+                
+                dojo.place( this.format_block( 'jstpl_train', {
+                    id: train,
+                                                            
+                } ) , 'card_'+ville+'_'+id);
+                
+                
+                
+
+            },
+
             addMaskTurn: function()
             {        	 
                 
@@ -1888,6 +1926,7 @@ function (dojo, declare) {
                 dojo.subscribe( 'finallocation', this, "notif_finallocation" );
                 dojo.subscribe( 'changecard', this, "notif_changecard" );
                 dojo.subscribe( 'finalwalk', this, "notif_finalwalk" );
+                dojo.subscribe( 'train', this, "notif_train" );
                 
                 this.notifqueue.setSynchronous( 'smile', 500 );
                 
@@ -2349,6 +2388,13 @@ function (dojo, declare) {
                 
                 
                 
+            },
+
+            notif_train: function( notif )
+            {
+                
+                this.addTrain(notif.args.id, notif.args.ville, notif.args.train );
+
             },
 
     

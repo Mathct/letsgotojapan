@@ -167,7 +167,7 @@ class Pending extends APP_GameClass
 
             
 
-            letsgotojapan::$instance->notifyAllPlayers('movecard',clienttranslate( '${player_name} places a card on ${day}'), array(
+            letsgotojapan::$instance->notifyAllPlayers('movecard',clienttranslate( '${player_name} places a card on <b>${day}</b>'), array(
                 'mobile' =>  $parg1,
                 'parent' => $varg1,
                 'player_name' => $this->player_name,
@@ -802,7 +802,7 @@ class Pending extends APP_GameClass
                 letsgotojapan::$instance->tokyo->pickCardForLocation( 'deck', $explode2[0].'_'.$explode2[1].'_'.$explode2[2], $this->player_id);
                 $newcardid= self::getUniqueValueFromDB("SELECT card_id FROM tokyo WHERE card_location_arg = {$this->player_id} AND card_location = '" . $explode2[0] . "_" . $explode2[1] . "_" . $explode2[2] . "'");
                 self::DbQuery( "UPDATE tokyo set walk = 1  WHERE card_id ={$newcardid}" );
-                letsgotojapan::$instance->notifyAllPlayers('addwalk',clienttranslate( '${player_name} places ${log} on ${day}'), array(
+                letsgotojapan::$instance->notifyAllPlayers('addwalk',clienttranslate( '${player_name} places ${log} on <b>${day}</b>'), array(
                     'parent' => $varg1,
                     'player_name' => $this->player_name,
                     'ville' => 1,
@@ -900,7 +900,7 @@ class Pending extends APP_GameClass
                 letsgotojapan::$instance->kyoto->pickCardForLocation( 'deck', $explode2[0].'_'.$explode2[1].'_'.$explode2[2], $this->player_id);
                 $newcardid= self::getUniqueValueFromDB("SELECT card_id FROM kyoto WHERE card_location_arg = {$this->player_id} AND card_location = '" . $explode2[0] . "_" . $explode2[1] . "_" . $explode2[2] . "'");
                 self::DbQuery( "UPDATE kyoto set walk = 1  WHERE card_id ={$newcardid}" );
-                letsgotojapan::$instance->notifyAllPlayers('addwalk',clienttranslate( '${player_name} places ${log} on ${day}'), array(
+                letsgotojapan::$instance->notifyAllPlayers('addwalk',clienttranslate( '${player_name} places ${log} on <b>${day}</b>'), array(
                     'parent' => $varg1,
                     'player_name' => $this->player_name,
                     'ville' => 2,
@@ -1273,7 +1273,7 @@ function ExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
             letsgotojapan::$instance->tokyo->pickCardForLocation( 'deck', $explode2[0].'_'.$explode2[1].'_'.$explode2[2], $this->player_id);
             $newcardid= self::getUniqueValueFromDB("SELECT card_id FROM tokyo WHERE card_location_arg = {$this->player_id} AND card_location = '" . $explode2[0] . "_" . $explode2[1] . "_" . $explode2[2] . "'");
             self::DbQuery( "UPDATE tokyo set walk = 1  WHERE card_id ={$newcardid}" );
-            letsgotojapan::$instance->notifyAllPlayers('addwalk',clienttranslate( '${player_name} places an Extra ${log} on ${day}'), array(
+            letsgotojapan::$instance->notifyAllPlayers('addwalk',clienttranslate( '${player_name} places an Extra ${log} on <b>${day}</b>'), array(
                 'parent' => $varg1,
                 'player_name' => $this->player_name,
                 'ville' => 1,
@@ -1296,7 +1296,7 @@ function ExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
             letsgotojapan::$instance->kyoto->pickCardForLocation( 'deck', $explode2[0].'_'.$explode2[1].'_'.$explode2[2], $this->player_id);
             $newcardid= self::getUniqueValueFromDB("SELECT card_id FROM kyoto WHERE card_location_arg = {$this->player_id} AND card_location = '" . $explode2[0] . "_" . $explode2[1] . "_" . $explode2[2] . "'");
             self::DbQuery( "UPDATE kyoto set walk = 1  WHERE card_id ={$newcardid}" );
-            letsgotojapan::$instance->notifyAllPlayers('addwalk',clienttranslate( '${player_name} places an Extra ${log} on ${day}'), array(
+            letsgotojapan::$instance->notifyAllPlayers('addwalk',clienttranslate( '${player_name} places an Extra ${log} on <b>${day}</b>'), array(
                 'parent' => $varg1,
                 'player_name' => $this->player_name,
                 'ville' => 2,
@@ -1837,7 +1837,7 @@ function ExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
 
             
 
-            letsgotojapan::$instance->notifyAllPlayers('movecard',clienttranslate( '${player_name} places a card on ${day}'), array(
+            letsgotojapan::$instance->notifyAllPlayers('movecard',clienttranslate( '${player_name} places a card on <b>${day}</b>'), array(
                 'mobile' =>  $parg1,
                 'parent' => $varg1,
                 'player_name' => $this->player_name,
@@ -2579,34 +2579,37 @@ function argFinalStep1($parg1, $parg2)
         $ret["selectable"] = array();
         $ret["selectable2"] = array();
         $ret["selected"] = array();
+        $ret["selected2"] = array();
         $ret["selected3"] = array();
         $ret['buttons'] = array();
         
 
         
-        $found = 0;
         
-            for ($day=1; $day <=6 && $found == 0; $day++)
+        $card = array();
+        
+            for ($day=1; $day <=6; $day++)
 
             {
                 for ($position= 1; $position <=4; $position++)
                 {
-                    $tokyocardwalk = self::getUniqueValueFromDB( "SELECT card_id id FROM tokyo WHERE card_location_arg = {$this->player_id} AND walk=1 AND finalwalk =0 AND card_location = 'cardposition_{$day}_{$position}'");
-                    if ($tokyocardwalk!=null)
+                    $tokyocardid = self::getUniqueValueFromDB( "SELECT card_id id FROM tokyo WHERE card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$position}'");
+                    $villefinal = self::getUniqueValueFromDB( "SELECT finallocation finallocation FROM tokyo WHERE card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$position}'");
+                    $train = self::getUniqueValueFromDB( "SELECT train train FROM tokyo WHERE card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$position}'");
+                    if ($tokyocardid!=null)
                     {
-                        $ret["selected3"][] = "card_1_".$tokyocardwalk;
-                        $found = 1;
-                        break;
+                        $card[]= [$villefinal,$tokyocardid,1,$train];
+                        
                     }
 
                     else
                     {
-                        $kyotocardwalk = self::getUniqueValueFromDB( "SELECT card_id id FROM kyoto WHERE card_location_arg = {$this->player_id} AND walk=1 AND finalwalk =0 AND card_location = 'cardposition_{$day}_{$position}'");
-                        if ($kyotocardwalk!=null)
+                        $kyotocardid = self::getUniqueValueFromDB( "SELECT card_id id FROM kyoto WHERE card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$position}'");
+                        $villefinal = self::getUniqueValueFromDB( "SELECT finallocation finallocation FROM kyoto WHERE card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$position}'");
+                        $train = self::getUniqueValueFromDB( "SELECT train train FROM kyoto WHERE card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$position}'");
+                        if ($kyotocardid!=null)
                         {
-                            $ret["selected3"][] = "card_2_".$kyotocardwalk;
-                            $found = 1;
-                            break;
+                            $card[]= [$villefinal,$kyotocardid,2,$train];
                         }
 
                     }
@@ -2614,17 +2617,46 @@ function argFinalStep1($parg1, $parg2)
                 }
             }
 
-
-
-
-        if ($ret["selected3"] != null)
-        {
-
-            $ret['titleyou'] = clienttranslate('${you} must choose a train to place');
-
-           
-
             
+
+        $nombre = count ($card);
+        
+        for($index=0; $index<$nombre-1 ;$index++)
+        {
+            if(($card[$index][0] != $card[$index+1][0])&&($card[$index+1][3]==0))
+            {
+                $ret["selected2"][] = 'card_'.$card[$index+1][2].'_'.$card[$index+1][1];
+            }
+            
+
+        }
+        
+        
+
+
+
+        if ($ret["selected2"] != null)
+        {
+            
+
+            $ret['titleyou'] = clienttranslate('${you} must choose a train to get to this location');
+            
+            $ret["selected3"][]=$ret["selected2"][0];
+
+            $trainstart = self::getUniqueValueFromDB( "SELECT trainstart FROM player WHERE player_id = {$this->player_id}");
+            $train = self::getUniqueValueFromDB( "SELECT train FROM player WHERE player_id = {$this->player_id}");
+
+            if($trainstart >=1)
+            {
+                $ret['buttons'][]='trainstart';
+            }
+
+            if($train >=1)
+            {
+                $ret['buttons'][]='train';
+            }
+
+            $ret['buttons'][]='normaltrain';
             
         }
 
@@ -2640,8 +2672,6 @@ function argFinalStep1($parg1, $parg2)
 
     function FinalStep3($parg1, $parg2, $varg1, $varg2)
     {
-       
-
 
         if($varg1 == "continue")
         {
@@ -2652,9 +2682,174 @@ function argFinalStep1($parg1, $parg2)
 
         else
         {
-            //$explode = explode('_',$result[0]);
-            
+            $card = array();
+            $result = array();
+        
+            for ($day=1; $day <=6; $day++)
 
+            {
+                for ($position= 1; $position <=4; $position++)
+                {
+                    $tokyocardid = self::getUniqueValueFromDB( "SELECT card_id id FROM tokyo WHERE card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$position}'");
+                    $villefinal = self::getUniqueValueFromDB( "SELECT finallocation finallocation FROM tokyo WHERE card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$position}'");
+                    $train = self::getUniqueValueFromDB( "SELECT train train FROM tokyo WHERE card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$position}'");
+                    if ($tokyocardid!=null)
+                    {
+                        $card[]= [$villefinal,$tokyocardid,1,$train];
+                        
+                    }
+
+                    else
+                    {
+                        $kyotocardid = self::getUniqueValueFromDB( "SELECT card_id id FROM kyoto WHERE card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$position}'");
+                        $villefinal = self::getUniqueValueFromDB( "SELECT finallocation finallocation FROM kyoto WHERE card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$position}'");
+                        $train = self::getUniqueValueFromDB( "SELECT train train FROM kyoto WHERE card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$position}'");
+                        if ($kyotocardid!=null)
+                        {
+                            $card[]= [$villefinal,$kyotocardid,2,$train];
+                        }
+
+                    }
+
+                }
+            }
+
+        
+
+            $nombre = count ($card);
+            
+            for($index=0; $index<$nombre-1 ;$index++)
+            {
+                if(($card[$index][0] != $card[$index+1][0])&&($card[$index+1][3]==0))
+                {
+                    $result[] = 'card_'.$card[$index+1][2].'_'.$card[$index+1][1];
+                }
+                
+
+            }
+
+            $cardselect=$result[0];
+            $explode = explode('_', $cardselect);
+
+
+            if($varg1 == "trainstart")
+            {
+                self::DbQuery( "UPDATE player set trainstart = 0  WHERE player_id = {$this->player_id}" );
+
+
+                if($explode[1]==1)
+                {
+                    self::DbQuery( "UPDATE tokyo set train = 1  WHERE card_id = {$explode[2]}" );
+                    
+
+                }
+
+                if($explode[1]==2)
+                {
+                    self::DbQuery( "UPDATE kyoto set train = 1  WHERE card_id = {$explode[2]}" );
+                }
+
+                letsgotojapan::$instance->notifyAllPlayers('train','', array(
+        
+                    'id' => $explode[2],
+                    'ville' => $explode[1],
+                    'train' => 1,
+                    
+                    )
+                    );
+
+
+                
+
+            }
+
+            if($varg1 == "train")
+            {
+                self::DbQuery( "UPDATE player set train = train -1  WHERE player_id = {$this->player_id}" );
+                letsgotojapan::$instance->MajPannel($this->player_id);
+
+                if($explode[1]==1)
+                {
+                    self::DbQuery( "UPDATE tokyo set train = 2  WHERE card_id = {$explode[2]}" );
+                    
+
+                }
+
+                if($explode[1]==2)
+                {
+                    self::DbQuery( "UPDATE kyoto set train = 2  WHERE card_id = {$explode[2]}" );
+                }
+
+                letsgotojapan::$instance->notifyAllPlayers('train','', array(
+        
+                    'id' => $explode[2],
+                    'ville' => $explode[1],
+                    'train' => 2,
+                    
+                    )
+                    );
+                
+            }
+
+            if($varg1 == "normaltrain")
+            {
+                if($explode[1]==1)
+                {
+                    self::DbQuery( "UPDATE tokyo set train = 3  WHERE card_id = {$explode[2]}" );
+                    
+
+                }
+
+                if($explode[1]==2)
+                {
+                    self::DbQuery( "UPDATE kyoto set train = 3  WHERE card_id = {$explode[2]}" );
+                }
+
+                letsgotojapan::$instance->notifyAllPlayers('train','', array(
+        
+                    'id' => $explode[2],
+                    'ville' => $explode[1],
+                    'train' => 3,
+                    
+                    )
+                    );
+                
+            }
+
+            $countcard = count($result);
+            $newtrainstart = self::getUniqueValueFromDB( "SELECT trainstart FROM player WHERE player_id = {$this->player_id}");
+            $newtrain = self::getUniqueValueFromDB( "SELECT train FROM player WHERE player_id = {$this->player_id}");
+            
+            if(($newtrainstart==0)&&($newtrain==0))
+            {
+                for($j=1; $j<=$countcard-1; $j++)
+                {
+                    $explode2 = explode('_', $result[$j]);
+
+                    if($explode2[1]==1)
+                    {
+                        self::DbQuery( "UPDATE tokyo set train = 3  WHERE card_id = {$explode2[2]}" );
+                        
+
+                    }
+
+                    if($explode2[1]==2)
+                    {
+                        self::DbQuery( "UPDATE kyoto set train = 3  WHERE card_id = {$explode2[2]}" );
+                    }
+
+                    letsgotojapan::$instance->notifyAllPlayers('train','', array(
+        
+                        'id' => $explode2[2],
+                        'ville' => $explode2[1],
+                        'train' => 3,
+                        
+                        )
+                        );
+
+                }
+
+            }
             
             letsgotojapan::$instance->addPending($this->player_id, "FinalStep3");
             

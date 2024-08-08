@@ -186,6 +186,7 @@ var jstpl_player_compteurs = '<div class="player_compteurs" id="player_compteurs
 var jstpl_finaltokyo='<div class="finaltokyo">T</div>';
 var jstpl_finalkyoto='<div class="finalkyoto">K</div>';
 var jstpl_finalwalk='<div class="finalwalk"></div>';
+var jstpl_train='<div class="train_${id}"></div>';
 
 
 </script>  

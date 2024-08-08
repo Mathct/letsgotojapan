@@ -914,3 +914,93 @@ display: none;
   
 
 }
+
+.train_1
+{
+  background-image: url('img/logtrain.png');
+  background-size: 300% 100%;
+  background-position-x: 0%;
+  width: 48px;
+  height: 30px;
+  position: absolute;
+  top: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+
+
+}
+
+.train_2
+{
+  background-image: url('img/logtrain.png');
+  background-size: 300% 100%;
+  background-position-x: -100%;
+  width: 48px;
+  height: 30px;
+  position: absolute;
+  top: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  
+
+}
+
+.train_3
+{
+  background-image: url('img/logtrain.png');
+  background-size: 300% 100%;
+  background-position-x: -200%;
+  width: 48px;
+  height: 30px;
+  position: absolute;
+  top: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  
+
+}
+
+.boutontrain_1
+{
+  background-image: url('img/logtrain.png');
+  background-size: 300% 100%;
+  background-position-x: 0%;
+  width: 48px;
+  height: 30px;
+  display:inline-block;
+  vertical-align: middle;
+  
+
+
+}
+
+.boutontrain_2
+{
+  background-image: url('img/logtrain.png');
+  background-size: 300% 100%;
+  background-position-x: -100%;
+  width: 48px;
+  height: 30px;
+  display:inline-block;
+  vertical-align: middle;
+ 
+  
+
+}
+
+.boutontrain_3
+{
+  background-image: url('img/logtrain.png');
+  background-size: 300% 100%;
+  background-position-x: -200%;
+  width: 48px;
+  height: 30px;
+  display:inline-block;
+  vertical-align: middle;
+  
+  
+
+}
