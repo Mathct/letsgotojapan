@@ -259,7 +259,7 @@
 .playerboard {
        
     background-image: url('img/players_board.jpg');
-    background-size: 100% 400%;
+    background-size: 100% 500%;
     
     position: absolute;
     width: 1200px;
@@ -386,6 +386,10 @@ display: none;
 
 .color_665799 {
     background-position-y: -300%;
+}
+
+.color_f285a1 {
+  background-position-y: -400%;
 }
 
 
