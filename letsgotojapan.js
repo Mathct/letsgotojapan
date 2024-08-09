@@ -176,7 +176,7 @@ function (dojo, declare) {
                         if (gamedatas.turn >= 15)
                         {
                             dojo.query(".turn_board").addClass("hidden");
-                            dojo.query(".scorepad").removeClass("masque");
+                            dojo.query(".scorepad").removeClass("hidden");
 
                             var elements = document.querySelectorAll("[id^='playerview']");
                         elements.forEach(function(element) {
@@ -211,7 +211,7 @@ function (dojo, declare) {
                 if ((gamedatas.turn >= 15)&&(!this.isSpectator))
                     {
                         
-                        dojo.query(".scorepad").removeClass("masque");
+                        dojo.query(".scorepad").removeClass("hidden");
                         var elements = document.querySelectorAll("[id^='playerview']");
                     elements.forEach(function(element) {
                         element.style.top = "467px"; 
@@ -313,6 +313,52 @@ function (dojo, declare) {
                                                     
                         
                     }
+
+                    for( var player_id in gamedatas.players )
+                        {
+                            var numero = gamedatas.numero[player_id];
+                            var j1 = gamedatas.lundi[player_id];
+                            var j2 = gamedatas.mardi[player_id];
+                            var j3 = gamedatas.mercredi[player_id];
+                            var j4 = gamedatas.jeudi[player_id];
+                            var j5 = gamedatas.vendredi[player_id];
+                            var j6 = gamedatas.samedi[player_id];
+
+                            if (j1 != 0)
+                            {
+                                $('score_'+numero+'_1').innerHTML = j1;
+                            }
+
+                            if (j2 != 0)
+                            {
+                                $('score_'+numero+'_2').innerHTML = j2;
+                            }
+
+                            if (j3 != 0)
+                            {
+                                $('score_'+numero+'_3').innerHTML = j3;
+                            }
+
+                            if (j4 != 0)
+                            {
+                                $('score_'+numero+'_4').innerHTML = j4;
+                            }
+  
+                            if (j5 != 0)
+                            {
+                                $('score_'+numero+'_5').innerHTML = j5;
+                            }
+
+                            if (j6 != 0)
+                            {
+                                $('score_'+numero+'_6').innerHTML = j6;
+                            }
+    
+
+                                                    
+                                                        
+                            
+                        }
                     
                 
 
@@ -2180,6 +2226,7 @@ function (dojo, declare) {
                 dojo.subscribe( 'train', this, "notif_train" );
                 dojo.subscribe( 'movetoken', this, "notif_movetoken" );
                 dojo.subscribe( 'scorepad', this, "notif_scorepad" );
+                dojo.subscribe( 'score', this, "notif_score" );
                 
                 this.notifqueue.setSynchronous( 'smile', 500 );
                 this.notifqueue.setSynchronous( 'happy', 500 );
@@ -2730,7 +2777,7 @@ function (dojo, declare) {
                         dojo.query("#mask_turn").addClass("masque");
                         dojo.query("#mask_hand").addClass("masque");
 
-                        dojo.query(".scorepad").removeClass("masque");
+                        dojo.query(".scorepad").removeClass("hidden");
                         var elements = document.querySelectorAll("[id^='playerview']");
                         elements.forEach(function(element) {
                             element.style.top = "467px"; 
@@ -2744,7 +2791,7 @@ function (dojo, declare) {
                         { 
                             dojo.query(".turn_board").addClass("hidden");
     
-                            dojo.query(".scorepad").removeClass("masque");
+                            dojo.query(".scorepad").removeClass("hidden");
                             var elements = document.querySelectorAll("[id^='playerview']");
                             elements.forEach(function(element) {
                                 element.style.top = "467px"; 
@@ -2756,6 +2803,12 @@ function (dojo, declare) {
                 
                 
 
+            },
+
+            notif_score: function( notif )
+            {
+                $('score_'+notif.args.numero+'_'+notif.args.position).innerHTML = notif.args.score;
+                
             },
 
     

@@ -240,6 +240,13 @@ class letsgotojapan extends Table
             $result['happy2'][$player] = self::getUniqueValueFromDB("SELECT happy2 FROM player WHERE player_id={$player}");
             $result['angry1'][$player] = self::getUniqueValueFromDB("SELECT angry1 FROM player WHERE player_id={$player}");
             $result['angry2'][$player] = self::getUniqueValueFromDB("SELECT angry2 FROM player WHERE player_id={$player}");
+            $result['numero'][$player] = self::getUniqueValueFromDB("SELECT player_no FROM player WHERE player_id={$player}");
+            $result['lundi'][$player] = self::getUniqueValueFromDB("SELECT lundi FROM player WHERE player_id={$player}");
+            $result['mardi'][$player] = self::getUniqueValueFromDB("SELECT mardi FROM player WHERE player_id={$player}");
+            $result['mercredi'][$player] = self::getUniqueValueFromDB("SELECT mercredi FROM player WHERE player_id={$player}");
+            $result['jeudi'][$player] = self::getUniqueValueFromDB("SELECT jeudi FROM player WHERE player_id={$player}");
+            $result['vendredi'][$player] = self::getUniqueValueFromDB("SELECT vendredi FROM player WHERE player_id={$player}");
+            $result['samedi'][$player] = self::getUniqueValueFromDB("SELECT samedi FROM player WHERE player_id={$player}");
 
         }
         
@@ -1267,7 +1274,7 @@ function getLogsType( $type )
 
 }
 
-function Gain($type, $player, $jour=0, $pv=0 )
+function Gain($type, $player)
 {
     if($type == 'r')
     {
@@ -1552,38 +1559,8 @@ function Gain($type, $player, $jour=0, $pv=0 )
         letsgotojapan::$instance->Smile(-1,$player);
     }
 
-    if($type == 'train_1')
-    {
-        self::DbQuery( "UPDATE player set trainday = trainday +1   WHERE player_id = {$player}" );
-
-    }
-
-    if($type == 'train_2')
-    {
-        self::DbQuery( "UPDATE player set trainday = trainday +1   WHERE player_id = {$player}" );
-        self::DbQuery( "UPDATE player set angry1 = angry1 +1   WHERE player_id = {$player}" );
-        letsgotojapan::$instance->Smile(1,$player);
-        
-    }
-
-    if($type == 'train_3')
-    {
-        self::DbQuery( "UPDATE player set trainday = trainday +1   WHERE player_id = {$player}" );
-        
-
-    }
-
-    if($type == 'walk')
-    {
-        self::DbQuery( "UPDATE player set walkday = walkday +1   WHERE player_id = {$player}" );
-
-    }
-
-    if($type == 'pv')
-    {
-        self::DbQuery( "UPDATE player set {$jour} = {$jour} + {$pv}   WHERE player_id = {$player}" );
-
-    }
+    
+    
     
     
  

@@ -32,7 +32,68 @@
         <div id="mask_turn"></div>
         <div id="mask_hand"></div>
 
-        <div class="scorepad masque"></div>
+        <div class="scorepad hidden">
+        <div id="scorename_1" class="scorename" style="left: 25.2%; top: 0.2%;"></div>
+        <div id="score_1_1" class="score" style="left: 25.2%; top: 9.2%;"></div>
+        <div id="score_1_2" class="score" style="left: 25.2%; top: 17.3%;"></div>
+        <div id="score_1_3" class="score" style="left: 25.2%; top: 26.1%;"></div>
+        <div id="score_1_4" class="score" style="left: 25.2%; top: 34.3%;"></div>
+        <div id="score_1_5" class="score" style="left: 25.2%; top: 42.2%;"></div>
+        <div id="score_1_6" class="score" style="left: 25.2%; top: 50.3%;"></div>
+        <div id="score_1_7" class="score" style="left: 25.2%; top: 59.1%;"></div>
+        <div id="score_1_8" class="score" style="left: 25.2%; top: 67.2%;"></div>
+        <div id="score_1_9" class="score" style="left: 25.2%; top: 75.2%;"></div>
+        <div id="score_1_10" class="score" style="left: 25.2%; top: 83.9%;"></div>
+        <div id="score_1_11" class="score" style="left: 25.2%; top: 92.1%;"></div>
+        <div id="scorename_2" class="scorename" style="left: 40.3%; top: 0.2%;"></div>
+        <div id="score_2_1" class="score" style="left: 40.3%; top: 9.2%;"></div>
+        <div id="score_2_2" class="score" style="left: 40.3%; top: 17.3%;"></div>
+        <div id="score_2_3" class="score" style="left: 40.3%; top: 26.1%;"></div>
+        <div id="score_2_4" class="score" style="left: 40.3%; top: 34.3%;"></div>
+        <div id="score_2_5" class="score" style="left: 40.3%; top: 42.2%;"></div>
+        <div id="score_2_6" class="score" style="left: 40.3%; top: 50.3%;"></div>
+        <div id="score_2_7" class="score" style="left: 40.3%; top: 59.1%;"></div>
+        <div id="score_2_8" class="score" style="left: 40.3%; top: 67.2%;"></div>
+        <div id="score_2_9" class="score" style="left: 40.3%; top: 75.2%;"></div>
+        <div id="score_2_10" class="score" style="left: 40.3%; top: 83.9%;"></div>
+        <div id="score_2_11" class="score" style="left: 40.3%; top: 92.1%;"></div>
+        <div id="scorename_3" class="scorename" style="left: 55.3%; top: 0.2%;"></div>
+        <div id="score_3_1" class="score" style="left: 55.3%; top: 9.2%;"></div>
+        <div id="score_3_2" class="score" style="left: 55.3%; top: 17.3%;"></div>
+        <div id="score_3_3" class="score" style="left: 55.3%; top: 26.1%;"></div>
+        <div id="score_3_4" class="score" style="left: 55.3%; top: 34.3%;"></div>
+        <div id="score_3_5" class="score" style="left: 55.3%; top: 42.2%;"></div>
+        <div id="score_3_6" class="score" style="left: 55.3%; top: 50.3%;"></div>
+        <div id="score_3_7" class="score" style="left: 55.3%; top: 59.1%;"></div>
+        <div id="score_3_8" class="score" style="left: 55.3%; top: 67.2%;"></div>
+        <div id="score_3_9" class="score" style="left: 55.3%; top: 75.2%;"></div>
+        <div id="score_3_10" class="score" style="left: 55.3%; top: 83.9%;"></div>
+        <div id="score_3_11" class="score" style="left: 55.3%; top: 92.1%;"></div>
+        <div id="scorename_4" class="scorename" style="left: 70%; top: 0.2%;"></div>
+        <div id="score_4_1" class="score" style="left: 70%; top: 9.2%;"></div>
+        <div id="score_4_2" class="score" style="left: 70%; top: 17.3%;"></div>
+        <div id="score_4_3" class="score" style="left: 70%; top: 26.1%;"></div>
+        <div id="score_4_4" class="score" style="left: 70%; top: 34.3%;"></div>
+        <div id="score_4_5" class="score" style="left: 70%; top: 42.2%;"></div>
+        <div id="score_4_6" class="score" style="left: 70%; top: 50.3%;"></div>
+        <div id="score_4_7" class="score" style="left: 70%; top: 59.1%;"></div>
+        <div id="score_4_8" class="score" style="left: 70%; top: 67.2%;"></div>
+        <div id="score_4_9" class="score" style="left: 70%; top: 75.2%;"></div>
+        <div id="score_4_10" class="score" style="left: 70%; top: 83.9%;"></div>
+        <div id="score_4_11" class="score" style="left: 70%; top: 92.1%;"></div>
+        <div id="scorename_5" class="scorename" style="left: 85%; top: 0.2%;"></div>
+        <div id="score_5_1" class="score" style="left: 85%; top: 9.2%;"></div>
+        <div id="score_5_2" class="score" style="left: 85%; top: 17.3%;"></div>
+        <div id="score_5_3" class="score" style="left: 85%; top: 26.1%;"></div>
+        <div id="score_5_4" class="score" style="left: 85%; top: 34.3%;"></div>
+        <div id="score_5_5" class="score" style="left: 85%; top: 42.2%;"></div>
+        <div id="score_5_6" class="score" style="left: 85%; top: 50.3%;"></div>
+        <div id="score_5_7" class="score" style="left: 85%; top: 59.1%;"></div>
+        <div id="score_5_8" class="score" style="left: 85%; top: 67.2%;"></div>
+        <div id="score_5_9" class="score" style="left: 85%; top: 75.2%;"></div>
+        <div id="score_5_10" class="score" style="left: 85%; top: 83.9%;"></div>
+        <div id="score_5_11" class="score" style="left: 85%; top: 92.1%;"></div>
+        </div>
     
         <div class="turn_board">
             <div id="turnboard_marqueur_1" class = "turnboard_marqueur" style="left: 1.6%; top: 5.5%;"></div>

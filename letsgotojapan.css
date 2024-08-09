@@ -1126,3 +1126,25 @@ display: none;
   -webkit-filter: drop-shadow(1px 1px 2px black);
     
 }
+
+.scorename{
+  width: 58px;
+  height: 42px;
+  position: absolute;
+  display: flex;
+  font-weight: bold;
+  justify-content: center;
+  align-items: center;
+}
+
+.score{
+  width: 58px;
+  height: 36px;
+  position: absolute;
+  display: flex;
+  font-weight: bold;
+  justify-content: center;
+  align-items: center;
+}
+
+

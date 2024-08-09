@@ -5,11 +5,15 @@
 {
     
     
-    public static function Kyoto_1($player_id, $day)
+    public static function Kyoto_71($player_id, $day)
     {
         
+        $g = self::getUniqueValueFromDB( "SELECT g FROM player WHERE player_id = {$player_id}");
+        if($g >= 2)
+        {
+            self::DbQuery( "UPDATE player set {$day} = {$day} + 7  WHERE player_id = {$player_id}" );
+        }
         
-        letsgotojapan::$instance->Smile(10, $player_id);
         
     }
     

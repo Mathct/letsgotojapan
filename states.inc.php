@@ -69,6 +69,7 @@ $machinestates = array(
         "descriptionmyturn" => clienttranslate('${you} must take an action or pass'),
         "type" => "multipleactiveplayer",
         "action" => 'st_MultiPlayerActivation',
+        "updateGameProgression" => true,
         "possibleactions" => array( "actSelect"),
         "transitions" => array( "next" => 3, "zombiePass" => 2, "end" => 99)
     ),

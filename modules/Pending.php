@@ -66,7 +66,7 @@ class Pending extends APP_GameClass
 
     function Phase1Step1($parg1, $parg2, $varg1, $varg2)
     {
-        //CardTokyo::Tokyo_1($this->player_id, $day);
+        
         
         if($varg1 == "walk")
         {
@@ -2883,6 +2883,7 @@ function argFinalStep1($parg1, $parg2)
     }
 
 
+    //////////////////////// LUNDI ////////////////////////////
 
     function argFinalStepLundi($parg1, $parg2)
     {
@@ -2917,13 +2918,212 @@ function argFinalStep1($parg1, $parg2)
     {
         if($varg1 == "yes")
         {
-            letsgotojapan::$instance->addPending($this->player_id, "WildLundi");
+            letsgotojapan::$instance->addPending($this->player_id, "FinalWild", 1);  // A MODIFIER: dernier chiffre est egal au jour
 
         }
 
         if(($varg1 == "no")||($varg1 == "continue"))
         {
-            $day = 1;
+            $day = 1;  //// A MODIFIER
+
+            $counttrip = letsgotojapan::$instance->CountTrip($this->player_id);  /// nombre de cartes par jour
+            $countday = $counttrip[$day-1];
+            $bonuscard = array();
+            $pvcard =0;
+            $ville = 0;
+
+            for ($i=1; $i<=$countday; $i++)
+            {
+                $type = self::getUniqueValueFromDB( "SELECT card_type type FROM tokyo WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$i}'");
+                if ($type != null)
+                {
+                    $ville = 1;
+                    $walk = self::getUniqueValueFromDB( "SELECT walk walk FROM tokyo WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$i}'");
+                    if($walk==0)
+                    {
+                        $bonuscard = letsgotojapan::$instance->tokyocards[$type]['bonus'];
+                        $pvcard = letsgotojapan::$instance->tokyocards[$type]['pv'];
+                    }
+                    if($walk==1)
+                    {
+                        $bonuscard = letsgotojapan::$instance->walk[0]['bonus'];
+                        $pvcard = letsgotojapan::$instance->walk[0]['pv'];
+                    }
+
+                    $train = self::getUniqueValueFromDB( "SELECT train train FROM tokyo WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$i}'");
+                    if ($train != 0)
+                    {
+                        self::DbQuery( "UPDATE player set trainday = trainday +1   WHERE player_id = {$this->player_id}" );
+                    }
+                    if ($train == 2)
+                    {
+                        self::DbQuery( "UPDATE player set happy1 = happy1 +1   WHERE player_id = {$this->player_id}" );
+                        letsgotojapan::$instance->Smile(1,$player);
+                    }
+
+                    $finalwalk = self::getUniqueValueFromDB( "SELECT finalwalk finalwalk FROM tokyo WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$i}'");
+                    if ($finalwalk != 0)
+                    {
+                        self::DbQuery( "UPDATE player set walkday = walkday +1   WHERE player_id = {$this->player_id}" );
+                    }
+                }
+
+                else
+                {
+                    $ville = 2;
+                    $type = self::getUniqueValueFromDB( "SELECT card_type type FROM kyoto WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$i}'");
+                    $walk = self::getUniqueValueFromDB( "SELECT walk walk FROM kyoto WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$i}'");
+                    if($walk==0)
+                    {
+                        $bonuscard = letsgotojapan::$instance->kyotocards[$type]['bonus'];
+                        $pvcard = letsgotojapan::$instance->kyotocards[$type]['pv'];
+                    }
+                    if($walk==1)
+                    {
+                        $bonuscard = letsgotojapan::$instance->walk[0]['bonus'];
+                        $pvcard = letsgotojapan::$instance->walk[0]['pv'];
+                    }
+                    $train = self::getUniqueValueFromDB( "SELECT train train FROM kyoto WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$i}'");
+                    if ($train != 0)
+                    {
+                        self::DbQuery( "UPDATE player set trainday = trainday +1   WHERE player_id = {$this->player_id}" );
+                    }
+                    if ($train == 2)
+                    {
+                        self::DbQuery( "UPDATE player set happy1 = happy1 +1   WHERE player_id = {$this->player_id}" );
+                        letsgotojapan::$instance->Smile(1,$this->player_id);
+                    }
+
+                    $finalwalk = self::getUniqueValueFromDB( "SELECT finalwalk finalwalk FROM kyoto WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$i}'");
+                    if ($finalwalk != 0)
+                    {
+                        self::DbQuery( "UPDATE player set walkday = walkday +1   WHERE player_id = {$this->player_id}" );
+                    }
+
+                }
+
+                self::DbQuery( "UPDATE player set lundi = lundi + {$pvcard}   WHERE player_id = {$this->player_id}" );   //// CHANGER LE JOUR
+
+
+                if($bonuscard[0]>=1)
+                {
+                    for($token=1; $token<=$bonuscard[0]; $token++)
+                    {
+                        letsgotojapan::$instance->Gain('r',$this->player_id);
+                    }
+
+                }
+
+                if($bonuscard[1]>=1)
+                {
+                    for($token=1; $token<=$bonuscard[1]; $token++)
+                    {
+                        letsgotojapan::$instance->Gain('g',$this->player_id);
+                    }
+
+                }
+
+                if($bonuscard[2]>=1)
+                {
+                    for($token=1; $token<=$bonuscard[2]; $token++)
+                    {
+                        letsgotojapan::$instance->Gain('p',$this->player_id);
+                    }
+
+                }
+
+                if($bonuscard[3]>=1)
+                {
+                    for($token=1; $token<=$bonuscard[3]; $token++)
+                    {
+                        letsgotojapan::$instance->Gain('y',$this->player_id);
+                    }
+
+                }
+
+                if($bonuscard[4]>=1)
+                {
+                    for($token=1; $token<=$bonuscard[4]; $token++)
+                    {
+                        letsgotojapan::$instance->Gain('b',$this->player_id);
+                    }
+
+                }
+
+                if($bonuscard[5]>=1)
+                {
+                    for($token=1; $token<=$bonuscard[5]; $token++)
+                    {
+                        letsgotojapan::$instance->Gain('h1',$this->player_id);
+                    }
+
+                }
+
+                if($bonuscard[6]>=1)
+                {
+                    for($token=1; $token<=$bonuscard[6]; $token++)
+                    {
+                        letsgotojapan::$instance->Gain('h2',$this->player_id);
+                    }
+
+                }
+
+                if($bonuscard[7]>=1)
+                {
+                    for($token=1; $token<=$bonuscard[7]; $token++)
+                    {
+                        letsgotojapan::$instance->Gain('a1',$this->player_id);
+                    }
+
+                }
+
+                if($bonuscard[8]>=1)
+                {
+                    for($token=1; $token<=$bonuscard[8]; $token++)
+                    {
+                        letsgotojapan::$instance->Gain('a2',$this->player_id);
+                    }
+
+                }
+
+                
+                
+                
+
+            }
+
+    /*        if($ville == 1)
+                {
+                    $lastday = self::getUniqueValueFromDB( "SELECT card_type type FROM tokyo WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$countday}'");
+                    $method = "Tokyo_" . $lastday;
+                    CardTokyo::$method($this->player_id, 'lundi'); // A MODIFIER JOUR
+                }
+
+            if($ville == 2)
+            {
+                $lastday = self::getUniqueValueFromDB( "SELECT card_type type FROM kyoto WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$countday}'");
+                $method = "Kyoto_" . $lastday;
+                CardKyoto::$method($this->player_id, 'lundi'); // A MODIFIER JOUR
+                
+            }
+
+*/
+            $finalscore = self::getUniqueValueFromDB( "SELECT lundi FROM player WHERE player_id = {$this->player_id}");   /// CHANGER JOUR
+            letsgotojapan::$instance->notifyAllPlayers('score','', array(
+                    
+                'numero' => $this->player_no,
+                'score' => $finalscore,
+                'position' => $day,
+                
+                )
+                );             
+            
+
+            letsgotojapan::$instance->addPending($this->player_id, "FinalStepMardi"); // à modifier pour aller sur le mardi
+
+
+            
+
 
 
         }
@@ -2933,7 +3133,1270 @@ function argFinalStep1($parg1, $parg2)
 
     }
 
-    function argWildLundi($parg1, $parg2)
+
+    //////////////////////// MARDI ////////////////////////////
+
+    function argFinalStepMardi($parg1, $parg2)
+    {
+        $ret = array();
+        $ret["selectable"] = array();
+        $ret["selectable2"] = array();
+        $ret["selected"] = array();
+        $ret['buttons'] = array();
+        
+
+        $wild = self::getUniqueValueFromDB( "SELECT wild FROM player WHERE player_id = {$this->player_id}");
+
+        if($wild >=1)
+        {
+            $ret['titleyou'] = clienttranslate('Tuesday! ${you} can use one (or more) <span class="wild"></span>');
+            $ret['buttons'][]='yes';
+            $ret['buttons'][]='no';
+        }
+        else
+        {
+            $ret['titleyou'] = clienttranslate('Tuesday!');
+            $ret['buttons'][]='continue';
+        }
+       
+        
+     
+
+        return $ret;
+    }
+
+    function FinalStepMardi($parg1, $parg2, $varg1, $varg2)
+    {
+        if($varg1 == "yes")
+        {
+            letsgotojapan::$instance->addPending($this->player_id, "FinalWild", 2);  // A MODIFIER: dernier chiffre est egal au jour
+
+        }
+
+        if(($varg1 == "no")||($varg1 == "continue"))
+        {
+            $day = 2;  //// A MODIFIER
+
+            $counttrip = letsgotojapan::$instance->CountTrip($this->player_id);  
+            $countday = $counttrip[$day-1];
+            $bonuscard = array();
+            $pvcard =0;
+            $ville = 0;
+
+            for ($i=1; $i<=$countday; $i++)
+            {
+                $type = self::getUniqueValueFromDB( "SELECT card_type type FROM tokyo WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$i}'");
+                if ($type != null)
+                {
+                    $ville = 1;
+                    $walk = self::getUniqueValueFromDB( "SELECT walk walk FROM tokyo WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$i}'");
+                    if($walk==0)
+                    {
+                        $bonuscard = letsgotojapan::$instance->tokyocards[$type]['bonus'];
+                        $pvcard = letsgotojapan::$instance->tokyocards[$type]['pv'];
+                    }
+                    if($walk==1)
+                    {
+                        $bonuscard = letsgotojapan::$instance->walk[0]['bonus'];
+                        $pvcard = letsgotojapan::$instance->walk[0]['pv'];
+                    }
+
+                    $train = self::getUniqueValueFromDB( "SELECT train train FROM tokyo WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$i}'");
+                    if ($train != 0)
+                    {
+                        self::DbQuery( "UPDATE player set trainday = trainday +1   WHERE player_id = {$this->player_id}" );
+                    }
+                    if ($train == 2)
+                    {
+                        self::DbQuery( "UPDATE player set happy1 = happy1 +1   WHERE player_id = {$this->player_id}" );
+                        letsgotojapan::$instance->Smile(1,$this->player_id);
+                    }
+
+                    $finalwalk = self::getUniqueValueFromDB( "SELECT finalwalk finalwalk FROM tokyo WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$i}'");
+                    if ($finalwalk != 0)
+                    {
+                        self::DbQuery( "UPDATE player set walkday = walkday +1   WHERE player_id = {$this->player_id}" );
+                    }
+                }
+
+                else
+                {
+                    $ville = 2;
+                    $type = self::getUniqueValueFromDB( "SELECT card_type type FROM kyoto WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$i}'");
+                    $walk = self::getUniqueValueFromDB( "SELECT walk walk FROM kyoto WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$i}'");
+                    if($walk==0)
+                    {
+                        $bonuscard = letsgotojapan::$instance->kyotocards[$type]['bonus'];
+                        $pvcard = letsgotojapan::$instance->kyotocards[$type]['pv'];
+                    }
+                    if($walk==1)
+                    {
+                        $bonuscard = letsgotojapan::$instance->walk[0]['bonus'];
+                        $pvcard = letsgotojapan::$instance->walk[0]['pv'];
+                    }
+                    $train = self::getUniqueValueFromDB( "SELECT train train FROM kyoto WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$i}'");
+                    if ($train != 0)
+                    {
+                        self::DbQuery( "UPDATE player set trainday = trainday +1   WHERE player_id = {$this->player_id}" );
+                    }
+                    if ($train == 2)
+                    {
+                        self::DbQuery( "UPDATE player set happy1 = happy1 +1   WHERE player_id = {$this->player_id}" );
+                        letsgotojapan::$instance->Smile(1,$player);
+                    }
+
+                    $finalwalk = self::getUniqueValueFromDB( "SELECT finalwalk finalwalk FROM kyoto WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$i}'");
+                    if ($finalwalk != 0)
+                    {
+                        self::DbQuery( "UPDATE player set walkday = walkday +1   WHERE player_id = {$this->player_id}" );
+                    }
+
+                }
+
+                self::DbQuery( "UPDATE player set mardi = mardi + {$pvcard}   WHERE player_id = {$this->player_id}" );   //// CHANGER LE JOUR
+
+
+                if($bonuscard[0]>=1)
+                {
+                    for($token=1; $token<=$bonuscard[0]; $token++)
+                    {
+                        letsgotojapan::$instance->Gain('r',$this->player_id);
+                    }
+
+                }
+
+                if($bonuscard[1]>=1)
+                {
+                    for($token=1; $token<=$bonuscard[1]; $token++)
+                    {
+                        letsgotojapan::$instance->Gain('g',$this->player_id);
+                    }
+
+                }
+
+                if($bonuscard[2]>=1)
+                {
+                    for($token=1; $token<=$bonuscard[2]; $token++)
+                    {
+                        letsgotojapan::$instance->Gain('p',$this->player_id);
+                    }
+
+                }
+
+                if($bonuscard[3]>=1)
+                {
+                    for($token=1; $token<=$bonuscard[3]; $token++)
+                    {
+                        letsgotojapan::$instance->Gain('y',$this->player_id);
+                    }
+
+                }
+
+                if($bonuscard[4]>=1)
+                {
+                    for($token=1; $token<=$bonuscard[4]; $token++)
+                    {
+                        letsgotojapan::$instance->Gain('b',$this->player_id);
+                    }
+
+                }
+
+                if($bonuscard[5]>=1)
+                {
+                    for($token=1; $token<=$bonuscard[5]; $token++)
+                    {
+                        letsgotojapan::$instance->Gain('h1',$this->player_id);
+                    }
+
+                }
+
+                if($bonuscard[6]>=1)
+                {
+                    for($token=1; $token<=$bonuscard[6]; $token++)
+                    {
+                        letsgotojapan::$instance->Gain('h2',$this->player_id);
+                    }
+
+                }
+
+                if($bonuscard[7]>=1)
+                {
+                    for($token=1; $token<=$bonuscard[7]; $token++)
+                    {
+                        letsgotojapan::$instance->Gain('a1',$this->player_id);
+                    }
+
+                }
+
+                if($bonuscard[8]>=1)
+                {
+                    for($token=1; $token<=$bonuscard[8]; $token++)
+                    {
+                        letsgotojapan::$instance->Gain('a2',$this->player_id);
+                    }
+
+                }
+
+
+            }
+
+    /*        if($ville == 1)
+                {
+                    $lastday = self::getUniqueValueFromDB( "SELECT card_type type FROM tokyo WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$countday}'");
+                    $method = "Tokyo_" . $lastday;
+                    CardTokyo::$method($this->player_id, 'mardi'); // A MODIFIER JOUR
+                }
+
+            if($ville == 2)
+            {
+                $lastday = self::getUniqueValueFromDB( "SELECT card_type type FROM kyoto WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$countday}'");
+                $method = "Kyoto_" . $lastday;
+                CardKyoto::$method($this->player_id, 'mardi'); // A MODIFIER JOUR
+                
+            }
+    */                     
+            
+
+            $finalscore = self::getUniqueValueFromDB( "SELECT mardi FROM player WHERE player_id = {$this->player_id}");   /// CHANGER JOUR
+            letsgotojapan::$instance->notifyAllPlayers('score','', array(
+                    
+                'numero' => $this->player_no,
+                'score' => $finalscore,
+                'position' => $day,
+                
+                )
+                );
+
+            letsgotojapan::$instance->addPending($this->player_id, "FinalStepMercredi"); // à modifier pour aller sur le mardi
+
+
+            
+
+
+
+        }
+
+
+
+
+    }
+
+    //////////////////////// MERCREDI ////////////////////////////
+
+    function argFinalStepMercredi($parg1, $parg2)
+    {
+        $ret = array();
+        $ret["selectable"] = array();
+        $ret["selectable2"] = array();
+        $ret["selected"] = array();
+        $ret['buttons'] = array();
+        
+
+        $wild = self::getUniqueValueFromDB( "SELECT wild FROM player WHERE player_id = {$this->player_id}");
+
+        if($wild >=1)
+        {
+            $ret['titleyou'] = clienttranslate('Wednesday! ${you} can use one (or more) <span class="wild"></span>');
+            $ret['buttons'][]='yes';
+            $ret['buttons'][]='no';
+        }
+        else
+        {
+            $ret['titleyou'] = clienttranslate('Wednesday!');
+            $ret['buttons'][]='continue';
+        }
+       
+        
+     
+
+        return $ret;
+    }
+
+    function FinalStepMercredi($parg1, $parg2, $varg1, $varg2)
+    {
+        if($varg1 == "yes")
+        {
+            letsgotojapan::$instance->addPending($this->player_id, "FinalWild", 3);  // A MODIFIER: dernier chiffre est egal au jour
+
+        }
+
+        if(($varg1 == "no")||($varg1 == "continue"))
+        {
+            $day = 3;  //// A MODIFIER
+
+            $counttrip = letsgotojapan::$instance->CountTrip($this->player_id);  
+            $countday = $counttrip[$day-1];
+            $bonuscard = array();
+            $pvcard =0;
+            $ville = 0;
+
+            for ($i=1; $i<=$countday; $i++)
+            {
+                $type = self::getUniqueValueFromDB( "SELECT card_type type FROM tokyo WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$i}'");
+                if ($type != null)
+                {
+                    $ville = 1;
+                    $walk = self::getUniqueValueFromDB( "SELECT walk walk FROM tokyo WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$i}'");
+                    if($walk==0)
+                    {
+                        $bonuscard = letsgotojapan::$instance->tokyocards[$type]['bonus'];
+                        $pvcard = letsgotojapan::$instance->tokyocards[$type]['pv'];
+                    }
+                    if($walk==1)
+                    {
+                        $bonuscard = letsgotojapan::$instance->walk[0]['bonus'];
+                        $pvcard = letsgotojapan::$instance->walk[0]['pv'];
+                    }
+
+                    $train = self::getUniqueValueFromDB( "SELECT train train FROM tokyo WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$i}'");
+                    if ($train != 0)
+                    {
+                        self::DbQuery( "UPDATE player set trainday = trainday +1   WHERE player_id = {$this->player_id}" );
+                    }
+                    if ($train == 2)
+                    {
+                        self::DbQuery( "UPDATE player set happy1 = happy1 +1   WHERE player_id = {$this->player_id}" );
+                        letsgotojapan::$instance->Smile(1,$this->player_id);
+                    }
+
+                    $finalwalk = self::getUniqueValueFromDB( "SELECT finalwalk finalwalk FROM tokyo WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$i}'");
+                    if ($finalwalk != 0)
+                    {
+                        self::DbQuery( "UPDATE player set walkday = walkday +1   WHERE player_id = {$this->player_id}" );
+                    }
+                }
+
+                else
+                {
+                    $ville = 2;
+                    $type = self::getUniqueValueFromDB( "SELECT card_type type FROM kyoto WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$i}'");
+                    $walk = self::getUniqueValueFromDB( "SELECT walk walk FROM kyoto WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$i}'");
+                    if($walk==0)
+                    {
+                        $bonuscard = letsgotojapan::$instance->kyotocards[$type]['bonus'];
+                        $pvcard = letsgotojapan::$instance->kyotocards[$type]['pv'];
+                    }
+                    if($walk==1)
+                    {
+                        $bonuscard = letsgotojapan::$instance->walk[0]['bonus'];
+                        $pvcard = letsgotojapan::$instance->walk[0]['pv'];
+                    }
+                    $train = self::getUniqueValueFromDB( "SELECT train train FROM kyoto WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$i}'");
+                    if ($train != 0)
+                    {
+                        self::DbQuery( "UPDATE player set trainday = trainday +1   WHERE player_id = {$this->player_id}" );
+                    }
+                    if ($train == 2)
+                    {
+                        self::DbQuery( "UPDATE player set happy1 = happy1 +1   WHERE player_id = {$this->player_id}" );
+                        letsgotojapan::$instance->Smile(1,$player);
+                    }
+
+                    $finalwalk = self::getUniqueValueFromDB( "SELECT finalwalk finalwalk FROM kyoto WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$i}'");
+                    if ($finalwalk != 0)
+                    {
+                        self::DbQuery( "UPDATE player set walkday = walkday +1   WHERE player_id = {$this->player_id}" );
+                    }
+
+                }
+
+                self::DbQuery( "UPDATE player set mercredi = mercredi + {$pvcard}   WHERE player_id = {$this->player_id}" );   //// CHANGER LE JOUR
+
+
+                if($bonuscard[0]>=1)
+                {
+                    for($token=1; $token<=$bonuscard[0]; $token++)
+                    {
+                        letsgotojapan::$instance->Gain('r',$this->player_id);
+                    }
+
+                }
+
+                if($bonuscard[1]>=1)
+                {
+                    for($token=1; $token<=$bonuscard[1]; $token++)
+                    {
+                        letsgotojapan::$instance->Gain('g',$this->player_id);
+                    }
+
+                }
+
+                if($bonuscard[2]>=1)
+                {
+                    for($token=1; $token<=$bonuscard[2]; $token++)
+                    {
+                        letsgotojapan::$instance->Gain('p',$this->player_id);
+                    }
+
+                }
+
+                if($bonuscard[3]>=1)
+                {
+                    for($token=1; $token<=$bonuscard[3]; $token++)
+                    {
+                        letsgotojapan::$instance->Gain('y',$this->player_id);
+                    }
+
+                }
+
+                if($bonuscard[4]>=1)
+                {
+                    for($token=1; $token<=$bonuscard[4]; $token++)
+                    {
+                        letsgotojapan::$instance->Gain('b',$this->player_id);
+                    }
+
+                }
+
+                if($bonuscard[5]>=1)
+                {
+                    for($token=1; $token<=$bonuscard[5]; $token++)
+                    {
+                        letsgotojapan::$instance->Gain('h1',$this->player_id);
+                    }
+
+                }
+
+                if($bonuscard[6]>=1)
+                {
+                    for($token=1; $token<=$bonuscard[6]; $token++)
+                    {
+                        letsgotojapan::$instance->Gain('h2',$this->player_id);
+                    }
+
+                }
+
+                if($bonuscard[7]>=1)
+                {
+                    for($token=1; $token<=$bonuscard[7]; $token++)
+                    {
+                        letsgotojapan::$instance->Gain('a1',$this->player_id);
+                    }
+
+                }
+
+                if($bonuscard[8]>=1)
+                {
+                    for($token=1; $token<=$bonuscard[8]; $token++)
+                    {
+                        letsgotojapan::$instance->Gain('a2',$this->player_id);
+                    }
+
+                }
+
+
+            }
+
+    /*        if($ville == 1)
+                {
+                    $lastday = self::getUniqueValueFromDB( "SELECT card_type type FROM tokyo WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$countday}'");
+                    $method = "Tokyo_" . $lastday;
+                    CardTokyo::$method($this->player_id, 'mardi'); // A MODIFIER JOUR
+                }
+
+            if($ville == 2)
+            {
+                $lastday = self::getUniqueValueFromDB( "SELECT card_type type FROM kyoto WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$countday}'");
+                $method = "Kyoto_" . $lastday;
+                CardKyoto::$method($this->player_id, 'mardi'); // A MODIFIER JOUR
+                
+            }
+    */                     
+            
+
+            $finalscore = self::getUniqueValueFromDB( "SELECT mercredi FROM player WHERE player_id = {$this->player_id}");   /// CHANGER JOUR
+            letsgotojapan::$instance->notifyAllPlayers('score','', array(
+                    
+                'numero' => $this->player_no,
+                'score' => $finalscore,
+                'position' => $day,
+                
+                )
+                );
+
+            letsgotojapan::$instance->addPending($this->player_id, "FinalStepJeudi"); // à modifier pour aller sur le mardi
+
+
+            
+
+
+
+        }
+
+
+
+
+    }
+
+
+
+
+//////////////////////// JEUDI ////////////////////////////
+
+function argFinalStepJeudi($parg1, $parg2)
+{
+    $ret = array();
+    $ret["selectable"] = array();
+    $ret["selectable2"] = array();
+    $ret["selected"] = array();
+    $ret['buttons'] = array();
+    
+
+    $wild = self::getUniqueValueFromDB( "SELECT wild FROM player WHERE player_id = {$this->player_id}");
+
+    if($wild >=1)
+    {
+        $ret['titleyou'] = clienttranslate('Thursday! ${you} can use one (or more) <span class="wild"></span>');
+        $ret['buttons'][]='yes';
+        $ret['buttons'][]='no';
+    }
+    else
+    {
+        $ret['titleyou'] = clienttranslate('Thursday!');
+        $ret['buttons'][]='continue';
+    }
+   
+    
+ 
+
+    return $ret;
+}
+
+function FinalStepJeudi($parg1, $parg2, $varg1, $varg2)
+{
+    if($varg1 == "yes")
+    {
+        letsgotojapan::$instance->addPending($this->player_id, "FinalWild", 2);  // A MODIFIER: dernier chiffre est egal au jour
+
+    }
+
+    if(($varg1 == "no")||($varg1 == "continue"))
+    {
+        $day = 4;  //// A MODIFIER
+
+        $counttrip = letsgotojapan::$instance->CountTrip($this->player_id);  
+        $countday = $counttrip[$day-1];
+        $bonuscard = array();
+        $pvcard =0;
+        $ville = 0;
+
+        for ($i=1; $i<=$countday; $i++)
+        {
+            $type = self::getUniqueValueFromDB( "SELECT card_type type FROM tokyo WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$i}'");
+            if ($type != null)
+            {
+                $ville = 1;
+                $walk = self::getUniqueValueFromDB( "SELECT walk walk FROM tokyo WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$i}'");
+                if($walk==0)
+                {
+                    $bonuscard = letsgotojapan::$instance->tokyocards[$type]['bonus'];
+                    $pvcard = letsgotojapan::$instance->tokyocards[$type]['pv'];
+                }
+                if($walk==1)
+                {
+                    $bonuscard = letsgotojapan::$instance->walk[0]['bonus'];
+                    $pvcard = letsgotojapan::$instance->walk[0]['pv'];
+                }
+
+                $train = self::getUniqueValueFromDB( "SELECT train train FROM tokyo WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$i}'");
+                if ($train != 0)
+                {
+                    self::DbQuery( "UPDATE player set trainday = trainday +1   WHERE player_id = {$this->player_id}" );
+                }
+                if ($train == 2)
+                {
+                    self::DbQuery( "UPDATE player set happy1 = happy1 +1   WHERE player_id = {$this->player_id}" );
+                    letsgotojapan::$instance->Smile(1,$this->player_id);
+                }
+
+                $finalwalk = self::getUniqueValueFromDB( "SELECT finalwalk finalwalk FROM tokyo WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$i}'");
+                if ($finalwalk != 0)
+                {
+                    self::DbQuery( "UPDATE player set walkday = walkday +1   WHERE player_id = {$this->player_id}" );
+                }
+            }
+
+            else
+            {
+                $ville = 2;
+                $type = self::getUniqueValueFromDB( "SELECT card_type type FROM kyoto WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$i}'");
+                $walk = self::getUniqueValueFromDB( "SELECT walk walk FROM kyoto WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$i}'");
+                if($walk==0)
+                {
+                    $bonuscard = letsgotojapan::$instance->kyotocards[$type]['bonus'];
+                    $pvcard = letsgotojapan::$instance->kyotocards[$type]['pv'];
+                }
+                if($walk==1)
+                {
+                    $bonuscard = letsgotojapan::$instance->walk[0]['bonus'];
+                    $pvcard = letsgotojapan::$instance->walk[0]['pv'];
+                }
+                $train = self::getUniqueValueFromDB( "SELECT train train FROM kyoto WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$i}'");
+                if ($train != 0)
+                {
+                    self::DbQuery( "UPDATE player set trainday = trainday +1   WHERE player_id = {$this->player_id}" );
+                }
+                if ($train == 2)
+                {
+                    self::DbQuery( "UPDATE player set happy1 = happy1 +1   WHERE player_id = {$this->player_id}" );
+                    letsgotojapan::$instance->Smile(1,$player);
+                }
+
+                $finalwalk = self::getUniqueValueFromDB( "SELECT finalwalk finalwalk FROM kyoto WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$i}'");
+                if ($finalwalk != 0)
+                {
+                    self::DbQuery( "UPDATE player set walkday = walkday +1   WHERE player_id = {$this->player_id}" );
+                }
+
+            }
+
+            self::DbQuery( "UPDATE player set jeudi = jeudi + {$pvcard}   WHERE player_id = {$this->player_id}" );   //// CHANGER LE JOUR
+
+
+            if($bonuscard[0]>=1)
+            {
+                for($token=1; $token<=$bonuscard[0]; $token++)
+                {
+                    letsgotojapan::$instance->Gain('r',$this->player_id);
+                }
+
+            }
+
+            if($bonuscard[1]>=1)
+            {
+                for($token=1; $token<=$bonuscard[1]; $token++)
+                {
+                    letsgotojapan::$instance->Gain('g',$this->player_id);
+                }
+
+            }
+
+            if($bonuscard[2]>=1)
+            {
+                for($token=1; $token<=$bonuscard[2]; $token++)
+                {
+                    letsgotojapan::$instance->Gain('p',$this->player_id);
+                }
+
+            }
+
+            if($bonuscard[3]>=1)
+            {
+                for($token=1; $token<=$bonuscard[3]; $token++)
+                {
+                    letsgotojapan::$instance->Gain('y',$this->player_id);
+                }
+
+            }
+
+            if($bonuscard[4]>=1)
+            {
+                for($token=1; $token<=$bonuscard[4]; $token++)
+                {
+                    letsgotojapan::$instance->Gain('b',$this->player_id);
+                }
+
+            }
+
+            if($bonuscard[5]>=1)
+            {
+                for($token=1; $token<=$bonuscard[5]; $token++)
+                {
+                    letsgotojapan::$instance->Gain('h1',$this->player_id);
+                }
+
+            }
+
+            if($bonuscard[6]>=1)
+            {
+                for($token=1; $token<=$bonuscard[6]; $token++)
+                {
+                    letsgotojapan::$instance->Gain('h2',$this->player_id);
+                }
+
+            }
+
+            if($bonuscard[7]>=1)
+            {
+                for($token=1; $token<=$bonuscard[7]; $token++)
+                {
+                    letsgotojapan::$instance->Gain('a1',$this->player_id);
+                }
+
+            }
+
+            if($bonuscard[8]>=1)
+            {
+                for($token=1; $token<=$bonuscard[8]; $token++)
+                {
+                    letsgotojapan::$instance->Gain('a2',$this->player_id);
+                }
+
+            }
+
+
+        }
+
+/*        if($ville == 1)
+            {
+                $lastday = self::getUniqueValueFromDB( "SELECT card_type type FROM tokyo WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$countday}'");
+                $method = "Tokyo_" . $lastday;
+                CardTokyo::$method($this->player_id, 'mardi'); // A MODIFIER JOUR
+            }
+
+        if($ville == 2)
+        {
+            $lastday = self::getUniqueValueFromDB( "SELECT card_type type FROM kyoto WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$countday}'");
+            $method = "Kyoto_" . $lastday;
+            CardKyoto::$method($this->player_id, 'mardi'); // A MODIFIER JOUR
+            
+        }
+*/                     
+        
+
+        $finalscore = self::getUniqueValueFromDB( "SELECT jeudi FROM player WHERE player_id = {$this->player_id}");   /// CHANGER JOUR
+        letsgotojapan::$instance->notifyAllPlayers('score','', array(
+                
+            'numero' => $this->player_no,
+            'score' => $finalscore,
+            'position' => $day,
+            
+            )
+            );
+
+        letsgotojapan::$instance->addPending($this->player_id, "FinalStepVendredi"); // à modifier pour aller sur le mardi
+
+
+        
+
+
+
+    }
+
+
+
+
+}
+
+
+
+//////////////////////// VENDREDI ////////////////////////////
+
+function argFinalStepVendredi($parg1, $parg2)
+{
+    $ret = array();
+    $ret["selectable"] = array();
+    $ret["selectable2"] = array();
+    $ret["selected"] = array();
+    $ret['buttons'] = array();
+    
+
+    $wild = self::getUniqueValueFromDB( "SELECT wild FROM player WHERE player_id = {$this->player_id}");
+
+    if($wild >=1)
+    {
+        $ret['titleyou'] = clienttranslate('Friday! ${you} can use one (or more) <span class="wild"></span>');
+        $ret['buttons'][]='yes';
+        $ret['buttons'][]='no';
+    }
+    else
+    {
+        $ret['titleyou'] = clienttranslate('Friday!');
+        $ret['buttons'][]='continue';
+    }
+   
+    
+ 
+
+    return $ret;
+}
+
+function FinalStepVendredi($parg1, $parg2, $varg1, $varg2)
+{
+    if($varg1 == "yes")
+    {
+        letsgotojapan::$instance->addPending($this->player_id, "FinalWild", 2);  // A MODIFIER: dernier chiffre est egal au jour
+
+    }
+
+    if(($varg1 == "no")||($varg1 == "continue"))
+    {
+        $day = 5;  //// A MODIFIER
+
+        $counttrip = letsgotojapan::$instance->CountTrip($this->player_id);  
+        $countday = $counttrip[$day-1];
+        $bonuscard = array();
+        $pvcard =0;
+        $ville = 0;
+
+        for ($i=1; $i<=$countday; $i++)
+        {
+            $type = self::getUniqueValueFromDB( "SELECT card_type type FROM tokyo WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$i}'");
+            if ($type != null)
+            {
+                $ville = 1;
+                $walk = self::getUniqueValueFromDB( "SELECT walk walk FROM tokyo WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$i}'");
+                if($walk==0)
+                {
+                    $bonuscard = letsgotojapan::$instance->tokyocards[$type]['bonus'];
+                    $pvcard = letsgotojapan::$instance->tokyocards[$type]['pv'];
+                }
+                if($walk==1)
+                {
+                    $bonuscard = letsgotojapan::$instance->walk[0]['bonus'];
+                    $pvcard = letsgotojapan::$instance->walk[0]['pv'];
+                }
+
+                $train = self::getUniqueValueFromDB( "SELECT train train FROM tokyo WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$i}'");
+                if ($train != 0)
+                {
+                    self::DbQuery( "UPDATE player set trainday = trainday +1   WHERE player_id = {$this->player_id}" );
+                }
+                if ($train == 2)
+                {
+                    self::DbQuery( "UPDATE player set happy1 = happy1 +1   WHERE player_id = {$this->player_id}" );
+                    letsgotojapan::$instance->Smile(1,$this->player_id);
+                }
+
+                $finalwalk = self::getUniqueValueFromDB( "SELECT finalwalk finalwalk FROM tokyo WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$i}'");
+                if ($finalwalk != 0)
+                {
+                    self::DbQuery( "UPDATE player set walkday = walkday +1   WHERE player_id = {$this->player_id}" );
+                }
+            }
+
+            else
+            {
+                $ville = 2;
+                $type = self::getUniqueValueFromDB( "SELECT card_type type FROM kyoto WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$i}'");
+                $walk = self::getUniqueValueFromDB( "SELECT walk walk FROM kyoto WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$i}'");
+                if($walk==0)
+                {
+                    $bonuscard = letsgotojapan::$instance->kyotocards[$type]['bonus'];
+                    $pvcard = letsgotojapan::$instance->kyotocards[$type]['pv'];
+                }
+                if($walk==1)
+                {
+                    $bonuscard = letsgotojapan::$instance->walk[0]['bonus'];
+                    $pvcard = letsgotojapan::$instance->walk[0]['pv'];
+                }
+                $train = self::getUniqueValueFromDB( "SELECT train train FROM kyoto WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$i}'");
+                if ($train != 0)
+                {
+                    self::DbQuery( "UPDATE player set trainday = trainday +1   WHERE player_id = {$this->player_id}" );
+                }
+                if ($train == 2)
+                {
+                    self::DbQuery( "UPDATE player set happy1 = happy1 +1   WHERE player_id = {$this->player_id}" );
+                    letsgotojapan::$instance->Smile(1,$player);
+                }
+
+                $finalwalk = self::getUniqueValueFromDB( "SELECT finalwalk finalwalk FROM kyoto WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$i}'");
+                if ($finalwalk != 0)
+                {
+                    self::DbQuery( "UPDATE player set walkday = walkday +1   WHERE player_id = {$this->player_id}" );
+                }
+
+            }
+
+            self::DbQuery( "UPDATE player set vendredi = vendredi + {$pvcard}   WHERE player_id = {$this->player_id}" );   //// CHANGER LE JOUR
+
+
+            if($bonuscard[0]>=1)
+            {
+                for($token=1; $token<=$bonuscard[0]; $token++)
+                {
+                    letsgotojapan::$instance->Gain('r',$this->player_id);
+                }
+
+            }
+
+            if($bonuscard[1]>=1)
+            {
+                for($token=1; $token<=$bonuscard[1]; $token++)
+                {
+                    letsgotojapan::$instance->Gain('g',$this->player_id);
+                }
+
+            }
+
+            if($bonuscard[2]>=1)
+            {
+                for($token=1; $token<=$bonuscard[2]; $token++)
+                {
+                    letsgotojapan::$instance->Gain('p',$this->player_id);
+                }
+
+            }
+
+            if($bonuscard[3]>=1)
+            {
+                for($token=1; $token<=$bonuscard[3]; $token++)
+                {
+                    letsgotojapan::$instance->Gain('y',$this->player_id);
+                }
+
+            }
+
+            if($bonuscard[4]>=1)
+            {
+                for($token=1; $token<=$bonuscard[4]; $token++)
+                {
+                    letsgotojapan::$instance->Gain('b',$this->player_id);
+                }
+
+            }
+
+            if($bonuscard[5]>=1)
+            {
+                for($token=1; $token<=$bonuscard[5]; $token++)
+                {
+                    letsgotojapan::$instance->Gain('h1',$this->player_id);
+                }
+
+            }
+
+            if($bonuscard[6]>=1)
+            {
+                for($token=1; $token<=$bonuscard[6]; $token++)
+                {
+                    letsgotojapan::$instance->Gain('h2',$this->player_id);
+                }
+
+            }
+
+            if($bonuscard[7]>=1)
+            {
+                for($token=1; $token<=$bonuscard[7]; $token++)
+                {
+                    letsgotojapan::$instance->Gain('a1',$this->player_id);
+                }
+
+            }
+
+            if($bonuscard[8]>=1)
+            {
+                for($token=1; $token<=$bonuscard[8]; $token++)
+                {
+                    letsgotojapan::$instance->Gain('a2',$this->player_id);
+                }
+
+            }
+
+
+        }
+
+/*        if($ville == 1)
+            {
+                $lastday = self::getUniqueValueFromDB( "SELECT card_type type FROM tokyo WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$countday}'");
+                $method = "Tokyo_" . $lastday;
+                CardTokyo::$method($this->player_id, 'mardi'); // A MODIFIER JOUR
+            }
+
+        if($ville == 2)
+        {
+            $lastday = self::getUniqueValueFromDB( "SELECT card_type type FROM kyoto WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$countday}'");
+            $method = "Kyoto_" . $lastday;
+            CardKyoto::$method($this->player_id, 'mardi'); // A MODIFIER JOUR
+            
+        }
+*/                     
+        
+
+        $finalscore = self::getUniqueValueFromDB( "SELECT vendredi FROM player WHERE player_id = {$this->player_id}");   /// CHANGER JOUR
+        letsgotojapan::$instance->notifyAllPlayers('score','', array(
+                
+            'numero' => $this->player_no,
+            'score' => $finalscore,
+            'position' => $day,
+            
+            )
+            );
+
+        letsgotojapan::$instance->addPending($this->player_id, "FinalStepSamedi"); // à modifier pour aller sur le mardi
+
+
+        
+
+
+
+    }
+
+
+
+
+}
+
+//////////////////////// SAMEDI ////////////////////////////
+
+function argFinalStepSamedi($parg1, $parg2)
+{
+    $ret = array();
+    $ret["selectable"] = array();
+    $ret["selectable2"] = array();
+    $ret["selected"] = array();
+    $ret['buttons'] = array();
+    
+
+    $wild = self::getUniqueValueFromDB( "SELECT wild FROM player WHERE player_id = {$this->player_id}");
+
+    if($wild >=1)
+    {
+        $ret['titleyou'] = clienttranslate('Saturday! ${you} can use one (or more) <span class="wild"></span>');
+        $ret['buttons'][]='yes';
+        $ret['buttons'][]='no';
+    }
+    else
+    {
+        $ret['titleyou'] = clienttranslate('Saturday!');
+        $ret['buttons'][]='continue';
+    }
+   
+    
+ 
+
+    return $ret;
+}
+
+function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
+{
+    if($varg1 == "yes")
+    {
+        letsgotojapan::$instance->addPending($this->player_id, "FinalWild", 2);  // A MODIFIER: dernier chiffre est egal au jour
+
+    }
+
+    if(($varg1 == "no")||($varg1 == "continue"))
+    {
+        $day = 6;  //// A MODIFIER
+
+        $counttrip = letsgotojapan::$instance->CountTrip($this->player_id);  
+        $countday = $counttrip[$day-1];
+        $bonuscard = array();
+        $pvcard =0;
+        $ville = 0;
+
+        for ($i=1; $i<=$countday; $i++)
+        {
+            $type = self::getUniqueValueFromDB( "SELECT card_type type FROM tokyo WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$i}'");
+            if ($type != null)
+            {
+                $ville = 1;
+                $walk = self::getUniqueValueFromDB( "SELECT walk walk FROM tokyo WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$i}'");
+                if($walk==0)
+                {
+                    $bonuscard = letsgotojapan::$instance->tokyocards[$type]['bonus'];
+                    $pvcard = letsgotojapan::$instance->tokyocards[$type]['pv'];
+                }
+                if($walk==1)
+                {
+                    $bonuscard = letsgotojapan::$instance->walk[0]['bonus'];
+                    $pvcard = letsgotojapan::$instance->walk[0]['pv'];
+                }
+
+                $train = self::getUniqueValueFromDB( "SELECT train train FROM tokyo WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$i}'");
+                if ($train != 0)
+                {
+                    self::DbQuery( "UPDATE player set trainday = trainday +1   WHERE player_id = {$this->player_id}" );
+                }
+                if ($train == 2)
+                {
+                    self::DbQuery( "UPDATE player set happy1 = happy1 +1   WHERE player_id = {$this->player_id}" );
+                    letsgotojapan::$instance->Smile(1,$this->player_id);
+                }
+
+                $finalwalk = self::getUniqueValueFromDB( "SELECT finalwalk finalwalk FROM tokyo WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$i}'");
+                if ($finalwalk != 0)
+                {
+                    self::DbQuery( "UPDATE player set walkday = walkday +1   WHERE player_id = {$this->player_id}" );
+                }
+            }
+
+            else
+            {
+                $ville = 2;
+                $type = self::getUniqueValueFromDB( "SELECT card_type type FROM kyoto WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$i}'");
+                $walk = self::getUniqueValueFromDB( "SELECT walk walk FROM kyoto WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$i}'");
+                if($walk==0)
+                {
+                    $bonuscard = letsgotojapan::$instance->kyotocards[$type]['bonus'];
+                    $pvcard = letsgotojapan::$instance->kyotocards[$type]['pv'];
+                }
+                if($walk==1)
+                {
+                    $bonuscard = letsgotojapan::$instance->walk[0]['bonus'];
+                    $pvcard = letsgotojapan::$instance->walk[0]['pv'];
+                }
+                $train = self::getUniqueValueFromDB( "SELECT train train FROM kyoto WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$i}'");
+                if ($train != 0)
+                {
+                    self::DbQuery( "UPDATE player set trainday = trainday +1   WHERE player_id = {$this->player_id}" );
+                }
+                if ($train == 2)
+                {
+                    self::DbQuery( "UPDATE player set happy1 = happy1 +1   WHERE player_id = {$this->player_id}" );
+                    letsgotojapan::$instance->Smile(1,$player);
+                }
+
+                $finalwalk = self::getUniqueValueFromDB( "SELECT finalwalk finalwalk FROM kyoto WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$i}'");
+                if ($finalwalk != 0)
+                {
+                    self::DbQuery( "UPDATE player set walkday = walkday +1   WHERE player_id = {$this->player_id}" );
+                }
+
+            }
+
+            self::DbQuery( "UPDATE player set samedi = samedi + {$pvcard}   WHERE player_id = {$this->player_id}" );   //// CHANGER LE JOUR
+
+
+            if($bonuscard[0]>=1)
+            {
+                for($token=1; $token<=$bonuscard[0]; $token++)
+                {
+                    letsgotojapan::$instance->Gain('r',$this->player_id);
+                }
+
+            }
+
+            if($bonuscard[1]>=1)
+            {
+                for($token=1; $token<=$bonuscard[1]; $token++)
+                {
+                    letsgotojapan::$instance->Gain('g',$this->player_id);
+                }
+
+            }
+
+            if($bonuscard[2]>=1)
+            {
+                for($token=1; $token<=$bonuscard[2]; $token++)
+                {
+                    letsgotojapan::$instance->Gain('p',$this->player_id);
+                }
+
+            }
+
+            if($bonuscard[3]>=1)
+            {
+                for($token=1; $token<=$bonuscard[3]; $token++)
+                {
+                    letsgotojapan::$instance->Gain('y',$this->player_id);
+                }
+
+            }
+
+            if($bonuscard[4]>=1)
+            {
+                for($token=1; $token<=$bonuscard[4]; $token++)
+                {
+                    letsgotojapan::$instance->Gain('b',$this->player_id);
+                }
+
+            }
+
+            if($bonuscard[5]>=1)
+            {
+                for($token=1; $token<=$bonuscard[5]; $token++)
+                {
+                    letsgotojapan::$instance->Gain('h1',$this->player_id);
+                }
+
+            }
+
+            if($bonuscard[6]>=1)
+            {
+                for($token=1; $token<=$bonuscard[6]; $token++)
+                {
+                    letsgotojapan::$instance->Gain('h2',$this->player_id);
+                }
+
+            }
+
+            if($bonuscard[7]>=1)
+            {
+                for($token=1; $token<=$bonuscard[7]; $token++)
+                {
+                    letsgotojapan::$instance->Gain('a1',$this->player_id);
+                }
+
+            }
+
+            if($bonuscard[8]>=1)
+            {
+                for($token=1; $token<=$bonuscard[8]; $token++)
+                {
+                    letsgotojapan::$instance->Gain('a2',$this->player_id);
+                }
+
+            }
+
+
+        }
+
+/*        if($ville == 1)
+            {
+                $lastday = self::getUniqueValueFromDB( "SELECT card_type type FROM tokyo WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$countday}'");
+                $method = "Tokyo_" . $lastday;
+                CardTokyo::$method($this->player_id, 'mardi'); // A MODIFIER JOUR
+            }
+
+        if($ville == 2)
+        {
+            $lastday = self::getUniqueValueFromDB( "SELECT card_type type FROM kyoto WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$countday}'");
+            $method = "Kyoto_" . $lastday;
+            CardKyoto::$method($this->player_id, 'mardi'); // A MODIFIER JOUR
+            
+        }
+*/                     
+        
+
+        $finalscore = self::getUniqueValueFromDB( "SELECT samedi FROM player WHERE player_id = {$this->player_id}");   /// CHANGER JOUR
+        letsgotojapan::$instance->notifyAllPlayers('score','', array(
+                
+            'numero' => $this->player_no,
+            'score' => $finalscore,
+            'position' => $day,
+            
+            )
+            );
+
+
+
+
+
+
+
+
+
+
+
+    
+        letsgotojapan::$instance->addPending($this->player_id, "FinalStepSamedi"); // A CHANGER POUR LA FIN
+
+
+        
+
+
+
+    }
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+    //////////// WILD ////////////////////
+
+    function argFinalWild($parg1, $parg2)
     {
         $ret = array();
         $ret["selectable"] = array();
@@ -2954,17 +4417,41 @@ function argFinalStep1($parg1, $parg2)
         return $ret;
     }
 
-    function WildLundi($parg1, $parg2, $varg1, $varg2)
+    function FinalWild($parg1, $parg2, $varg1, $varg2)
     {
         if($varg1 == "cancel")
         {
-            letsgotojapan::$instance->addPending($this->player_id, "FinalStepLundi");
+            if($parg1 == 1)
+            {
+                letsgotojapan::$instance->addPending($this->player_id, "FinalStepLundi");
+            }
+            if($parg1 == 2)
+            {
+                letsgotojapan::$instance->addPending($this->player_id, "FinalStepMardi");
+            }
+            if($parg1 == 3)
+            {
+                letsgotojapan::$instance->addPending($this->player_id, "FinalStepMercredi");
+            }
+            if($parg1 == 4)
+            {
+                letsgotojapan::$instance->addPending($this->player_id, "FinalStepJeudi");
+            }
+            if($parg1 == 5)
+            {
+                letsgotojapan::$instance->addPending($this->player_id, "FinalStepVendredi");
+            }
+            if($parg1 == 6)
+            {
+                letsgotojapan::$instance->addPending($this->player_id, "FinalStepSamedi");
+            }
+
 
         }
 
         else
         {
-            letsgotojapan::$instance->addPending($this->player_id, "ConfirmWildLundi", $varg1);
+            letsgotojapan::$instance->addPending($this->player_id, "ConfirmWildLundi", $varg1, $parg1);
         }
        
 
@@ -2990,7 +4477,30 @@ function argFinalStep1($parg1, $parg2)
     {
         if($varg1 == "cancel")
         {
-            letsgotojapan::$instance->addPending($this->player_id, "WildLundi");
+            if($parg2 == 1)
+            {
+                letsgotojapan::$instance->addPending($this->player_id, "FinalStepLundi");
+            }
+            if($parg2 == 2)
+            {
+                letsgotojapan::$instance->addPending($this->player_id, "FinalStepMardi");
+            }
+            if($parg2 == 3)
+            {
+                letsgotojapan::$instance->addPending($this->player_id, "FinalStepMercredi");
+            }
+            if($parg2 == 4)
+            {
+                letsgotojapan::$instance->addPending($this->player_id, "FinalStepJeudi");
+            }
+            if($parg2 == 5)
+            {
+                letsgotojapan::$instance->addPending($this->player_id, "FinalStepVendredi");
+            }
+            if($parg2 == 6)
+            {
+                letsgotojapan::$instance->addPending($this->player_id, "FinalStepSamedi");
+            }
 
         }
 
@@ -3021,7 +4531,32 @@ function argFinalStep1($parg1, $parg2)
 
             self::DbQuery( "UPDATE player set wild = wild -1  WHERE player_id = {$this->player_id}" );
             letsgotojapan::$instance->MajPannel($this->player_id);
-            letsgotojapan::$instance->addPending($this->player_id, "FinalStepLundi");
+            
+            if($parg2 == 1)
+            {
+                letsgotojapan::$instance->addPending($this->player_id, "FinalStepLundi");
+            }
+            if($parg2 == 2)
+            {
+                letsgotojapan::$instance->addPending($this->player_id, "FinalStepMardi");
+            }
+            if($parg2 == 3)
+            {
+                letsgotojapan::$instance->addPending($this->player_id, "FinalStepMercredi");
+            }
+            if($parg2 == 4)
+            {
+                letsgotojapan::$instance->addPending($this->player_id, "FinalStepJeudi");
+            }
+            if($parg2 == 5)
+            {
+                letsgotojapan::$instance->addPending($this->player_id, "FinalStepVendredi");
+            }
+            if($parg2 == 6)
+            {
+                letsgotojapan::$instance->addPending($this->player_id, "FinalStepSamedi");
+            }
+
         }
        
 
