@@ -148,6 +148,7 @@ function (dojo, declare) {
                         dojo.query(".playerhand").addClass("masque");
                         dojo.query("#mask_turn").addClass("masque");
                         dojo.query("#mask_hand").addClass("masque");
+
                         if (gamedatas.turn < 14)
                         {
                         var elements = document.querySelectorAll("[id^='playerview']");
@@ -159,7 +160,7 @@ function (dojo, declare) {
                         global.style.height = "1170px"; 
                         }
 
-                        if (gamedatas.turn >= 14)
+                        if (gamedatas.turn == 14)
                         {
                         dojo.query(".turn_board").addClass("hidden");
 
@@ -171,6 +172,21 @@ function (dojo, declare) {
                         var global = document.getElementById('global');
                         global.style.height = "1020px"; 
                         }
+
+                        if (gamedatas.turn >= 15)
+                        {
+                            dojo.query(".turn_board").addClass("hidden");
+                            dojo.query(".scorepad").removeClass("masque");
+
+                            var elements = document.querySelectorAll("[id^='playerview']");
+                        elements.forEach(function(element) {
+                            element.style.top = "467px"; 
+                            });
+
+                        var global = document.getElementById('global');
+                        global.style.height = "1476px"; 
+                        }
+
 
                     }
 
@@ -191,6 +207,24 @@ function (dojo, declare) {
 
 
                 }
+
+                if ((gamedatas.turn >= 15)&&(!this.isSpectator))
+                    {
+                        
+                        dojo.query(".scorepad").removeClass("masque");
+                        var elements = document.querySelectorAll("[id^='playerview']");
+                    elements.forEach(function(element) {
+                        element.style.top = "467px"; 
+                        });
+
+                    var global = document.getElementById('global');
+                    global.style.height = "1476px"; 
+                        
+    
+    
+    
+    
+                    }
 
                 ////////////////////////////////   CARD PLAYER HAND AND TRIP   ///////////////////////////////
 
@@ -489,7 +523,11 @@ function (dojo, declare) {
                                     }
                                     if(args[this.getCurrentPlayerId()][0].buttons[nb] == "continue")
                                     {
-                                        this.addActionButton( 'continue', _("Continue") ,'onOpButton', null, null, 'gray' );
+                                        this.addActionButton( 'continue', _("Continue") ,'onOpButton', null, null, 'blue' );
+                                    }
+                                    if(args[this.getCurrentPlayerId()][0].buttons[nb] == "confirm")
+                                    {
+                                        this.addActionButton( 'confirm', _("Confirm") ,'onOpButton', null, null, 'blue' );
                                     }
 
                                     if(args[this.getCurrentPlayerId()][0].buttons[nb] == "cardtokyoverso")
@@ -626,6 +664,35 @@ function (dojo, declare) {
                                         if(args[this.getCurrentPlayerId()][0].buttons[nb] == "normaltrain")
                                             {
                                                 this.addActionButton( 'normaltrain', `<div class="boutontrain_3"></div>` ,'onOpButton', null, null, 'none' );
+                                            }
+
+                                        if(args[this.getCurrentPlayerId()][0].buttons[nb] == "yes")
+                                            {
+                                                this.addActionButton( 'yes', _("Yes") ,'onOpButton', null, null, 'blue' );
+                                            }
+                                        if(args[this.getCurrentPlayerId()][0].buttons[nb] == "no")
+                                            {
+                                                this.addActionButton( 'no', _("No") ,'onOpButton', null, null, 'red' );
+                                            }
+                                        if(args[this.getCurrentPlayerId()][0].buttons[nb] == "red")
+                                            {
+                                                this.addActionButton( 'red', `<div class="red"></div>` ,'onOpButton', null, null, 'none' );
+                                            }
+                                        if(args[this.getCurrentPlayerId()][0].buttons[nb] == "green")
+                                            {
+                                                this.addActionButton( 'green', `<div class="green"></div>` ,'onOpButton', null, null, 'none' );
+                                            }
+                                        if(args[this.getCurrentPlayerId()][0].buttons[nb] == "pink")
+                                            {
+                                                this.addActionButton( 'pink', `<div class="pink"></div>` ,'onOpButton', null, null, 'none' );
+                                            }
+                                        if(args[this.getCurrentPlayerId()][0].buttons[nb] == "yellow")
+                                            {
+                                                this.addActionButton( 'yellow', `<div class="yellow"></div>` ,'onOpButton', null, null, 'none' );
+                                            }
+                                        if(args[this.getCurrentPlayerId()][0].buttons[nb] == "blue")
+                                            {
+                                                this.addActionButton( 'blue', `<div class="blue"></div>` ,'onOpButton', null, null, 'none' );
                                             }
                     
                                     
@@ -2112,8 +2179,11 @@ function (dojo, declare) {
                 dojo.subscribe( 'finalwalk', this, "notif_finalwalk" );
                 dojo.subscribe( 'train', this, "notif_train" );
                 dojo.subscribe( 'movetoken', this, "notif_movetoken" );
+                dojo.subscribe( 'scorepad', this, "notif_scorepad" );
                 
                 this.notifqueue.setSynchronous( 'smile', 500 );
+                this.notifqueue.setSynchronous( 'happy', 500 );
+                this.notifqueue.setSynchronous( 'angry', 500 );
                 this.notifqueue.setSynchronous( 'movetoken', 500 );
                 
             },  
@@ -2644,6 +2714,48 @@ function (dojo, declare) {
                     
                     
                 
+            },
+
+
+            notif_scorepad: function( notif )
+            {
+
+                
+                
+                if(!this.isSpectator)
+                    { 
+                        this.addMaskTurn();
+                        this.addMaskHand();
+    
+                        dojo.query("#mask_turn").addClass("masque");
+                        dojo.query("#mask_hand").addClass("masque");
+
+                        dojo.query(".scorepad").removeClass("masque");
+                        var elements = document.querySelectorAll("[id^='playerview']");
+                        elements.forEach(function(element) {
+                            element.style.top = "467px"; 
+                            });
+
+                        var global = document.getElementById('global');
+                        global.style.height = "1476px"; 
+                    }
+    
+                    if(this.isSpectator)
+                        { 
+                            dojo.query(".turn_board").addClass("hidden");
+    
+                            dojo.query(".scorepad").removeClass("masque");
+                            var elements = document.querySelectorAll("[id^='playerview']");
+                            elements.forEach(function(element) {
+                                element.style.top = "467px"; 
+                                });
+
+                            var global = document.getElementById('global');
+                            global.style.height = "1476px"; 
+                        }
+                
+                
+
             },
 
     

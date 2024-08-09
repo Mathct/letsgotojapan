@@ -2689,8 +2689,15 @@ function argFinalStep1($parg1, $parg2)
                 
                 )
                 );
+
+            letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} has finished planning the trip' ), array(
+                'player_name' => $this->player_name,
+                
+                )
+                );
             
-            letsgotojapan::$instance->addPending($this->player_id, "FinalStepLundi");
+            letsgotojapan::$instance->giveExtraTime($this->player_id);
+            letsgotojapan::$instance->gamestate->setPlayerNonMultiactive($this->player_id, 'stop');
             
         }
 
@@ -2884,9 +2891,23 @@ function argFinalStep1($parg1, $parg2)
         $ret["selectable2"] = array();
         $ret["selected"] = array();
         $ret['buttons'] = array();
-        $ret['titleyou'] = clienttranslate('${you} ');
+        
 
+        $wild = self::getUniqueValueFromDB( "SELECT wild FROM player WHERE player_id = {$this->player_id}");
+
+        if($wild >=1)
+        {
+            $ret['titleyou'] = clienttranslate('Monday! ${you} can use one (or more) <span class="wild"></span>');
+            $ret['buttons'][]='yes';
+            $ret['buttons'][]='no';
+        }
+        else
+        {
+            $ret['titleyou'] = clienttranslate('Monday!');
+            $ret['buttons'][]='continue';
+        }
        
+        
      
 
         return $ret;
@@ -2894,8 +2915,115 @@ function argFinalStep1($parg1, $parg2)
 
     function FinalStepLundi($parg1, $parg2, $varg1, $varg2)
     {
+        if($varg1 == "yes")
+        {
+            letsgotojapan::$instance->addPending($this->player_id, "WildLundi");
+
+        }
+
+        if(($varg1 == "no")||($varg1 == "continue"))
+        {
+            $day = 1;
+
+
+        }
+
+
+
+
+    }
+
+    function argWildLundi($parg1, $parg2)
+    {
+        $ret = array();
+        $ret["selectable"] = array();
+        $ret["selectable2"] = array();
+        $ret["selected"] = array();
+        $ret['buttons'] = array();
+        $ret['titleyou'] = clienttranslate('${you} must select the token to advance');
+
+        $ret['buttons'][]='red';
+        $ret['buttons'][]='green';
+        $ret['buttons'][]='pink';
+        $ret['buttons'][]='yellow';
+        $ret['buttons'][]='blue';
+       
+        
+     
+        $ret['buttons'][]='cancel';
+        return $ret;
+    }
+
+    function WildLundi($parg1, $parg2, $varg1, $varg2)
+    {
+        if($varg1 == "cancel")
+        {
+            letsgotojapan::$instance->addPending($this->player_id, "FinalStepLundi");
+
+        }
+
+        else
+        {
+            letsgotojapan::$instance->addPending($this->player_id, "ConfirmWildLundi", $varg1);
+        }
+       
+
+
+    }
+
+    function argConfirmWildLundi($parg1, $parg2)
+    {
+        $ret = array();
+        $ret["selectable"] = array();
+        $ret["selectable2"] = array();
+        $ret["selected"] = array();
+        $ret['buttons'] = array();
+        $ret['titleyou'] = clienttranslate('${you} must confirm <span class="' . $parg1 . '"></span>');
+
+              
+        $ret['buttons'][]='confirm';
+        $ret['buttons'][]='cancel';
+        return $ret;
+    }
+
+    function ConfirmWildLundi($parg1, $parg2, $varg1, $varg2)
+    {
+        if($varg1 == "cancel")
+        {
+            letsgotojapan::$instance->addPending($this->player_id, "WildLundi");
+
+        }
+
         
 
+        if($varg1 == "confirm")
+        {
+            if($parg1 == 'red')
+            {
+                letsgotojapan::$instance->Gain('r',$this->player_id);
+            }
+            if($parg1 == 'green')
+            {
+                letsgotojapan::$instance->Gain('g',$this->player_id);
+            }
+            if($parg1 == 'pink')
+            {
+                letsgotojapan::$instance->Gain('p',$this->player_id);
+            }
+            if($parg1 == 'yellow')
+            {
+                letsgotojapan::$instance->Gain('y',$this->player_id);
+            }
+            if($parg1 == 'blue')
+            {
+                letsgotojapan::$instance->Gain('b',$this->player_id);
+            }
+
+            self::DbQuery( "UPDATE player set wild = wild -1  WHERE player_id = {$this->player_id}" );
+            letsgotojapan::$instance->MajPannel($this->player_id);
+            letsgotojapan::$instance->addPending($this->player_id, "FinalStepLundi");
+        }
+       
 
 
     }

@@ -1025,7 +1025,7 @@ display: none;
   position: absolute;
   border-radius: 50%;
   filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.9));
-    -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.9));
+  -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.9));
   display: flex;
   justify-content: center;
   align-items: center;
@@ -1036,4 +1036,93 @@ display: none;
         -2px -2px 0px black, /* Ombre vers le haut à gauche */
         -2px 2px 0px black, /* Ombre vers le bas à gauche */
         2px -2px 0px black; /* Ombre vers le haut à droite */
+}
+
+.wild{
+  width: 30px;
+  height: 30px;
+  display:inline-block;
+  vertical-align: middle;
+  background-image: url('img/logtoken.png');
+  background-size: 400% 100%;
+  background-position-x: -200%;
+  filter: drop-shadow(1px 1px 2px black);
+  -webkit-filter: drop-shadow(1px 1px 2px black);
+    
+}
+
+.scorepad{
+  width: 400px;
+  height: 467px;
+  filter: drop-shadow(1px 1px 2px black);
+  -webkit-filter: drop-shadow(1px 1px 2px black);
+  position: relative;
+  background-image: url('img/scorepad.jpg');
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.red{
+  width: 30px;
+  height: 30px;
+  display:inline-block;
+  vertical-align: middle;
+  background-image: url('img/tokenjour.png');
+  background-size: 600% 100%;
+  background-position-x: 0%;
+  filter: drop-shadow(1px 1px 2px black);
+  -webkit-filter: drop-shadow(1px 1px 2px black);
+    
+}
+
+.green{
+  width: 30px;
+  height: 30px;
+  display:inline-block;
+  vertical-align: middle;
+  background-image: url('img/tokenjour.png');
+  background-size: 600% 100%;
+  background-position-x: -100%;
+  filter: drop-shadow(1px 1px 2px black);
+  -webkit-filter: drop-shadow(1px 1px 2px black);
+    
+}
+
+.pink{
+  width: 30px;
+  height: 30px;
+  display:inline-block;
+  vertical-align: middle;
+  background-image: url('img/tokenjour.png');
+  background-size: 600% 100%;
+  background-position-x: -200%;
+  filter: drop-shadow(1px 1px 2px black);
+  -webkit-filter: drop-shadow(1px 1px 2px black);
+    
+}
+
+.yellow{
+  width: 30px;
+  height: 30px;
+  display:inline-block;
+  vertical-align: middle;
+  background-image: url('img/tokenjour.png');
+  background-size: 600% 100%;
+  background-position-x: -300%;
+  filter: drop-shadow(1px 1px 2px black);
+  -webkit-filter: drop-shadow(1px 1px 2px black);
+    
+}
+
+.blue{
+  width: 30px;
+  height: 30px;
+  display:inline-block;
+  vertical-align: middle;
+  background-image: url('img/tokenjour.png');
+  background-size: 600% 100%;
+  background-position-x: -400%;
+  filter: drop-shadow(1px 1px 2px black);
+  -webkit-filter: drop-shadow(1px 1px 2px black);
+    
 }

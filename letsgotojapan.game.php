@@ -1267,7 +1267,7 @@ function getLogsType( $type )
 
 }
 
-function Gain($type, $player, $pv=0, $jour=0)
+function Gain($type, $player, $jour=0, $pv=0 )
 {
     if($type == 'r')
     {
@@ -1552,9 +1552,24 @@ function Gain($type, $player, $pv=0, $jour=0)
         letsgotojapan::$instance->Smile(-1,$player);
     }
 
-    if($type == 'train')
+    if($type == 'train_1')
     {
         self::DbQuery( "UPDATE player set trainday = trainday +1   WHERE player_id = {$player}" );
+
+    }
+
+    if($type == 'train_2')
+    {
+        self::DbQuery( "UPDATE player set trainday = trainday +1   WHERE player_id = {$player}" );
+        self::DbQuery( "UPDATE player set angry1 = angry1 +1   WHERE player_id = {$player}" );
+        letsgotojapan::$instance->Smile(1,$player);
+        
+    }
+
+    if($type == 'train_3')
+    {
+        self::DbQuery( "UPDATE player set trainday = trainday +1   WHERE player_id = {$player}" );
+        
 
     }
 
@@ -2317,6 +2332,33 @@ function st_MultiPlayerActivation()
         }
         
     }
+
+    if ($newturn >= 15) 
+    {
+        letsgotojapan::$instance->notifyAllPlayers('masque','', array(
+            
+            
+            )
+            );
+
+        letsgotojapan::$instance->notifyAllPlayers('scorepad','', array(
+        
+        
+            )
+            );
+
+        self::DbQuery( "UPDATE tokens set level = level + 1  WHERE name ='turn'" );
+        $listplayers = self::getObjectListFromDB( "SELECT player_id id FROM player", true );
+
+        foreach ($listplayers as $player_id)
+        {
+            
+            $this->addPending($player_id, "FinalStepLundi");
+        }
+        
+    }
+
+    
 
 
 
