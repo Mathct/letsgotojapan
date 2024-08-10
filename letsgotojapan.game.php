@@ -241,12 +241,18 @@ class letsgotojapan extends Table
             $result['angry1'][$player] = self::getUniqueValueFromDB("SELECT angry1 FROM player WHERE player_id={$player}");
             $result['angry2'][$player] = self::getUniqueValueFromDB("SELECT angry2 FROM player WHERE player_id={$player}");
             $result['numero'][$player] = self::getUniqueValueFromDB("SELECT player_no FROM player WHERE player_id={$player}");
+            $result['name'][$player] = self::getUniqueValueFromDB("SELECT player_name FROM player WHERE player_id={$player}");
             $result['lundi'][$player] = self::getUniqueValueFromDB("SELECT lundi FROM player WHERE player_id={$player}");
             $result['mardi'][$player] = self::getUniqueValueFromDB("SELECT mardi FROM player WHERE player_id={$player}");
             $result['mercredi'][$player] = self::getUniqueValueFromDB("SELECT mercredi FROM player WHERE player_id={$player}");
             $result['jeudi'][$player] = self::getUniqueValueFromDB("SELECT jeudi FROM player WHERE player_id={$player}");
             $result['vendredi'][$player] = self::getUniqueValueFromDB("SELECT vendredi FROM player WHERE player_id={$player}");
             $result['samedi'][$player] = self::getUniqueValueFromDB("SELECT samedi FROM player WHERE player_id={$player}");
+            $result['scorehumeur'][$player] = self::getUniqueValueFromDB("SELECT scorehumeur FROM player WHERE player_id={$player}");
+            $result['scoretoken'][$player] = self::getUniqueValueFromDB("SELECT scoretoken FROM player WHERE player_id={$player}");
+            $result['scoretrain'][$player] = self::getUniqueValueFromDB("SELECT scoretrain FROM player WHERE player_id={$player}");
+            $result['scorerecherche'][$player] = self::getUniqueValueFromDB("SELECT scorerecherche FROM player WHERE player_id={$player}");
+            $result['scoretotal'][$player] = self::getUniqueValueFromDB("SELECT scoretotal FROM player WHERE player_id={$player}");
 
         }
         
@@ -270,9 +276,10 @@ class letsgotojapan extends Table
 
 function getGameProgression()
 {
-    // TODO: compute and return the game progression
+    $turn = self::getUniqueValueFromDB("SELECT level FROM tokens WHERE name = 'turn'");
+    $progession = floor(($turn*100)/15);
 
-    return 0;
+    return $progession;
 }
 
 
@@ -1568,6 +1575,30 @@ function Gain($type, $player)
 
 
 
+function EtatToken($player)
+{
+    $ret = array();
+
+    $ret[] = self::getUniqueValueFromDB("SELECT r FROM player WHERE player_id = {$player}");
+    $ret[] = self::getUniqueValueFromDB("SELECT g FROM player WHERE player_id = {$player}");
+    $ret[] = self::getUniqueValueFromDB("SELECT p FROM player WHERE player_id = {$player}");
+    $ret[] = self::getUniqueValueFromDB("SELECT y FROM player WHERE player_id = {$player}");
+    $ret[] = self::getUniqueValueFromDB("SELECT b FROM player WHERE player_id = {$player}");
+    $ret[] = self::getUniqueValueFromDB("SELECT happy1 FROM player WHERE player_id = {$player}");
+    $ret[] = self::getUniqueValueFromDB("SELECT happy2 FROM player WHERE player_id = {$player}");
+    $ret[] = self::getUniqueValueFromDB("SELECT angry1 FROM player WHERE player_id = {$player}");
+    $ret[] = self::getUniqueValueFromDB("SELECT angry2 FROM player WHERE player_id = {$player}");
+    $ret[] = self::getUniqueValueFromDB("SELECT walkday FROM player WHERE player_id = {$player}");
+    $ret[] = self::getUniqueValueFromDB("SELECT trainday FROM player WHERE player_id = {$player}");
+    
+    
+
+    return $ret;
+ 
+}
+
+
+
 ///////////////////////////////////////////////////////////////////////////////// 
 //     _____  _                                    _   _                 
 //    |  __ \| |                                  | | (_)                
@@ -2310,7 +2341,7 @@ function st_MultiPlayerActivation()
         
     }
 
-    if ($newturn >= 15) 
+    if ($newturn == 15) 
     {
         letsgotojapan::$instance->notifyAllPlayers('masque','', array(
             
@@ -2333,6 +2364,12 @@ function st_MultiPlayerActivation()
             $this->addPending($player_id, "FinalStepLundi");
         }
         
+    }
+
+    if ($newturn == 16) 
+    {
+        
+        $this->gamestate->nextState('end');
     }
 
     

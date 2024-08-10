@@ -2924,6 +2924,13 @@ function argFinalStep1($parg1, $parg2)
 
         if(($varg1 == "no")||($varg1 == "continue"))
         {
+            letsgotojapan::$instance->notifyAllPlayers('disabled','', array(
+        
+                               
+                )
+                );
+
+            
             $day = 1;  //// A MODIFIER
 
             $counttrip = letsgotojapan::$instance->CountTrip($this->player_id);  /// nombre de cartes par jour
@@ -2958,7 +2965,7 @@ function argFinalStep1($parg1, $parg2)
                     if ($train == 2)
                     {
                         self::DbQuery( "UPDATE player set happy1 = happy1 +1   WHERE player_id = {$this->player_id}" );
-                        letsgotojapan::$instance->Smile(1,$player);
+                        letsgotojapan::$instance->Smile(1,$this->player_id);
                     }
 
                     $finalwalk = self::getUniqueValueFromDB( "SELECT finalwalk finalwalk FROM tokyo WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$i}'");
@@ -3175,6 +3182,12 @@ function argFinalStep1($parg1, $parg2)
 
         if(($varg1 == "no")||($varg1 == "continue"))
         {
+            letsgotojapan::$instance->notifyAllPlayers('disabled','', array(
+        
+                               
+                )
+                );
+
             $day = 2;  //// A MODIFIER
 
             $counttrip = letsgotojapan::$instance->CountTrip($this->player_id);  
@@ -3242,7 +3255,7 @@ function argFinalStep1($parg1, $parg2)
                     if ($train == 2)
                     {
                         self::DbQuery( "UPDATE player set happy1 = happy1 +1   WHERE player_id = {$this->player_id}" );
-                        letsgotojapan::$instance->Smile(1,$player);
+                        letsgotojapan::$instance->Smile(1,$this->player_id);
                     }
 
                     $finalwalk = self::getUniqueValueFromDB( "SELECT finalwalk finalwalk FROM kyoto WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$i}'");
@@ -3422,6 +3435,12 @@ function argFinalStep1($parg1, $parg2)
 
         if(($varg1 == "no")||($varg1 == "continue"))
         {
+            letsgotojapan::$instance->notifyAllPlayers('disabled','', array(
+        
+                               
+                )
+                );
+
             $day = 3;  //// A MODIFIER
 
             $counttrip = letsgotojapan::$instance->CountTrip($this->player_id);  
@@ -3489,7 +3508,7 @@ function argFinalStep1($parg1, $parg2)
                     if ($train == 2)
                     {
                         self::DbQuery( "UPDATE player set happy1 = happy1 +1   WHERE player_id = {$this->player_id}" );
-                        letsgotojapan::$instance->Smile(1,$player);
+                        letsgotojapan::$instance->Smile(1,$this->player_id);
                     }
 
                     $finalwalk = self::getUniqueValueFromDB( "SELECT finalwalk finalwalk FROM kyoto WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$i}'");
@@ -3666,12 +3685,19 @@ function FinalStepJeudi($parg1, $parg2, $varg1, $varg2)
 {
     if($varg1 == "yes")
     {
-        letsgotojapan::$instance->addPending($this->player_id, "FinalWild", 2);  // A MODIFIER: dernier chiffre est egal au jour
+        letsgotojapan::$instance->addPending($this->player_id, "FinalWild", 4);  // A MODIFIER: dernier chiffre est egal au jour
 
     }
 
     if(($varg1 == "no")||($varg1 == "continue"))
     {
+
+        letsgotojapan::$instance->notifyAllPlayers('disabled','', array(
+        
+                               
+            )
+            );
+
         $day = 4;  //// A MODIFIER
 
         $counttrip = letsgotojapan::$instance->CountTrip($this->player_id);  
@@ -3739,7 +3765,7 @@ function FinalStepJeudi($parg1, $parg2, $varg1, $varg2)
                 if ($train == 2)
                 {
                     self::DbQuery( "UPDATE player set happy1 = happy1 +1   WHERE player_id = {$this->player_id}" );
-                    letsgotojapan::$instance->Smile(1,$player);
+                    letsgotojapan::$instance->Smile(1,$this->player_id);
                 }
 
                 $finalwalk = self::getUniqueValueFromDB( "SELECT finalwalk finalwalk FROM kyoto WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$i}'");
@@ -3915,12 +3941,19 @@ function FinalStepVendredi($parg1, $parg2, $varg1, $varg2)
 {
     if($varg1 == "yes")
     {
-        letsgotojapan::$instance->addPending($this->player_id, "FinalWild", 2);  // A MODIFIER: dernier chiffre est egal au jour
+        letsgotojapan::$instance->addPending($this->player_id, "FinalWild", 5);  // A MODIFIER: dernier chiffre est egal au jour
 
     }
 
     if(($varg1 == "no")||($varg1 == "continue"))
     {
+
+        letsgotojapan::$instance->notifyAllPlayers('disabled','', array(
+        
+                               
+            )
+            );
+
         $day = 5;  //// A MODIFIER
 
         $counttrip = letsgotojapan::$instance->CountTrip($this->player_id);  
@@ -3988,7 +4021,7 @@ function FinalStepVendredi($parg1, $parg2, $varg1, $varg2)
                 if ($train == 2)
                 {
                     self::DbQuery( "UPDATE player set happy1 = happy1 +1   WHERE player_id = {$this->player_id}" );
-                    letsgotojapan::$instance->Smile(1,$player);
+                    letsgotojapan::$instance->Smile(1,$this->player_id);
                 }
 
                 $finalwalk = self::getUniqueValueFromDB( "SELECT finalwalk finalwalk FROM kyoto WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$i}'");
@@ -4162,12 +4195,18 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
 {
     if($varg1 == "yes")
     {
-        letsgotojapan::$instance->addPending($this->player_id, "FinalWild", 2);  // A MODIFIER: dernier chiffre est egal au jour
+        letsgotojapan::$instance->addPending($this->player_id, "FinalWild", 6);  // A MODIFIER: dernier chiffre est egal au jour
 
     }
 
     if(($varg1 == "no")||($varg1 == "continue"))
     {
+        letsgotojapan::$instance->notifyAllPlayers('disabled','', array(
+        
+                               
+            )
+            );
+
         $day = 6;  //// A MODIFIER
 
         $counttrip = letsgotojapan::$instance->CountTrip($this->player_id);  
@@ -4235,7 +4274,7 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
                 if ($train == 2)
                 {
                     self::DbQuery( "UPDATE player set happy1 = happy1 +1   WHERE player_id = {$this->player_id}" );
-                    letsgotojapan::$instance->Smile(1,$player);
+                    letsgotojapan::$instance->Smile(1,$this->player_id);
                 }
 
                 $finalwalk = self::getUniqueValueFromDB( "SELECT finalwalk finalwalk FROM kyoto WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$i}'");
@@ -4361,17 +4400,121 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
             );
 
 
+        ///////////////////////// FIN DE SCORING ///////////////////    
+
+        $scorehumeur =0;
+        $lvlhappy = self::getUniqueValueFromDB( "SELECT happy FROM player WHERE player_id = {$this->player_id}");
+        if($lvlhappy == 1)
+        {
+            $scorehumeur = $scorehumeur + 5;
+        }
+
+        if($lvlhappy == 2)
+        {
+            $scorehumeur = $scorehumeur + 12;
+        }
+
+        if($lvlhappy == 3)
+        {
+            $scorehumeur = $scorehumeur + 20;
+        }
+
+        $lvlangry = self::getUniqueValueFromDB( "SELECT angry FROM player WHERE player_id = {$this->player_id}");
+        
+        if($lvlangry == 1)
+        {
+            $scorehumeur = $scorehumeur - 3;
+        }
+
+        if($lvlangry == 2)
+        {
+            $scorehumeur = $scorehumeur - 8;
+        }
+
+        if($lvlangry == 3)
+        {
+            $scorehumeur = $scorehumeur - 15;
+        }
+
+        self::DbQuery( "UPDATE player set scorehumeur = {$scorehumeur} WHERE player_id = {$this->player_id}" );
+
+
+        $scoretoken = 0;
+        $tableau = array();
+        $tableau[] = self::getUniqueValueFromDB( "SELECT r FROM player WHERE player_id = {$this->player_id}");
+        $tableau[] = self::getUniqueValueFromDB( "SELECT g FROM player WHERE player_id = {$this->player_id}");
+        $tableau[] = self::getUniqueValueFromDB( "SELECT p FROM player WHERE player_id = {$this->player_id}");
+        $tableau[] = self::getUniqueValueFromDB( "SELECT y FROM player WHERE player_id = {$this->player_id}");
+        $tableau[] = self::getUniqueValueFromDB( "SELECT b FROM player WHERE player_id = {$this->player_id}");
+
+        foreach($tableau as $index)
+        {
+            if(($index >= 4)&&($index <7))
+            {
+                $scoretoken = $scoretoken + 4;  
+            }
+
+            if(($index >= 7)&&($index <10))
+            {
+                $scoretoken = $scoretoken + 8;  
+            }
+
+            if(($index >= 10)&&($index <12))
+            {
+                $scoretoken = $scoretoken + 12;  
+            }
+
+            if($index >= 12)
+            {
+                $scoretoken = $scoretoken + 15;  
+            }
+        }
+
+        self::DbQuery( "UPDATE player set scoretoken = {$scoretoken} WHERE player_id = {$this->player_id}" );
+
+        $scoretrain = 0;
+        $counttrainbonustokyo = count(self::getObjectListFromDB( "SELECT card_id id FROM tokyo WHERE card_location_arg = {$this->player_id} AND train = 2", true));
+        $counttrainbonuskyoto = count(self::getObjectListFromDB( "SELECT card_id id FROM kyoto WHERE card_location_arg = {$this->player_id} AND train = 2", true));
+        $counttrainmalustokyo = count(self::getObjectListFromDB( "SELECT card_id id FROM tokyo WHERE card_location_arg = {$this->player_id} AND train = 3", true));
+        $counttrainmaluskyoto = count(self::getObjectListFromDB( "SELECT card_id id FROM kyoto WHERE card_location_arg = {$this->player_id} AND train = 3", true));
+
+        $scoretrain = $counttrainbonustokyo*2 + $counttrainbonuskyoto*2 - $counttrainmalustokyo*2 - $counttrainmaluskyoto*2;
+
+        self::DbQuery( "UPDATE player set scoretrain = {$scoretrain} WHERE player_id = {$this->player_id}" );
+
+
+        $scorerecherche = self::getUniqueValueFromDB( "SELECT recherche FROM player WHERE player_id = {$this->player_id}");
+
+        self::DbQuery( "UPDATE player set scorerecherche = {$scorerecherche} WHERE player_id = {$this->player_id}" );
+
+        $scoretotal = self::getUniqueValueFromDB( "SELECT lundi FROM player WHERE player_id = {$this->player_id}") + self::getUniqueValueFromDB( "SELECT mardi FROM player WHERE player_id = {$this->player_id}") + self::getUniqueValueFromDB( "SELECT mercredi FROM player WHERE player_id = {$this->player_id}") + self::getUniqueValueFromDB( "SELECT jeudi FROM player WHERE player_id = {$this->player_id}") + self::getUniqueValueFromDB( "SELECT vendredi FROM player WHERE player_id = {$this->player_id}") + self::getUniqueValueFromDB( "SELECT samedi FROM player WHERE player_id = {$this->player_id}") + $scorehumeur + $scoretoken + $scoretrain + $scorerecherche;
+
+        self::DbQuery( "UPDATE player set scoretotal = {$scoretotal} WHERE player_id = {$this->player_id}" );
 
 
 
 
+        self::DbQuery( "UPDATE player set player_score = {$scoretotal} WHERE player_id = {$this->player_id}" );
 
 
-
+        letsgotojapan::$instance->notifyAllPlayers('score2','', array(
+                
+            'numero' => $this->player_no,
+            'humeur' => $scorehumeur,
+            'token' => $scoretoken,
+            'train' => $scoretrain,
+            'recherche' => $scorerecherche,
+            'total' => $scoretotal,
+            'player' => $this->player_id,           
+            
+            
+            )
+            );
 
 
     
-        letsgotojapan::$instance->addPending($this->player_id, "FinalStepSamedi"); // A CHANGER POUR LA FIN
+        letsgotojapan::$instance->giveExtraTime($this->player_id);
+        letsgotojapan::$instance->gamestate->setPlayerNonMultiactive($this->player_id, 'stop');
 
 
         
@@ -4451,14 +4594,14 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
 
         else
         {
-            letsgotojapan::$instance->addPending($this->player_id, "ConfirmWildLundi", $varg1, $parg1);
+            letsgotojapan::$instance->addPending($this->player_id, "ConfirmWild", $varg1, $parg1);
         }
        
 
 
     }
 
-    function argConfirmWildLundi($parg1, $parg2)
+    function argConfirmWild($parg1, $parg2)
     {
         $ret = array();
         $ret["selectable"] = array();
@@ -4473,7 +4616,7 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
         return $ret;
     }
 
-    function ConfirmWildLundi($parg1, $parg2, $varg1, $varg2)
+    function ConfirmWild($parg1, $parg2, $varg1, $varg2)
     {
         if($varg1 == "cancel")
         {

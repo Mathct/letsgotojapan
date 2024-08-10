@@ -353,15 +353,44 @@ function (dojo, declare) {
                             {
                                 $('score_'+numero+'_6').innerHTML = j6;
                             }
-    
 
+
+                            var scorehumeur = gamedatas.scorehumeur[player_id];
+                            var scoretoken = gamedatas.scoretoken[player_id];
+                            var scoretrain = gamedatas.scoretrain[player_id];
+                            var scorerecherche = gamedatas.scorerecherche[player_id];
+                            var scoretotal = gamedatas.scoretotal[player_id];
+    
+                            if (j6 != 0)
+                            {
+                                $('score_'+numero+'_7').innerHTML = scorehumeur;
+                                $('score_'+numero+'_8').innerHTML = scoretoken;
+                                $('score_'+numero+'_9').innerHTML = scoretrain;
+                                $('score_'+numero+'_10').innerHTML = scorerecherche;
+                                $('score_'+numero+'_11').innerHTML = scoretotal;
+
+                            }
                                                     
                                                         
                             
                         }
                     
                 
+                        for( var player_id in gamedatas.players )
+                            {
+                                var num = gamedatas.numero[player_id];
+                                var avatar ='avatar_'+player_id;
 
+                                var avatarImage = document.getElementById(avatar);
+                                var avatarSrc = avatarImage.src;
+
+                                var newImage = document.createElement('img');
+                                newImage.src = avatarSrc;
+                                newImage.id = 'newavatar_'+player_id; 
+                                var container = document.getElementById('scorename_'+num);                         
+                                container.appendChild(newImage);
+                                this.addTooltipHtml( 'newavatar_'+player_id, gamedatas.name[player_id],'' );
+                            }
                 
 
                 
@@ -2227,6 +2256,10 @@ function (dojo, declare) {
                 dojo.subscribe( 'movetoken', this, "notif_movetoken" );
                 dojo.subscribe( 'scorepad', this, "notif_scorepad" );
                 dojo.subscribe( 'score', this, "notif_score" );
+                dojo.subscribe( 'score2', this, "notif_score2" );
+                dojo.subscribe( 'disabled', this, "notif_disabled" );
+
+
                 
                 this.notifqueue.setSynchronous( 'smile', 500 );
                 this.notifqueue.setSynchronous( 'happy', 500 );
@@ -2808,6 +2841,42 @@ function (dojo, declare) {
             notif_score: function( notif )
             {
                 $('score_'+notif.args.numero+'_'+notif.args.position).innerHTML = notif.args.score;
+                
+            },
+
+            notif_score2: function( notif )
+            {
+                $('score_'+notif.args.numero+'_7').innerHTML = notif.args.humeur;
+                $('score_'+notif.args.numero+'_8').innerHTML = notif.args.token;
+                $('score_'+notif.args.numero+'_9').innerHTML = notif.args.train;
+                $('score_'+notif.args.numero+'_10').innerHTML = notif.args.recherche;
+                $('score_'+notif.args.numero+'_11').innerHTML = notif.args.total;
+
+                this.scoreCtrl[ notif.args.player ].toValue( notif.args.total );
+                
+            },
+
+            notif_disabled: function( notif )
+            {
+                var bouton1 = document.getElementById('continue');
+                if(bouton1 !== null)
+                {
+                dojo.addClass( 'continue', 'disabled');
+                }
+
+                var bouton2 = document.getElementById('yes');
+                if(bouton2 !== null)
+                {
+                dojo.addClass( 'yes', 'disabled');
+                }
+
+                var bouton3 = document.getElementById('no');
+                if(bouton3 !== null)
+                {
+                dojo.addClass( 'no', 'disabled');
+                }
+                
+                
                 
             },
 
