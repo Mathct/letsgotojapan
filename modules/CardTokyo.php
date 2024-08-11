@@ -13,8 +13,13 @@
         {
             $score = 2*min($ret[3], $ret[4]);
             self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+            return 1;
         }
-        
+
+        else
+        {
+            return 2;
+        }
     }
 
     public static function Tokyo_2($player_id, $day)
@@ -27,8 +32,13 @@
         {
             $score = 3 + $ret[3];
             self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+        return 1;
         }
-        
+
+        else
+        {
+            return 2;
+        }
     }
 
     public static function Tokyo_3($player_id, $day)
@@ -41,8 +51,13 @@
         {
             $score = 8;
             self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+        return 1;
         }
-        
+
+        else
+        {
+            return 2;
+        }
     }
 
     public static function Tokyo_4($player_id, $day)
@@ -55,8 +70,13 @@
         {
             $score =7;
             self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+        return 1;
         }
-        
+
+        else
+        {
+            return 2;
+        }
     }
 
     public static function Tokyo_5($player_id, $day)
@@ -68,9 +88,13 @@
         {
             $score = 3 + $ret[1];
             self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+        return 1;
         }
-        
-        
+
+        else
+        {
+            return 2;
+        }
     }
 
     public static function Tokyo_6($player_id, $day)
@@ -81,8 +105,13 @@
         {
             $score = 2*min($ret[0], $ret[1]);
             self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+        return 1;
         }
-        
+
+        else
+        {
+            return 2;
+        }
     }
 
     public static function Tokyo_7($player_id, $day)
@@ -113,8 +142,13 @@
 
             $score = 3*$found;
             self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+        return 1;
         }
-        
+
+        else
+        {
+            return 2;
+        }
     }
 
     public static function Tokyo_8($player_id, $day)
@@ -125,8 +159,13 @@
         {
             $score = 2*min($ret[0], $ret[2]);
             self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+        return 1;
         }
-        
+
+        else
+        {
+            return 2;
+        }
     }
 
     public static function Tokyo_9($player_id, $day)
@@ -137,8 +176,13 @@
         {
             $score = 2*min($ret[0], $ret[3]);
             self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+        return 1;
         }
-        
+
+        else
+        {
+            return 2;
+        }
     }
 
     public static function Tokyo_10($player_id, $day)
@@ -149,8 +193,13 @@
         {
             $score = 8;
             self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+        return 1;
         }
-        
+
+        else
+        {
+            return 2;
+        }
     }
 
     public static function Tokyo_11($player_id, $day)
@@ -161,8 +210,13 @@
         {
             $score = 2*min($ret[1], $ret[8]);
             self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+        return 1;
         }
-        
+
+        else
+        {
+            return 2;
+        }
     }
 
     public static function Tokyo_12($player_id, $day)
@@ -173,8 +227,13 @@
         {
             $score = 7;
             self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+        return 1;
         }
-        
+
+        else
+        {
+            return 2;
+        }
     }
 
     public static function Tokyo_13($player_id, $day)
@@ -185,8 +244,13 @@
         {
             $score = 14;
             self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+        return 1;
         }
-        
+
+        else
+        {
+            return 2;
+        }
     }
 
     public static function Tokyo_14($player_id, $day)
@@ -198,8 +262,13 @@
             $score = 6;
             self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
             letsgotojapan::$instance->Gain("y",$player_id);
+        return 1;
         }
-        
+
+        else
+        {
+            return 2;
+        }
     }
 
 
@@ -212,8 +281,13 @@
             $score = 8;
             self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
             letsgotojapan::$instance->Gain("b",$player_id);
+        return 1;
         }
-        
+
+        else
+        {
+            return 2;
+        }
     }
 
 
@@ -226,8 +300,13 @@
             $score = 6;
             self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
             letsgotojapan::$instance->Gain("b",$player_id);
+        return 1;
         }
-        
+
+        else
+        {
+            return 2;
+        }
     }
 
 
@@ -240,8 +319,13 @@
             $score = 4 + $ret[1];
             self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
             
+        return 1;
         }
-        
+
+        else
+        {
+            return 2;
+        }
     }
 
     public static function Tokyo_18($player_id, $day)
@@ -254,8 +338,13 @@
             self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
             letsgotojapan::$instance->Gain("b",$player_id);
             letsgotojapan::$instance->Gain("y",$player_id);
+        return 1;
         }
-        
+
+        else
+        {
+            return 2;
+        }
     }
 
     public static function Tokyo_19($player_id, $day)
@@ -268,8 +357,13 @@
             self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
             letsgotojapan::$instance->Gain("b",$player_id);
             letsgotojapan::$instance->Gain("b",$player_id);
+        return 1;
         }
-        
+
+        else
+        {
+            return 2;
+        }
     }
 
     public static function Tokyo_20($player_id, $day)
@@ -281,8 +375,13 @@
             $score = 6;
             self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
             
+        return 1;
         }
-        
+
+        else
+        {
+            return 2;
+        }
     }
 
     public static function Tokyo_21($player_id, $day)
@@ -294,8 +393,13 @@
             $score = 11;
             self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
             
+        return 1;
         }
-        
+
+        else
+        {
+            return 2;
+        }
     }
 
     public static function Tokyo_22($player_id, $day)
@@ -307,8 +411,13 @@
             $score = 10;
             self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
             
+        return 1;
         }
-        
+
+        else
+        {
+            return 2;
+        }
     }
 
     public static function Tokyo_23($player_id, $day)
@@ -319,8 +428,13 @@
         {
             $score = 2*min($ret[3], $ret[1]);
             self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+        return 1;
         }
-        
+
+        else
+        {
+            return 2;
+        }
     }
 
     public static function Tokyo_24($player_id, $day)
@@ -331,8 +445,13 @@
         {
             $score = 3 + $ret[2];
             self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+        return 1;
         }
-        
+
+        else
+        {
+            return 2;
+        }
     }
 
     public static function Tokyo_25($player_id, $day)
@@ -343,8 +462,13 @@
         {
             $score = 2*min($ret[3], $ret[2]);
             self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+        return 1;
         }
-        
+
+        else
+        {
+            return 2;
+        }
     }
 
     public static function Tokyo_26($player_id, $day)
@@ -355,8 +479,13 @@
         {
             $score = 5;
             self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+        return 1;
         }
-        
+
+        else
+        {
+            return 2;
+        }
     }
 
     public static function Tokyo_27($player_id, $day)
@@ -367,8 +496,13 @@
         {
             $score = 2*min($ret[3], $ret[0]);
             self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+        return 1;
         }
-        
+
+        else
+        {
+            return 2;
+        }
     }
 
     public static function Tokyo_28($player_id, $day)
@@ -381,8 +515,13 @@
             self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
             letsgotojapan::$instance->Gain("h1",$player_id);
             
+        return 1;
         }
-        
+
+        else
+        {
+            return 2;
+        }
     }
 
     public static function Tokyo_29($player_id, $day)
@@ -393,8 +532,13 @@
         {
             $score = 4 + $ret[2];
             self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+        return 1;
         }
-        
+
+        else
+        {
+            return 2;
+        }
     }
 
     public static function Tokyo_30($player_id, $day)
@@ -407,8 +551,13 @@
             self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
             letsgotojapan::$instance->Gain("y",$player_id);
             
+        return 1;
         }
-        
+
+        else
+        {
+            return 2;
+        }
     }
 
     public static function Tokyo_31($player_id, $day)
@@ -419,8 +568,13 @@
         {
             $score = 3 + $ret[3];
             self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+        return 1;
         }
-        
+
+        else
+        {
+            return 2;
+        }
     }
 
     public static function Tokyo_32($player_id, $day)
@@ -435,8 +589,13 @@
             letsgotojapan::$instance->Gain("r",$player_id);
             letsgotojapan::$instance->Gain("p",$player_id);
             
+        return 1;
         }
-        
+
+        else
+        {
+            return 2;
+        }
     }
 
     public static function Tokyo_33($player_id, $day)
@@ -451,8 +610,13 @@
             letsgotojapan::$instance->Gain("r",$player_id);
             letsgotojapan::$instance->Gain("h2",$player_id);
             
+        return 1;
         }
-        
+
+        else
+        {
+            return 2;
+        }
     }
 
     public static function Tokyo_34($player_id, $day)
@@ -463,8 +627,13 @@
         {
             $score = 5 + $ret[7];
             self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+        return 1;
         }
-        
+
+        else
+        {
+            return 2;
+        }
     }
 
     public static function Tokyo_35($player_id, $day)
@@ -475,8 +644,13 @@
         {
             $score = 4 + $ret[2];
             self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+        return 1;
         }
-        
+
+        else
+        {
+            return 2;
+        }
     }
 
     public static function Tokyo_36($player_id, $day)
@@ -491,8 +665,13 @@
             self::DbQuery( "UPDATE player set wild = wild +1  WHERE player_id = {$player_id}" );
             letsgotojapan::$instance->MajPannel($player_id);
             
+        return 1;
         }
-        
+
+        else
+        {
+            return 2;
+        }
     }
 
     public static function Tokyo_37($player_id, $day)
@@ -505,8 +684,13 @@
             self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
             letsgotojapan::$instance->Gain("b",$player_id);
             
+        return 1;
         }
-        
+
+        else
+        {
+            return 2;
+        }
     }
 
     public static function Tokyo_38($player_id, $day)
@@ -519,8 +703,13 @@
             self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
             letsgotojapan::$instance->Gain("g",$player_id);
             
+        return 1;
         }
-        
+
+        else
+        {
+            return 2;
+        }
     }
 
     public static function Tokyo_39($player_id, $day)
@@ -533,8 +722,13 @@
             self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
            
             
+        return 1;
         }
-        
+
+        else
+        {
+            return 2;
+        }
     }
 
     public static function Tokyo_40($player_id, $day)
@@ -547,8 +741,13 @@
             self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
            
             
+        return 1;
         }
-        
+
+        else
+        {
+            return 2;
+        }
     }
 
     public static function Tokyo_41($player_id, $day)
@@ -561,8 +760,13 @@
             self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
            
             
+        return 1;
         }
-        
+
+        else
+        {
+            return 2;
+        }
     }
 
     public static function Tokyo_42($player_id, $day)
@@ -575,8 +779,13 @@
             self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
            
             
+        return 1;
         }
-        
+
+        else
+        {
+            return 2;
+        }
     }
 
     public static function Tokyo_43($player_id, $day)
@@ -589,8 +798,13 @@
             self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
            
             
+        return 1;
         }
-        
+
+        else
+        {
+            return 2;
+        }
     }
 
     public static function Tokyo_44($player_id, $day)
@@ -601,8 +815,13 @@
         {
             $score = 2*min($ret[3], $ret[4]);
             self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+        return 1;
         }
-        
+
+        else
+        {
+            return 2;
+        }
     }
 
     public static function Tokyo_45($player_id, $day)
@@ -613,8 +832,13 @@
         {
             $score = 3*min($ret[1], $ret[3], $ret[2], $ret[0]);
             self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+        return 1;
         }
-        
+
+        else
+        {
+            return 2;
+        }
     }
 
     public static function Tokyo_46($player_id, $day)
@@ -627,8 +851,13 @@
             self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
            
             
+        return 1;
         }
-        
+
+        else
+        {
+            return 2;
+        }
     }
 
     public static function Tokyo_47($player_id, $day)
@@ -642,8 +871,13 @@
             letsgotojapan::$instance->Gain("y",$player_id);
             letsgotojapan::$instance->Gain("y",$player_id);
             
+        return 1;
         }
-        
+
+        else
+        {
+            return 2;
+        }
     }
 
     public static function Tokyo_48($player_id, $day)
@@ -656,8 +890,13 @@
             self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
             
             
+        return 1;
         }
-        
+
+        else
+        {
+            return 2;
+        }
     }
 
     public static function Tokyo_49($player_id, $day)
@@ -671,8 +910,13 @@
             letsgotojapan::$instance->Gain("a1",$player_id);
             
             
+        return 1;
         }
-        
+
+        else
+        {
+            return 2;
+        }
     }
 
     public static function Tokyo_50($player_id, $day)
@@ -685,8 +929,13 @@
             self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
             
             
+        return 1;
         }
-        
+
+        else
+        {
+            return 2;
+        }
     }
 
     public static function Tokyo_51($player_id, $day)
@@ -699,8 +948,13 @@
             self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
             
             
+        return 1;
         }
-        
+
+        else
+        {
+            return 2;
+        }
     }
 
     public static function Tokyo_52($player_id, $day)
@@ -714,8 +968,13 @@
             letsgotojapan::$instance->Gain("b",$player_id);
             
             
+        return 1;
         }
-        
+
+        else
+        {
+            return 2;
+        }
     }
 
     public static function Tokyo_53($player_id, $day)
@@ -726,8 +985,13 @@
         {
             $score = 2*min($ret[3], $ret[1]);
             self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+        return 1;
         }
-        
+
+        else
+        {
+            return 2;
+        }
     }
 
     public static function Tokyo_54($player_id, $day)
@@ -742,8 +1006,13 @@
             letsgotojapan::$instance->Gain("b",$player_id);
             
             
+        return 1;
         }
-        
+
+        else
+        {
+            return 2;
+        }
     }
 
     public static function Tokyo_55($player_id, $day)
@@ -757,8 +1026,13 @@
             
             
             
+        return 1;
         }
-        
+
+        else
+        {
+            return 2;
+        }
     }
 
     public static function Tokyo_56($player_id, $day)
@@ -775,8 +1049,13 @@
             letsgotojapan::$instance->Gain("h1",$player_id);
             
             
+        return 1;
         }
-        
+
+        else
+        {
+            return 2;
+        }
     }
 
     public static function Tokyo_57($player_id, $day)
@@ -790,8 +1069,13 @@
             
             
             
+        return 1;
         }
-        
+
+        else
+        {
+            return 2;
+        }
     }
 
     public static function Tokyo_58($player_id, $day)
@@ -809,8 +1093,13 @@
             
             
             
+        return 1;
         }
-        
+
+        else
+        {
+            return 2;
+        }
     }
 
     public static function Tokyo_59($player_id, $day)
@@ -824,8 +1113,13 @@
             
             
             
+        return 1;
         }
-        
+
+        else
+        {
+            return 2;
+        }
     }
 
     public static function Tokyo_60($player_id, $day)
@@ -836,8 +1130,13 @@
         {
             $score = 2*min($ret[2], $ret[1]);
             self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+        return 1;
         }
-        
+
+        else
+        {
+            return 2;
+        }
     }
 
 
@@ -852,8 +1151,13 @@
             
             
             
+        return 1;
         }
-        
+
+        else
+        {
+            return 2;
+        }
     }
 
     public static function Tokyo_62($player_id, $day)
@@ -867,8 +1171,13 @@
             
             
             
+        return 1;
         }
-        
+
+        else
+        {
+            return 2;
+        }
     }
 
     public static function Tokyo_63($player_id, $day)
@@ -882,8 +1191,13 @@
             
             
             
+        return 1;
         }
-        
+
+        else
+        {
+            return 2;
+        }
     }
 
     public static function Tokyo_64($player_id, $day)
@@ -898,8 +1212,13 @@
             letsgotojapan::$instance->Gain("b",$player_id);
             
             
+        return 1;
         }
-        
+
+        else
+        {
+            return 2;
+        }
     }
     
     public static function Tokyo_65($player_id, $day)
@@ -913,8 +1232,13 @@
             
             
             
+        return 1;
         }
-        
+
+        else
+        {
+            return 2;
+        }
     }
 
     public static function Tokyo_66($player_id, $day)
@@ -925,8 +1249,13 @@
         {
             $score = 2*min($ret[0], $ret[3]);
             self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+        return 1;
         }
-        
+
+        else
+        {
+            return 2;
+        }
     }
 
     public static function Tokyo_67($player_id, $day)
@@ -941,8 +1270,13 @@
             letsgotojapan::$instance->Gain("y",$player_id);
             
             
+        return 1;
         }
-        
+
+        else
+        {
+            return 2;
+        }
     }
 
     public static function Tokyo_68($player_id, $day)
@@ -957,8 +1291,13 @@
             
             
             
+        return 1;
         }
-        
+
+        else
+        {
+            return 2;
+        }
     }
 
     public static function Tokyo_69($player_id, $day)
@@ -969,8 +1308,13 @@
         {
             $score = 2*min($ret[2], $ret[1]);
             self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+        return 1;
         }
-        
+
+        else
+        {
+            return 2;
+        }
     }
 
     public static function Tokyo_70($player_id, $day)
@@ -986,8 +1330,13 @@
             
             
             
+        return 1;
         }
-        
+
+        else
+        {
+            return 2;
+        }
     }
 
     public static function Tokyo_71($player_id, $day)
@@ -1001,8 +1350,13 @@
             
             
             
+        return 1;
         }
-        
+
+        else
+        {
+            return 2;
+        }
     }
 
     public static function Tokyo_72($player_id, $day)
@@ -1013,8 +1367,13 @@
         {
             $score = 2*min($ret[0], $ret[1]);
             self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+        return 1;
         }
-        
+
+        else
+        {
+            return 2;
+        }
     }
 
     public static function Tokyo_73($player_id, $day)
@@ -1030,8 +1389,13 @@
             
             
             
+        return 1;
         }
-        
+
+        else
+        {
+            return 2;
+        }
     }
 
     public static function Tokyo_74($player_id, $day)
@@ -1048,8 +1412,13 @@
             
             
             
+        return 1;
         }
-        
+
+        else
+        {
+            return 2;
+        }
     }
 
     public static function Tokyo_75($player_id, $day)
@@ -1062,8 +1431,13 @@
             self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
             
             
+        return 1;
         }
-        
+
+        else
+        {
+            return 2;
+        }
     }
 
     public static function Tokyo_76($player_id, $day)
@@ -1076,8 +1450,13 @@
             self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
             
             
+        return 1;
         }
-        
+
+        else
+        {
+            return 2;
+        }
     }
 
     public static function Tokyo_77($player_id, $day)
@@ -1088,8 +1467,13 @@
         {
             $score = 2*min($ret[3], $ret[2]);
             self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+        return 1;
         }
-        
+
+        else
+        {
+            return 2;
+        }
     }
 
     public static function Tokyo_78($player_id, $day)
@@ -1106,8 +1490,13 @@
             
             
             
+        return 1;
         }
-        
+
+        else
+        {
+            return 2;
+        }
     }
 
     public static function Tokyo_79($player_id, $day)
@@ -1120,8 +1509,13 @@
             self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
             
             
+        return 1;
         }
-        
+
+        else
+        {
+            return 2;
+        }
     }
 
     public static function Tokyo_80($player_id, $day)
@@ -1134,8 +1528,13 @@
             self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
             
             
+        return 1;
         }
-        
+
+        else
+        {
+            return 2;
+        }
     }
 
 

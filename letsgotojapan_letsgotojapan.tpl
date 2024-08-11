@@ -331,6 +331,8 @@ var jstpl_finalkyoto='<div class="finalkyoto">K</div>';
 var jstpl_finalwalk='<div class="finalwalk"></div>';
 var jstpl_train='<div class="train_${id}"></div>';
 
+var jstpl_check='<div class="check_${type}"></div>';
+
 var jstpl_marqueur='<div id="marqueur_${type}_${id}" class="marqueur" style="background-position-x: ${x}%;"></div>';
 
 

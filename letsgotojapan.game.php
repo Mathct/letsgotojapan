@@ -212,8 +212,8 @@ class letsgotojapan extends Table
         $result['listplayers'] = self::getObjectListFromDB( "SELECT player_id id FROM player", true );
         $result['countplayers'][] = count(self::getObjectListFromDB( "SELECT player_id id FROM player", true ));
 
-        $result['tokyo'] = self::getObjectListFromDB( "SELECT card_id id, card_type type, card_type_arg type_arg, card_location location, card_location_arg location_arg, walk walk, finallocation finallocation, finalwalk finalwalk, train train FROM tokyo WHERE card_location != 'deck' and card_location != 'discard'");
-        $result['kyoto'] = self::getObjectListFromDB( "SELECT card_id id, card_type type, card_type_arg type_arg, card_location location, card_location_arg location_arg, walk walk, finallocation finallocation, finalwalk finalwalk, train train FROM kyoto WHERE card_location != 'deck' and card_location != 'discard'");
+        $result['tokyo'] = self::getObjectListFromDB( "SELECT card_id id, card_type type, card_type_arg type_arg, card_location location, card_location_arg location_arg, walk walk, finallocation finallocation, finalwalk finalwalk, train train, checkcard checkcard FROM tokyo WHERE card_location != 'deck' and card_location != 'discard'");
+        $result['kyoto'] = self::getObjectListFromDB( "SELECT card_id id, card_type type, card_type_arg type_arg, card_location location, card_location_arg location_arg, walk walk, finallocation finallocation, finalwalk finalwalk, train train, checkcard checkcard FROM kyoto WHERE card_location != 'deck' and card_location != 'discard'");
 
         $result['turn'] = self::getUniqueValueFromDB("SELECT level FROM tokens WHERE name = 'turn'");
 

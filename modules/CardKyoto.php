@@ -15,9 +15,13 @@
             self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
             letsgotojapan::$instance->Gain("p",$player_id);
             
+            return 1;
         }
-        
-        
+
+        else
+        {
+            return 2;
+        }
     }
 
     public static function Kyoto_2($player_id, $day)
@@ -30,9 +34,13 @@
             self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
             
             
+            return 1;
         }
-        
-        
+
+        else
+        {
+            return 2;
+        }
     }
     
 

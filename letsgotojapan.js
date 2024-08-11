@@ -253,6 +253,11 @@ function (dojo, declare) {
                         {
                             this.addTrain (tokyo.id, tokyo.type_arg, tokyo.train)
                         }
+
+                        if(tokyo.checkcard != 0)
+                            {
+                                this.addCheck (tokyo.id, tokyo.type_arg, tokyo.checkcard)
+                            }
                         
                         
                         
@@ -277,6 +282,11 @@ function (dojo, declare) {
                         if(kyoto.train != 0)
                             {
                                 this.addTrain (kyoto.id, kyoto.type_arg, kyoto.train)
+                            }
+
+                        if(kyoto.checkcard != 0)
+                            {
+                                this.addTrain (kyoto.id, kyoto.type_arg, kyoto.checkcard)
                             }
                         
                         
@@ -1584,6 +1594,19 @@ function (dojo, declare) {
 
             },
 
+            addCheck: function(id, ville, check)
+            {        	 
+                
+                dojo.place( this.format_block( 'jstpl_check', {
+                    type: check,
+                                                            
+                } ) , 'card_'+ville+'_'+id);
+                
+                
+                
+
+            },
+
             addMaskTurn: function()
             {        	 
                 
@@ -2258,6 +2281,7 @@ function (dojo, declare) {
                 dojo.subscribe( 'score', this, "notif_score" );
                 dojo.subscribe( 'score2', this, "notif_score2" );
                 dojo.subscribe( 'disabled', this, "notif_disabled" );
+                dojo.subscribe( 'check', this, "notif_check" );
 
 
                 
@@ -2878,6 +2902,13 @@ function (dojo, declare) {
                 
                 
                 
+            },
+
+            notif_check: function( notif )
+            {
+                
+                this.addCheck(notif.args.id, notif.args.ville, notif.args.check);
+
             },
 
     

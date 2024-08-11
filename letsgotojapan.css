@@ -1148,3 +1148,34 @@ display: none;
 }
 
 
+.check_1
+{
+  background-image: url('img/check.png');
+  background-size: 200% 100%;
+  background-position-x: 0%;
+  width: 100px;
+  height: 100px;
+  position: absolute;
+  top: 55px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+
+
+}
+
+.check_2
+{
+  background-image: url('img/check.png');
+  background-size: 200% 100%;
+  background-position-x: -100%;
+  width: 100px;
+  height: 100px;
+  position: absolute;
+  top: 55px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+
+
+}
