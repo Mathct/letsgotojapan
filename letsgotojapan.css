@@ -1160,6 +1160,7 @@ display: none;
   left: 50%;
   transform: translateX(-50%);
   z-index: 20;
+ 
 
 
 }
@@ -1178,4 +1179,26 @@ display: none;
   z-index: 20;
 
 
+}
+
+.animate{
+  
+  animation: animescale 0.2s linear forwards;
+    
+    
+}
+
+@keyframes animescale {
+  0% {
+    transform: scale(3) rotate(-45deg);
+    
+
+  }
+ 
+  100% {
+    transform: scale(1) rotate(0);
+    left: 50%;
+  transform: translateX(-50%);
+    
+  }
 }

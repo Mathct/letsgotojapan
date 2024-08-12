@@ -1599,6 +1599,8 @@ function (dojo, declare) {
                 
                 dojo.place( this.format_block( 'jstpl_check', {
                     type: check,
+                    ville: ville,
+                    id: id,
                                                             
                 } ) , 'card_'+ville+'_'+id);
                 
@@ -2908,6 +2910,9 @@ function (dojo, declare) {
             {
                 
                 this.addCheck(notif.args.id, notif.args.ville, notif.args.check);
+                const check = document.getElementById('check_'+notif.args.ville+'_'+notif.args.id);
+                check.classList.add("animate");
+                
 
             },
 

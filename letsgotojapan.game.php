@@ -1756,6 +1756,18 @@ function actValidate3Discard( $arg1, $arg2, $arg3)
     
 }
 
+function Test($ville, $id, $check)
+{
+    letsgotojapan::$instance->notifyAllPlayers('check','', array(
+            
+        'id' => $id,
+        'ville' => $ville,
+        'check' => $check,
+        
+        )
+        ); 
+}
+
 
 
     
