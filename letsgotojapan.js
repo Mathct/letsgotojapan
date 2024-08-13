@@ -403,7 +403,36 @@ function (dojo, declare) {
                             }
                 
 
-                
+                ///// TOOL TIPS ////
+
+                for( var player_id in gamedatas.players )
+                {
+                var textbonus1 = _("Move the Mood Tracker token 1 space to the right");
+                var htmlbonus1 = '<div class="toolt"><div class="infotoolt">'+this.format_block('jstpl_infotool',{text: textbonus1})+'</div></div>';
+                this.addTooltipHtml( 'bonusjournee_1_1_'+player_id, htmlbonus1,1000);
+
+                var textbonus2 = _("Take 2 Research tokens");
+                var htmlbonus2 = '<div class="toolt"><div class="infotoolt">'+this.format_block('jstpl_infotool',{text: textbonus2})+'</div></div>';
+                this.addTooltipHtml( 'bonusjournee_2_1_'+player_id, htmlbonus2,1000);
+
+                var textbonus3 = _("Take 1 Wild token");
+                var htmlbonus3 = '<div class="toolt"><div class="infotoolt">'+this.format_block('jstpl_infotool',{text: textbonus3})+'</div></div>';
+                this.addTooltipHtml( 'bonusjournee_2_2_'+player_id, htmlbonus3,1000);
+
+                var textbonus4 = _("Take 1 Luxury Train token");
+                var htmlbonus4 = '<div class="toolt"><div class="infotoolt">'+this.format_block('jstpl_infotool',{text: textbonus4})+'</div></div>';
+                this.addTooltipHtml( 'bonusjournee_3_1_'+player_id, htmlbonus4,1000);
+
+                var textbonus5 = _("Go on an Extra Walk: Add a walk to that day. Do not take a Research token");
+                var htmlbonus5 = '<div class="toolt"><div class="infotoolt">'+this.format_block('jstpl_infotool',{text: textbonus5})+'</div></div>';
+                this.addTooltipHtml( 'bonusjournee_3_2_'+player_id, htmlbonus5,1000);
+
+
+                }
+
+
+
+
                 
      
                 // Setup game notifications to handle (see "setupNotifications" method below)
@@ -588,10 +617,17 @@ function (dojo, declare) {
                                     if(args[this.getCurrentPlayerId()][0].buttons[nb] == "walk")
                                     {
                                         this.addActionButton( 'walk', `<div class="iconwalk"></div>` ,'onOpButton', null, null, 'none' );
+                                        var textwalk = _("Discard 1 card from your hand and take a card from the Tokyo deck or Kyoto and place it face down in the itinerary. Gain 1 Research token");
+                                        var htmlwalk = '<div class="toolt"><div class="infotoolt">'+this.format_block('jstpl_infotool',{text: textwalk})+'</div></div>';
+                                        this.addTooltipHtml( 'walk', htmlwalk,1000);
+
                                     }
                                     if(args[this.getCurrentPlayerId()][0].buttons[nb] == "recherche")
                                     {
                                         this.addActionButton( 'recherche', `<div class="iconrecherche"></div>` ,'onOpButton', null, null, 'none' );
+                                        var textrecherche = _("Discard a Research token to draw 3 cards from any combination of the Tokyo and Kyoto decks. Then IMMEDIATELY discard any 3 cards");
+                                        var htmlrecherche = '<div class="toolt"><div class="infotoolt">'+this.format_block('jstpl_infotool',{text: textrecherche})+'</div></div>';
+                                        this.addTooltipHtml( 'recherche', htmlrecherche,1000);
                                     }
                                     if(args[this.getCurrentPlayerId()][0].buttons[nb] == "tokyo")
                                     {
@@ -619,31 +655,42 @@ function (dojo, declare) {
                                         {
                                                                                         
                                             this.addActionButton(args[this.getCurrentPlayerId()][0].buttons[nb], `<div class="cardtokyoversobouton"></div>`, 'onOpButton', null, null, 'none');
+                                            var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_tokyowalktool')+'</div></div>';
+                                            this.addTooltipHtml( 'cardtokyoverso', html,1000);
+
                                         }
                                     if(args[this.getCurrentPlayerId()][0].buttons[nb] == "cardkyotoverso")
                                         {
                                                                                         
                                             this.addActionButton(args[this.getCurrentPlayerId()][0].buttons[nb], `<div class="cardkyotoversobouton"></div>`, 'onOpButton', null, null, 'none');
+                                            var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_kyotowalktool')+'</div></div>';
+                                            this.addTooltipHtml( 'cardkyotoverso', html,1000);
                                         }
                                     if(args[this.getCurrentPlayerId()][0].buttons[nb].startsWith("cardbouton_1"))
                                         {
                                             var card = args[this.getCurrentPlayerId()][0].buttons[nb].split("_");
                                             if((card[3]>=1)&&(card[3] <= 10))
-                                            {
-                                                var img = g_gamethemeurl+"img/tokyo1.jpg";
+                                                {
+                                                    var img = g_gamethemeurl+"img/tokyo1.jpg";
                                                     this.addActionButton(args[this.getCurrentPlayerId()][0].buttons[nb], `<div class="cardbouton" style="background-image: url(${img}); background-position-y: 0%; background-position-x: ${((card[3]-1)*(-100))}%;"></div>`, 'onOpButton', null, null, 'none');
-                                            }
+                                                    var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_tokyo1tool',{x: (card[3]-1)*(-100), y: 0})+'</div></div>';
+                                                    this.addTooltipHtml(args[this.getCurrentPlayerId()][0].buttons[nb], html,1000);
+                                                }
 
                                             if((card[3]>=11)&&(card[3] <= 20))
                                                 {
                                                     var img = g_gamethemeurl+"img/tokyo1.jpg";
                                                     this.addActionButton(args[this.getCurrentPlayerId()][0].buttons[nb], `<div class="cardbouton" style="background-image: url(${img}); background-position-y: -100%; background-position-x: ${((card[3]-11)*(-100))}%;"></div>`, 'onOpButton', null, null, 'none');
+                                                    var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_tokyo1tool',{x: (card[3]-11)*(-100), y: -100})+'</div></div>';
+                                                    this.addTooltipHtml(args[this.getCurrentPlayerId()][0].buttons[nb], html,1000);
                                                 }
 
                                             if((card[3]>=21)&&(card[3] <= 30))
                                                 {
                                                     var img = g_gamethemeurl+"img/tokyo1.jpg";
                                                     this.addActionButton(args[this.getCurrentPlayerId()][0].buttons[nb], `<div class="cardbouton" style="background-image: url(${img}); background-position-y: -200%; background-position-x: ${((card[3]-21)*(-100))}%;"></div>`, 'onOpButton', null, null, 'none');
+                                                    var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_tokyo1tool',{x: (card[3]-21)*(-100), y: -200})+'</div></div>';
+                                                    this.addTooltipHtml(args[this.getCurrentPlayerId()][0].buttons[nb], html,1000);
                                                 }
     
 
@@ -651,24 +698,32 @@ function (dojo, declare) {
                                                 {
                                                     var img = g_gamethemeurl+"img/tokyo1.jpg";
                                                     this.addActionButton(args[this.getCurrentPlayerId()][0].buttons[nb], `<div class="cardbouton" style="background-image: url(${img}); background-position-y: -300%; background-position-x: ${((card[3]-31)*(-100))}%;"></div>`, 'onOpButton', null, null, 'none');
+                                                    var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_tokyo1tool',{x: (card[3]-31)*(-100), y: -300})+'</div></div>';
+                                                    this.addTooltipHtml(args[this.getCurrentPlayerId()][0].buttons[nb], html,1000);
                                                 }
 
                                             if((card[3]>=41)&&(card[3] <= 50))
                                                 {
                                                     var img = g_gamethemeurl+"img/tokyo2.jpg";
                                                         this.addActionButton(args[this.getCurrentPlayerId()][0].buttons[nb], `<div class="cardbouton" style="background-image: url(${img}); background-position-y: 0%; background-position-x: ${((card[3]-41)*(-100))}%;"></div>`, 'onOpButton', null, null, 'none');
+                                                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_tokyo2tool',{x: (card[3]-41)*(-100), y: 0})+'</div></div>';
+                                                        this.addTooltipHtml(args[this.getCurrentPlayerId()][0].buttons[nb], html,1000);
                                                 }
     
                                             if((card[3]>=51)&&(card[3] <= 60))
                                                 {
                                                     var img = g_gamethemeurl+"img/tokyo2.jpg";
                                                     this.addActionButton(args[this.getCurrentPlayerId()][0].buttons[nb], `<div class="cardbouton" style="background-image: url(${img}); background-position-y: -100%; background-position-x: ${((card[3]-51)*(-100))}%;"></div>`, 'onOpButton', null, null, 'none');
+                                                    var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_tokyo2tool',{x: (card[3]-51)*(-100), y: -100})+'</div></div>';
+                                                    this.addTooltipHtml(args[this.getCurrentPlayerId()][0].buttons[nb], html,1000);
                                                 }
 
                                             if((card[3]>=61)&&(card[3] <= 70))
                                                 {
                                                     var img = g_gamethemeurl+"img/tokyo2.jpg";
                                                     this.addActionButton(args[this.getCurrentPlayerId()][0].buttons[nb], `<div class="cardbouton" style="background-image: url(${img}); background-position-y: -200%; background-position-x: ${((card[3]-61)*(-100))}%;"></div>`, 'onOpButton', null, null, 'none');
+                                                    var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_tokyo2tool',{x: (card[3]-61)*(-100), y: -200})+'</div></div>';
+                                                    this.addTooltipHtml(args[this.getCurrentPlayerId()][0].buttons[nb], html,1000);
                                                 }
     
 
@@ -676,6 +731,8 @@ function (dojo, declare) {
                                                 {
                                                     var img = g_gamethemeurl+"img/tokyo2.jpg";
                                                     this.addActionButton(args[this.getCurrentPlayerId()][0].buttons[nb], `<div class="cardbouton" style="background-image: url(${img}); background-position-y: -300%; background-position-x: ${((card[3]-71)*(-100))}%;"></div>`, 'onOpButton', null, null, 'none');
+                                                    var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_tokyo2tool',{x: (card[3]-71)*(-100), y: -300})+'</div></div>';
+                                                    this.addTooltipHtml(args[this.getCurrentPlayerId()][0].buttons[nb], html,1000);
                                                 }
                                             
                                                                                         
@@ -686,21 +743,27 @@ function (dojo, declare) {
                                                                                         
                                             var card = args[this.getCurrentPlayerId()][0].buttons[nb].split("_");
                                             if((card[3]>=1)&&(card[3] <= 10))
-                                            {
-                                                var img = g_gamethemeurl+"img/kyoto1.jpg";
+                                                {
+                                                    var img = g_gamethemeurl+"img/kyoto1.jpg";
                                                     this.addActionButton(args[this.getCurrentPlayerId()][0].buttons[nb], `<div class="cardbouton" style="background-image: url(${img}); background-position-y: 0%; background-position-x: ${((card[3]-1)*(-100))}%;"></div>`, 'onOpButton', null, null, 'none');
-                                            }
+                                                    var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_kyoto1tool',{x: (card[3]-1)*(-100), y: 0})+'</div></div>';
+                                                    this.addTooltipHtml(args[this.getCurrentPlayerId()][0].buttons[nb], html,1000);
+                                                }
 
                                             if((card[3]>=11)&&(card[3] <= 20))
                                                 {
                                                     var img = g_gamethemeurl+"img/kyoto1.jpg";
                                                     this.addActionButton(args[this.getCurrentPlayerId()][0].buttons[nb], `<div class="cardbouton" style="background-image: url(${img}); background-position-y: -100%; background-position-x: ${((card[3]-11)*(-100))}%;"></div>`, 'onOpButton', null, null, 'none');
+                                                    var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_kyoto1tool',{x: (card[3]-11)*(-100), y: -100})+'</div></div>';
+                                                    this.addTooltipHtml(args[this.getCurrentPlayerId()][0].buttons[nb], html,1000);
                                                 }
 
                                             if((card[3]>=21)&&(card[3] <= 30))
                                                 {
                                                     var img = g_gamethemeurl+"img/kyoto1.jpg";
                                                     this.addActionButton(args[this.getCurrentPlayerId()][0].buttons[nb], `<div class="cardbouton" style="background-image: url(${img}); background-position-y: -200%; background-position-x: ${((card[3]-21)*(-100))}%;"></div>`, 'onOpButton', null, null, 'none');
+                                                    var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_kyoto1tool',{x: (card[3]-21)*(-100), y: -200})+'</div></div>';
+                                                    this.addTooltipHtml(args[this.getCurrentPlayerId()][0].buttons[nb], html,1000);
                                                 }
     
 
@@ -708,24 +771,32 @@ function (dojo, declare) {
                                                 {
                                                     var img = g_gamethemeurl+"img/kyoto1.jpg";
                                                     this.addActionButton(args[this.getCurrentPlayerId()][0].buttons[nb], `<div class="cardbouton" style="background-image: url(${img}); background-position-y: -300%; background-position-x: ${((card[3]-31)*(-100))}%;"></div>`, 'onOpButton', null, null, 'none');
+                                                    var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_kyoto1tool',{x: (card[3]-31)*(-100), y: -300})+'</div></div>';
+                                                    this.addTooltipHtml(args[this.getCurrentPlayerId()][0].buttons[nb], html,1000);
                                                 }
 
                                             if((card[3]>=41)&&(card[3] <= 50))
                                                 {
                                                     var img = g_gamethemeurl+"img/kyoto2.jpg";
                                                         this.addActionButton(args[this.getCurrentPlayerId()][0].buttons[nb], `<div class="cardbouton" style="background-image: url(${img}); background-position-y: 0%; background-position-x: ${((card[3]-41)*(-100))}%;"></div>`, 'onOpButton', null, null, 'none');
+                                                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_kyoto2tool',{x: (card[3]-41)*(-100), y: 0})+'</div></div>';
+                                                        this.addTooltipHtml(args[this.getCurrentPlayerId()][0].buttons[nb], html,1000);
                                                 }
     
                                             if((card[3]>=51)&&(card[3] <= 60))
                                                 {
                                                     var img = g_gamethemeurl+"img/kyoto2.jpg";
                                                     this.addActionButton(args[this.getCurrentPlayerId()][0].buttons[nb], `<div class="cardbouton" style="background-image: url(${img}); background-position-y: -100%; background-position-x: ${((card[3]-51)*(-100))}%;"></div>`, 'onOpButton', null, null, 'none');
+                                                    var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_kyoto2tool',{x: (card[3]-51)*(-100), y: -100})+'</div></div>';
+                                                    this.addTooltipHtml(args[this.getCurrentPlayerId()][0].buttons[nb], html,1000);
                                                 }
 
                                             if((card[3]>=61)&&(card[3] <= 70))
                                                 {
                                                     var img = g_gamethemeurl+"img/kyoto2.jpg";
                                                     this.addActionButton(args[this.getCurrentPlayerId()][0].buttons[nb], `<div class="cardbouton" style="background-image: url(${img}); background-position-y: -200%; background-position-x: ${((card[3]-61)*(-100))}%;"></div>`, 'onOpButton', null, null, 'none');
+                                                    var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_kyoto2tool',{x: (card[3]-61)*(-100), y: -200})+'</div></div>';
+                                                    this.addTooltipHtml(args[this.getCurrentPlayerId()][0].buttons[nb], html,1000);
                                                 }
     
 
@@ -733,6 +804,8 @@ function (dojo, declare) {
                                                 {
                                                     var img = g_gamethemeurl+"img/kyoto2.jpg";
                                                     this.addActionButton(args[this.getCurrentPlayerId()][0].buttons[nb], `<div class="cardbouton" style="background-image: url(${img}); background-position-y: -300%; background-position-x: ${((card[3]-71)*(-100))}%;"></div>`, 'onOpButton', null, null, 'none');
+                                                    var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_kyoto2tool',{x: (card[3]-71)*(-100), y: -300})+'</div></div>';
+                                                    this.addTooltipHtml(args[this.getCurrentPlayerId()][0].buttons[nb], html,1000);
                                                 }
                                         }
 
@@ -923,6 +996,9 @@ function (dojo, declare) {
                                                 
                         } ) , location+'_'+player );
 
+                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_tokyo1tool',{x: (card-1)*(-100), y: 0})+'</div></div>';
+                        this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
+
                     }
                     
                     if((card >=11)&&(card <=20))
@@ -937,6 +1013,9 @@ function (dojo, declare) {
                             ville: ville,
                                                 
                         } ) , location+'_'+player );
+
+                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_tokyo1tool',{x: (card-11)*(-100), y: -100})+'</div></div>';
+                        this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
                     }
 
@@ -952,6 +1031,9 @@ function (dojo, declare) {
                             ville: ville,
                                                 
                         } ) , location+'_'+player );
+
+                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_tokyo1tool',{x: (card-21)*(-100), y: -200})+'</div></div>';
+                        this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
                     }
                     
@@ -967,6 +1049,9 @@ function (dojo, declare) {
                             ville: ville,
                                                 
                         } ) , location+'_'+player );
+
+                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_tokyo1tool',{x: (card-31)*(-100), y: -300})+'</div></div>';
+                        this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
                     }
 
@@ -982,6 +1067,9 @@ function (dojo, declare) {
                             ville: ville,
                                                 
                         } ) , location+'_'+player );
+
+                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_tokyo2tool',{x: (card-41)*(-100), y: 0})+'</div></div>';
+                        this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
                     }
             
@@ -997,6 +1085,9 @@ function (dojo, declare) {
                             ville: ville,
                                                 
                         } ) , location+'_'+player );
+
+                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_tokyo2tool',{x: (card-51)*(-100), y: -100})+'</div></div>';
+                        this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
                     }
                     
@@ -1012,6 +1103,9 @@ function (dojo, declare) {
                             ville: ville,
                                                 
                         } ) , location+'_'+player );
+
+                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_tokyo2tool',{x: (card-61)*(-100), y: -200})+'</div></div>';
+                        this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
                     }
 
@@ -1027,6 +1121,9 @@ function (dojo, declare) {
                             ville: ville,
                                                 
                         } ) , location+'_'+player );
+
+                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_tokyo2tool',{x: (card-71)*(-100), y: -300})+'</div></div>';
+                        this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
                     }
                         
@@ -1034,31 +1131,9 @@ function (dojo, declare) {
                     dojo.query("#card_"+ville+'_'+id).connect('onclick', this, 'onSelect' );
                     
 
-
-
-                    /// tooltip
                     
-                    /*var type = set+color;
-                    var name = _(this.gamedatas.listecards[type].name);
-                    var description3 = _(this.gamedatas.listecards[type].description3);
-                    var description4 = _(this.gamedatas.listecards[type].description4);
-                    var description5 = _(this.gamedatas.listecards[type].description5);
-                
-                    if(set ==1)
-                    {
-                    var html = '<div class="anatooltip"><div class="anatcard">'+this.format_block('jstpl_cardtool1',{name: name, description3: description3, description4: description4, description5: description5, x: (color-1)*(-100), y: 0})+'</div></div>';
-                    this.addTooltipHtml( 'card_'+color+'_'+player, html,500);
-                    }
-                    if(set ==2)
-                    {
-                    var html = '<div class="anatooltip"><div class="anatcard">'+this.format_block('jstpl_cardtool2',{name: name, description3: description3, description4: description4, description5: description5, x: (color-1)*(-100), y: 0})+'</div></div>';
-                    this.addTooltipHtml( 'card_'+color+'_'+player, html,500);
-                    }
-                    if(set ==3)
-                    {
-                    var html = '<div class="anatooltip"><div class="anatcard">'+this.format_block('jstpl_cardtool3',{name: name, description3: description3, description4: description4, description5: description5, x: (color-1)*(-100), y: 0})+'</div></div>';
-                    this.addTooltipHtml( 'card_'+color+'_'+player, html,500);
-                    }*/
+
+                    
                 }
     
 
@@ -1082,6 +1157,9 @@ function (dojo, declare) {
                             ville: ville,
                                                 
                         } ) , location+'_'+player );
+
+                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_kyoto1tool',{x: (card-1)*(-100), y: 0})+'</div></div>';
+                        this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
     
                     }
                     
@@ -1097,6 +1175,9 @@ function (dojo, declare) {
                             ville: ville,
                                                 
                         } ) , location+'_'+player );
+
+                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_kyoto1tool',{x: (card-11)*(-100), y: -100})+'</div></div>';
+                        this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
                     }
     
@@ -1112,6 +1193,9 @@ function (dojo, declare) {
                             ville: ville,
                                                 
                         } ) , location+'_'+player );
+
+                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_kyoto1tool',{x: (card-21)*(-100), y: -200})+'</div></div>';
+                        this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
                     }
                     
@@ -1127,6 +1211,9 @@ function (dojo, declare) {
                             ville: ville,
                                                 
                         } ) , location+'_'+player );
+
+                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_kyoto1tool',{x: (card-31)*(-100), y: -300})+'</div></div>';
+                        this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
                     }
     
@@ -1142,6 +1229,9 @@ function (dojo, declare) {
                             ville: ville,
                                                 
                         } ) , location+'_'+player );
+
+                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_kyoto2tool',{x: (card-41)*(-100), y: 0})+'</div></div>';
+                        this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
                     }
             
@@ -1157,6 +1247,9 @@ function (dojo, declare) {
                             ville: ville,
                                                 
                         } ) , location+'_'+player );
+
+                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_kyoto2tool',{x: (card-51)*(-100), y: -100})+'</div></div>';
+                        this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
                     }
                     
@@ -1172,6 +1265,9 @@ function (dojo, declare) {
                             ville: ville,
                                                 
                         } ) , location+'_'+player );
+
+                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_kyoto2tool',{x: (card-61)*(-100), y: -200})+'</div></div>';
+                        this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
                     }
     
@@ -1187,6 +1283,9 @@ function (dojo, declare) {
                             ville: ville,
                                                 
                         } ) , location+'_'+player );
+
+                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_kyoto2tool',{x: (card-71)*(-100), y: -300})+'</div></div>';
+                        this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
                     }
                         
@@ -1221,6 +1320,10 @@ function (dojo, declare) {
                                                 
                         } ) , location+'_'+player );
 
+                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_tokyo1tool',{x: (card-1)*(-100), y: 0})+'</div></div>';
+                        this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
+
+
                     }
                     
                     if((card >=11)&&(card <=20))
@@ -1235,6 +1338,9 @@ function (dojo, declare) {
                             ville: ville,
                                                 
                         } ) , location+'_'+player );
+
+                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_tokyo1tool',{x: (card-11)*(-100), y: -100})+'</div></div>';
+                        this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
                     }
 
@@ -1250,6 +1356,9 @@ function (dojo, declare) {
                             ville: ville,
                                                 
                         } ) , location+'_'+player );
+
+                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_tokyo1tool',{x: (card-21)*(-100), y: -200})+'</div></div>';
+                        this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
                     }
                     
@@ -1265,6 +1374,9 @@ function (dojo, declare) {
                             ville: ville,
                                                 
                         } ) , location+'_'+player );
+
+                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_tokyo1tool',{x: (card-31)*(-100), y: -300})+'</div></div>';
+                        this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
                     }
 
@@ -1280,6 +1392,9 @@ function (dojo, declare) {
                             ville: ville,
                                                 
                         } ) , location+'_'+player );
+
+                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_tokyo2tool',{x: (card-41)*(-100), y: 0})+'</div></div>';
+                        this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
                     }
             
@@ -1295,6 +1410,9 @@ function (dojo, declare) {
                             ville: ville,
                                                 
                         } ) , location+'_'+player );
+
+                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_tokyo2tool',{x: (card-51)*(-100), y: -100})+'</div></div>';
+                        this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
                     }
                     
@@ -1310,6 +1428,9 @@ function (dojo, declare) {
                             ville: ville,
                                                 
                         } ) , location+'_'+player );
+
+                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_tokyo2tool',{x: (card-61)*(-100), y: -200})+'</div></div>';
+                        this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
                     }
 
@@ -1327,6 +1448,9 @@ function (dojo, declare) {
                             ville: ville,
                                                 
                         } ) , location+'_'+player );
+
+                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_tokyo2tool',{x: (card-71)*(-100), y: -300})+'</div></div>';
+                        this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
                     }
 
@@ -1384,6 +1508,9 @@ function (dojo, declare) {
                         var element = document.getElementById(location+'_'+player);
                         element.style.zIndex = "10";
 
+                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_tokyowalktool')+'</div></div>';
+                        this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
+
                 }
                     
                 
@@ -1409,6 +1536,9 @@ function (dojo, declare) {
                             ville: ville,
                                                 
                         } ) , location+'_'+player );
+
+                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_kyoto1tool',{x: (card-1)*(-100), y: 0})+'</div></div>';
+                        this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
     
                     }
                     
@@ -1424,6 +1554,9 @@ function (dojo, declare) {
                             ville: ville,
                                                 
                         } ) , location+'_'+player );
+
+                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_kyoto1tool',{x: (card-11)*(-100), y: -100})+'</div></div>';
+                        this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
                     }
     
@@ -1439,6 +1572,9 @@ function (dojo, declare) {
                             ville: ville,
                                                 
                         } ) , location+'_'+player );
+
+                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_kyoto1tool',{x: (card-21)*(-100), y: -200})+'</div></div>';
+                        this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
                     }
                     
@@ -1454,6 +1590,9 @@ function (dojo, declare) {
                             ville: ville,
                                                 
                         } ) , location+'_'+player );
+
+                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_kyoto1tool',{x: (card-31)*(-100), y: -300})+'</div></div>';
+                        this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
                     }
     
@@ -1469,6 +1608,9 @@ function (dojo, declare) {
                             ville: ville,
                                                 
                         } ) , location+'_'+player );
+
+                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_kyoto2tool',{x: (card-41)*(-100), y: 0})+'</div></div>';
+                        this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
                     }
             
@@ -1484,6 +1626,9 @@ function (dojo, declare) {
                             ville: ville,
                                                 
                         } ) , location+'_'+player );
+
+                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_kyoto2tool',{x: (card-51)*(-100), y: -100})+'</div></div>';
+                        this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
                     }
                     
@@ -1499,6 +1644,9 @@ function (dojo, declare) {
                             ville: ville,
                                                 
                         } ) , location+'_'+player );
+
+                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_kyoto2tool',{x: (card-61)*(-100), y: -200})+'</div></div>';
+                        this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
                     }
     
@@ -1514,6 +1662,9 @@ function (dojo, declare) {
                             ville: ville,
                                                 
                         } ) , location+'_'+player );
+
+                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_kyoto2tool',{x: (card-71)*(-100), y: -300})+'</div></div>';
+                        this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
                     }
 
@@ -1569,6 +1720,9 @@ function (dojo, declare) {
     
                             var element = document.getElementById(location+'_'+player);
                             element.style.zIndex = "10";
+
+                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_kyotowalktool')+'</div></div>';
+                        this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
     
                     }
                         

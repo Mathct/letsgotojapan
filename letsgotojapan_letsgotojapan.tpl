@@ -145,6 +145,7 @@
                 <div id="bonusjournee_2_{PLAYER_ID}" class="bonusjournee" style="top: 5.5%; left: 16.5%;"></div>
                 <div id="bonusjournee_3_{PLAYER_ID}" class="bonusjournee" style="top: 5.5%; left: 25.7%;"></div>
 
+                <div id="bonusjournee_1_1_{PLAYER_ID}" class="bonusjournee1" style="top: 22%; left: 6.5%;"></div>
                 <div id="bonusjournee_2_1_{PLAYER_ID}" class="bonusjournee2" style="top: 16.8%; left: 14.1%;"></div>
                 <div id="bonusjournee_2_2_{PLAYER_ID}" class="bonusjournee2" style="top: 30.1%; left: 14.1%;"></div>
                 <div id="bonusjournee_3_1_{PLAYER_ID}" class="bonusjournee2" style="top: 16.4%; left: 23.3%;"></div>
@@ -335,6 +336,14 @@ var jstpl_check='<div id="check_${ville}_${id}" class="check_${type}"></div>';
 
 var jstpl_marqueur='<div id="marqueur_${type}_${id}" class="marqueur" style="background-position-x: ${x}%;"></div>';
 
+var jstpl_tokyo1tool='<div class="tokyo1tool" style="background-position-x: ${x}%; background-position-y: ${y}%;"></div>';
+var jstpl_tokyo2tool='<div class="tokyo2tool" style="background-position-x: ${x}%; background-position-y: ${y}%;"></div>';
+var jstpl_kyoto1tool='<div class="kyoto1tool" style="background-position-x: ${x}%; background-position-y: ${y}%;"></div>';
+var jstpl_kyoto2tool='<div class="kyoto2tool" style="background-position-x: ${x}%; background-position-y: ${y}%;"></div>';
+var jstpl_tokyowalktool='<div class="tokyowalktool"></div>';
+var jstpl_kyotowalktool='<div class="kyotowalktool"></div>';
+var jstpl_kyotowalktool='<div class="kyotowalktool"></div>';
+var jstpl_infotool='<div class="infotexttoolt"><div style="text-align: center;">${text}</div></div>';
 
 </script>  
 

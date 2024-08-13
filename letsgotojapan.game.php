@@ -1276,6 +1276,8 @@ function getLogsType( $type )
     {return "<div class='logtrainbonus' title=''></div>";}
     if($type == 7)
     {return "<div class='logtrainmalus' title=''></div>";}
+    if($type == 8)
+    {return "<div class='logpv' title=''></div>";}
     
         
 

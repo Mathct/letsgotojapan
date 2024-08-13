@@ -3157,20 +3157,23 @@ function argFinalStep1($parg1, $parg2)
 
 
             $finalscore = self::getUniqueValueFromDB( "SELECT lundi FROM player WHERE player_id = {$this->player_id}");   /// CHANGER JOUR
-            letsgotojapan::$instance->notifyAllPlayers('score','', array(
+            letsgotojapan::$instance->notifyAllPlayers('score',clienttranslate( '${player_name} gains ${score} ${log} for <b>${day}</b>'), array(
                     
                 'numero' => $this->player_no,
                 'score' => $finalscore,
                 'position' => $day,
+                'player_name' => $this->player_name,
+                'log' => letsgotojapan::$instance->getLogsType(8),
+                'day' => letsgotojapan::$instance->days[1]['name'],
                 
                 )
-                );             
+                );              
             
 
             letsgotojapan::$instance->addPending($this->player_id, "FinalStepMardi"); // à modifier pour aller sur le mardi
 
 
-            
+           
 
 
 
@@ -3452,14 +3455,17 @@ function argFinalStep1($parg1, $parg2)
             
 
             $finalscore = self::getUniqueValueFromDB( "SELECT mardi FROM player WHERE player_id = {$this->player_id}");   /// CHANGER JOUR
-            letsgotojapan::$instance->notifyAllPlayers('score','', array(
+            letsgotojapan::$instance->notifyAllPlayers('score',clienttranslate( '${player_name} gains ${score} ${log} for <b>${day}</b>'), array(
                     
                 'numero' => $this->player_no,
                 'score' => $finalscore,
                 'position' => $day,
+                'player_name' => $this->player_name,
+                'log' => letsgotojapan::$instance->getLogsType(8),
+                'day' => letsgotojapan::$instance->days[2]['name'],
                 
                 )
-                );
+                ); 
 
             letsgotojapan::$instance->addPending($this->player_id, "FinalStepMercredi"); // à modifier pour aller sur le mardi
 
@@ -3745,11 +3751,14 @@ function argFinalStep1($parg1, $parg2)
             
 
             $finalscore = self::getUniqueValueFromDB( "SELECT mercredi FROM player WHERE player_id = {$this->player_id}");   /// CHANGER JOUR
-            letsgotojapan::$instance->notifyAllPlayers('score','', array(
+            letsgotojapan::$instance->notifyAllPlayers('score',clienttranslate( '${player_name} gains ${score} ${log} for <b>${day}</b>'), array(
                     
                 'numero' => $this->player_no,
                 'score' => $finalscore,
                 'position' => $day,
+                'player_name' => $this->player_name,
+                'log' => letsgotojapan::$instance->getLogsType(8),
+                'day' => letsgotojapan::$instance->days[3]['name'],
                 
                 )
                 );
@@ -4042,11 +4051,14 @@ function FinalStepJeudi($parg1, $parg2, $varg1, $varg2)
         
 
         $finalscore = self::getUniqueValueFromDB( "SELECT jeudi FROM player WHERE player_id = {$this->player_id}");   /// CHANGER JOUR
-        letsgotojapan::$instance->notifyAllPlayers('score','', array(
-                
+        letsgotojapan::$instance->notifyAllPlayers('score',clienttranslate( '${player_name} gains ${score} ${log} for <b>${day}</b>'), array(
+                    
             'numero' => $this->player_no,
             'score' => $finalscore,
             'position' => $day,
+            'player_name' => $this->player_name,
+            'log' => letsgotojapan::$instance->getLogsType(8),
+            'day' => letsgotojapan::$instance->days[4]['name'],
             
             )
             );
@@ -4338,11 +4350,14 @@ function FinalStepVendredi($parg1, $parg2, $varg1, $varg2)
         
 
         $finalscore = self::getUniqueValueFromDB( "SELECT vendredi FROM player WHERE player_id = {$this->player_id}");   /// CHANGER JOUR
-        letsgotojapan::$instance->notifyAllPlayers('score','', array(
-                
+        letsgotojapan::$instance->notifyAllPlayers('score',clienttranslate( '${player_name} gains ${score} ${log} for <b>${day}</b>'), array(
+                    
             'numero' => $this->player_no,
             'score' => $finalscore,
             'position' => $day,
+            'player_name' => $this->player_name,
+            'log' => letsgotojapan::$instance->getLogsType(8),
+            'day' => letsgotojapan::$instance->days[5]['name'],
             
             )
             );
@@ -4631,11 +4646,14 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
         
 
         $finalscore = self::getUniqueValueFromDB( "SELECT samedi FROM player WHERE player_id = {$this->player_id}");   /// CHANGER JOUR
-        letsgotojapan::$instance->notifyAllPlayers('score','', array(
-                
+        letsgotojapan::$instance->notifyAllPlayers('score',clienttranslate( '${player_name} gains ${score} ${log} for <b>${day}</b>'), array(
+                    
             'numero' => $this->player_no,
             'score' => $finalscore,
             'position' => $day,
+            'player_name' => $this->player_name,
+            'log' => letsgotojapan::$instance->getLogsType(8),
+            'day' => letsgotojapan::$instance->days[6]['name'],
             
             )
             );
@@ -4738,7 +4756,7 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
         self::DbQuery( "UPDATE player set player_score = {$scoretotal} WHERE player_id = {$this->player_id}" );
 
 
-        letsgotojapan::$instance->notifyAllPlayers('score2','', array(
+        letsgotojapan::$instance->notifyAllPlayers('score2',clienttranslate('${player_name} completes the trip to Japan with ${total} ${log}'), array(
                 
             'numero' => $this->player_no,
             'humeur' => $scorehumeur,
@@ -4746,7 +4764,10 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
             'train' => $scoretrain,
             'recherche' => $scorerecherche,
             'total' => $scoretotal,
-            'player' => $this->player_id,           
+            'player' => $this->player_id,
+            'player_name' => $this->player_name,
+            'log' => letsgotojapan::$instance->getLogsType(8),
+                      
             
             
             )
