@@ -2275,7 +2275,7 @@ function argFinalStep1($parg1, $parg2)
 
         if($varg1 == "continue")
         {
-            letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} managed the generic activities' ), array(
+            letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} managed the <b>generic activities</b>' ), array(
                 'player_name' => $this->player_name,
                 
                 )
@@ -2460,7 +2460,7 @@ function argFinalStep1($parg1, $parg2)
 
         if($varg1 == "continue")
         {
-            letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} managed the walks' ), array(
+            letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} managed the <b>walks</b>' ), array(
                 'player_name' => $this->player_name,
                 
                 )
@@ -2684,13 +2684,13 @@ function argFinalStep1($parg1, $parg2)
 
         if($varg1 == "continue")
         {
-            letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} managed the trains' ), array(
+            letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} managed the <b>trains</b>' ), array(
                 'player_name' => $this->player_name,
                 
                 )
                 );
 
-            letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} has finished planning the trip' ), array(
+            letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} has finished planning the <b>trip</b>' ), array(
                 'player_name' => $this->player_name,
                 
                 )
@@ -4756,7 +4756,7 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
         self::DbQuery( "UPDATE player set player_score = {$scoretotal} WHERE player_id = {$this->player_id}" );
 
 
-        letsgotojapan::$instance->notifyAllPlayers('score2',clienttranslate('${player_name} completes the trip to Japan with ${total} ${log}'), array(
+        letsgotojapan::$instance->notifyAllPlayers('score2',clienttranslate('${player_name} completes the trip to Japan with <b>${total}</b> ${log}'), array(
                 
             'numero' => $this->player_no,
             'humeur' => $scorehumeur,
