@@ -2149,7 +2149,7 @@ function (dojo, declare) {
                 
                         
                 this.ajaxcall( "/letsgotojapan/letsgotojapan/actButton.html", { 
-                    ock: true,
+                    lock: true,
                     arg1: evt.currentTarget.id
                                 
                     }, 
