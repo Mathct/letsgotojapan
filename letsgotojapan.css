@@ -1347,3 +1347,10 @@ display: none;
   color: rgb(0, 0, 0);
   
 }
+
+
+.noanimation {
+
+  animation: none !important;
+  border: 2px solid red !important;
+}

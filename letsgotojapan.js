@@ -478,6 +478,7 @@ function (dojo, declare) {
                 dojo.query(".selected3").removeClass("selected3");  
                 dojo.query(".selectable3discard").removeClass("selectable3discard"); 
                 dojo.query(".selected3discard").removeClass("selected3discard"); 
+                dojo.query(".noanimation").removeClass("noanimation"); 
                 
                 switch( stateName )
                 {
@@ -555,6 +556,21 @@ function (dojo, declare) {
                             {
                                 $('pagemaintitletext').innerHTML = 	this.format_string_recursive(_(this.args[this.getCurrentPlayerId()][0].titleyou).replace('${you}', this.divYou()).replace('#nb#',args.args.nb).replace('#nb2#',args.args.nb2).replace('#icon#',args.args.icon), args.args);
                             }
+
+
+                            if (this.prefs[100].value == 2)
+                                {
+                                    var flash = document.querySelectorAll('.card.selected3');
+                                    
+                
+                                    flash.forEach(function(element) {
+                                        // Ajout d'une classe spéciale pour annuler l'animation
+                                        element.classList.add('noanimation');
+                                    });
+                
+                                    
+                
+                                }
 
 
                                  
