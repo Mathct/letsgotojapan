@@ -415,7 +415,7 @@ function (dojo, declare) {
                 var htmlbonus2 = '<div class="toolt"><div class="infotoolt">'+this.format_block('jstpl_infotool',{text: textbonus2})+'</div></div>';
                 this.addTooltipHtml( 'bonusjournee_2_1_'+player_id, htmlbonus2,1000);
 
-                var textbonus3 = _("Take 1 Wild token");
+                var textbonus3 = _("Take 1 Wild token. During the trip, discard a Wild token to advance an Experience token of your choice one space.");
                 var htmlbonus3 = '<div class="toolt"><div class="infotoolt">'+this.format_block('jstpl_infotool',{text: textbonus3})+'</div></div>';
                 this.addTooltipHtml( 'bonusjournee_2_2_'+player_id, htmlbonus3,1000);
 
