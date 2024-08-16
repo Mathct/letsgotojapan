@@ -1319,7 +1319,7 @@ function (dojo, declare) {
 
             },
 
-            addCardTokyoTrip: function( id, card, ville, location, player, walk, finallocation, finalwalk=0 )  
+            addCardTokyoTrip: function( id, card, ville, location, player, walk, finallocation=0, finalwalk=0 )  
             {
                 if(walk == 0)
                 {
@@ -1535,7 +1535,7 @@ function (dojo, declare) {
             },
 
 
-            addCardKyotoTrip: function( id, card, ville, location, player, walk, finallocation, finalwalk=0 )  
+            addCardKyotoTrip: function( id, card, ville, location, player, walk, finallocation=0, finalwalk=0 )  
             {
                 if(walk == 0)
                     {
@@ -2518,11 +2518,11 @@ function (dojo, declare) {
                 {
                     if(notif.args.ville == 1)
                     {
-                    this.addCardTokyoTrip( notif.args.id, notif.args.card, notif.args.ville, notif.args.location, notif.args.playerid, 0, 1 );
+                    this.addCardTokyoTrip( notif.args.id, notif.args.card, notif.args.ville, notif.args.location, notif.args.playerid, 0);
                     }
                     if(notif.args.ville == 2)
                     {
-                    this.addCardKyotoTrip( notif.args.id, notif.args.card, notif.args.ville, notif.args.location, notif.args.playerid, 0, 2 );
+                    this.addCardKyotoTrip( notif.args.id, notif.args.card, notif.args.ville, notif.args.location, notif.args.playerid, 0);
                     }
                 }
 
