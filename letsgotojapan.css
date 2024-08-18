@@ -421,6 +421,14 @@ display: none;
     
 }
 
+.selectableswitch.card {
+    
+ 
+  cursor: pointer;
+  
+  
+}
+
 .selected.card {
     border: 2px solid rgb(255, 0, 0);
     

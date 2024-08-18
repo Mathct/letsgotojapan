@@ -472,6 +472,7 @@ function (dojo, declare) {
                 console.log( 'Entering state: '+stateName );
     
                 dojo.query(".selectable").removeClass("selectable"); 
+                dojo.query(".selectableswitch").removeClass("selectableswitch"); 
                 dojo.query(".selected").removeClass("selected"); 
                 dojo.query(".selectable2").removeClass("selectable2"); 
                 dojo.query(".selected2").removeClass("selected2");
@@ -496,6 +497,16 @@ function (dojo, declare) {
     
                                 }
                             }
+
+                            if (this.args[this.getCurrentPlayerId()][0].selectableswitch)
+                                {
+                                for( var sid in this.args[this.getCurrentPlayerId()][0].selectableswitch)
+                                    {
+                                            dojo.query("#"+this.args[this.getCurrentPlayerId()][0].selectableswitch[sid]).addClass("selectableswitch");
+                                           
+        
+                                    }
+                                }
 
                             if (this.args[this.getCurrentPlayerId()][0].selectable2)
                                 {
@@ -2041,13 +2052,13 @@ function (dojo, declare) {
     
                  
 
-                if( this.isSpectator || (!(evt.currentTarget.classList.contains('selectable')) && !(evt.currentTarget.classList.contains('selectable2')) && !(evt.currentTarget.classList.contains('selectable3discard')) && !(evt.currentTarget.classList.contains('selected3discard')) ))
+                if( this.isSpectator || (!(evt.currentTarget.classList.contains('selectable')) && !(evt.currentTarget.classList.contains('selectableswitch')) && !(evt.currentTarget.classList.contains('selectable2')) && !(evt.currentTarget.classList.contains('selectable3discard')) && !(evt.currentTarget.classList.contains('selected3discard')) ))
                 {   
                     
                     return; 
                 }
                 
-                if(!this.isSpectator && (evt.currentTarget.classList.contains('selectable') || evt.currentTarget.classList.contains('selectable2')) && this.checkAction( "actSelect" ) && !(evt.currentTarget.classList.contains('selectable3discard')) && !(evt.currentTarget.classList.contains('selected3discard')))
+                if(!this.isSpectator && (evt.currentTarget.classList.contains('selectable') || evt.currentTarget.classList.contains('selectable2') || evt.currentTarget.classList.contains('selectableswitch')) && this.checkAction( "actSelect" ) && !(evt.currentTarget.classList.contains('selectable3discard')) && !(evt.currentTarget.classList.contains('selected3discard')))
                 {
                     if(this.isCurrentPlayerActive())
                     {
@@ -2075,7 +2086,7 @@ function (dojo, declare) {
                      this, function( result ) {}, function( is_error) {} );
                 }
 
-                if(!this.isSpectator && !(evt.currentTarget.classList.contains('selectable')) && !(evt.currentTarget.classList.contains('selectable2')) && this.checkAction( "actSelect" ) && evt.currentTarget.classList.contains('selectable3discard') && !(evt.currentTarget.classList.contains('selected3discard')))
+                if(!this.isSpectator && !(evt.currentTarget.classList.contains('selectable')) && !(evt.currentTarget.classList.contains('selectable2')) && !(evt.currentTarget.classList.contains('selectableswitch')) && this.checkAction( "actSelect" ) && evt.currentTarget.classList.contains('selectable3discard') && !(evt.currentTarget.classList.contains('selected3discard')))
                     {
                         
                         
@@ -2109,7 +2120,7 @@ function (dojo, declare) {
                         
                     }
 
-                if(!this.isSpectator && !(evt.currentTarget.classList.contains('selectable')) && !(evt.currentTarget.classList.contains('selectable2')) && this.checkAction( "actSelect" ) && !(evt.currentTarget.classList.contains('selectable3discard')) && evt.currentTarget.classList.contains('selected3discard'))
+                if(!this.isSpectator && !(evt.currentTarget.classList.contains('selectable')) && !(evt.currentTarget.classList.contains('selectable2')) && !(evt.currentTarget.classList.contains('selectableswitch')) && this.checkAction( "actSelect" ) && !(evt.currentTarget.classList.contains('selectable3discard')) && evt.currentTarget.classList.contains('selected3discard'))
                     {
                         
                         
@@ -2458,9 +2469,18 @@ function (dojo, declare) {
 
                 
                 this.notifqueue.setSynchronous( 'smile', 500 );
+                this.notifqueue.setIgnoreNotificationCheck( 'smile', (notif) => (notif.args.player != this.getCurrentPlayerId()))
                 this.notifqueue.setSynchronous( 'happy', 500 );
+                this.notifqueue.setIgnoreNotificationCheck( 'happy', (notif) => (notif.args.player != this.getCurrentPlayerId()))
                 this.notifqueue.setSynchronous( 'angry', 500 );
+                this.notifqueue.setIgnoreNotificationCheck( 'angry', (notif) => (notif.args.player != this.getCurrentPlayerId()))
                 this.notifqueue.setSynchronous( 'movetoken', 500 );
+                this.notifqueue.setIgnoreNotificationCheck( 'movetoken', (notif) => (notif.args.player != this.getCurrentPlayerId()))
+                /*this.notifqueue.setSynchronous( 'movecard', 500 );
+                this.notifqueue.setIgnoreNotificationCheck( 'movecard', (notif) => (notif.args.playerid != this.getCurrentPlayerId()))*/
+            
+
+                
                 
             },  
 
@@ -2512,6 +2532,8 @@ function (dojo, declare) {
                 {
                     this.attachToNewParentNoDestroy( notif.args.mobile, notif.args.parent );
                     this.slideToObject( notif.args.mobile, notif.args.parent ).play();
+
+                                        
                 }
 
                 if (notif.args.playerid != this.getCurrentPlayerId()) 
@@ -2931,6 +2953,7 @@ function (dojo, declare) {
 
             notif_movetoken: function( notif )
             {
+                                
                 
                 if(notif.args.type == 'r')
                 {
@@ -2988,8 +3011,8 @@ function (dojo, declare) {
                     }
                         
                     
-                    
-                
+                      
+                                    
             },
 
 

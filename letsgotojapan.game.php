@@ -319,7 +319,7 @@ function checkArgs($arg1)
         $id = self::getCurrentPlayerId();
 
             
-        if(!in_array($arg1,$ret[$id][0]['selectable']) && !in_array($arg1,$ret[$id][0]['selectable2']) && !in_array($arg1,$ret[$id][0]['buttons']))
+        if(!in_array($arg1,$ret[$id][0]['selectable']) && !in_array($arg1,$ret[$id][0]['selectable2']) && !in_array($arg1,$ret[$id][0]['selectableswitch']) && !in_array($arg1,$ret[$id][0]['buttons']))
         {
             throw new feException( "Not a valid selection");
         }
@@ -1758,17 +1758,7 @@ function actValidate3Discard( $arg1, $arg2, $arg3)
     
 }
 
-function Test($ville, $id, $check)
-{
-    letsgotojapan::$instance->notifyAllPlayers('check','', array(
-            
-        'id' => $id,
-        'ville' => $ville,
-        'check' => $check,
-        
-        )
-        ); 
-}
+
 
 
 

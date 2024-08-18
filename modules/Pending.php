@@ -33,6 +33,7 @@ class Pending extends APP_GameClass
         $ret = array();
         $ret["selectable"] = array();
         $ret["selectable2"] = array();
+        $ret["selectableswitch"] = array();
         $ret["selected"] = array();
         $ret['buttons'] = array();
         $ret['titleyou'] = clienttranslate('${you} must choose a card to place or');
@@ -95,9 +96,10 @@ class Pending extends APP_GameClass
         $ret = array();
         $ret["selectable"] = array();
         $ret["selectable2"] = array();
+        $ret["selectableswitch"] = array();
         $ret["selected"] = array();
         $ret['buttons'] = array();
-        $ret['titleyou'] = clienttranslate('${you} must choose a location in your trip');
+        $ret['titleyou'] = clienttranslate('${you} must choose a location in your trip (or change card)');
 
         $ret["selected"][] = $parg1;
 
@@ -123,12 +125,36 @@ class Pending extends APP_GameClass
                 $ret["selectable"][] = 'cardposition_'.$jour.'_5_'.$this->player_id;
             }
         }
-        
+
+
+        $tokyocard = self::getObjectListFromDB( "SELECT card_id id FROM tokyo WHERE card_location ='playerhand' AND card_location_arg = {$this->player_id}", true );
+        $kyotocard = self::getObjectListFromDB( "SELECT card_id id FROM kyoto WHERE card_location ='playerhand' AND card_location_arg = {$this->player_id}", true );
+
+        foreach ($tokyocard as $id1)
+        {
+            if ('card_1_'.$id1 != $parg1)
+            {
+                
+                $ret["selectableswitch"][]= 'card_1_'.$id1;
+
+            }
+        }   
+
+        foreach ($kyotocard as $id2)
+        {
+            if ('card_2_'.$id2 != $parg1)
+            {
+                
+                $ret["selectableswitch"][]= 'card_2_'.$id2;
+
+            }
+            
+        }
+       
        
         
-        
 
-        $ret['buttons'][]='cancel';
+        /*$ret['buttons'][]='cancel';*/
         
 
 
@@ -144,6 +170,13 @@ class Pending extends APP_GameClass
             
             letsgotojapan::$instance->Condenser($this->player_id, 0);
             letsgotojapan::$instance->addPending($this->player_id, "Phase1Step1");
+        }
+
+        elseif (($varg1 != "cancel")&&(strpos($varg1, 'cardposition') !== 0))
+
+        {
+                        
+            letsgotojapan::$instance->addPending($this->player_id, "Phase1Step2", $varg1);
         }
         
         else
@@ -400,6 +433,7 @@ class Pending extends APP_GameClass
         $ret = array();
         $ret["selectable"] = array();
         $ret["selectable2"] = array();
+        $ret["selectableswitch"] = array();
         $ret["selected"] = array();
         $ret['buttons'] = array();
         $ret['titleyou'] = clienttranslate('${you} must choose a bonus of the day');
@@ -465,6 +499,7 @@ class Pending extends APP_GameClass
         $ret = array();
         $ret["selectable"] = array();
         $ret["selectable2"] = array();
+        $ret["selectableswitch"] = array();
         $ret["selected"] = array();
         $ret['buttons'] = array();
         $ret['titleyou'] = clienttranslate('${you} must choose a bonus of the day');
@@ -543,6 +578,7 @@ class Pending extends APP_GameClass
         $ret = array();
         $ret["selectable"] = array();
         $ret["selectable2"] = array();
+        $ret["selectableswitch"] = array();
         $ret["selected"] = array();
         $ret['buttons'] = array();
         $ret['titleyou'] = clienttranslate('${you} must choose a bonus of the day');
@@ -611,6 +647,7 @@ class Pending extends APP_GameClass
         $ret = array();
         $ret["selectable"] = array();
         $ret["selectable2"] = array();
+        $ret["selectableswitch"] = array();
         $ret["selected"] = array();
         $ret['buttons'] = array();
         $ret['titleyou'] = clienttranslate('${you} must choose the card to discard permanently');
@@ -667,6 +704,7 @@ class Pending extends APP_GameClass
         $ret = array();
         $ret["selectable"] = array();
         $ret["selectable2"] = array();
+        $ret["selectableswitch"] = array();
         $ret["selected"] = array();
         $ret['buttons'] = array();
         $ret['titleyou'] = clienttranslate('${you} must choose the location of the walk:');
@@ -715,6 +753,7 @@ class Pending extends APP_GameClass
         $ret = array();
         $ret["selectable"] = array();
         $ret["selectable2"] = array();
+        $ret["selectableswitch"] = array();
         $ret["selected"] = array();
         $ret["selected2"] = array();
         $ret['buttons'] = array();
@@ -1196,6 +1235,7 @@ function argExtraWalk($parg1, $parg2)
     $ret = array();
     $ret["selectable"] = array();
     $ret["selectable2"] = array();
+        $ret["selectableswitch"] = array();
     $ret["selected"] = array();
     $ret['buttons'] = array();
     $ret['titleyou'] = clienttranslate('${you} must choose the location of the extra walk');
@@ -1240,6 +1280,7 @@ function argExtraWalkStep2($parg1, $parg2)
     $ret = array();
     $ret["selectable"] = array();
     $ret["selectable2"] = array();
+        $ret["selectableswitch"] = array();
     $ret["selected"] = array();
     $ret['buttons'] = array();
     $ret['titleyou'] = clienttranslate('${you} must choose a location in your trip for the extra walk');
@@ -1353,6 +1394,7 @@ function ExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
         $ret = array();
         $ret["selectable"] = array();
         $ret["selectable2"] = array();
+        $ret["selectableswitch"] = array();
         $ret["selected"] = array();
         $ret['buttons'] = array();
         $ret['titleyou'] = clienttranslate('${you} must choose your 1st card:');
@@ -1411,6 +1453,7 @@ function ExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
         $ret = array();
         $ret["selectable"] = array();
         $ret["selectable2"] = array();
+        $ret["selectableswitch"] = array();
         $ret["selected"] = array();
         $ret['buttons'] = array();
         $ret['titleyou'] = clienttranslate('${you} must choose your 2nd card:');
@@ -1492,6 +1535,7 @@ function ExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
         $ret = array();
         $ret["selectable"] = array();
         $ret["selectable2"] = array();
+        $ret["selectableswitch"] = array();
         $ret["selected"] = array();
         $ret['buttons'] = array();
         $ret['titleyou'] = clienttranslate('${you} must choose your 3rd card:');
@@ -1667,6 +1711,7 @@ function ExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
         $ret = array();
         $ret["selectable"] = array();
         $ret["selectable2"] = array();
+        $ret["selectableswitch"] = array();
         $ret["selectable3discard"] = array();
         $ret["selected"] = array();
         $ret['buttons'] = array();
@@ -1709,6 +1754,7 @@ function ExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
         $ret = array();
         $ret["selectable"] = array();
         $ret["selectable2"] = array();
+        $ret["selectableswitch"] = array();
         $ret["selected"] = array();
         $ret['buttons'] = array();
         $ret['titleyou'] = clienttranslate('${you} must choose a card to place or');
@@ -1770,9 +1816,10 @@ function ExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
         $ret = array();
         $ret["selectable"] = array();
         $ret["selectable2"] = array();
+        $ret["selectableswitch"] = array();
         $ret["selected"] = array();
         $ret['buttons'] = array();
-        $ret['titleyou'] = clienttranslate('${you} must choose a location in your trip');
+        $ret['titleyou'] = clienttranslate('${you} must choose a location in your trip (or change card)');
 
         $ret["selected"][] = $parg1;
 
@@ -1800,10 +1847,32 @@ function ExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
         }
         
        
-        
+        $tokyocard = self::getObjectListFromDB( "SELECT card_id id FROM tokyo WHERE card_location ='playerhand' AND card_location_arg = {$this->player_id}", true );
+        $kyotocard = self::getObjectListFromDB( "SELECT card_id id FROM kyoto WHERE card_location ='playerhand' AND card_location_arg = {$this->player_id}", true );
+
+        foreach ($tokyocard as $id1)
+        {
+            if ('card_1_'.$id1 != $parg1)
+            {
+                
+                $ret["selectableswitch"][]= 'card_1_'.$id1;
+
+            }
+        }   
+
+        foreach ($kyotocard as $id2)
+        {
+            if ('card_2_'.$id2 != $parg1)
+            {
+                
+                $ret["selectableswitch"][]= 'card_2_'.$id2;
+
+            }
+            
+        }
         
 
-        $ret['buttons'][]='cancel';
+        /*$ret['buttons'][]='cancel';*/
         
 
 
@@ -1819,6 +1888,13 @@ function ExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
             
             letsgotojapan::$instance->Condenser($this->player_id, 0);
             letsgotojapan::$instance->addPending($this->player_id, "Phase2Step1");
+        }
+
+        elseif (($varg1 != "cancel")&&(strpos($varg1, 'cardposition') !== 0))
+
+        {
+                        
+            letsgotojapan::$instance->addPending($this->player_id, "Phase2Step2", $varg1);
         }
         
         else
@@ -2117,6 +2193,7 @@ function ExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
         $ret = array();
         $ret["selectable"] = array();
         $ret["selectable2"] = array();
+        $ret["selectableswitch"] = array();
         $ret["selected"] = array();
         $ret['buttons'] = array();
         $ret['titleyou'] = clienttranslate('${you} must choose the card to draw:');
@@ -2191,6 +2268,7 @@ function argFinalStep1($parg1, $parg2)
         $ret = array();
         $ret["selectable"] = array();
         $ret["selectable2"] = array();
+        $ret["selectableswitch"] = array();
         $ret["selected"] = array();
         $ret["selected3"] = array();
         $ret['buttons'] = array();
@@ -2359,6 +2437,7 @@ function argFinalStep1($parg1, $parg2)
         $ret = array();
         $ret["selectable"] = array();
         $ret["selectable2"] = array();
+        $ret["selectableswitch"] = array();
         $ret["selected"] = array();
         $ret["selected3"] = array();
         $ret['buttons'] = array();
@@ -2597,6 +2676,7 @@ function argFinalStep1($parg1, $parg2)
         $ret = array();
         $ret["selectable"] = array();
         $ret["selectable2"] = array();
+        $ret["selectableswitch"] = array();
         $ret["selected"] = array();
         $ret["selected2"] = array();
         $ret["selected3"] = array();
@@ -2900,6 +2980,7 @@ function argFinalStep1($parg1, $parg2)
         $ret = array();
         $ret["selectable"] = array();
         $ret["selectable2"] = array();
+        $ret["selectableswitch"] = array();
         $ret["selected"] = array();
         $ret['buttons'] = array();
         
@@ -3202,6 +3283,7 @@ function argFinalStep1($parg1, $parg2)
         $ret = array();
         $ret["selectable"] = array();
         $ret["selectable2"] = array();
+        $ret["selectableswitch"] = array();
         $ret["selected"] = array();
         $ret['buttons'] = array();
         
@@ -3498,6 +3580,7 @@ function argFinalStep1($parg1, $parg2)
         $ret = array();
         $ret["selectable"] = array();
         $ret["selectable2"] = array();
+        $ret["selectableswitch"] = array();
         $ret["selected"] = array();
         $ret['buttons'] = array();
         
@@ -3797,6 +3880,7 @@ function argFinalStepJeudi($parg1, $parg2)
     $ret = array();
     $ret["selectable"] = array();
     $ret["selectable2"] = array();
+        $ret["selectableswitch"] = array();
     $ret["selected"] = array();
     $ret['buttons'] = array();
     
@@ -4096,6 +4180,7 @@ function argFinalStepVendredi($parg1, $parg2)
     $ret = array();
     $ret["selectable"] = array();
     $ret["selectable2"] = array();
+        $ret["selectableswitch"] = array();
     $ret["selected"] = array();
     $ret['buttons'] = array();
     
@@ -4393,6 +4478,7 @@ function argFinalStepSamedi($parg1, $parg2)
     $ret = array();
     $ret["selectable"] = array();
     $ret["selectable2"] = array();
+        $ret["selectableswitch"] = array();
     $ret["selected"] = array();
     $ret['buttons'] = array();
     
@@ -4816,6 +4902,7 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
         $ret = array();
         $ret["selectable"] = array();
         $ret["selectable2"] = array();
+        $ret["selectableswitch"] = array();
         $ret["selected"] = array();
         $ret['buttons'] = array();
         $ret['titleyou'] = clienttranslate('${you} must select the token to advance');
@@ -4878,6 +4965,7 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
         $ret = array();
         $ret["selectable"] = array();
         $ret["selectable2"] = array();
+        $ret["selectableswitch"] = array();
         $ret["selected"] = array();
         $ret['buttons'] = array();
         $ret['titleyou'] = clienttranslate('${you} must confirm <span class="' . $parg1 . '"></span>');
