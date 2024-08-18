@@ -1239,7 +1239,8 @@ display: none;
 
 .cardtoolt {
     
-  width: 200px;
+  /*width: 200px;*/
+  width: 230px;
   height: auto;
   outline: 2px solid #000000;	
   border-radius: 8px;
@@ -1264,8 +1265,10 @@ display: none;
 }
 
 .tokyo1tool {
-  width: 200px;
-  height: 343px;
+  /*width: 200px;
+  height: 343px;*/
+  width: 230px;
+  height: 394px;
   background-image: url('img/tokyo1.jpg');
   background-size: 1000% 400%;
   border-radius: 8px;
@@ -1278,8 +1281,10 @@ display: none;
 }
 
 .tokyo2tool {
-  width: 200px;
-  height: 343px;
+  /*width: 200px;
+  height: 343px;*/
+  width: 230px;
+  height: 394px;
   background-image: url('img/tokyo2.jpg');
   background-size: 1000% 400%;
   border-radius: 8px;
@@ -1292,8 +1297,10 @@ display: none;
 }
 
 .kyoto1tool {
-  width: 200px;
-  height: 343px;
+  /*width: 200px;
+  height: 343px;*/
+  width: 230px;
+  height: 394px;
   position: relative;
   background-image: url('img/kyoto1.jpg');
   filter: drop-shadow(1px 1px 2px black);
@@ -1303,8 +1310,10 @@ display: none;
 }
 
 .kyoto2tool {
-  width: 200px;;
-  height: 343px;
+  /*width: 200px;;
+  height: 343px;*/
+  width: 230px;
+  height: 394px;
   position: relative;
   background-image: url('img/kyoto2.jpg');
   filter: drop-shadow(1px 1px 2px black);
@@ -1314,8 +1323,10 @@ display: none;
 }
 
 .tokyowalktool {
-  width: 200px;;
-  height: 343px;
+  /*width: 200px;;
+  height: 343px;*/
+  width: 230px;
+  height: 394px;
   position: relative;
   background-image: url('img/card_verso.png');
   filter: drop-shadow(1px 1px 2px black);
@@ -1326,8 +1337,10 @@ display: none;
 }
 
 .kyotowalktool {
-  width: 200px;;
-  height: 343px;
+  /*width: 200px;;
+  height: 343px;*/
+  width: 230px;
+  height: 394px;
   position: relative;
   background-image: url('img/card_verso.png');
   filter: drop-shadow(1px 1px 2px black);
