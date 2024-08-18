@@ -1374,3 +1374,37 @@ display: none;
   animation: none !important;
   border: 2px solid red !important;
 }
+
+
+.checkscore {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  position: absolute;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+}
+
+.checkscoreok {
+  width: 20px;
+  height: 20px;
+  background-image: url('img/check.png');
+  background-size: 200% 100%;
+  background-position-x: 0%;
+ 
+  
+  
+}
+
+.checkscoreko {
+  width: 20px;
+  height: 20px;
+  background-image: url('img/check.png');
+  background-size: 200% 100%;
+  background-position-x: -100%;
+  
+  
+}
