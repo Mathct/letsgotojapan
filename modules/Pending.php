@@ -1397,7 +1397,7 @@ function ExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
         $ret["selectableswitch"] = array();
         $ret["selected"] = array();
         $ret['buttons'] = array();
-        $ret['titleyou'] = clienttranslate('${you} must choose your 1st card:');
+        $ret['titleyou'] = clienttranslate('${you} must choose your 1st card to draw:');
 
 
         $ret['buttons'][]='tokyo';
@@ -1456,7 +1456,7 @@ function ExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
         $ret["selectableswitch"] = array();
         $ret["selected"] = array();
         $ret['buttons'] = array();
-        $ret['titleyou'] = clienttranslate('${you} must choose your 2nd card:');
+        $ret['titleyou'] = clienttranslate('${you} must choose your 2nd card to draw:');
 
 
         $ret['buttons'][]='tokyo';
@@ -1538,7 +1538,7 @@ function ExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
         $ret["selectableswitch"] = array();
         $ret["selected"] = array();
         $ret['buttons'] = array();
-        $ret['titleyou'] = clienttranslate('${you} must choose your 3rd card:');
+        $ret['titleyou'] = clienttranslate('${you} must choose your 3rd card to draw:');
 
 
         $ret['buttons'][]='tokyo';
@@ -1712,7 +1712,6 @@ function ExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
         $ret["selectable"] = array();
         $ret["selectable2"] = array();
         $ret["selectableswitch"] = array();
-        $ret["selectable3discard"] = array();
         $ret["selected"] = array();
         $ret['buttons'] = array();
         $ret['titleyou'] = clienttranslate('${you} must choose the 3 cards to discard');
@@ -1720,15 +1719,47 @@ function ExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
         $tokyocard = self::getObjectListFromDB( "SELECT card_id id FROM tokyo WHERE card_location ='playerhand' AND card_location_arg = {$this->player_id}", true );
         $kyotocard = self::getObjectListFromDB( "SELECT card_id id FROM kyoto WHERE card_location ='playerhand' AND card_location_arg = {$this->player_id}", true );
 
-        foreach ($tokyocard as $id1)
+        $select1 = self::getUniqueValueFromDB( "SELECT select1 FROM player WHERE player_id = {$this->player_id}");
+        $select2 = self::getUniqueValueFromDB( "SELECT select2 FROM player WHERE player_id = {$this->player_id}");
+        $select3 = self::getUniqueValueFromDB( "SELECT select3 FROM player WHERE player_id = {$this->player_id}");
+        $selected= [$select1, $select2, $select3];
+
+        $count =0; 
+
+        foreach ($selected as $s)
         {
-            $ret["selectable3discard"][] = 'card_1_'.$id1;
-        }   
+            if($s != '0')
+            {
+                $ret["selectable2"][] = $s;
+                $count++;
+            }
+
+
+        }
+
+        if($count < 3)
+        {
+            foreach ($tokyocard as $id1)
+            {
+                if (!in_array('card_1_'.$id1, $selected))
+                {
+                $ret["selectableswitch"][] = 'card_1_'.$id1;
+                }
+            }   
 
         foreach ($kyotocard as $id2)
-        {
-            $ret["selectable3discard"][] = 'card_2_'.$id2;
+            {
+                if (!in_array('card_2_'.$id2, $selected))
+                {
+                $ret["selectableswitch"][] = 'card_2_'.$id2;
+                }
+            }
+
+
+
         }
+
+        
 
         $ret['buttons'][]='validate3discard'; 
      
@@ -1738,7 +1769,29 @@ function ExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
 
     function RechercheStep4($parg1, $parg2, $varg1, $varg2)
     {
-        // RIEN A FAIRE
+        
+        $select1 = self::getUniqueValueFromDB( "SELECT select1 FROM player WHERE player_id = {$this->player_id}");
+        $select2 = self::getUniqueValueFromDB( "SELECT select2 FROM player WHERE player_id = {$this->player_id}");
+        $select3 = self::getUniqueValueFromDB( "SELECT select3 FROM player WHERE player_id = {$this->player_id}");
+        $selected= [$select1, $select2, $select3];
+
+        if (in_array($varg1, $selected))
+        {
+            $index = array_search($varg1, $selected);
+            $index++;
+            self::DbQuery( "UPDATE player set `select{$index}` = '0'  WHERE player_id = {$this->player_id}" );
+        }
+
+        else
+        {
+            
+            $index = array_search('0', $selected);
+            $index++;
+            
+            self::DbQuery( "UPDATE player set `select{$index}` = '{$varg1}'  WHERE player_id = {$this->player_id}" );
+        }
+
+        letsgotojapan::$instance->addPending($this->player_id, "RechercheStep4");
     }
 
 

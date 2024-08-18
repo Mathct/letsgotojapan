@@ -584,6 +584,22 @@ function (dojo, declare) {
                                 }
 
 
+                            var boutonvalidate = document.getElementById('validate3discard');
+                            var elements = document.querySelectorAll('.selectable2');
+                            var nombreElements = elements.length;
+                            if (boutonvalidate !== null)
+                            {
+                                if (nombreElements == 3)
+                                    {
+                                    dojo.removeClass( 'validate3discard', 'disabled');
+                                    }
+                                if (nombreElements != 3)
+                                    {
+                                    dojo.addClass( 'validate3discard', 'disabled');
+                                    }
+                        }
+
+
                                  
                             
                         }
@@ -667,7 +683,10 @@ function (dojo, declare) {
                                     if(args[this.getCurrentPlayerId()][0].buttons[nb] == "validate3discard")
                                     {
                                     this.addActionButton( 'validate3discard', _("Validate selection") ,'onOpValidate3Discard', null, null, 'blue' );
-                                    dojo.addClass( 'validate3discard', 'disabled');
+
+                                    
+                            
+                                    
                                     }
                                     if(args[this.getCurrentPlayerId()][0].buttons[nb] == "continue")
                                     {
@@ -2052,13 +2071,13 @@ function (dojo, declare) {
     
                  
 
-                if( this.isSpectator || (!(evt.currentTarget.classList.contains('selectable')) && !(evt.currentTarget.classList.contains('selectableswitch')) && !(evt.currentTarget.classList.contains('selectable2')) && !(evt.currentTarget.classList.contains('selectable3discard')) && !(evt.currentTarget.classList.contains('selected3discard')) ))
+                if( this.isSpectator || (!(evt.currentTarget.classList.contains('selectable')) && !(evt.currentTarget.classList.contains('selectableswitch')) && !(evt.currentTarget.classList.contains('selectable2')) ))
                 {   
                     
                     return; 
                 }
                 
-                if(!this.isSpectator && (evt.currentTarget.classList.contains('selectable') || evt.currentTarget.classList.contains('selectable2') || evt.currentTarget.classList.contains('selectableswitch')) && this.checkAction( "actSelect" ) && !(evt.currentTarget.classList.contains('selectable3discard')) && !(evt.currentTarget.classList.contains('selected3discard')))
+                if(!this.isSpectator && (evt.currentTarget.classList.contains('selectable') || evt.currentTarget.classList.contains('selectable2') || evt.currentTarget.classList.contains('selectableswitch')) && this.checkAction( "actSelect" ))
                 {
                     if(this.isCurrentPlayerActive())
                     {
@@ -2086,71 +2105,7 @@ function (dojo, declare) {
                      this, function( result ) {}, function( is_error) {} );
                 }
 
-                if(!this.isSpectator && !(evt.currentTarget.classList.contains('selectable')) && !(evt.currentTarget.classList.contains('selectable2')) && !(evt.currentTarget.classList.contains('selectableswitch')) && this.checkAction( "actSelect" ) && evt.currentTarget.classList.contains('selectable3discard') && !(evt.currentTarget.classList.contains('selected3discard')))
-                    {
-                        
-                        
-                        dojo.query("#"+evt.currentTarget.id).removeClass("selectable3discard");
-                        dojo.query("#"+evt.currentTarget.id).addClass("selected3discard");
-
-                        var elements = document.querySelectorAll('.selected3discard');
-                        var nombreElements = elements.length;
-                        var boutonvalidate = document.getElementById('validate3discard');
-
-                        
-                        if (boutonvalidate !== null)
-                            {
-                                if (nombreElements == 3)
-                                {
-                                dojo.removeClass( 'validate3discard', 'disabled');
-                                }
-                                if (nombreElements != 3)
-                                {
-                                dojo.addClass( 'validate3discard', 'disabled');
-                                }
-                            }
-
-                        return; 
-
-
-                        
-    
-    
-                        
-                        
-                    }
-
-                if(!this.isSpectator && !(evt.currentTarget.classList.contains('selectable')) && !(evt.currentTarget.classList.contains('selectable2')) && !(evt.currentTarget.classList.contains('selectableswitch')) && this.checkAction( "actSelect" ) && !(evt.currentTarget.classList.contains('selectable3discard')) && evt.currentTarget.classList.contains('selected3discard'))
-                    {
-                        
-                        
-                        dojo.query("#"+evt.currentTarget.id).removeClass("selected3discard");
-                        dojo.query("#"+evt.currentTarget.id).addClass("selectable3discard");
-
-                        var elements = document.querySelectorAll('.selected3discard');
-                        var nombreElements = elements.length;
-                        var boutonvalidate = document.getElementById('validate3discard');
-
-                        
-                        if (boutonvalidate !== null)
-                            {
-                                if (nombreElements == 3)
-                                {
-                                dojo.removeClass( 'validate3discard', 'disabled');
-                                }
-                                if (nombreElements != 3)
-                                {
-                                dojo.addClass( 'validate3discard', 'disabled');
-                                }
-                            }
-
-                        return; 
-
-   
-                        
-                        
-                    }
-    
+                   
                 
     
     
@@ -2395,7 +2350,7 @@ function (dojo, declare) {
                 dojo.stopEvent( evt );
 
                 // Sélectionnez tous les éléments avec la classe spécifiée
-                const elementsAvecClasse = document.querySelectorAll(".selected3discard");
+                const elementsAvecClasse = document.querySelectorAll(".selectable2");
 
                 // Convertissez la NodeList en un tableau et extrayez les IDs
                 const ids = Array.from(elementsAvecClasse, element => element.id);

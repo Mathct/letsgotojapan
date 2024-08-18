@@ -492,19 +492,6 @@ display: none;
     
 }
 
-.selectable3discard {
-    
-    cursor: pointer;
-    pointer-events: auto !important;
-  }
-
-.selected3discard.card {
-
-    border: 2px solid rgb(255, 0, 0);
-    cursor: pointer;
-    pointer-events: auto !important;
-}
-
 
 
 /* SWITCH PLAYER */

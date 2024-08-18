@@ -1726,6 +1726,10 @@ function actValidate3Discard( $arg1, $arg2, $arg3)
         'log' => letsgotojapan::$instance->getLogsType(2),
         )
         );
+
+    self::DbQuery( "UPDATE player set select1 = '0'  WHERE player_id = {$id}" );
+    self::DbQuery( "UPDATE player set select2 = '0'  WHERE player_id = {$id}" );
+    self::DbQuery( "UPDATE player set select3 = '0'  WHERE player_id = {$id}" );
     
     
     
