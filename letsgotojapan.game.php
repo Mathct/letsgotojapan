@@ -229,6 +229,7 @@ class letsgotojapan extends Table
             $result['nbrerecherche'][$player] = self::getUniqueValueFromDB("SELECT recherche FROM player WHERE player_id={$player}");
             $result['nbretrain'][$player] = self::getUniqueValueFromDB("SELECT train FROM player WHERE player_id={$player}");
             $result['nbrewild'][$player] = self::getUniqueValueFromDB("SELECT wild FROM player WHERE player_id={$player}");
+            $result['nbretrainstart'][$player] = self::getUniqueValueFromDB("SELECT trainstart FROM player WHERE player_id={$player}");
             $result['compteurcardtokyodiscard'][$player] = count(self::getObjectListFromDB( "SELECT card_id id FROM tokyo WHERE card_location = 'discardboard' and card_location_arg = {$player}", true));
             $result['compteurcardkyotodiscard'][$player] = count(self::getObjectListFromDB( "SELECT card_id id FROM kyoto WHERE card_location = 'discardboard' and card_location_arg = {$player}", true));
             $result['r'][$player] = self::getUniqueValueFromDB("SELECT r FROM player WHERE player_id={$player}");
@@ -1245,12 +1246,14 @@ function MajPannel ($id)
 
     $recherche = self::getUniqueValueFromDB("SELECT recherche FROM player WHERE player_id={$id}");
     $train = self::getUniqueValueFromDB("SELECT train FROM player WHERE player_id={$id}");
+    $trainstart = self::getUniqueValueFromDB("SELECT trainstart FROM player WHERE player_id={$id}");
     $wild = self::getUniqueValueFromDB("SELECT wild FROM player WHERE player_id={$id}");
 
     letsgotojapan::$instance->notifyAllPlayers('majpannel','', array(
         'id' =>  $id,
         'recherche' => $recherche,
         'train' => $train,
+        'trainstart' => $trainstart,
         'wild' => $wild,
         
         )

@@ -95,6 +95,7 @@ function (dojo, declare) {
                         $('nbrerecherche_'+player_id).innerHTML = gamedatas.nbrerecherche[player_id];
                         $('nbretrain_'+player_id).innerHTML = gamedatas.nbretrain[player_id];
                         $('nbrewild_'+player_id).innerHTML = gamedatas.nbrewild[player_id];
+                        $('nbretrainstart_'+player_id).innerHTML = gamedatas.nbretrainstart[player_id];
                         
                         
                     }
@@ -2470,7 +2471,9 @@ function (dojo, declare) {
             {
                 $('nbrerecherche_'+notif.args.id).innerHTML = notif.args.recherche;
                 $('nbretrain_'+notif.args.id).innerHTML = notif.args.train;
+                $('nbretrainstart_'+notif.args.id).innerHTML = notif.args.trainstart;
                 $('nbrewild_'+notif.args.id).innerHTML = notif.args.wild;
+
             },
 
             notif_majcompteurdiscard: function( notif )

@@ -620,11 +620,11 @@ display: none;
  /* ICON PANNEL */
 
 
- .iconrecherche{
+ .iconrecherchepannel{
     width: 30px;
     height: 30px;
     background-image: url('img/icon_pannel.png');
-    background-size: 300% 100%;
+    background-size: 400% 100%;
     background-position-x: 0%;
     margin-left: 2px;
     margin-right: 2px;
@@ -632,11 +632,11 @@ display: none;
     -webkit-filter: drop-shadow(1px 1px 2px black);
   }
 
-  .icontrain{
+  .icontrainpannel{
     width: 40px;
     height: 46px;
     background-image: url('img/icon_pannel.png');
-    background-size: 300% 100%;
+    background-size: 400% 100%;
     background-position-x: -100%;
     margin-left: 2px;
     margin-right: 2px;
@@ -644,12 +644,24 @@ display: none;
     -webkit-filter: drop-shadow(1px 1px 2px black);
   }
 
-  .iconwild{
+  .iconwildpannel{
     width: 30px;
     height: 30px;
     background-image: url('img/icon_pannel.png');
-    background-size: 300% 100%;
+    background-size: 400% 100%;
     background-position-x: -200%;
+    margin-left: 2px;
+    margin-right: 2px;
+    filter: drop-shadow(1px 1px 2px black);
+    -webkit-filter: drop-shadow(1px 1px 2px black);
+  }
+
+  .icontrainstartpannel{
+    width: 40px;
+    height: 46px;
+    background-image: url('img/icon_pannel.png');
+    background-size: 400% 100%;
+    background-position-x: -300%;
     margin-left: 2px;
     margin-right: 2px;
     filter: drop-shadow(1px 1px 2px black);

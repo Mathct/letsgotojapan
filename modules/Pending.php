@@ -2899,6 +2899,7 @@ function argFinalStep1($parg1, $parg2)
             if($varg1 == "trainstart")
             {
                 self::DbQuery( "UPDATE player set trainstart = 0  WHERE player_id = {$this->player_id}" );
+                letsgotojapan::$instance->MajPannel($this->player_id);
 
 
                 if($explode[1]==1)
