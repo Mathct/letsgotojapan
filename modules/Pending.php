@@ -3254,11 +3254,29 @@ function argFinalStep1($parg1, $parg2)
                     if($check == 1)
                     {
                         self::DbQuery( "UPDATE tokyo set checkcard = 1  WHERE card_id = {$cardid}" );
+                        self::DbQuery( "UPDATE player set lundicheck = 1  WHERE player_id = {$this->player_id}" );
+                        letsgotojapan::$instance->notifyAllPlayers('checkscore','', array(
+                    
+                            'numero' => $this->player_no,
+                            'check' => 1,
+                            'position' => $day,
+                                                        
+                            )
+                            ); 
                     }
 
                     if($check == 2)
                     {
                         self::DbQuery( "UPDATE tokyo set checkcard = 2  WHERE card_id = {$cardid}" );
+                        self::DbQuery( "UPDATE player set lundicheck = 2  WHERE player_id = {$this->player_id}" );
+                        letsgotojapan::$instance->notifyAllPlayers('checkscore','', array(
+                    
+                            'numero' => $this->player_no,
+                            'check' => 2,
+                            'position' => $day,
+                                                        
+                            )
+                            ); 
                     }
 
                     letsgotojapan::$instance->notifyAllPlayers('check','', array(
@@ -3282,11 +3300,30 @@ function argFinalStep1($parg1, $parg2)
                 if($check == 1)
                     {
                         self::DbQuery( "UPDATE kyoto set checkcard = 1  WHERE card_id = {$cardid}" );
+                        self::DbQuery( "UPDATE player set lundicheck = 1  WHERE player_id = {$this->player_id}" );
+                        letsgotojapan::$instance->notifyAllPlayers('checkscore','', array(
+                    
+                            'numero' => $this->player_no,
+                            'check' => 1,
+                            'position' => $day,
+                                                        
+                            )
+                            );
+                        
                     }
 
                     if($check == 2)
                     {
                         self::DbQuery( "UPDATE kyoto set checkcard = 2  WHERE card_id = {$cardid}" );
+                        self::DbQuery( "UPDATE player set lundicheck = 2  WHERE player_id = {$this->player_id}" );
+                        letsgotojapan::$instance->notifyAllPlayers('checkscore','', array(
+                    
+                            'numero' => $this->player_no,
+                            'check' => 2,
+                            'position' => $day,
+                                                        
+                            )
+                            );
                     }
 
                 letsgotojapan::$instance->notifyAllPlayers('check','', array(
@@ -3294,6 +3331,7 @@ function argFinalStep1($parg1, $parg2)
                     'id' => $cardid,
                     'ville' => 2,
                     'check' => $check,
+                    
                     
                     )
                     ); 
@@ -3553,11 +3591,29 @@ function argFinalStep1($parg1, $parg2)
                 if($check == 1)
                 {
                     self::DbQuery( "UPDATE tokyo set checkcard = 1  WHERE card_id = {$cardid}" );
+                    self::DbQuery( "UPDATE player set mardicheck = 1  WHERE player_id = {$this->player_id}" );
+                        letsgotojapan::$instance->notifyAllPlayers('checkscore','', array(
+                    
+                            'numero' => $this->player_no,
+                            'check' => 1,
+                            'position' => $day,
+                                                        
+                            )
+                            ); 
                 }
 
                 if($check == 2)
                 {
                     self::DbQuery( "UPDATE tokyo set checkcard = 2  WHERE card_id = {$cardid}" );
+                    self::DbQuery( "UPDATE player set mardicheck = 2  WHERE player_id = {$this->player_id}" );
+                        letsgotojapan::$instance->notifyAllPlayers('checkscore','', array(
+                    
+                            'numero' => $this->player_no,
+                            'check' => 2,
+                            'position' => $day,
+                                                        
+                            )
+                            ); 
                 }
 
                 letsgotojapan::$instance->notifyAllPlayers('check','', array(
@@ -3581,11 +3637,29 @@ function argFinalStep1($parg1, $parg2)
             if($check == 1)
                 {
                     self::DbQuery( "UPDATE kyoto set checkcard = 1  WHERE card_id = {$cardid}" );
+                    self::DbQuery( "UPDATE player set mardicheck = 1  WHERE player_id = {$this->player_id}" );
+                        letsgotojapan::$instance->notifyAllPlayers('checkscore','', array(
+                    
+                            'numero' => $this->player_no,
+                            'check' => 1,
+                            'position' => $day,
+                                                        
+                            )
+                            ); 
                 }
 
                 if($check == 2)
                 {
                     self::DbQuery( "UPDATE kyoto set checkcard = 2  WHERE card_id = {$cardid}" );
+                    self::DbQuery( "UPDATE player set mardicheck = 2  WHERE player_id = {$this->player_id}" );
+                        letsgotojapan::$instance->notifyAllPlayers('checkscore','', array(
+                    
+                            'numero' => $this->player_no,
+                            'check' => 2,
+                            'position' => $day,
+                                                        
+                            )
+                            ); 
                 }
 
             letsgotojapan::$instance->notifyAllPlayers('check','', array(
@@ -3850,11 +3924,29 @@ function argFinalStep1($parg1, $parg2)
                 if($check == 1)
                 {
                     self::DbQuery( "UPDATE tokyo set checkcard = 1  WHERE card_id = {$cardid}" );
+                    self::DbQuery( "UPDATE player set mercredicheck = 1  WHERE player_id = {$this->player_id}" );
+                        letsgotojapan::$instance->notifyAllPlayers('checkscore','', array(
+                    
+                            'numero' => $this->player_no,
+                            'check' => 1,
+                            'position' => $day,
+                                                        
+                            )
+                            ); 
                 }
 
                 if($check == 2)
                 {
                     self::DbQuery( "UPDATE tokyo set checkcard = 2  WHERE card_id = {$cardid}" );
+                    self::DbQuery( "UPDATE player set mercredicheck = 2  WHERE player_id = {$this->player_id}" );
+                        letsgotojapan::$instance->notifyAllPlayers('checkscore','', array(
+                    
+                            'numero' => $this->player_no,
+                            'check' => 2,
+                            'position' => $day,
+                                                        
+                            )
+                            ); 
                 }
 
                 letsgotojapan::$instance->notifyAllPlayers('check','', array(
@@ -3878,11 +3970,29 @@ function argFinalStep1($parg1, $parg2)
             if($check == 1)
                 {
                     self::DbQuery( "UPDATE kyoto set checkcard = 1  WHERE card_id = {$cardid}" );
+                    self::DbQuery( "UPDATE player set mercredicheck = 1  WHERE player_id = {$this->player_id}" );
+                        letsgotojapan::$instance->notifyAllPlayers('checkscore','', array(
+                    
+                            'numero' => $this->player_no,
+                            'check' => 1,
+                            'position' => $day,
+                                                        
+                            )
+                            );
                 }
 
                 if($check == 2)
                 {
                     self::DbQuery( "UPDATE kyoto set checkcard = 2  WHERE card_id = {$cardid}" );
+                    self::DbQuery( "UPDATE player set mercredicheck = 2  WHERE player_id = {$this->player_id}" );
+                        letsgotojapan::$instance->notifyAllPlayers('checkscore','', array(
+                    
+                            'numero' => $this->player_no,
+                            'check' => 2,
+                            'position' => $day,
+                                                        
+                            )
+                            );
                 }
 
             letsgotojapan::$instance->notifyAllPlayers('check','', array(
@@ -4151,11 +4261,29 @@ function FinalStepJeudi($parg1, $parg2, $varg1, $varg2)
             if($check == 1)
             {
                 self::DbQuery( "UPDATE tokyo set checkcard = 1  WHERE card_id = {$cardid}" );
+                self::DbQuery( "UPDATE player set jeudicheck = 1  WHERE player_id = {$this->player_id}" );
+                        letsgotojapan::$instance->notifyAllPlayers('checkscore','', array(
+                    
+                            'numero' => $this->player_no,
+                            'check' => 1,
+                            'position' => $day,
+                                                        
+                            )
+                            ); 
             }
 
             if($check == 2)
             {
                 self::DbQuery( "UPDATE tokyo set checkcard = 2  WHERE card_id = {$cardid}" );
+                self::DbQuery( "UPDATE player set jeudicheck = 2  WHERE player_id = {$this->player_id}" );
+                        letsgotojapan::$instance->notifyAllPlayers('checkscore','', array(
+                    
+                            'numero' => $this->player_no,
+                            'check' => 2,
+                            'position' => $day,
+                                                        
+                            )
+                            ); 
             }
 
             letsgotojapan::$instance->notifyAllPlayers('check','', array(
@@ -4179,11 +4307,29 @@ function FinalStepJeudi($parg1, $parg2, $varg1, $varg2)
         if($check == 1)
             {
                 self::DbQuery( "UPDATE kyoto set checkcard = 1  WHERE card_id = {$cardid}" );
+                self::DbQuery( "UPDATE player set jeudicheck = 1  WHERE player_id = {$this->player_id}" );
+                letsgotojapan::$instance->notifyAllPlayers('checkscore','', array(
+            
+                    'numero' => $this->player_no,
+                    'check' => 1,
+                    'position' => $day,
+                                                
+                    )
+                    ); 
             }
 
             if($check == 2)
             {
                 self::DbQuery( "UPDATE kyoto set checkcard = 2  WHERE card_id = {$cardid}" );
+                self::DbQuery( "UPDATE player set jeudicheck = 2  WHERE player_id = {$this->player_id}" );
+                        letsgotojapan::$instance->notifyAllPlayers('checkscore','', array(
+                    
+                            'numero' => $this->player_no,
+                            'check' => 2,
+                            'position' => $day,
+                                                        
+                            )
+                            ); 
             }
 
         letsgotojapan::$instance->notifyAllPlayers('check','', array(
@@ -4451,11 +4597,29 @@ function FinalStepVendredi($parg1, $parg2, $varg1, $varg2)
             if($check == 1)
             {
                 self::DbQuery( "UPDATE tokyo set checkcard = 1  WHERE card_id = {$cardid}" );
+                self::DbQuery( "UPDATE player set vendredicheck = 1  WHERE player_id = {$this->player_id}" );
+                        letsgotojapan::$instance->notifyAllPlayers('checkscore','', array(
+                    
+                            'numero' => $this->player_no,
+                            'check' => 1,
+                            'position' => $day,
+                                                        
+                            )
+                            ); 
             }
 
             if($check == 2)
             {
                 self::DbQuery( "UPDATE tokyo set checkcard = 2  WHERE card_id = {$cardid}" );
+                self::DbQuery( "UPDATE player set vendredicheck = 2  WHERE player_id = {$this->player_id}" );
+                        letsgotojapan::$instance->notifyAllPlayers('checkscore','', array(
+                    
+                            'numero' => $this->player_no,
+                            'check' => 2,
+                            'position' => $day,
+                                                        
+                            )
+                            ); 
             }
 
             letsgotojapan::$instance->notifyAllPlayers('check','', array(
@@ -4479,11 +4643,29 @@ function FinalStepVendredi($parg1, $parg2, $varg1, $varg2)
         if($check == 1)
             {
                 self::DbQuery( "UPDATE kyoto set checkcard = 1  WHERE card_id = {$cardid}" );
+                self::DbQuery( "UPDATE player set vendredicheck = 1  WHERE player_id = {$this->player_id}" );
+                        letsgotojapan::$instance->notifyAllPlayers('checkscore','', array(
+                    
+                            'numero' => $this->player_no,
+                            'check' => 1,
+                            'position' => $day,
+                                                        
+                            )
+                            ); 
             }
 
             if($check == 2)
             {
                 self::DbQuery( "UPDATE kyoto set checkcard = 2  WHERE card_id = {$cardid}" );
+                self::DbQuery( "UPDATE player set vendredicheck = 2  WHERE player_id = {$this->player_id}" );
+                        letsgotojapan::$instance->notifyAllPlayers('checkscore','', array(
+                    
+                            'numero' => $this->player_no,
+                            'check' => 2,
+                            'position' => $day,
+                                                        
+                            )
+                            ); 
             }
 
         letsgotojapan::$instance->notifyAllPlayers('check','', array(
@@ -4748,11 +4930,29 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
             if($check == 1)
             {
                 self::DbQuery( "UPDATE tokyo set checkcard = 1  WHERE card_id = {$cardid}" );
+                self::DbQuery( "UPDATE player set samedicheck = 1  WHERE player_id = {$this->player_id}" );
+                        letsgotojapan::$instance->notifyAllPlayers('checkscore','', array(
+                    
+                            'numero' => $this->player_no,
+                            'check' => 1,
+                            'position' => $day,
+                                                        
+                            )
+                            ); 
             }
 
             if($check == 2)
             {
                 self::DbQuery( "UPDATE tokyo set checkcard = 2  WHERE card_id = {$cardid}" );
+                self::DbQuery( "UPDATE player set samedicheck = 2  WHERE player_id = {$this->player_id}" );
+                        letsgotojapan::$instance->notifyAllPlayers('checkscore','', array(
+                    
+                            'numero' => $this->player_no,
+                            'check' => 2,
+                            'position' => $day,
+                                                        
+                            )
+                            ); 
             }
 
             letsgotojapan::$instance->notifyAllPlayers('check','', array(
@@ -4776,11 +4976,29 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
         if($check == 1)
             {
                 self::DbQuery( "UPDATE kyoto set checkcard = 1  WHERE card_id = {$cardid}" );
+                self::DbQuery( "UPDATE player set samedicheck = 1  WHERE player_id = {$this->player_id}" );
+                        letsgotojapan::$instance->notifyAllPlayers('checkscore','', array(
+                    
+                            'numero' => $this->player_no,
+                            'check' => 1,
+                            'position' => $day,
+                                                        
+                            )
+                            ); 
             }
 
             if($check == 2)
             {
                 self::DbQuery( "UPDATE kyoto set checkcard = 2  WHERE card_id = {$cardid}" );
+                self::DbQuery( "UPDATE player set samedicheck = 2  WHERE player_id = {$this->player_id}" );
+                        letsgotojapan::$instance->notifyAllPlayers('checkscore','', array(
+                    
+                            'numero' => $this->player_no,
+                            'check' => 2,
+                            'position' => $day,
+                                                        
+                            )
+                            ); 
             }
 
         letsgotojapan::$instance->notifyAllPlayers('check','', array(

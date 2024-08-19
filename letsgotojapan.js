@@ -287,7 +287,7 @@ function (dojo, declare) {
 
                         if(kyoto.checkcard != 0)
                             {
-                                this.addTrain (kyoto.id, kyoto.type_arg, kyoto.checkcard)
+                                this.addCheck (kyoto.id, kyoto.type_arg, kyoto.checkcard)
                             }
                         
                         
@@ -381,8 +381,86 @@ function (dojo, declare) {
                                 $('score_'+numero+'_11').innerHTML = scoretotal;
 
                             }
-                                                    
-                                                        
+
+                            var jc1 = gamedatas.lundicheck[player_id];
+                            var jc2 = gamedatas.mardicheck[player_id];
+                            var jc3 = gamedatas.mercredicheck[player_id];
+                            var jc4 = gamedatas.jeudicheck[player_id];
+                            var jc5 = gamedatas.vendredicheck[player_id];
+                            var jc6 = gamedatas.samedicheck[player_id];
+                                
+                            
+                            if (jc1 == 1)
+                            {
+                                dojo.query("#checkscore_"+numero+"_1").addClass("checkscoreok");
+                                
+                            }
+                            
+                            if (jc1 == 2)
+                            {
+                                
+                                dojo.query("#checkscore_"+numero+"_1").addClass("checkscoreko");
+                            } 
+
+                            if (jc2 == 1)
+                            {
+                                dojo.query("#checkscore_"+numero+"_2").addClass("checkscoreok");
+                                
+                            }
+                            
+                            if (jc2 == 2)
+                            {
+                               
+                                dojo.query("#checkscore_"+numero+"_2").addClass("checkscoreko");
+                            }
+                            
+                            if (jc3== 1)
+                            {
+                                dojo.query("#checkscore_"+numero+"_3").addClass("checkscoreok");
+                                
+                            }
+                            
+                            if (jc3 == 2)
+                            {
+                                
+                                dojo.query("#checkscore_"+numero+"_3").addClass("checkscoreko");
+                            } 
+
+                            if (jc4 == 1)
+                            {
+                                dojo.query("#checkscore_"+numero+"_4").addClass("checkscoreok");
+                                
+                            }
+                            
+                            if (jc4 == 2)
+                            {
+                                
+                                dojo.query("#checkscore_"+numero+"_4").addClass("checkscoreko");
+                            } 
+
+                            if (jc5 == 1)
+                            {
+                                dojo.query("#checkscore_"+numero+"_5").addClass("checkscoreok");
+                                
+                            }
+                            
+                            if (jc5 == 2)
+                            {
+                                
+                                dojo.query("#checkscore_"+numero+"_5").addClass("checkscoreko");
+                            } 
+
+                            if (jc6 == 1)
+                            {
+                                dojo.query("#checkscore_"+numero+"_6").addClass("checkscoreok");
+                                
+                            }
+                            
+                            if (jc6 == 2)
+                            {
+                                
+                                dojo.query("#checkscore_"+numero+"_6").addClass("checkscoreko");
+                            } 
                             
                         }
                     
@@ -2421,6 +2499,7 @@ function (dojo, declare) {
                 dojo.subscribe( 'score2', this, "notif_score2" );
                 dojo.subscribe( 'disabled', this, "notif_disabled" );
                 dojo.subscribe( 'check', this, "notif_check" );
+                dojo.subscribe( 'checkscore', this, "notif_checkscore" );
 
 
                 
@@ -3066,6 +3145,23 @@ function (dojo, declare) {
                 
 
             },
+
+            notif_checkscore: function( notif )
+            {
+                
+                if (notif.args.check == 1)
+                {
+                    dojo.query("#checkscore_"+notif.args.numero+"_"+notif.args.position).addClass("checkscoreok");
+                }
+
+                if (notif.args.check == 2)
+                {
+                    dojo.query("#checkscore_"+notif.args.numero+"_"+notif.args.position).addClass("checkscoreko");
+                }
+                
+
+            },
+
 
     
     

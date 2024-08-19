@@ -254,6 +254,12 @@ class letsgotojapan extends Table
             $result['scoretrain'][$player] = self::getUniqueValueFromDB("SELECT scoretrain FROM player WHERE player_id={$player}");
             $result['scorerecherche'][$player] = self::getUniqueValueFromDB("SELECT scorerecherche FROM player WHERE player_id={$player}");
             $result['scoretotal'][$player] = self::getUniqueValueFromDB("SELECT scoretotal FROM player WHERE player_id={$player}");
+            $result['lundicheck'][$player] = self::getUniqueValueFromDB("SELECT lundicheck FROM player WHERE player_id={$player}");
+            $result['mardicheck'][$player] = self::getUniqueValueFromDB("SELECT mardicheck FROM player WHERE player_id={$player}");
+            $result['mercredicheck'][$player] = self::getUniqueValueFromDB("SELECT mercredicheck FROM player WHERE player_id={$player}");
+            $result['jeudicheck'][$player] = self::getUniqueValueFromDB("SELECT jeudicheck FROM player WHERE player_id={$player}");
+            $result['vendredicheck'][$player] = self::getUniqueValueFromDB("SELECT vendredicheck FROM player WHERE player_id={$player}");
+            $result['samedicheck'][$player] = self::getUniqueValueFromDB("SELECT samedicheck FROM player WHERE player_id={$player}");
 
         }
         
