@@ -2500,6 +2500,9 @@ function (dojo, declare) {
                 dojo.subscribe( 'disabled', this, "notif_disabled" );
                 dojo.subscribe( 'check', this, "notif_check" );
                 dojo.subscribe( 'checkscore', this, "notif_checkscore" );
+                dojo.subscribe( 'affichehand', this, "notif_affichehand" );
+
+                
 
 
                 
@@ -2544,6 +2547,32 @@ function (dojo, declare) {
                     }
 
 
+            },
+
+            notif_affichehand: function( notif )
+            {
+                if(!this.isSpectator)
+                { 
+                    const element = document.querySelector('.playerhand');
+                    var playerviews = document.querySelectorAll('.playerview');
+                    var global = document.getElementById("global");
+                    var currentHeight = global.clientHeight;
+                
+                    if (element && element.classList.contains('hidden')) 
+                    {
+                        dojo.query(".playerhand").removeClass("hidden");
+                        dojo.query(".playerhandtitle").removeClass("hidden");
+                        playerviews.forEach(function(playerview) {
+                            var currentTop = playerview.offsetTop;
+                            
+                            playerview.style.top = (currentTop + 290) + "px";
+                        });
+                        global.style.height = (currentHeight + 300) + "px";
+                    } 
+                    
+                }
+
+               
             },
 
             notif_majpannel: function( notif )

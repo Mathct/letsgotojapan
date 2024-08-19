@@ -1852,6 +1852,11 @@ function st_MultiPlayerActivation()
         )
         );
 
+        letsgotojapan::$instance->notifyAllPlayers('affichehand','', array(
+            
+            )
+            );
+
 
         $listplayers = self::getObjectListFromDB( "SELECT player_id id FROM player", true );
 
@@ -1946,6 +1951,11 @@ function st_MultiPlayerActivation()
         'turn' =>$newturn,
         )
         );
+
+        letsgotojapan::$instance->notifyAllPlayers('affichehand','', array(
+            
+            )
+            );
 
         
         $listplayers = self::getObjectListFromDB( "SELECT player_id id FROM player", true );
@@ -2048,6 +2058,11 @@ function st_MultiPlayerActivation()
         )
         );
 
+        letsgotojapan::$instance->notifyAllPlayers('affichehand','', array(
+            
+            )
+            );
+
 
         $listplayers = self::getObjectListFromDB( "SELECT player_id id FROM player", true );
 
@@ -2144,6 +2159,11 @@ function st_MultiPlayerActivation()
         'turn' =>$newturn,
         )
         );
+
+        letsgotojapan::$instance->notifyAllPlayers('affichehand','', array(
+            
+            )
+            );
 
         
         $listplayers = self::getObjectListFromDB( "SELECT player_id id FROM player", true );
@@ -2245,6 +2265,11 @@ function st_MultiPlayerActivation()
         'turn' =>$newturn,
         )
         );
+
+        letsgotojapan::$instance->notifyAllPlayers('affichehand','', array(
+            
+            )
+            );
 
         
         $listplayers = self::getObjectListFromDB( "SELECT player_id id FROM player", true );
