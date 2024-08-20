@@ -846,6 +846,7 @@ class Pending extends APP_GameClass
                 letsgotojapan::$instance->tokyo->pickCardForLocation( 'deck', $explode2[0].'_'.$explode2[1].'_'.$explode2[2], $this->player_id);
                 $newcardid= self::getUniqueValueFromDB("SELECT card_id FROM tokyo WHERE card_location_arg = {$this->player_id} AND card_location = '" . $explode2[0] . "_" . $explode2[1] . "_" . $explode2[2] . "'");
                 self::DbQuery( "UPDATE tokyo set walk = 1  WHERE card_id ={$newcardid}" );
+                self::DbQuery( "UPDATE tokyo set finallocation = 1  WHERE card_id ={$newcardid}" );
                 letsgotojapan::$instance->notifyAllPlayers('addwalk',clienttranslate( '${player_name} places ${log} on <b>${day}</b>'), array(
                     'parent' => $varg1,
                     'player_name' => $this->player_name,
@@ -944,6 +945,7 @@ class Pending extends APP_GameClass
                 letsgotojapan::$instance->kyoto->pickCardForLocation( 'deck', $explode2[0].'_'.$explode2[1].'_'.$explode2[2], $this->player_id);
                 $newcardid= self::getUniqueValueFromDB("SELECT card_id FROM kyoto WHERE card_location_arg = {$this->player_id} AND card_location = '" . $explode2[0] . "_" . $explode2[1] . "_" . $explode2[2] . "'");
                 self::DbQuery( "UPDATE kyoto set walk = 1  WHERE card_id ={$newcardid}" );
+                self::DbQuery( "UPDATE kyoto set finallocation = 2  WHERE card_id ={$newcardid}" );
                 letsgotojapan::$instance->notifyAllPlayers('addwalk',clienttranslate( '${player_name} places ${log} on <b>${day}</b>'), array(
                     'parent' => $varg1,
                     'player_name' => $this->player_name,
@@ -1319,6 +1321,7 @@ function ExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
             letsgotojapan::$instance->tokyo->pickCardForLocation( 'deck', $explode2[0].'_'.$explode2[1].'_'.$explode2[2], $this->player_id);
             $newcardid= self::getUniqueValueFromDB("SELECT card_id FROM tokyo WHERE card_location_arg = {$this->player_id} AND card_location = '" . $explode2[0] . "_" . $explode2[1] . "_" . $explode2[2] . "'");
             self::DbQuery( "UPDATE tokyo set walk = 1  WHERE card_id ={$newcardid}" );
+            self::DbQuery( "UPDATE tokyo set finallocation = 1  WHERE card_id ={$newcardid}" );
             letsgotojapan::$instance->notifyAllPlayers('addwalk',clienttranslate( '${player_name} places an Extra ${log} on <b>${day}</b>'), array(
                 'parent' => $varg1,
                 'player_name' => $this->player_name,
@@ -1342,6 +1345,7 @@ function ExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
             letsgotojapan::$instance->kyoto->pickCardForLocation( 'deck', $explode2[0].'_'.$explode2[1].'_'.$explode2[2], $this->player_id);
             $newcardid= self::getUniqueValueFromDB("SELECT card_id FROM kyoto WHERE card_location_arg = {$this->player_id} AND card_location = '" . $explode2[0] . "_" . $explode2[1] . "_" . $explode2[2] . "'");
             self::DbQuery( "UPDATE kyoto set walk = 1  WHERE card_id ={$newcardid}" );
+            self::DbQuery( "UPDATE kyoto set finallocation = 2  WHERE card_id ={$newcardid}" );
             letsgotojapan::$instance->notifyAllPlayers('addwalk',clienttranslate( '${player_name} places an Extra ${log} on <b>${day}</b>'), array(
                 'parent' => $varg1,
                 'player_name' => $this->player_name,
@@ -3248,6 +3252,10 @@ function argFinalStep1($parg1, $parg2)
                 {
                     $lastday = self::getUniqueValueFromDB( "SELECT card_type type FROM tokyo WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$countday}'");
                     $cardid = self::getUniqueValueFromDB( "SELECT card_id id FROM tokyo WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$countday}'");
+
+                    $walklastday = self::getUniqueValueFromDB( "SELECT walk FROM tokyo WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$countday}'");
+                    if ($walklastday == 0)
+                    {
                     $method = "Tokyo_" . $lastday;
                     $check = CardTokyo::$method($this->player_id, 'lundi'); // A MODIFIER JOUR
 
@@ -3278,6 +3286,27 @@ function argFinalStep1($parg1, $parg2)
                             )
                             ); 
                     }
+                    }
+
+                    if($walklastday == 1)
+                    {
+
+                        self::DbQuery( "UPDATE tokyo set checkcard = 1  WHERE card_id = {$cardid}" );  //// CHANGER LA VILLE
+                        self::DbQuery( "UPDATE player set lundicheck = 1  WHERE player_id = {$this->player_id}" );  //// CHANGER LE JOUR
+                        letsgotojapan::$instance->notifyAllPlayers('checkscore','', array(
+                    
+                            'numero' => $this->player_no,
+                            'check' => 1,
+                            'position' => $day,
+                                                        
+                            )
+                            ); 
+
+                        self::DbQuery( "UPDATE player set lundi = lundi + 2 WHERE player_id = {$this->player_id}" );   //// CHANGER LE JOUR
+
+                        $check = 1;
+
+                    }
 
                     letsgotojapan::$instance->notifyAllPlayers('check','', array(
                     
@@ -3294,6 +3323,10 @@ function argFinalStep1($parg1, $parg2)
             {
                 $lastday = self::getUniqueValueFromDB( "SELECT card_type type FROM kyoto WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$countday}'");
                 $cardid = self::getUniqueValueFromDB( "SELECT card_id id FROM kyoto WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$countday}'");
+                
+                $walklastday = self::getUniqueValueFromDB( "SELECT walk FROM kyoto WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$countday}'");
+                if ($walklastday == 0)
+                {
                 $method = "Kyoto_" . $lastday;
                 $check = CardKyoto::$method($this->player_id, 'lundi'); // A MODIFIER JOUR
 
@@ -3324,6 +3357,27 @@ function argFinalStep1($parg1, $parg2)
                                                         
                             )
                             );
+                    }
+                }
+
+                if($walklastday == 1)
+                    {
+
+                        self::DbQuery( "UPDATE kyoto set checkcard = 1  WHERE card_id = {$cardid}" );  //// CHANGER LA VILLE
+                        self::DbQuery( "UPDATE player set lundicheck = 1  WHERE player_id = {$this->player_id}" );  //// CHANGER LE JOUR
+                        letsgotojapan::$instance->notifyAllPlayers('checkscore','', array(
+                    
+                            'numero' => $this->player_no,
+                            'check' => 1,
+                            'position' => $day,
+                                                        
+                            )
+                            ); 
+
+                        self::DbQuery( "UPDATE player set lundi = lundi + 2 WHERE player_id = {$this->player_id}" );   //// CHANGER LE JOUR
+
+                        $check = 1;
+
                     }
 
                 letsgotojapan::$instance->notifyAllPlayers('check','', array(
@@ -3585,6 +3639,10 @@ function argFinalStep1($parg1, $parg2)
             {
                 $lastday = self::getUniqueValueFromDB( "SELECT card_type type FROM tokyo WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$countday}'");
                 $cardid = self::getUniqueValueFromDB( "SELECT card_id id FROM tokyo WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$countday}'");
+                
+                $walklastday = self::getUniqueValueFromDB( "SELECT walk FROM tokyo WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$countday}'");
+                if ($walklastday == 0)
+                {
                 $method = "Tokyo_" . $lastday;
                 $check = CardTokyo::$method($this->player_id, 'mardi'); // A MODIFIER JOUR
 
@@ -3615,6 +3673,29 @@ function argFinalStep1($parg1, $parg2)
                             )
                             ); 
                 }
+            }
+
+            if($walklastday == 1)
+                    {
+
+                        self::DbQuery( "UPDATE tokyo set checkcard = 1  WHERE card_id = {$cardid}" );  //// CHANGER LA VILLE
+                        self::DbQuery( "UPDATE player set mardicheck = 1  WHERE player_id = {$this->player_id}" );  //// CHANGER LE JOUR
+                        letsgotojapan::$instance->notifyAllPlayers('checkscore','', array(
+                    
+                            'numero' => $this->player_no,
+                            'check' => 1,
+                            'position' => $day,
+                                                        
+                            )
+                            ); 
+
+                        self::DbQuery( "UPDATE player set mardi = mardi + 2 WHERE player_id = {$this->player_id}" );   //// CHANGER LE JOUR
+
+                        $check = 1;
+
+                    }
+
+
 
                 letsgotojapan::$instance->notifyAllPlayers('check','', array(
                 
@@ -3631,6 +3712,9 @@ function argFinalStep1($parg1, $parg2)
         {
             $lastday = self::getUniqueValueFromDB( "SELECT card_type type FROM kyoto WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$countday}'");
             $cardid = self::getUniqueValueFromDB( "SELECT card_id id FROM kyoto WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$countday}'");
+            $walklastday = self::getUniqueValueFromDB( "SELECT walk FROM kyoto WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$countday}'");
+                if ($walklastday == 0)
+                {
             $method = "Kyoto_" . $lastday;
             $check = CardKyoto::$method($this->player_id, 'mardi'); // A MODIFIER JOUR
 
@@ -3661,6 +3745,27 @@ function argFinalStep1($parg1, $parg2)
                             )
                             ); 
                 }
+            }
+
+            if($walklastday == 1)
+                    {
+
+                        self::DbQuery( "UPDATE kyoto set checkcard = 1  WHERE card_id = {$cardid}" );  //// CHANGER LA VILLE
+                        self::DbQuery( "UPDATE player set mardicheck = 1  WHERE player_id = {$this->player_id}" );  //// CHANGER LE JOUR
+                        letsgotojapan::$instance->notifyAllPlayers('checkscore','', array(
+                    
+                            'numero' => $this->player_no,
+                            'check' => 1,
+                            'position' => $day,
+                                                        
+                            )
+                            ); 
+
+                        self::DbQuery( "UPDATE player set mardi = mardi + 2 WHERE player_id = {$this->player_id}" );   //// CHANGER LE JOUR
+
+                        $check = 1;
+
+                    }
 
             letsgotojapan::$instance->notifyAllPlayers('check','', array(
             
@@ -3918,6 +4023,10 @@ function argFinalStep1($parg1, $parg2)
             {
                 $lastday = self::getUniqueValueFromDB( "SELECT card_type type FROM tokyo WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$countday}'");
                 $cardid = self::getUniqueValueFromDB( "SELECT card_id id FROM tokyo WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$countday}'");
+                
+                $walklastday = self::getUniqueValueFromDB( "SELECT walk FROM tokyo WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$countday}'");
+                if ($walklastday == 0)
+                {
                 $method = "Tokyo_" . $lastday;
                 $check = CardTokyo::$method($this->player_id, 'mercredi'); // A MODIFIER JOUR
 
@@ -3948,6 +4057,27 @@ function argFinalStep1($parg1, $parg2)
                             )
                             ); 
                 }
+            }
+
+            if($walklastday == 1)
+                    {
+
+                        self::DbQuery( "UPDATE tokyo set checkcard = 1  WHERE card_id = {$cardid}" );  //// CHANGER LA VILLE
+                        self::DbQuery( "UPDATE player set mercredicheck = 1  WHERE player_id = {$this->player_id}" );  //// CHANGER LE JOUR
+                        letsgotojapan::$instance->notifyAllPlayers('checkscore','', array(
+                    
+                            'numero' => $this->player_no,
+                            'check' => 1,
+                            'position' => $day,
+                                                        
+                            )
+                            ); 
+
+                        self::DbQuery( "UPDATE player set mercredi = mercredi + 2 WHERE player_id = {$this->player_id}" );   //// CHANGER LE JOUR
+
+                        $check = 1;
+
+                    }
 
                 letsgotojapan::$instance->notifyAllPlayers('check','', array(
                 
@@ -3964,6 +4094,10 @@ function argFinalStep1($parg1, $parg2)
         {
             $lastday = self::getUniqueValueFromDB( "SELECT card_type type FROM kyoto WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$countday}'");
             $cardid = self::getUniqueValueFromDB( "SELECT card_id id FROM kyoto WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$countday}'");
+            
+            $walklastday = self::getUniqueValueFromDB( "SELECT walk FROM kyoto WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$countday}'");
+            if ($walklastday == 0)
+            {
             $method = "Kyoto_" . $lastday;
             $check = CardKyoto::$method($this->player_id, 'mercredi'); // A MODIFIER JOUR
 
@@ -3994,6 +4128,30 @@ function argFinalStep1($parg1, $parg2)
                             )
                             );
                 }
+
+            }
+
+            if($walklastday == 1)
+                    {
+
+                        self::DbQuery( "UPDATE kyoto set checkcard = 1  WHERE card_id = {$cardid}" );  //// CHANGER LA VILLE
+                        self::DbQuery( "UPDATE player set mercredicheck = 1  WHERE player_id = {$this->player_id}" );  //// CHANGER LE JOUR
+                        letsgotojapan::$instance->notifyAllPlayers('checkscore','', array(
+                    
+                            'numero' => $this->player_no,
+                            'check' => 1,
+                            'position' => $day,
+                                                        
+                            )
+                            ); 
+
+                        self::DbQuery( "UPDATE player set mercredi = mercredi + 2 WHERE player_id = {$this->player_id}" );   //// CHANGER LE JOUR
+
+                        $check = 1;
+
+                    }
+
+
 
             letsgotojapan::$instance->notifyAllPlayers('check','', array(
             
@@ -4255,6 +4413,10 @@ function FinalStepJeudi($parg1, $parg2, $varg1, $varg2)
         {
             $lastday = self::getUniqueValueFromDB( "SELECT card_type type FROM tokyo WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$countday}'");
             $cardid = self::getUniqueValueFromDB( "SELECT card_id id FROM tokyo WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$countday}'");
+            
+            $walklastday = self::getUniqueValueFromDB( "SELECT walk FROM tokyo WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$countday}'");
+            if ($walklastday == 0)
+            {
             $method = "Tokyo_" . $lastday;
             $check = CardTokyo::$method($this->player_id, 'jeudi'); // A MODIFIER JOUR
 
@@ -4285,6 +4447,28 @@ function FinalStepJeudi($parg1, $parg2, $varg1, $varg2)
                             )
                             ); 
             }
+        }
+
+        if($walklastday == 1)
+                    {
+
+                        self::DbQuery( "UPDATE tokyo set checkcard = 1  WHERE card_id = {$cardid}" );  //// CHANGER LA VILLE
+                        self::DbQuery( "UPDATE player set jeudicheck = 1  WHERE player_id = {$this->player_id}" );  //// CHANGER LE JOUR
+                        letsgotojapan::$instance->notifyAllPlayers('checkscore','', array(
+                    
+                            'numero' => $this->player_no,
+                            'check' => 1,
+                            'position' => $day,
+                                                        
+                            )
+                            ); 
+
+                        self::DbQuery( "UPDATE player set jeudi = jeudi + 2 WHERE player_id = {$this->player_id}" );   //// CHANGER LE JOUR
+
+                        $check = 1;
+
+                    }
+
 
             letsgotojapan::$instance->notifyAllPlayers('check','', array(
             
@@ -4301,6 +4485,10 @@ function FinalStepJeudi($parg1, $parg2, $varg1, $varg2)
     {
         $lastday = self::getUniqueValueFromDB( "SELECT card_type type FROM kyoto WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$countday}'");
         $cardid = self::getUniqueValueFromDB( "SELECT card_id id FROM kyoto WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$countday}'");
+        
+        $walklastday = self::getUniqueValueFromDB( "SELECT walk FROM kyoto WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$countday}'");
+        if ($walklastday == 0)
+        {
         $method = "Kyoto_" . $lastday;
         $check = CardKyoto::$method($this->player_id, 'jeudi'); // A MODIFIER JOUR
 
@@ -4331,6 +4519,28 @@ function FinalStepJeudi($parg1, $parg2, $varg1, $varg2)
                             )
                             ); 
             }
+
+        }
+
+        if($walklastday == 1)
+                    {
+
+                        self::DbQuery( "UPDATE kyoto set checkcard = 1  WHERE card_id = {$cardid}" );  //// CHANGER LA VILLE
+                        self::DbQuery( "UPDATE player set jeudicheck = 1  WHERE player_id = {$this->player_id}" );  //// CHANGER LE JOUR
+                        letsgotojapan::$instance->notifyAllPlayers('checkscore','', array(
+                    
+                            'numero' => $this->player_no,
+                            'check' => 1,
+                            'position' => $day,
+                                                        
+                            )
+                            ); 
+
+                        self::DbQuery( "UPDATE player set jeudi = jeudi + 2 WHERE player_id = {$this->player_id}" );   //// CHANGER LE JOUR
+
+                        $check = 1;
+
+                    }
 
         letsgotojapan::$instance->notifyAllPlayers('check','', array(
         
@@ -4591,6 +4801,10 @@ function FinalStepVendredi($parg1, $parg2, $varg1, $varg2)
         {
             $lastday = self::getUniqueValueFromDB( "SELECT card_type type FROM tokyo WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$countday}'");
             $cardid = self::getUniqueValueFromDB( "SELECT card_id id FROM tokyo WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$countday}'");
+            
+            $walklastday = self::getUniqueValueFromDB( "SELECT walk FROM tokyo WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$countday}'");
+            if ($walklastday == 0)
+            {
             $method = "Tokyo_" . $lastday;
             $check = CardTokyo::$method($this->player_id, 'vendredi'); // A MODIFIER JOUR
 
@@ -4622,6 +4836,28 @@ function FinalStepVendredi($parg1, $parg2, $varg1, $varg2)
                             ); 
             }
 
+        }
+
+        if($walklastday == 1)
+                    {
+
+                        self::DbQuery( "UPDATE tokyo set checkcard = 1  WHERE card_id = {$cardid}" );  //// CHANGER LA VILLE
+                        self::DbQuery( "UPDATE player set vendredicheck = 1  WHERE player_id = {$this->player_id}" );  //// CHANGER LE JOUR
+                        letsgotojapan::$instance->notifyAllPlayers('checkscore','', array(
+                    
+                            'numero' => $this->player_no,
+                            'check' => 1,
+                            'position' => $day,
+                                                        
+                            )
+                            ); 
+
+                        self::DbQuery( "UPDATE player set vendredi = vendredi + 2 WHERE player_id = {$this->player_id}" );   //// CHANGER LE JOUR
+
+                        $check = 1;
+
+                    }
+
             letsgotojapan::$instance->notifyAllPlayers('check','', array(
             
                 'id' => $cardid,
@@ -4637,6 +4873,10 @@ function FinalStepVendredi($parg1, $parg2, $varg1, $varg2)
     {
         $lastday = self::getUniqueValueFromDB( "SELECT card_type type FROM kyoto WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$countday}'");
         $cardid = self::getUniqueValueFromDB( "SELECT card_id id FROM kyoto WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$countday}'");
+        
+        $walklastday = self::getUniqueValueFromDB( "SELECT walk FROM kyoto WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$countday}'");
+        if ($walklastday == 0)
+        {
         $method = "Kyoto_" . $lastday;
         $check = CardKyoto::$method($this->player_id, 'vendredi'); // A MODIFIER JOUR
 
@@ -4667,6 +4907,30 @@ function FinalStepVendredi($parg1, $parg2, $varg1, $varg2)
                             )
                             ); 
             }
+
+        }
+
+        if($walklastday == 1)
+                    {
+
+                        self::DbQuery( "UPDATE kyoto set checkcard = 1  WHERE card_id = {$cardid}" );  //// CHANGER LA VILLE
+                        self::DbQuery( "UPDATE player set vendredicheck = 1  WHERE player_id = {$this->player_id}" );  //// CHANGER LE JOUR
+                        letsgotojapan::$instance->notifyAllPlayers('checkscore','', array(
+                    
+                            'numero' => $this->player_no,
+                            'check' => 1,
+                            'position' => $day,
+                                                        
+                            )
+                            ); 
+
+                        self::DbQuery( "UPDATE player set vendredi = vendredi + 2 WHERE player_id = {$this->player_id}" );   //// CHANGER LE JOUR
+
+                        $check = 1;
+
+                    }
+
+
 
         letsgotojapan::$instance->notifyAllPlayers('check','', array(
         
@@ -4924,6 +5188,10 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
         {
             $lastday = self::getUniqueValueFromDB( "SELECT card_type type FROM tokyo WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$countday}'");
             $cardid = self::getUniqueValueFromDB( "SELECT card_id id FROM tokyo WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$countday}'");
+            
+            $walklastday = self::getUniqueValueFromDB( "SELECT walk FROM tokyo WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$countday}'");
+            if ($walklastday == 0)
+            {
             $method = "Tokyo_" . $lastday;
             $check = CardTokyo::$method($this->player_id, 'samedi'); // A MODIFIER JOUR
 
@@ -4955,6 +5223,29 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
                             ); 
             }
 
+        }
+
+        if($walklastday == 1)
+        {
+
+            self::DbQuery( "UPDATE tokyo set checkcard = 1  WHERE card_id = {$cardid}" );  //// CHANGER LA VILLE
+            self::DbQuery( "UPDATE player set samedicheck = 1  WHERE player_id = {$this->player_id}" );  //// CHANGER LE JOUR
+            letsgotojapan::$instance->notifyAllPlayers('checkscore','', array(
+        
+                'numero' => $this->player_no,
+                'check' => 1,
+                'position' => $day,
+                                            
+                )
+                ); 
+
+            self::DbQuery( "UPDATE player set samedi = samedi + 2 WHERE player_id = {$this->player_id}" );   //// CHANGER LE JOUR
+
+            $check = 1;
+
+        }
+
+
             letsgotojapan::$instance->notifyAllPlayers('check','', array(
             
                 'id' => $cardid,
@@ -4970,6 +5261,11 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
     {
         $lastday = self::getUniqueValueFromDB( "SELECT card_type type FROM kyoto WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$countday}'");
         $cardid = self::getUniqueValueFromDB( "SELECT card_id id FROM kyoto WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$countday}'");
+        
+        $walklastday = self::getUniqueValueFromDB( "SELECT walk FROM kyoto WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$countday}'");
+        if ($walklastday == 0)
+        {
+        
         $method = "Kyoto_" . $lastday;
         $check = CardKyoto::$method($this->player_id, 'samedi'); // A MODIFIER JOUR
 
@@ -5000,6 +5296,28 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
                             )
                             ); 
             }
+
+        }
+
+        if($walklastday == 1)
+                    {
+
+                        self::DbQuery( "UPDATE kyoto set checkcard = 1  WHERE card_id = {$cardid}" );  //// CHANGER LA VILLE
+                        self::DbQuery( "UPDATE player set samedicheck = 1  WHERE player_id = {$this->player_id}" );  //// CHANGER LE JOUR
+                        letsgotojapan::$instance->notifyAllPlayers('checkscore','', array(
+                    
+                            'numero' => $this->player_no,
+                            'check' => 1,
+                            'position' => $day,
+                                                        
+                            )
+                            ); 
+
+                        self::DbQuery( "UPDATE player set samedi = samedi + 2 WHERE player_id = {$this->player_id}" );   //// CHANGER LE JOUR
+
+                        $check = 1;
+
+                    }
 
         letsgotojapan::$instance->notifyAllPlayers('check','', array(
         
