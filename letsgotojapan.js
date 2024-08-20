@@ -2506,16 +2506,12 @@ function (dojo, declare) {
 
 
                 
-                this.notifqueue.setSynchronous( 'smile', 500 );
-                this.notifqueue.setIgnoreNotificationCheck( 'smile', (notif) => (notif.args.player != this.getCurrentPlayerId()))
-                this.notifqueue.setSynchronous( 'happy', 500 );
-                this.notifqueue.setIgnoreNotificationCheck( 'happy', (notif) => (notif.args.player != this.getCurrentPlayerId()))
-                this.notifqueue.setSynchronous( 'angry', 500 );
-                this.notifqueue.setIgnoreNotificationCheck( 'angry', (notif) => (notif.args.player != this.getCurrentPlayerId()))
-                this.notifqueue.setSynchronous( 'movetoken', 500 );
-                this.notifqueue.setIgnoreNotificationCheck( 'movetoken', (notif) => (notif.args.player != this.getCurrentPlayerId()))
-                /*this.notifqueue.setSynchronous( 'movecard', 500 );
-                this.notifqueue.setIgnoreNotificationCheck( 'movecard', (notif) => (notif.args.playerid != this.getCurrentPlayerId()))*/
+                this.notifqueue.setSynchronous( 'smile');
+                this.notifqueue.setSynchronous( 'happy');
+                this.notifqueue.setSynchronous( 'angry');
+                this.notifqueue.setSynchronous( 'movetoken');
+                this.notifqueue.setSynchronous( 'movecard');
+                
             
 
                 
@@ -2594,6 +2590,17 @@ function (dojo, declare) {
             
             notif_movecard: function( notif )
             {
+                if(notif.args.playerid == this.getCurrentPlayerId())
+                    {
+                        this.notifqueue.setSynchronousDuration(500);
+                    }
+    
+                    if(notif.args.playerid != this.getCurrentPlayerId())
+                    {
+                        this.notifqueue.setSynchronousDuration(0);
+                    }
+
+
                 if (notif.args.playerid == this.getCurrentPlayerId()) 
                 {
                     this.attachToNewParentNoDestroy( notif.args.mobile, notif.args.parent );
@@ -2728,18 +2735,46 @@ function (dojo, declare) {
 
             notif_smile: function( notif )
             {
+                if(notif.args.player == this.getCurrentPlayerId())
+                {
+                    this.notifqueue.setSynchronousDuration(500);
+                }
+
+                if(notif.args.player != this.getCurrentPlayerId())
+                {
+                    this.notifqueue.setSynchronousDuration(0);
+                }
+
                 this.attachToNewParentNoDestroy( 'smile_'+notif.args.player, 'smileposition_'+notif.args.position+'_'+notif.args.player);
                 this.slideToObject( 'smile_'+notif.args.player, 'smileposition_'+notif.args.position+'_'+notif.args.player ).play();
             },
 
             notif_happy: function( notif )
             {
+                if(notif.args.player == this.getCurrentPlayerId())
+                    {
+                        this.notifqueue.setSynchronousDuration(500);
+                    }
+    
+                    if(notif.args.player != this.getCurrentPlayerId())
+                    {
+                        this.notifqueue.setSynchronousDuration(0);
+                    }
                 this.attachToNewParentNoDestroy( 'happy_'+notif.args.player, 'happyposition_'+notif.args.position+'_'+notif.args.player);
                 this.slideToObject( 'happy_'+notif.args.player, 'happyposition_'+notif.args.position+'_'+notif.args.player ).play();
             },
 
             notif_angry: function( notif )
             {
+                if(notif.args.player == this.getCurrentPlayerId())
+                    {
+                        this.notifqueue.setSynchronousDuration(500);
+                    }
+    
+                    if(notif.args.player != this.getCurrentPlayerId())
+                    {
+                        this.notifqueue.setSynchronousDuration(0);
+                    }
                 this.attachToNewParentNoDestroy( 'angry_'+notif.args.player, 'angryposition_'+notif.args.position+'_'+notif.args.player);
                 this.slideToObject( 'angry_'+notif.args.player, 'angryposition_'+notif.args.position+'_'+notif.args.player ).play();
             },
@@ -3019,6 +3054,16 @@ function (dojo, declare) {
 
             notif_movetoken: function( notif )
             {
+
+                if(notif.args.player == this.getCurrentPlayerId())
+                {
+                    this.notifqueue.setSynchronousDuration(500);
+                }
+
+                if(notif.args.player != this.getCurrentPlayerId())
+                {
+                    this.notifqueue.setSynchronousDuration(0);
+                }
                                 
                 
                 if(notif.args.type == 'r')
