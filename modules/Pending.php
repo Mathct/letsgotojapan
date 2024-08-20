@@ -154,7 +154,7 @@ class Pending extends APP_GameClass
        
         
 
-        /*$ret['buttons'][]='cancel';*/
+        $ret['buttons'][]='cancel';
         
 
 
@@ -1925,7 +1925,7 @@ function ExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
         }
         
 
-        /*$ret['buttons'][]='cancel';*/
+        $ret['buttons'][]='cancel';
         
 
 
