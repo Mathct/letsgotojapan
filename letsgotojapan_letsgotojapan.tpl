@@ -32,7 +32,9 @@
         <div id="mask_turn"></div>
         <div id="mask_hand"></div>
 
-        <div class="scorepad hidden">
+        <div id="mask_score" class="hidden"></div>
+
+        <div id="scorepad" class="scorepad hidden">
         <div id="scorename_1" class="scorename" style="left: 25.2%; top: 0.2%;"></div>
         <div id="score_1_1" class="score" style="left: 25.2%; top: 9.2%;"></div>
         <div id="checkscore_1_1" class="checkscore" style="left: 35%; top: 12.8%;"></div>
@@ -144,7 +146,7 @@
         <!-- BEGIN playerhand -->
         
             <div id="playerhandtitle_{PLAYER_ID}" class="playerhandtitle" style="color:#{COLOR}; outline: 0.5px solid #{COLOR};">{HAND}</div>
-            <div id="playerhand_{PLAYER_ID}" class="playerhand"></div>
+            <div id="playerhand_{PLAYER_ID}" class="playerhand" style="outline: 1px solid #{COLOR};"></div>
         
         <!-- END playerhand -->
 

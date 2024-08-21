@@ -2426,7 +2426,7 @@ function argFinalStep1($parg1, $parg2)
                 )
                 );
             
-            letsgotojapan::$instance->addPending($this->player_id, "FinalStep2");
+            letsgotojapan::$instance->addPending($this->player_id, "FinalStep3");
             
         }
 
@@ -2489,7 +2489,7 @@ function argFinalStep1($parg1, $parg2)
 
     }
 
-    function argFinalStep2($parg1, $parg2)
+    /*function argFinalStep2($parg1, $parg2)
     {
         $ret = array();
         $ret["selectable"] = array();
@@ -2725,7 +2725,7 @@ function argFinalStep1($parg1, $parg2)
               
         
 
-    }
+    }*/
 
 
     function argFinalStep3($parg1, $parg2)
@@ -3033,6 +3033,239 @@ function argFinalStep1($parg1, $parg2)
 
     //////////////////////// LUNDI ////////////////////////////
 
+    function argFinalStepLundiWalk($parg1, $parg2)      //changer jour
+    {
+        $ret = array();
+        $ret["selectable"] = array();
+        $ret["selectable2"] = array();
+        $ret["selectableswitch"] = array();
+        $ret["selected"] = array();
+        $ret["selected3"] = array();
+        $ret['buttons'] = array();
+        
+
+        
+        $found = 0;
+        $day = 1; ////////// A CHANGER JOUR
+        
+            
+                for ($position= 1; $position <=4 && $found == 0; $position++)
+                {
+                    $tokyocardwalk = self::getUniqueValueFromDB( "SELECT card_id id FROM tokyo WHERE card_location_arg = {$this->player_id} AND walk=1 AND finalwalk =0 AND card_location = 'cardposition_{$day}_{$position}'");
+                    if ($tokyocardwalk!=null)
+                    {
+                        $ret["selected3"][] = "card_1_".$tokyocardwalk;
+                        $found = 1;
+                        break;
+                    }
+
+                    else
+                    {
+                        $kyotocardwalk = self::getUniqueValueFromDB( "SELECT card_id id FROM kyoto WHERE card_location_arg = {$this->player_id} AND walk=1 AND finalwalk =0 AND card_location = 'cardposition_{$day}_{$position}'");
+                        if ($kyotocardwalk!=null)
+                        {
+                            $ret["selected3"][] = "card_2_".$kyotocardwalk;
+                            $found = 1;
+                            break;
+                        }
+
+                    }
+
+                }
+            
+
+
+
+
+        if ($ret["selected3"] != null)
+        {
+
+            $ret['titleyou'] = clienttranslate('Monday: ${you} must choose the side of the card for this walk <br>');  //changer jour
+
+            $explode = explode('_',$ret["selected3"][0]);
+            
+            
+            if ($explode[1]==1)
+            {
+                $type = self::getUniqueValueFromDB( "SELECT card_type type FROM tokyo WHERE card_id ={$explode[2]}");
+                $ret['buttons'][]='cardbouton_1_'.$explode[2].'_'.$type;
+                $ret['buttons'][]='cardtokyoverso';
+            }
+
+            if ($explode[1]==2)
+            {
+                $type = self::getUniqueValueFromDB( "SELECT card_type type FROM kyoto WHERE card_id ={$explode[2]}");
+                $ret['buttons'][]='cardbouton_2_'.$explode[2].'_'.$type;
+                $ret['buttons'][]='cardkyotoverso';
+            }
+
+            
+            
+        }
+
+        else{
+
+            $ret['titleyou'] = clienttranslate('Monday: ${you} have no walk');   ///changer jour
+            $ret['buttons'][]='continue';
+        }
+
+        
+        return $ret;
+    }
+
+    function FinalStepLundiWalk($parg1, $parg2, $varg1, $varg2) //changer jour
+    {
+        $found = 0;
+        $day = 1; /// changer numero du jour
+        $result = array();
+        
+        for ($position= 1; $position <=4 && $found == 0; $position++)
+            {
+                $tokyocardwalk = self::getUniqueValueFromDB( "SELECT card_id id FROM tokyo WHERE card_location_arg = {$this->player_id} AND walk=1 AND finalwalk =0 AND card_location = 'cardposition_{$day}_{$position}'");
+                if ($tokyocardwalk!=null)
+                {
+                    $result[] = "card_1_".$tokyocardwalk;
+                    $found = 1;
+                    break;
+                }
+
+                else
+                {
+                    $kyotocardwalk = self::getUniqueValueFromDB( "SELECT card_id id FROM kyoto WHERE card_location_arg = {$this->player_id} AND walk=1 AND finalwalk =0 AND card_location = 'cardposition_{$day}_{$position}'");
+                    if ($kyotocardwalk!=null)
+                    {
+                        $result[] = "card_2_".$kyotocardwalk;
+                        $found = 1;
+                        break;
+                    }
+
+                }
+
+            }
+        
+
+
+        if($varg1 == "continue")
+        {
+            letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} managed the <b>walks</b> for <b>${day}</b>'), array(
+                'player_name' => $this->player_name,
+                'day' => letsgotojapan::$instance->days[1]['name'], // changer numero du jour
+                
+                )
+                );
+            letsgotojapan::$instance->addPending($this->player_id, "FinalStepLundi");   ///changer jour
+            
+        }
+
+        elseif($varg1 == "cardtokyoverso")
+        {
+            $explode = explode('_',$result[0]);
+            self::DbQuery( "UPDATE tokyo set finalwalk = 1  WHERE card_id = {$explode[2]}" );
+
+            
+            letsgotojapan::$instance->addPending($this->player_id, "FinalStepLundiWalk"); ///changer jour
+            
+            
+            
+            
+        }
+        elseif($varg1 == "cardkyotoverso")
+        {
+            
+            
+            $explode = explode('_',$result[0]);
+            self::DbQuery( "UPDATE kyoto set finalwalk = 1  WHERE card_id = {$explode[2]}" );
+
+            
+            letsgotojapan::$instance->addPending($this->player_id, "FinalStepLundiWalk"); ///changer jour
+            
+            
+        }
+
+        else
+        {
+            $explode = explode('_',$result[0]);
+
+            if ($explode[1]==1)
+            {
+
+                self::DbQuery( "UPDATE tokyo set walk = 0  WHERE card_id = {$explode[2]}" );
+                self::DbQuery( "UPDATE tokyo set finalwalk = 1  WHERE card_id = {$explode[2]}" );
+                self::DbQuery( "UPDATE tokyo set finallocation = 1  WHERE card_id = {$explode[2]}" );
+
+                $type = self::getUniqueValueFromDB( "SELECT card_type type FROM tokyo WHERE card_id ={$explode[2]}");
+                $location = self::getUniqueValueFromDB( "SELECT card_location location FROM tokyo WHERE card_id ={$explode[2]}");
+
+                
+                letsgotojapan::$instance->notifyAllPlayers('changecard','', array(
+                
+                    'cardid' => $result[0],
+                    'id' => $explode[2],
+                    'ville' => 1,
+                    'type' => $type,
+                    'location' => $location,
+                    'playerid' => $this->player_id,
+
+                    )
+                    );
+
+                letsgotojapan::$instance->notifyAllPlayers('finalwalk','', array(
+            
+                    'card' => $result[0],
+                    
+                    )
+                    );
+
+               
+
+                
+
+            }
+
+            if ($explode[1]==2)
+            {
+
+                self::DbQuery( "UPDATE kyoto set walk = 0  WHERE card_id = {$explode[2]}" );
+                self::DbQuery( "UPDATE kyoto set finalwalk = 1  WHERE card_id = {$explode[2]}" );
+                self::DbQuery( "UPDATE kyoto set finallocation = 2  WHERE card_id = {$explode[2]}" );
+
+                $type = self::getUniqueValueFromDB( "SELECT card_type type FROM kyoto WHERE card_id ={$explode[2]}");
+                $location = self::getUniqueValueFromDB( "SELECT card_location location FROM kyoto WHERE card_id ={$explode[2]}");
+
+                
+                    letsgotojapan::$instance->notifyAllPlayers('changecard','', array(
+                
+                        'cardid' => $result[0],
+                        'id' => $explode[2],
+                        'ville' => 2,
+                        'type' => $type,
+                        'location' => $location,
+                        'playerid' => $this->player_id,
+
+                        )
+                        );
+                    
+                    letsgotojapan::$instance->notifyAllPlayers('finalwalk','', array(
+        
+                        'card' => $result[0],
+                        
+                        )
+                        );
+
+
+
+
+
+            }
+
+            letsgotojapan::$instance->addPending($this->player_id, "FinalStepLundiWalk");   ///changer jour
+
+        }
+
+       
+
+    }
+
     function argFinalStepLundi($parg1, $parg2)
     {
         $ret = array();
@@ -3047,13 +3280,13 @@ function argFinalStep1($parg1, $parg2)
 
         if($wild >=1)
         {
-            $ret['titleyou'] = clienttranslate('Monday! ${you} can use one (or more) <span class="wild"></span>');
+            $ret['titleyou'] = clienttranslate('Monday! Let\'s go! ${you} can use one (or more) <span class="wild"></span>');
             $ret['buttons'][]='yes';
             $ret['buttons'][]='no';
         }
         else
         {
-            $ret['titleyou'] = clienttranslate('Monday!');
+            $ret['titleyou'] = clienttranslate('Monday! Let\'s go!');
             $ret['buttons'][]='continue';
         }
        
@@ -3407,7 +3640,7 @@ function argFinalStep1($parg1, $parg2)
                 );              
             
 
-            letsgotojapan::$instance->addPending($this->player_id, "FinalStepMardi"); // à modifier pour aller sur le mardi
+            letsgotojapan::$instance->addPending($this->player_id, "FinalStepMardiWalk"); // à modifier pour aller sur le mardi
 
 
            
@@ -3424,6 +3657,239 @@ function argFinalStep1($parg1, $parg2)
 
     //////////////////////// MARDI ////////////////////////////
 
+    function argFinalStepMardiWalk($parg1, $parg2)      //changer jour
+    {
+        $ret = array();
+        $ret["selectable"] = array();
+        $ret["selectable2"] = array();
+        $ret["selectableswitch"] = array();
+        $ret["selected"] = array();
+        $ret["selected3"] = array();
+        $ret['buttons'] = array();
+        
+
+        
+        $found = 0;
+        $day = 2; ////////// A CHANGER JOUR
+        
+            
+                for ($position= 1; $position <=4 && $found == 0; $position++)
+                {
+                    $tokyocardwalk = self::getUniqueValueFromDB( "SELECT card_id id FROM tokyo WHERE card_location_arg = {$this->player_id} AND walk=1 AND finalwalk =0 AND card_location = 'cardposition_{$day}_{$position}'");
+                    if ($tokyocardwalk!=null)
+                    {
+                        $ret["selected3"][] = "card_1_".$tokyocardwalk;
+                        $found = 1;
+                        break;
+                    }
+
+                    else
+                    {
+                        $kyotocardwalk = self::getUniqueValueFromDB( "SELECT card_id id FROM kyoto WHERE card_location_arg = {$this->player_id} AND walk=1 AND finalwalk =0 AND card_location = 'cardposition_{$day}_{$position}'");
+                        if ($kyotocardwalk!=null)
+                        {
+                            $ret["selected3"][] = "card_2_".$kyotocardwalk;
+                            $found = 1;
+                            break;
+                        }
+
+                    }
+
+                }
+            
+
+
+
+
+        if ($ret["selected3"] != null)
+        {
+
+            $ret['titleyou'] = clienttranslate('Tuesday: ${you} must choose the side of the card for this walk <br>');  //changer jour
+
+            $explode = explode('_',$ret["selected3"][0]);
+            
+            
+            if ($explode[1]==1)
+            {
+                $type = self::getUniqueValueFromDB( "SELECT card_type type FROM tokyo WHERE card_id ={$explode[2]}");
+                $ret['buttons'][]='cardbouton_1_'.$explode[2].'_'.$type;
+                $ret['buttons'][]='cardtokyoverso';
+            }
+
+            if ($explode[1]==2)
+            {
+                $type = self::getUniqueValueFromDB( "SELECT card_type type FROM kyoto WHERE card_id ={$explode[2]}");
+                $ret['buttons'][]='cardbouton_2_'.$explode[2].'_'.$type;
+                $ret['buttons'][]='cardkyotoverso';
+            }
+
+            
+            
+        }
+
+        else{
+
+            $ret['titleyou'] = clienttranslate('Tuesday: ${you} have no walk');   ///changer jour
+            $ret['buttons'][]='continue';
+        }
+
+        
+        return $ret;
+    }
+
+    function FinalStepMardiWalk($parg1, $parg2, $varg1, $varg2) //changer jour
+    {
+        $found = 0;
+        $day = 2; /// changer numero du jour
+        $result = array();
+        
+        for ($position= 1; $position <=4 && $found == 0; $position++)
+            {
+                $tokyocardwalk = self::getUniqueValueFromDB( "SELECT card_id id FROM tokyo WHERE card_location_arg = {$this->player_id} AND walk=1 AND finalwalk =0 AND card_location = 'cardposition_{$day}_{$position}'");
+                if ($tokyocardwalk!=null)
+                {
+                    $result[] = "card_1_".$tokyocardwalk;
+                    $found = 1;
+                    break;
+                }
+
+                else
+                {
+                    $kyotocardwalk = self::getUniqueValueFromDB( "SELECT card_id id FROM kyoto WHERE card_location_arg = {$this->player_id} AND walk=1 AND finalwalk =0 AND card_location = 'cardposition_{$day}_{$position}'");
+                    if ($kyotocardwalk!=null)
+                    {
+                        $result[] = "card_2_".$kyotocardwalk;
+                        $found = 1;
+                        break;
+                    }
+
+                }
+
+            }
+        
+
+
+        if($varg1 == "continue")
+        {
+            letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} managed the <b>walks</b> for <b>${day}</b>'), array(
+                'player_name' => $this->player_name,
+                'day' => letsgotojapan::$instance->days[2]['name'], // changer numero du jour
+                
+                )
+                );
+            letsgotojapan::$instance->addPending($this->player_id, "FinalStepMardi");   ///changer jour
+            
+        }
+
+        elseif($varg1 == "cardtokyoverso")
+        {
+            $explode = explode('_',$result[0]);
+            self::DbQuery( "UPDATE tokyo set finalwalk = 1  WHERE card_id = {$explode[2]}" );
+
+            
+            letsgotojapan::$instance->addPending($this->player_id, "FinalStepMardiWalk"); ///changer jour
+            
+            
+            
+            
+        }
+        elseif($varg1 == "cardkyotoverso")
+        {
+            
+            
+            $explode = explode('_',$result[0]);
+            self::DbQuery( "UPDATE kyoto set finalwalk = 1  WHERE card_id = {$explode[2]}" );
+
+            
+            letsgotojapan::$instance->addPending($this->player_id, "FinalStepMardiWalk"); ///changer jour
+            
+            
+        }
+
+        else
+        {
+            $explode = explode('_',$result[0]);
+
+            if ($explode[1]==1)
+            {
+
+                self::DbQuery( "UPDATE tokyo set walk = 0  WHERE card_id = {$explode[2]}" );
+                self::DbQuery( "UPDATE tokyo set finalwalk = 1  WHERE card_id = {$explode[2]}" );
+                self::DbQuery( "UPDATE tokyo set finallocation = 1  WHERE card_id = {$explode[2]}" );
+
+                $type = self::getUniqueValueFromDB( "SELECT card_type type FROM tokyo WHERE card_id ={$explode[2]}");
+                $location = self::getUniqueValueFromDB( "SELECT card_location location FROM tokyo WHERE card_id ={$explode[2]}");
+
+                
+                letsgotojapan::$instance->notifyAllPlayers('changecard','', array(
+                
+                    'cardid' => $result[0],
+                    'id' => $explode[2],
+                    'ville' => 1,
+                    'type' => $type,
+                    'location' => $location,
+                    'playerid' => $this->player_id,
+
+                    )
+                    );
+
+                letsgotojapan::$instance->notifyAllPlayers('finalwalk','', array(
+            
+                    'card' => $result[0],
+                    
+                    )
+                    );
+
+               
+
+                
+
+            }
+
+            if ($explode[1]==2)
+            {
+
+                self::DbQuery( "UPDATE kyoto set walk = 0  WHERE card_id = {$explode[2]}" );
+                self::DbQuery( "UPDATE kyoto set finalwalk = 1  WHERE card_id = {$explode[2]}" );
+                self::DbQuery( "UPDATE kyoto set finallocation = 2  WHERE card_id = {$explode[2]}" );
+
+                $type = self::getUniqueValueFromDB( "SELECT card_type type FROM kyoto WHERE card_id ={$explode[2]}");
+                $location = self::getUniqueValueFromDB( "SELECT card_location location FROM kyoto WHERE card_id ={$explode[2]}");
+
+                
+                    letsgotojapan::$instance->notifyAllPlayers('changecard','', array(
+                
+                        'cardid' => $result[0],
+                        'id' => $explode[2],
+                        'ville' => 2,
+                        'type' => $type,
+                        'location' => $location,
+                        'playerid' => $this->player_id,
+
+                        )
+                        );
+                    
+                    letsgotojapan::$instance->notifyAllPlayers('finalwalk','', array(
+        
+                        'card' => $result[0],
+                        
+                        )
+                        );
+
+
+
+
+
+            }
+
+            letsgotojapan::$instance->addPending($this->player_id, "FinalStepMardiWalk");   ///changer jour
+
+        }
+
+       
+
+    }
+
     function argFinalStepMardi($parg1, $parg2)
     {
         $ret = array();
@@ -3438,13 +3904,13 @@ function argFinalStep1($parg1, $parg2)
 
         if($wild >=1)
         {
-            $ret['titleyou'] = clienttranslate('Tuesday! ${you} can use one (or more) <span class="wild"></span>');
+            $ret['titleyou'] = clienttranslate('Tuesday! Let\'s go! ${you} can use one (or more) <span class="wild"></span>');
             $ret['buttons'][]='yes';
             $ret['buttons'][]='no';
         }
         else
         {
-            $ret['titleyou'] = clienttranslate('Tuesday!');
+            $ret['titleyou'] = clienttranslate('Tuesday! Let\'s go!');
             $ret['buttons'][]='continue';
         }
        
@@ -3792,7 +4258,7 @@ function argFinalStep1($parg1, $parg2)
                 )
                 ); 
 
-            letsgotojapan::$instance->addPending($this->player_id, "FinalStepMercredi"); // à modifier pour aller sur le mardi
+            letsgotojapan::$instance->addPending($this->player_id, "FinalStepMercrediWalk"); // à modifier pour aller sur le mardi
 
 
             
@@ -3808,6 +4274,239 @@ function argFinalStep1($parg1, $parg2)
 
     //////////////////////// MERCREDI ////////////////////////////
 
+    function argFinalStepMercrediWalk($parg1, $parg2)      //changer jour
+    {
+        $ret = array();
+        $ret["selectable"] = array();
+        $ret["selectable2"] = array();
+        $ret["selectableswitch"] = array();
+        $ret["selected"] = array();
+        $ret["selected3"] = array();
+        $ret['buttons'] = array();
+        
+
+        
+        $found = 0;
+        $day = 3; ////////// A CHANGER JOUR
+        
+            
+                for ($position= 1; $position <=4 && $found == 0; $position++)
+                {
+                    $tokyocardwalk = self::getUniqueValueFromDB( "SELECT card_id id FROM tokyo WHERE card_location_arg = {$this->player_id} AND walk=1 AND finalwalk =0 AND card_location = 'cardposition_{$day}_{$position}'");
+                    if ($tokyocardwalk!=null)
+                    {
+                        $ret["selected3"][] = "card_1_".$tokyocardwalk;
+                        $found = 1;
+                        break;
+                    }
+
+                    else
+                    {
+                        $kyotocardwalk = self::getUniqueValueFromDB( "SELECT card_id id FROM kyoto WHERE card_location_arg = {$this->player_id} AND walk=1 AND finalwalk =0 AND card_location = 'cardposition_{$day}_{$position}'");
+                        if ($kyotocardwalk!=null)
+                        {
+                            $ret["selected3"][] = "card_2_".$kyotocardwalk;
+                            $found = 1;
+                            break;
+                        }
+
+                    }
+
+                }
+            
+
+
+
+
+        if ($ret["selected3"] != null)
+        {
+
+            $ret['titleyou'] = clienttranslate('Wednesday: ${you} must choose the side of the card for this walk <br>');  //changer jour
+
+            $explode = explode('_',$ret["selected3"][0]);
+            
+            
+            if ($explode[1]==1)
+            {
+                $type = self::getUniqueValueFromDB( "SELECT card_type type FROM tokyo WHERE card_id ={$explode[2]}");
+                $ret['buttons'][]='cardbouton_1_'.$explode[2].'_'.$type;
+                $ret['buttons'][]='cardtokyoverso';
+            }
+
+            if ($explode[1]==2)
+            {
+                $type = self::getUniqueValueFromDB( "SELECT card_type type FROM kyoto WHERE card_id ={$explode[2]}");
+                $ret['buttons'][]='cardbouton_2_'.$explode[2].'_'.$type;
+                $ret['buttons'][]='cardkyotoverso';
+            }
+
+            
+            
+        }
+
+        else{
+
+            $ret['titleyou'] = clienttranslate('Wednesday: ${you} have no walk');   ///changer jour
+            $ret['buttons'][]='continue';
+        }
+
+        
+        return $ret;
+    }
+
+    function FinalStepMercrediWalk($parg1, $parg2, $varg1, $varg2) //changer jour
+    {
+        $found = 0;
+        $day = 3; /// changer numero du jour
+        $result = array();
+        
+        for ($position= 1; $position <=4 && $found == 0; $position++)
+            {
+                $tokyocardwalk = self::getUniqueValueFromDB( "SELECT card_id id FROM tokyo WHERE card_location_arg = {$this->player_id} AND walk=1 AND finalwalk =0 AND card_location = 'cardposition_{$day}_{$position}'");
+                if ($tokyocardwalk!=null)
+                {
+                    $result[] = "card_1_".$tokyocardwalk;
+                    $found = 1;
+                    break;
+                }
+
+                else
+                {
+                    $kyotocardwalk = self::getUniqueValueFromDB( "SELECT card_id id FROM kyoto WHERE card_location_arg = {$this->player_id} AND walk=1 AND finalwalk =0 AND card_location = 'cardposition_{$day}_{$position}'");
+                    if ($kyotocardwalk!=null)
+                    {
+                        $result[] = "card_2_".$kyotocardwalk;
+                        $found = 1;
+                        break;
+                    }
+
+                }
+
+            }
+        
+
+
+        if($varg1 == "continue")
+        {
+            letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} managed the <b>walks</b> for <b>${day}</b>'), array(
+                'player_name' => $this->player_name,
+                'day' => letsgotojapan::$instance->days[3]['name'], // changer numero du jour
+                
+                )
+                );
+            letsgotojapan::$instance->addPending($this->player_id, "FinalStepMercredi");   ///changer jour
+            
+        }
+
+        elseif($varg1 == "cardtokyoverso")
+        {
+            $explode = explode('_',$result[0]);
+            self::DbQuery( "UPDATE tokyo set finalwalk = 1  WHERE card_id = {$explode[2]}" );
+
+            
+            letsgotojapan::$instance->addPending($this->player_id, "FinalStepMercrediWalk"); ///changer jour
+            
+            
+            
+            
+        }
+        elseif($varg1 == "cardkyotoverso")
+        {
+            
+            
+            $explode = explode('_',$result[0]);
+            self::DbQuery( "UPDATE kyoto set finalwalk = 1  WHERE card_id = {$explode[2]}" );
+
+            
+            letsgotojapan::$instance->addPending($this->player_id, "FinalStepMercrediWalk"); ///changer jour
+            
+            
+        }
+
+        else
+        {
+            $explode = explode('_',$result[0]);
+
+            if ($explode[1]==1)
+            {
+
+                self::DbQuery( "UPDATE tokyo set walk = 0  WHERE card_id = {$explode[2]}" );
+                self::DbQuery( "UPDATE tokyo set finalwalk = 1  WHERE card_id = {$explode[2]}" );
+                self::DbQuery( "UPDATE tokyo set finallocation = 1  WHERE card_id = {$explode[2]}" );
+
+                $type = self::getUniqueValueFromDB( "SELECT card_type type FROM tokyo WHERE card_id ={$explode[2]}");
+                $location = self::getUniqueValueFromDB( "SELECT card_location location FROM tokyo WHERE card_id ={$explode[2]}");
+
+                
+                letsgotojapan::$instance->notifyAllPlayers('changecard','', array(
+                
+                    'cardid' => $result[0],
+                    'id' => $explode[2],
+                    'ville' => 1,
+                    'type' => $type,
+                    'location' => $location,
+                    'playerid' => $this->player_id,
+
+                    )
+                    );
+
+                letsgotojapan::$instance->notifyAllPlayers('finalwalk','', array(
+            
+                    'card' => $result[0],
+                    
+                    )
+                    );
+
+               
+
+                
+
+            }
+
+            if ($explode[1]==2)
+            {
+
+                self::DbQuery( "UPDATE kyoto set walk = 0  WHERE card_id = {$explode[2]}" );
+                self::DbQuery( "UPDATE kyoto set finalwalk = 1  WHERE card_id = {$explode[2]}" );
+                self::DbQuery( "UPDATE kyoto set finallocation = 2  WHERE card_id = {$explode[2]}" );
+
+                $type = self::getUniqueValueFromDB( "SELECT card_type type FROM kyoto WHERE card_id ={$explode[2]}");
+                $location = self::getUniqueValueFromDB( "SELECT card_location location FROM kyoto WHERE card_id ={$explode[2]}");
+
+                
+                    letsgotojapan::$instance->notifyAllPlayers('changecard','', array(
+                
+                        'cardid' => $result[0],
+                        'id' => $explode[2],
+                        'ville' => 2,
+                        'type' => $type,
+                        'location' => $location,
+                        'playerid' => $this->player_id,
+
+                        )
+                        );
+                    
+                    letsgotojapan::$instance->notifyAllPlayers('finalwalk','', array(
+        
+                        'card' => $result[0],
+                        
+                        )
+                        );
+
+
+
+
+
+            }
+
+            letsgotojapan::$instance->addPending($this->player_id, "FinalStepMercrediWalk");   ///changer jour
+
+        }
+
+       
+
+    }
+
     function argFinalStepMercredi($parg1, $parg2)
     {
         $ret = array();
@@ -3822,13 +4521,13 @@ function argFinalStep1($parg1, $parg2)
 
         if($wild >=1)
         {
-            $ret['titleyou'] = clienttranslate('Wednesday! ${you} can use one (or more) <span class="wild"></span>');
+            $ret['titleyou'] = clienttranslate('Wednesday! Let\'s go! ${you} can use one (or more) <span class="wild"></span>');
             $ret['buttons'][]='yes';
             $ret['buttons'][]='no';
         }
         else
         {
-            $ret['titleyou'] = clienttranslate('Wednesday!');
+            $ret['titleyou'] = clienttranslate('Wednesday! Let\'s go!');
             $ret['buttons'][]='continue';
         }
        
@@ -4178,7 +4877,7 @@ function argFinalStep1($parg1, $parg2)
                 )
                 );
 
-            letsgotojapan::$instance->addPending($this->player_id, "FinalStepJeudi"); // à modifier pour aller sur le mardi
+            letsgotojapan::$instance->addPending($this->player_id, "FinalStepJeudiWalk"); // à modifier pour aller sur le mardi
 
 
             
@@ -4197,6 +4896,239 @@ function argFinalStep1($parg1, $parg2)
 
 //////////////////////// JEUDI ////////////////////////////
 
+function argFinalStepJeudiWalk($parg1, $parg2)      //changer jour
+    {
+        $ret = array();
+        $ret["selectable"] = array();
+        $ret["selectable2"] = array();
+        $ret["selectableswitch"] = array();
+        $ret["selected"] = array();
+        $ret["selected3"] = array();
+        $ret['buttons'] = array();
+        
+
+        
+        $found = 0;
+        $day = 4; ////////// A CHANGER JOUR
+        
+            
+                for ($position= 1; $position <=4 && $found == 0; $position++)
+                {
+                    $tokyocardwalk = self::getUniqueValueFromDB( "SELECT card_id id FROM tokyo WHERE card_location_arg = {$this->player_id} AND walk=1 AND finalwalk =0 AND card_location = 'cardposition_{$day}_{$position}'");
+                    if ($tokyocardwalk!=null)
+                    {
+                        $ret["selected3"][] = "card_1_".$tokyocardwalk;
+                        $found = 1;
+                        break;
+                    }
+
+                    else
+                    {
+                        $kyotocardwalk = self::getUniqueValueFromDB( "SELECT card_id id FROM kyoto WHERE card_location_arg = {$this->player_id} AND walk=1 AND finalwalk =0 AND card_location = 'cardposition_{$day}_{$position}'");
+                        if ($kyotocardwalk!=null)
+                        {
+                            $ret["selected3"][] = "card_2_".$kyotocardwalk;
+                            $found = 1;
+                            break;
+                        }
+
+                    }
+
+                }
+            
+
+
+
+
+        if ($ret["selected3"] != null)
+        {
+
+            $ret['titleyou'] = clienttranslate('Thursday: ${you} must choose the side of the card for this walk <br>');  //changer jour
+
+            $explode = explode('_',$ret["selected3"][0]);
+            
+            
+            if ($explode[1]==1)
+            {
+                $type = self::getUniqueValueFromDB( "SELECT card_type type FROM tokyo WHERE card_id ={$explode[2]}");
+                $ret['buttons'][]='cardbouton_1_'.$explode[2].'_'.$type;
+                $ret['buttons'][]='cardtokyoverso';
+            }
+
+            if ($explode[1]==2)
+            {
+                $type = self::getUniqueValueFromDB( "SELECT card_type type FROM kyoto WHERE card_id ={$explode[2]}");
+                $ret['buttons'][]='cardbouton_2_'.$explode[2].'_'.$type;
+                $ret['buttons'][]='cardkyotoverso';
+            }
+
+            
+            
+        }
+
+        else{
+
+            $ret['titleyou'] = clienttranslate('Thursday: ${you} have no walk');   ///changer jour
+            $ret['buttons'][]='continue';
+        }
+
+        
+        return $ret;
+    }
+
+    function FinalStepJeudiWalk($parg1, $parg2, $varg1, $varg2) //changer jour
+    {
+        $found = 0;
+        $day = 4; /// changer numero du jour
+        $result = array();
+        
+        for ($position= 1; $position <=4 && $found == 0; $position++)
+            {
+                $tokyocardwalk = self::getUniqueValueFromDB( "SELECT card_id id FROM tokyo WHERE card_location_arg = {$this->player_id} AND walk=1 AND finalwalk =0 AND card_location = 'cardposition_{$day}_{$position}'");
+                if ($tokyocardwalk!=null)
+                {
+                    $result[] = "card_1_".$tokyocardwalk;
+                    $found = 1;
+                    break;
+                }
+
+                else
+                {
+                    $kyotocardwalk = self::getUniqueValueFromDB( "SELECT card_id id FROM kyoto WHERE card_location_arg = {$this->player_id} AND walk=1 AND finalwalk =0 AND card_location = 'cardposition_{$day}_{$position}'");
+                    if ($kyotocardwalk!=null)
+                    {
+                        $result[] = "card_2_".$kyotocardwalk;
+                        $found = 1;
+                        break;
+                    }
+
+                }
+
+            }
+        
+
+
+        if($varg1 == "continue")
+        {
+            letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} managed the <b>walks</b> for <b>${day}</b>'), array(
+                'player_name' => $this->player_name,
+                'day' => letsgotojapan::$instance->days[4]['name'], // changer numero du jour
+                
+                )
+                );
+            letsgotojapan::$instance->addPending($this->player_id, "FinalStepJeudi");   ///changer jour
+            
+        }
+
+        elseif($varg1 == "cardtokyoverso")
+        {
+            $explode = explode('_',$result[0]);
+            self::DbQuery( "UPDATE tokyo set finalwalk = 1  WHERE card_id = {$explode[2]}" );
+
+            
+            letsgotojapan::$instance->addPending($this->player_id, "FinalStepJeudiWalk"); ///changer jour
+            
+            
+            
+            
+        }
+        elseif($varg1 == "cardkyotoverso")
+        {
+            
+            
+            $explode = explode('_',$result[0]);
+            self::DbQuery( "UPDATE kyoto set finalwalk = 1  WHERE card_id = {$explode[2]}" );
+
+            
+            letsgotojapan::$instance->addPending($this->player_id, "FinalStepJeudiWalk"); ///changer jour
+            
+            
+        }
+
+        else
+        {
+            $explode = explode('_',$result[0]);
+
+            if ($explode[1]==1)
+            {
+
+                self::DbQuery( "UPDATE tokyo set walk = 0  WHERE card_id = {$explode[2]}" );
+                self::DbQuery( "UPDATE tokyo set finalwalk = 1  WHERE card_id = {$explode[2]}" );
+                self::DbQuery( "UPDATE tokyo set finallocation = 1  WHERE card_id = {$explode[2]}" );
+
+                $type = self::getUniqueValueFromDB( "SELECT card_type type FROM tokyo WHERE card_id ={$explode[2]}");
+                $location = self::getUniqueValueFromDB( "SELECT card_location location FROM tokyo WHERE card_id ={$explode[2]}");
+
+                
+                letsgotojapan::$instance->notifyAllPlayers('changecard','', array(
+                
+                    'cardid' => $result[0],
+                    'id' => $explode[2],
+                    'ville' => 1,
+                    'type' => $type,
+                    'location' => $location,
+                    'playerid' => $this->player_id,
+
+                    )
+                    );
+
+                letsgotojapan::$instance->notifyAllPlayers('finalwalk','', array(
+            
+                    'card' => $result[0],
+                    
+                    )
+                    );
+
+               
+
+                
+
+            }
+
+            if ($explode[1]==2)
+            {
+
+                self::DbQuery( "UPDATE kyoto set walk = 0  WHERE card_id = {$explode[2]}" );
+                self::DbQuery( "UPDATE kyoto set finalwalk = 1  WHERE card_id = {$explode[2]}" );
+                self::DbQuery( "UPDATE kyoto set finallocation = 2  WHERE card_id = {$explode[2]}" );
+
+                $type = self::getUniqueValueFromDB( "SELECT card_type type FROM kyoto WHERE card_id ={$explode[2]}");
+                $location = self::getUniqueValueFromDB( "SELECT card_location location FROM kyoto WHERE card_id ={$explode[2]}");
+
+                
+                    letsgotojapan::$instance->notifyAllPlayers('changecard','', array(
+                
+                        'cardid' => $result[0],
+                        'id' => $explode[2],
+                        'ville' => 2,
+                        'type' => $type,
+                        'location' => $location,
+                        'playerid' => $this->player_id,
+
+                        )
+                        );
+                    
+                    letsgotojapan::$instance->notifyAllPlayers('finalwalk','', array(
+        
+                        'card' => $result[0],
+                        
+                        )
+                        );
+
+
+
+
+
+            }
+
+            letsgotojapan::$instance->addPending($this->player_id, "FinalStepJeudiWalk");   ///changer jour
+
+        }
+
+       
+
+    }
+
 function argFinalStepJeudi($parg1, $parg2)
 {
     $ret = array();
@@ -4211,13 +5143,13 @@ function argFinalStepJeudi($parg1, $parg2)
 
     if($wild >=1)
     {
-        $ret['titleyou'] = clienttranslate('Thursday! ${you} can use one (or more) <span class="wild"></span>');
+        $ret['titleyou'] = clienttranslate('Thursday! Let\'s go! ${you} can use one (or more) <span class="wild"></span>');
         $ret['buttons'][]='yes';
         $ret['buttons'][]='no';
     }
     else
     {
-        $ret['titleyou'] = clienttranslate('Thursday!');
+        $ret['titleyou'] = clienttranslate('Thursday! Let\'s go!');
         $ret['buttons'][]='continue';
     }
    
@@ -4567,7 +5499,7 @@ function FinalStepJeudi($parg1, $parg2, $varg1, $varg2)
             )
             );
 
-        letsgotojapan::$instance->addPending($this->player_id, "FinalStepVendredi"); // à modifier pour aller sur le mardi
+        letsgotojapan::$instance->addPending($this->player_id, "FinalStepVendrediWalk"); // à modifier pour aller sur le mardi
 
 
         
@@ -4585,6 +5517,239 @@ function FinalStepJeudi($parg1, $parg2, $varg1, $varg2)
 
 //////////////////////// VENDREDI ////////////////////////////
 
+function argFinalStepVendrediWalk($parg1, $parg2)      //changer jour
+    {
+        $ret = array();
+        $ret["selectable"] = array();
+        $ret["selectable2"] = array();
+        $ret["selectableswitch"] = array();
+        $ret["selected"] = array();
+        $ret["selected3"] = array();
+        $ret['buttons'] = array();
+        
+
+        
+        $found = 0;
+        $day = 5; ////////// A CHANGER JOUR
+        
+            
+                for ($position= 1; $position <=4 && $found == 0; $position++)
+                {
+                    $tokyocardwalk = self::getUniqueValueFromDB( "SELECT card_id id FROM tokyo WHERE card_location_arg = {$this->player_id} AND walk=1 AND finalwalk =0 AND card_location = 'cardposition_{$day}_{$position}'");
+                    if ($tokyocardwalk!=null)
+                    {
+                        $ret["selected3"][] = "card_1_".$tokyocardwalk;
+                        $found = 1;
+                        break;
+                    }
+
+                    else
+                    {
+                        $kyotocardwalk = self::getUniqueValueFromDB( "SELECT card_id id FROM kyoto WHERE card_location_arg = {$this->player_id} AND walk=1 AND finalwalk =0 AND card_location = 'cardposition_{$day}_{$position}'");
+                        if ($kyotocardwalk!=null)
+                        {
+                            $ret["selected3"][] = "card_2_".$kyotocardwalk;
+                            $found = 1;
+                            break;
+                        }
+
+                    }
+
+                }
+            
+
+
+
+
+        if ($ret["selected3"] != null)
+        {
+
+            $ret['titleyou'] = clienttranslate('Friday: ${you} must choose the side of the card for this walk <br>');  //changer jour
+
+            $explode = explode('_',$ret["selected3"][0]);
+            
+            
+            if ($explode[1]==1)
+            {
+                $type = self::getUniqueValueFromDB( "SELECT card_type type FROM tokyo WHERE card_id ={$explode[2]}");
+                $ret['buttons'][]='cardbouton_1_'.$explode[2].'_'.$type;
+                $ret['buttons'][]='cardtokyoverso';
+            }
+
+            if ($explode[1]==2)
+            {
+                $type = self::getUniqueValueFromDB( "SELECT card_type type FROM kyoto WHERE card_id ={$explode[2]}");
+                $ret['buttons'][]='cardbouton_2_'.$explode[2].'_'.$type;
+                $ret['buttons'][]='cardkyotoverso';
+            }
+
+            
+            
+        }
+
+        else{
+
+            $ret['titleyou'] = clienttranslate('Friday: ${you} have no walk');   ///changer jour
+            $ret['buttons'][]='continue';
+        }
+
+        
+        return $ret;
+    }
+
+    function FinalStepVendrediWalk($parg1, $parg2, $varg1, $varg2) //changer jour
+    {
+        $found = 0;
+        $day = 5; /// changer numero du jour
+        $result = array();
+        
+        for ($position= 1; $position <=4 && $found == 0; $position++)
+            {
+                $tokyocardwalk = self::getUniqueValueFromDB( "SELECT card_id id FROM tokyo WHERE card_location_arg = {$this->player_id} AND walk=1 AND finalwalk =0 AND card_location = 'cardposition_{$day}_{$position}'");
+                if ($tokyocardwalk!=null)
+                {
+                    $result[] = "card_1_".$tokyocardwalk;
+                    $found = 1;
+                    break;
+                }
+
+                else
+                {
+                    $kyotocardwalk = self::getUniqueValueFromDB( "SELECT card_id id FROM kyoto WHERE card_location_arg = {$this->player_id} AND walk=1 AND finalwalk =0 AND card_location = 'cardposition_{$day}_{$position}'");
+                    if ($kyotocardwalk!=null)
+                    {
+                        $result[] = "card_2_".$kyotocardwalk;
+                        $found = 1;
+                        break;
+                    }
+
+                }
+
+            }
+        
+
+
+        if($varg1 == "continue")
+        {
+            letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} managed the <b>walks</b> for <b>${day}</b>'), array(
+                'player_name' => $this->player_name,
+                'day' => letsgotojapan::$instance->days[5]['name'], // changer numero du jour
+                
+                )
+                );
+            letsgotojapan::$instance->addPending($this->player_id, "FinalStepVendredi");   ///changer jour
+            
+        }
+
+        elseif($varg1 == "cardtokyoverso")
+        {
+            $explode = explode('_',$result[0]);
+            self::DbQuery( "UPDATE tokyo set finalwalk = 1  WHERE card_id = {$explode[2]}" );
+
+            
+            letsgotojapan::$instance->addPending($this->player_id, "FinalStepVendrediWalk"); ///changer jour
+            
+            
+            
+            
+        }
+        elseif($varg1 == "cardkyotoverso")
+        {
+            
+            
+            $explode = explode('_',$result[0]);
+            self::DbQuery( "UPDATE kyoto set finalwalk = 1  WHERE card_id = {$explode[2]}" );
+
+            
+            letsgotojapan::$instance->addPending($this->player_id, "FinalStepVendrediWalk"); ///changer jour
+            
+            
+        }
+
+        else
+        {
+            $explode = explode('_',$result[0]);
+
+            if ($explode[1]==1)
+            {
+
+                self::DbQuery( "UPDATE tokyo set walk = 0  WHERE card_id = {$explode[2]}" );
+                self::DbQuery( "UPDATE tokyo set finalwalk = 1  WHERE card_id = {$explode[2]}" );
+                self::DbQuery( "UPDATE tokyo set finallocation = 1  WHERE card_id = {$explode[2]}" );
+
+                $type = self::getUniqueValueFromDB( "SELECT card_type type FROM tokyo WHERE card_id ={$explode[2]}");
+                $location = self::getUniqueValueFromDB( "SELECT card_location location FROM tokyo WHERE card_id ={$explode[2]}");
+
+                
+                letsgotojapan::$instance->notifyAllPlayers('changecard','', array(
+                
+                    'cardid' => $result[0],
+                    'id' => $explode[2],
+                    'ville' => 1,
+                    'type' => $type,
+                    'location' => $location,
+                    'playerid' => $this->player_id,
+
+                    )
+                    );
+
+                letsgotojapan::$instance->notifyAllPlayers('finalwalk','', array(
+            
+                    'card' => $result[0],
+                    
+                    )
+                    );
+
+               
+
+                
+
+            }
+
+            if ($explode[1]==2)
+            {
+
+                self::DbQuery( "UPDATE kyoto set walk = 0  WHERE card_id = {$explode[2]}" );
+                self::DbQuery( "UPDATE kyoto set finalwalk = 1  WHERE card_id = {$explode[2]}" );
+                self::DbQuery( "UPDATE kyoto set finallocation = 2  WHERE card_id = {$explode[2]}" );
+
+                $type = self::getUniqueValueFromDB( "SELECT card_type type FROM kyoto WHERE card_id ={$explode[2]}");
+                $location = self::getUniqueValueFromDB( "SELECT card_location location FROM kyoto WHERE card_id ={$explode[2]}");
+
+                
+                    letsgotojapan::$instance->notifyAllPlayers('changecard','', array(
+                
+                        'cardid' => $result[0],
+                        'id' => $explode[2],
+                        'ville' => 2,
+                        'type' => $type,
+                        'location' => $location,
+                        'playerid' => $this->player_id,
+
+                        )
+                        );
+                    
+                    letsgotojapan::$instance->notifyAllPlayers('finalwalk','', array(
+        
+                        'card' => $result[0],
+                        
+                        )
+                        );
+
+
+
+
+
+            }
+
+            letsgotojapan::$instance->addPending($this->player_id, "FinalStepVendrediWalk");   ///changer jour
+
+        }
+
+       
+
+    }
+
 function argFinalStepVendredi($parg1, $parg2)
 {
     $ret = array();
@@ -4599,13 +5764,13 @@ function argFinalStepVendredi($parg1, $parg2)
 
     if($wild >=1)
     {
-        $ret['titleyou'] = clienttranslate('Friday! ${you} can use one (or more) <span class="wild"></span>');
+        $ret['titleyou'] = clienttranslate('Friday! Let\'s go! ${you} can use one (or more) <span class="wild"></span>');
         $ret['buttons'][]='yes';
         $ret['buttons'][]='no';
     }
     else
     {
-        $ret['titleyou'] = clienttranslate('Friday!');
+        $ret['titleyou'] = clienttranslate('Friday! Let\'s go!');
         $ret['buttons'][]='continue';
     }
    
@@ -4957,7 +6122,7 @@ function FinalStepVendredi($parg1, $parg2, $varg1, $varg2)
             )
             );
 
-        letsgotojapan::$instance->addPending($this->player_id, "FinalStepSamedi"); // à modifier pour aller sur le mardi
+        letsgotojapan::$instance->addPending($this->player_id, "FinalStepSamediWalk"); // à modifier pour aller sur le mardi
 
 
         
@@ -4973,6 +6138,239 @@ function FinalStepVendredi($parg1, $parg2, $varg1, $varg2)
 
 //////////////////////// SAMEDI ////////////////////////////
 
+function argFinalStepSamediWalk($parg1, $parg2)      //changer jour
+    {
+        $ret = array();
+        $ret["selectable"] = array();
+        $ret["selectable2"] = array();
+        $ret["selectableswitch"] = array();
+        $ret["selected"] = array();
+        $ret["selected3"] = array();
+        $ret['buttons'] = array();
+        
+
+        
+        $found = 0;
+        $day = 6; ////////// A CHANGER JOUR
+        
+            
+                for ($position= 1; $position <=4 && $found == 0; $position++)
+                {
+                    $tokyocardwalk = self::getUniqueValueFromDB( "SELECT card_id id FROM tokyo WHERE card_location_arg = {$this->player_id} AND walk=1 AND finalwalk =0 AND card_location = 'cardposition_{$day}_{$position}'");
+                    if ($tokyocardwalk!=null)
+                    {
+                        $ret["selected3"][] = "card_1_".$tokyocardwalk;
+                        $found = 1;
+                        break;
+                    }
+
+                    else
+                    {
+                        $kyotocardwalk = self::getUniqueValueFromDB( "SELECT card_id id FROM kyoto WHERE card_location_arg = {$this->player_id} AND walk=1 AND finalwalk =0 AND card_location = 'cardposition_{$day}_{$position}'");
+                        if ($kyotocardwalk!=null)
+                        {
+                            $ret["selected3"][] = "card_2_".$kyotocardwalk;
+                            $found = 1;
+                            break;
+                        }
+
+                    }
+
+                }
+            
+
+
+
+
+        if ($ret["selected3"] != null)
+        {
+
+            $ret['titleyou'] = clienttranslate('Saturday: ${you} must choose the side of the card for this walk <br>');  //changer jour
+
+            $explode = explode('_',$ret["selected3"][0]);
+            
+            
+            if ($explode[1]==1)
+            {
+                $type = self::getUniqueValueFromDB( "SELECT card_type type FROM tokyo WHERE card_id ={$explode[2]}");
+                $ret['buttons'][]='cardbouton_1_'.$explode[2].'_'.$type;
+                $ret['buttons'][]='cardtokyoverso';
+            }
+
+            if ($explode[1]==2)
+            {
+                $type = self::getUniqueValueFromDB( "SELECT card_type type FROM kyoto WHERE card_id ={$explode[2]}");
+                $ret['buttons'][]='cardbouton_2_'.$explode[2].'_'.$type;
+                $ret['buttons'][]='cardkyotoverso';
+            }
+
+            
+            
+        }
+
+        else{
+
+            $ret['titleyou'] = clienttranslate('Saturday: ${you} have no walk');   ///changer jour
+            $ret['buttons'][]='continue';
+        }
+
+        
+        return $ret;
+    }
+
+    function FinalStepSamediWalk($parg1, $parg2, $varg1, $varg2) //changer jour
+    {
+        $found = 0;
+        $day = 6; /// changer numero du jour
+        $result = array();
+        
+        for ($position= 1; $position <=4 && $found == 0; $position++)
+            {
+                $tokyocardwalk = self::getUniqueValueFromDB( "SELECT card_id id FROM tokyo WHERE card_location_arg = {$this->player_id} AND walk=1 AND finalwalk =0 AND card_location = 'cardposition_{$day}_{$position}'");
+                if ($tokyocardwalk!=null)
+                {
+                    $result[] = "card_1_".$tokyocardwalk;
+                    $found = 1;
+                    break;
+                }
+
+                else
+                {
+                    $kyotocardwalk = self::getUniqueValueFromDB( "SELECT card_id id FROM kyoto WHERE card_location_arg = {$this->player_id} AND walk=1 AND finalwalk =0 AND card_location = 'cardposition_{$day}_{$position}'");
+                    if ($kyotocardwalk!=null)
+                    {
+                        $result[] = "card_2_".$kyotocardwalk;
+                        $found = 1;
+                        break;
+                    }
+
+                }
+
+            }
+        
+
+
+        if($varg1 == "continue")
+        {
+            letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} managed the <b>walks</b> for <b>${day}</b>'), array(
+                'player_name' => $this->player_name,
+                'day' => letsgotojapan::$instance->days[6]['name'], // changer numero du jour
+                
+                )
+                );
+            letsgotojapan::$instance->addPending($this->player_id, "FinalStepSamedi");   ///changer jour
+            
+        }
+
+        elseif($varg1 == "cardtokyoverso")
+        {
+            $explode = explode('_',$result[0]);
+            self::DbQuery( "UPDATE tokyo set finalwalk = 1  WHERE card_id = {$explode[2]}" );
+
+            
+            letsgotojapan::$instance->addPending($this->player_id, "FinalStepSamediWalk"); ///changer jour
+            
+            
+            
+            
+        }
+        elseif($varg1 == "cardkyotoverso")
+        {
+            
+            
+            $explode = explode('_',$result[0]);
+            self::DbQuery( "UPDATE kyoto set finalwalk = 1  WHERE card_id = {$explode[2]}" );
+
+            
+            letsgotojapan::$instance->addPending($this->player_id, "FinalStepSamediWalk"); ///changer jour
+            
+            
+        }
+
+        else
+        {
+            $explode = explode('_',$result[0]);
+
+            if ($explode[1]==1)
+            {
+
+                self::DbQuery( "UPDATE tokyo set walk = 0  WHERE card_id = {$explode[2]}" );
+                self::DbQuery( "UPDATE tokyo set finalwalk = 1  WHERE card_id = {$explode[2]}" );
+                self::DbQuery( "UPDATE tokyo set finallocation = 1  WHERE card_id = {$explode[2]}" );
+
+                $type = self::getUniqueValueFromDB( "SELECT card_type type FROM tokyo WHERE card_id ={$explode[2]}");
+                $location = self::getUniqueValueFromDB( "SELECT card_location location FROM tokyo WHERE card_id ={$explode[2]}");
+
+                
+                letsgotojapan::$instance->notifyAllPlayers('changecard','', array(
+                
+                    'cardid' => $result[0],
+                    'id' => $explode[2],
+                    'ville' => 1,
+                    'type' => $type,
+                    'location' => $location,
+                    'playerid' => $this->player_id,
+
+                    )
+                    );
+
+                letsgotojapan::$instance->notifyAllPlayers('finalwalk','', array(
+            
+                    'card' => $result[0],
+                    
+                    )
+                    );
+
+               
+
+                
+
+            }
+
+            if ($explode[1]==2)
+            {
+
+                self::DbQuery( "UPDATE kyoto set walk = 0  WHERE card_id = {$explode[2]}" );
+                self::DbQuery( "UPDATE kyoto set finalwalk = 1  WHERE card_id = {$explode[2]}" );
+                self::DbQuery( "UPDATE kyoto set finallocation = 2  WHERE card_id = {$explode[2]}" );
+
+                $type = self::getUniqueValueFromDB( "SELECT card_type type FROM kyoto WHERE card_id ={$explode[2]}");
+                $location = self::getUniqueValueFromDB( "SELECT card_location location FROM kyoto WHERE card_id ={$explode[2]}");
+
+                
+                    letsgotojapan::$instance->notifyAllPlayers('changecard','', array(
+                
+                        'cardid' => $result[0],
+                        'id' => $explode[2],
+                        'ville' => 2,
+                        'type' => $type,
+                        'location' => $location,
+                        'playerid' => $this->player_id,
+
+                        )
+                        );
+                    
+                    letsgotojapan::$instance->notifyAllPlayers('finalwalk','', array(
+        
+                        'card' => $result[0],
+                        
+                        )
+                        );
+
+
+
+
+
+            }
+
+            letsgotojapan::$instance->addPending($this->player_id, "FinalStepSamediWalk");   ///changer jour
+
+        }
+
+       
+
+    }
+
 function argFinalStepSamedi($parg1, $parg2)
 {
     $ret = array();
@@ -4987,13 +6385,13 @@ function argFinalStepSamedi($parg1, $parg2)
 
     if($wild >=1)
     {
-        $ret['titleyou'] = clienttranslate('Saturday! ${you} can use one (or more) <span class="wild"></span>');
+        $ret['titleyou'] = clienttranslate('Saturday! Let\'s go! ${you} can use one (or more) <span class="wild"></span>');
         $ret['buttons'][]='yes';
         $ret['buttons'][]='no';
     }
     else
     {
-        $ret['titleyou'] = clienttranslate('Saturday!');
+        $ret['titleyou'] = clienttranslate('Saturday! Let\'s go!');
         $ret['buttons'][]='continue';
     }
    

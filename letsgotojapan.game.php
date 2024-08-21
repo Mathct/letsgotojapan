@@ -2403,7 +2403,7 @@ function st_MultiPlayerActivation()
         foreach ($listplayers as $player_id)
         {
             
-            $this->addPending($player_id, "FinalStepLundi");
+            $this->addPending($player_id, "FinalStepLundiWalk");
         }
         
     }

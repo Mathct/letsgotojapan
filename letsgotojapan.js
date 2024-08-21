@@ -149,6 +149,7 @@ function (dojo, declare) {
                         dojo.query(".playerhand").addClass("masque");
                         dojo.query("#mask_turn").addClass("masque");
                         dojo.query("#mask_hand").addClass("masque");
+                        dojo.query("#mask_score").addClass("hidden");
 
                         if (gamedatas.turn < 14)
                         {
@@ -213,13 +214,14 @@ function (dojo, declare) {
                     {
                         
                         dojo.query(".scorepad").removeClass("hidden");
+                        dojo.query("#mask_score").removeClass("hidden");
                         var elements = document.querySelectorAll("[id^='playerview']");
                     elements.forEach(function(element) {
-                        element.style.top = "467px"; 
+                        element.style.top = "525px"; 
                         });
 
                     var global = document.getElementById('global');
-                    global.style.height = "1476px"; 
+                    global.style.height = "1530px"; 
                         
     
     
@@ -525,6 +527,7 @@ function (dojo, declare) {
                 dojo.query("#mask_hand").connect('onclick', this, 'onMaskHand' );
                 dojo.query(".bonusjournee").connect('onclick', this, 'onSelect' );
                 dojo.query(".bonusjournee2").connect('onclick', this, 'onSelect' );
+                dojo.query("#mask_score").connect('onclick', this, 'onMaskScore' );
                 
 
                 
@@ -783,6 +786,8 @@ function (dojo, declare) {
                                             var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_tokyowalktool')+'</div></div>';
                                             this.addTooltipHtml( 'cardtokyoverso', html,1000);
 
+                                    
+
                                         }
                                     if(args[this.getCurrentPlayerId()][0].buttons[nb] == "cardkyotoverso")
                                         {
@@ -830,9 +835,9 @@ function (dojo, declare) {
                                             if((card[3]>=41)&&(card[3] <= 50))
                                                 {
                                                     var img = g_gamethemeurl+"img/tokyo2.jpg";
-                                                        this.addActionButton(args[this.getCurrentPlayerId()][0].buttons[nb], `<div class="cardbouton" style="background-image: url(${img}); background-position-y: 0%; background-position-x: ${((card[3]-41)*(-100))}%;"></div>`, 'onOpButton', null, null, 'none');
-                                                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_tokyo2tool',{x: (card[3]-41)*(-100), y: 0})+'</div></div>';
-                                                        this.addTooltipHtml(args[this.getCurrentPlayerId()][0].buttons[nb], html,1000);
+                                                    this.addActionButton(args[this.getCurrentPlayerId()][0].buttons[nb], `<div class="cardbouton" style="background-image: url(${img}); background-position-y: 0%; background-position-x: ${((card[3]-41)*(-100))}%;"></div>`, 'onOpButton', null, null, 'none');
+                                                    var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_tokyo2tool',{x: (card[3]-41)*(-100), y: 0})+'</div></div>';
+                                                    this.addTooltipHtml(args[this.getCurrentPlayerId()][0].buttons[nb], html,1000);
                                                 }
     
                                             if((card[3]>=51)&&(card[3] <= 60))
@@ -2401,7 +2406,7 @@ function (dojo, declare) {
                     playerviews.forEach(function(playerview) {
                         var currentTop = playerview.offsetTop;
                         
-                        playerview.style.top = (currentTop + 290) + "px";
+                        playerview.style.top = (currentTop + 300) + "px";
                       });
                       global.style.height = (currentHeight + 300) + "px";
                 } 
@@ -2413,7 +2418,7 @@ function (dojo, declare) {
                     playerviews.forEach(function(playerview) {
                         var currentTop = playerview.offsetTop;
                         
-                        playerview.style.top = (currentTop - 310) + "px";
+                        playerview.style.top = (currentTop - 320) + "px";
                       });
                       global.style.height = (currentHeight - 300) + "px";
                 }
@@ -2443,6 +2448,44 @@ function (dojo, declare) {
                                     
                         }, 
                 this, function( result ) {}, function( is_error) {} );
+
+            },
+
+            onMaskScore: function(evt)
+            {        	 
+                // Preventing default browser reaction
+                dojo.stopEvent( evt );
+
+                var playerviews = document.querySelectorAll('.playerview');
+                var global = document.getElementById("global");
+                var scorepad = document.getElementById("scorepad");
+                var currentHeight = global.clientHeight;
+                
+                if (scorepad && scorepad.classList.contains('hidden')) 
+                {
+                    dojo.query("#scorepad").removeClass("hidden");
+                    
+                    playerviews.forEach(function(playerview) {
+                        var currentTop = playerview.offsetTop;
+                        
+                        playerview.style.top = (currentTop + 467) + "px";
+                      });
+                      global.style.height = (currentHeight + 467) + "px";
+                } 
+                
+                else 
+                {
+                    dojo.query("#scorepad").addClass("hidden");
+                    playerviews.forEach(function(playerview) {
+                        var currentTop = playerview.offsetTop;
+                        
+                        playerview.style.top = (currentTop - 487) + "px";
+                      });
+                      global.style.height = (currentHeight - 467) + "px";
+                }
+
+                
+                
 
             },
     
@@ -2561,7 +2604,7 @@ function (dojo, declare) {
                         playerviews.forEach(function(playerview) {
                             var currentTop = playerview.offsetTop;
                             
-                            playerview.style.top = (currentTop + 290) + "px";
+                            playerview.style.top = (currentTop + 300) + "px";
                         });
                         global.style.height = (currentHeight + 300) + "px";
                     } 
@@ -3139,20 +3182,22 @@ function (dojo, declare) {
     
                         dojo.query("#mask_turn").addClass("masque");
                         dojo.query("#mask_hand").addClass("masque");
+                        dojo.query("#mask_score").removeClass("hidden");
 
                         dojo.query(".scorepad").removeClass("hidden");
                         var elements = document.querySelectorAll("[id^='playerview']");
                         elements.forEach(function(element) {
-                            element.style.top = "467px"; 
+                            element.style.top = "525px"; 
                             });
 
                         var global = document.getElementById('global');
-                        global.style.height = "1476px"; 
+                        global.style.height = "1530px"; 
                     }
     
                     if(this.isSpectator)
                         { 
                             dojo.query(".turn_board").addClass("hidden");
+                            dojo.query("#mask_score").addClass("hidden");
     
                             dojo.query(".scorepad").removeClass("hidden");
                             var elements = document.querySelectorAll("[id^='playerview']");
