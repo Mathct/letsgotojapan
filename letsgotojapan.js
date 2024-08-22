@@ -1131,14 +1131,14 @@ function (dojo, declare) {
                                                 this.addActionButton( 'easy', _("Easy") ,'onOpButton', null, null, 'blue' );
                                                 var texteasy = _("Your opponent must meet the requirements of their “Highlight of the Day” bonuses in order to score them. It does not use Train tokens.");
                                                 var htmleasy = '<div class="toolt"><div class="infotoolt">'+this.format_block('jstpl_infotool',{text: texteasy})+'</div></div>';
-                                                this.addTooltipHtml( 'easy', htmleasy,1000);
+                                                this.addTooltipHtml( 'easy', htmleasy,500);
                                             }
                                         if(args[this.getCurrentPlayerId()][0].buttons[nb] == "normal")
                                             {
                                                 this.addActionButton( 'normal', _("Normal") ,'onOpButton', null, null, 'gray' );
                                                 var textnormal = _("Your opponent always scores all his “Highlights of the Day”. It does not use Train tokens.");
                                                 var htmlnormal = '<div class="toolt"><div class="infotoolt">'+this.format_block('jstpl_infotool',{text: textnormal})+'</div></div>';
-                                                this.addTooltipHtml( 'normal', htmlnormal,1000);
+                                                this.addTooltipHtml( 'normal', htmlnormal,500);
                                             }
                 
                                         if(args[this.getCurrentPlayerId()][0].buttons[nb] == "difficult")
@@ -1146,7 +1146,7 @@ function (dojo, declare) {
                                                 this.addActionButton( 'difficult', _("Difficult") ,'onOpButton', null, null, 'red' );
                                                 var textdifficult = _("Your opponent always scores all his “Highlights of the Day” and places a Luxury Train token each time he travels.");
                                                 var htmldifficult = '<div class="toolt"><div class="infotoolt">'+this.format_block('jstpl_infotool',{text: textdifficult})+'</div></div>';
-                                                this.addTooltipHtml( 'difficult', htmldifficult,1000);
+                                                this.addTooltipHtml( 'difficult', htmldifficult,500);
                                             }
                     
                     
