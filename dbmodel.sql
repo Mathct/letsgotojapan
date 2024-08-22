@@ -82,6 +82,25 @@ CREATE TABLE IF NOT EXISTS `tokens` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
+CREATE TABLE IF NOT EXISTS `agent` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NULL,
+  `smile` int(2) DEFAULT 0,
+  `happy` int(2) unsigned DEFAULT 0,
+  `angry` int(2) unsigned DEFAULT 0,
+  `r` int(2) unsigned DEFAULT 2,
+  `g` int(2) unsigned DEFAULT 2,
+  `p` int(2) unsigned DEFAULT 2,
+  `y` int(2) unsigned DEFAULT 2,
+  `b` int(2) unsigned DEFAULT 2,
+  `happy1` int(2) unsigned DEFAULT 0,
+  `happy2` int(2) unsigned DEFAULT 0,
+  `angry1` int(2) unsigned DEFAULT 0,
+  `angry2` int(2) unsigned DEFAULT 0,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+
 ALTER TABLE `player` ADD `smile` int(2) DEFAULT 0;
 ALTER TABLE `player` ADD `happy` int(2) unsigned DEFAULT 0;
 ALTER TABLE `player` ADD `angry` int(2) unsigned DEFAULT 0;
@@ -120,3 +139,4 @@ ALTER TABLE `player` ADD `mercredicheck` int(2) unsigned DEFAULT 0;
 ALTER TABLE `player` ADD `jeudicheck` int(2) unsigned DEFAULT 0;
 ALTER TABLE `player` ADD `vendredicheck` int(2) unsigned DEFAULT 0;
 ALTER TABLE `player` ADD `samedicheck` int(2) unsigned DEFAULT 0;
+ALTER TABLE `player` ADD `sololvl` int(2) unsigned DEFAULT 0;

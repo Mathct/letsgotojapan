@@ -329,6 +329,157 @@
             </div>
         </div>
         <!-- END player -->
+
+
+
+    <div id="playerview_agent" class="playerview_agent hidden">
+            <div id="nameplayer_agent" class="nameplayer" style="color:#f285a1; outline: 0.5px solid #f285a1;"><div class="left"><<<&nbsp;&nbsp;&nbsp;</div><span style="font-weight: bold;">{AGENT}</span><div class="right">&nbsp;&nbsp;&nbsp;>>></div></div>
+            <div id="playerboard_agent" class="playerboard_agent">
+
+                <div id="smileposition_-3_0" class="smileposition" style="top: 10.4%; left: 36.1%;"></div>
+                <div id="smileposition_-2_0" class="smileposition" style="top: 10.4%; left: 39.6%;"></div>
+                <div id="smileposition_-1_0" class="smileposition" style="top: 10.4%; left: 43.3%;"></div>
+                <div id="smileposition_0_0" class="smileposition" style="top: 10.4%; left: 47.3%;"></div>
+                <div id="smileposition_1_0" class="smileposition" style="top: 10.4%; left: 51.3%;"></div>
+                <div id="smileposition_2_0" class="smileposition" style="top: 10.4%; left: 55%;"></div>
+                <div id="smileposition_3_0" class="smileposition" style="top: 10.4%; left: 58.7%;"></div>
+
+                <div id="happyposition_0_0" class="smileposition" style="top: 26.2%; left: 49.7%;"></div>
+                <div id="happyposition_1_0" class="smileposition" style="top: 26.2%; left: 52.8%;"></div>
+                <div id="happyposition_2_0" class="smileposition" style="top: 26.2%; left: 56%;"></div>
+                <div id="happyposition_3_0" class="smileposition" style="top: 26.2%; left: 59.2%;"></div>
+
+                <div id="angryposition_0_0" class="smileposition" style="top: 26.2%; left: 35.8%;"></div>
+                <div id="angryposition_1_0" class="smileposition" style="top: 26.2%; left: 38.9%;"></div>
+                <div id="angryposition_2_0" class="smileposition" style="top: 26.2%; left: 42.1%;"></div>
+                <div id="angryposition_3_0" class="smileposition" style="top: 26.2%; left: 45.2%;"></div>
+
+                <div id="tokenjourposition_1_0" class="tokenjourposition" style="top: 85.5%; left: 1.2%;"></div>
+                <div id="tokenjourposition_2_0" class="tokenjourposition" style="top: 85.5%; left: 16.4%;"></div>
+                <div id="tokenjourposition_3_0" class="tokenjourposition" style="top: 85.5%; left: 33.3%;"></div>
+                <div id="tokenjourposition_4_0" class="tokenjourposition" style="top: 85.5%; left: 50.5%;"></div>
+                <div id="tokenjourposition_5_0" class="tokenjourposition" style="top: 85.5%; left: 66.7%;"></div>
+                <div id="tokenjourposition_6_0" class="tokenjourposition" style="top: 85.5%; left: 83.8%;"></div>
+
+                <div id="cardposition_1_1_0"class="cardposition" style="top: 101%; left: 2.3%;"></div>
+                <div id="cardposition_1_2_0"class="cardposition" style="top: 115%; left: 2.3%;"></div>
+                <div id="cardposition_1_3_0"class="cardposition" style="top: 129%; left: 2.3%;"></div>
+                
+                <div id="cardposition_2_1_0"class="cardposition" style="top: 101%; left: 19.2%;"></div>
+                <div id="cardposition_2_2_0"class="cardposition" style="top: 115%; left: 19.2%;"></div>
+                <div id="cardposition_2_3_0"class="cardposition" style="top: 129%; left: 19.2%;"></div>
+                
+                <div id="cardposition_3_1_0"class="cardposition" style="top: 101%; left: 35.9%;"></div>
+                <div id="cardposition_3_2_0"class="cardposition" style="top: 115%; left: 35.9%;"></div>
+                <div id="cardposition_3_3_0"class="cardposition" style="top: 129%; left: 35.9%;"></div>
+               
+
+                <div id="cardposition_4_1_0"class="cardposition" style="top: 101%; left: 52.7%;"></div>
+                <div id="cardposition_4_2_0"class="cardposition" style="top: 115%; left: 52.7%;"></div>
+                <div id="cardposition_4_3_0"class="cardposition" style="top: 129%; left: 52.7%;"></div>
+                
+
+                <div id="cardposition_5_1_0"class="cardposition" style="top: 101%; left: 69.4%;"></div>
+                <div id="cardposition_5_2_0"class="cardposition" style="top: 115%; left: 69.4%;"></div>
+                <div id="cardposition_5_3_0"class="cardposition" style="top: 129%; left: 69.4%;"></div>
+                
+
+                <div id="cardposition_6_1_0"class="cardposition" style="top: 101%; left: 86.2%;"></div>
+                <div id="cardposition_6_2_0"class="cardposition" style="top: 115%; left: 86.2%;"></div>
+                <div id="cardposition_6_3_0"class="cardposition" style="top: 129%; left: 86.2%;"></div>
+                
+                
+                <div id="marqueurposition_0_1_0"class="marqueurposition" style="top: 47.7%; left: 0.5%;"></div>
+                <div id="marqueurposition_0_2_0"class="marqueurposition" style="top: 47.7%; left: 5.5%;"></div>
+                <div id="marqueurposition_0_3_0"class="marqueurposition" style="top: 59.8%; left: 0.5%;"></div>
+                <div id="marqueurposition_0_4_0"class="marqueurposition" style="top: 59.8%; left: 5.5%;"></div>
+                <div id="marqueurposition_0_5_0"class="marqueurposition" style="top: 54.1%; left: 3%;"></div>
+
+                <div id="marqueurposition_1_1_0"class="marqueurposition" style="top: 47.7%; left: 11.1%;"></div>
+                <div id="marqueurposition_1_2_0"class="marqueurposition" style="top: 47.7%; left: 16.1%;"></div>
+                <div id="marqueurposition_1_3_0"class="marqueurposition" style="top: 59.8%; left: 11.1%;"></div>
+                <div id="marqueurposition_1_4_0"class="marqueurposition" style="top: 59.8%; left: 16.1%;"></div>
+                <div id="marqueurposition_1_5_0"class="marqueurposition" style="top: 54.1%; left: 13.6%;"></div>
+
+                <div id="marqueurposition_2_1_0"class="marqueurposition" style="top: 47.7%; left: 20.6%;"></div>
+                <div id="marqueurposition_2_2_0"class="marqueurposition" style="top: 47.7%; left: 25.6%;"></div>
+                <div id="marqueurposition_2_3_0"class="marqueurposition" style="top: 59.8%; left: 20.6%;"></div>
+                <div id="marqueurposition_2_4_0"class="marqueurposition" style="top: 59.8%; left: 25.6%;"></div>
+                <div id="marqueurposition_2_5_0"class="marqueurposition" style="top: 54.1%; left: 23.1%;"></div>
+
+                <div id="marqueurposition_3_1_0"class="marqueurposition" style="top: 47.7%; left: 29.9%;"></div>
+                <div id="marqueurposition_3_2_0"class="marqueurposition" style="top: 47.7%; left: 34.9%;"></div>
+                <div id="marqueurposition_3_3_0"class="marqueurposition" style="top: 59.8%; left: 29.9%;"></div>
+                <div id="marqueurposition_3_4_0"class="marqueurposition" style="top: 59.8%; left: 34.9%;"></div>
+                <div id="marqueurposition_3_5_0"class="marqueurposition" style="top: 54.1%; left: 32.4%;"></div>
+
+                <div id="marqueurposition_4_1_0"class="marqueurposition" style="top: 59.1%; left: 39.3%;"></div>
+                <div id="marqueurposition_4_2_0"class="marqueurposition" style="top: 59.1%; left: 42.3%;"></div>
+                <div id="marqueurposition_4_3_0"class="marqueurposition" style="top: 66.3%; left: 41.2%;"></div>
+                <div id="marqueurposition_4_4_0"class="marqueurposition" style="top: 53.9%; left: 41.2%;"></div>
+                <div id="marqueurposition_4_5_0"class="marqueurposition" style="top: 66.3%; left: 42.3%;"></div>
+
+                <div id="marqueurposition_5_1_0"class="marqueurposition" style="top: 59.1%; left: 46.2%;"></div>
+                <div id="marqueurposition_5_2_0"class="marqueurposition" style="top: 59.1%; left: 49.3%;"></div>
+                <div id="marqueurposition_5_3_0"class="marqueurposition" style="top: 66.3%; left: 48.1%;"></div>
+                <div id="marqueurposition_5_4_0"class="marqueurposition" style="top: 53.9%; left: 49.1%;"></div>
+                <div id="marqueurposition_5_5_0"class="marqueurposition" style="top: 66.3%; left: 49.3%;"></div>
+
+                <div id="marqueurposition_6_1_0"class="marqueurposition" style="top: 59.1%; left: 52.9%;"></div> 
+                <div id="marqueurposition_6_2_0"class="marqueurposition" style="top: 59.1%; left: 56%;"></div>
+                <div id="marqueurposition_6_3_0"class="marqueurposition" style="top: 66.3%; left: 54.8%;"></div>
+                <div id="marqueurposition_6_4_0"class="marqueurposition" style="top: 53.9%; left: 55.8%;"></div>
+                <div id="marqueurposition_6_5_0"class="marqueurposition" style="top: 66.3%; left: 56%;"></div>
+
+                <div id="marqueurposition_7_1_0"class="marqueurposition" style="top: 59.1%; left: 59.8%;"></div>
+                <div id="marqueurposition_7_2_0"class="marqueurposition" style="top: 59.1%; left: 62.9%;"></div>
+                <div id="marqueurposition_7_3_0"class="marqueurposition" style="top: 66.3%; left: 61.7%;"></div>
+                <div id="marqueurposition_7_4_0"class="marqueurposition" style="top: 53.9%; left: 62.7%;"></div>
+                <div id="marqueurposition_7_5_0"class="marqueurposition" style="top: 66.3%; left: 62.9%;"></div>
+
+                <div id="marqueurposition_8_1_0"class="marqueurposition" style="top: 59.1%; left: 66.6%;"></div>
+                <div id="marqueurposition_8_2_0"class="marqueurposition" style="top: 59.1%; left: 69.7%;"></div>
+                <div id="marqueurposition_8_3_0"class="marqueurposition" style="top: 66.3%; left: 68.5%;"></div>
+                <div id="marqueurposition_8_4_0"class="marqueurposition" style="top: 53.9%; left: 69.5%;"></div>
+                <div id="marqueurposition_8_5_0"class="marqueurposition" style="top: 66.3%; left: 69.7%;"></div>
+
+                <div id="marqueurposition_9_1_0"class="marqueurposition" style="top: 59.1%; left: 73.3%;"></div>
+                <div id="marqueurposition_9_2_0"class="marqueurposition" style="top: 59.1%; left: 76.4%;"></div>
+                <div id="marqueurposition_9_3_0"class="marqueurposition" style="top: 66.3%; left: 75.2%;"></div>
+                <div id="marqueurposition_9_4_0"class="marqueurposition" style="top: 53.9%; left: 76.2%;"></div>
+                <div id="marqueurposition_9_5_0"class="marqueurposition" style="top: 66.3%; left: 76.4%;"></div>
+
+                <div id="marqueurposition_10_1_0"class="marqueurposition" style="top: 59.1%; left: 80.1%;"></div>
+                <div id="marqueurposition_10_2_0"class="marqueurposition" style="top: 59.1%; left: 83.2%;"></div>
+                <div id="marqueurposition_10_3_0"class="marqueurposition" style="top: 66.3%; left: 82%;"></div>
+                <div id="marqueurposition_10_4_0"class="marqueurposition" style="top: 53.9%; left: 83%;"></div>
+                <div id="marqueurposition_10_5_0"class="marqueurposition" style="top: 66.3%; left: 83.2%;"></div>
+
+                <div id="marqueurposition_11_1_0"class="marqueurposition" style="top: 59.1%; left: 86.9%;"></div>
+                <div id="marqueurposition_11_2_0"class="marqueurposition" style="top: 59.1%; left: 90%;"></div>
+                <div id="marqueurposition_11_3_0"class="marqueurposition" style="top: 66.3%; left: 88.8%;"></div>
+                <div id="marqueurposition_11_4_0"class="marqueurposition" style="top: 53.9%; left: 89.8%;"></div>
+                <div id="marqueurposition_11_5_0"class="marqueurposition" style="top: 66.3%; left: 90%;"></div>
+
+                <div id="marqueurposition_12_1_0"class="marqueurposition" style="top: 59.1%; left: 93.8%;"></div>
+                <div id="marqueurposition_12_2_0"class="marqueurposition" style="top: 59.1%; left: 96.1%;"></div>
+                <div id="marqueurposition_12_3_0"class="marqueurposition" style="top: 66.3%; left: 95%;"></div>
+                <div id="marqueurposition_12_4_0"class="marqueurposition" style="top: 53.9%; left: 96.1%;"></div>
+                <div id="marqueurposition_12_5_0"class="marqueurposition" style="top: 66.3%; left: 96.2%;"></div>
+
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+
+
+
     
 </div>
 
@@ -378,6 +529,7 @@ var jstpl_tokyowalktool='<div class="tokyowalktool"></div>';
 var jstpl_kyotowalktool='<div class="kyotowalktool"></div>';
 var jstpl_kyotowalktool='<div class="kyotowalktool"></div>';
 var jstpl_infotool='<div class="infotexttoolt"><div style="text-align: center;">${text}</div></div>';
+var jstpl_avataragent='<div id="avataragent" class="avataragent"></div>';
 
 </script>  
 

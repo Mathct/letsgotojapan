@@ -112,7 +112,8 @@ function (dojo, declare) {
                     }
 
 
-
+                if (gamedatas.countplayers >= 2)
+                {
                 for( var player_id in gamedatas.players )   
                 {
                                         
@@ -126,6 +127,7 @@ function (dojo, declare) {
                     var elementScore = player_board_div.querySelector(".player_score");
                     dojo.place(this.format_block('jstpl_eye', {id: player_id }), elementScore);
   
+                }
                 }
 
                 
@@ -141,7 +143,7 @@ function (dojo, declare) {
                         
                     }
 
-                if(this.isSpectator)
+                if((this.isSpectator)&&(gamedatas.countplayers >= 2))
                     {
                         var player = gamedatas.listplayers[0];
                         dojo.query("#playerview_"+player).removeClass("masque");
@@ -195,7 +197,7 @@ function (dojo, declare) {
 
                 this.addTurn(gamedatas.turn);
 
-                if ((gamedatas.turn >= 14)&&(!this.isSpectator))
+                if ((gamedatas.turn >= 14)&&(!this.isSpectator)&&(gamedatas.countplayers >=2))
                 {
                     
 
@@ -210,7 +212,7 @@ function (dojo, declare) {
 
                 }
 
-                if ((gamedatas.turn >= 15)&&(!this.isSpectator))
+                if ((gamedatas.turn >= 15)&&(!this.isSpectator)&&(gamedatas.countplayers >= 2))
                     {
                         
                         dojo.query(".scorepad").removeClass("hidden");
@@ -481,6 +483,16 @@ function (dojo, declare) {
                                 var container = document.getElementById('scorename_'+num);                         
                                 container.appendChild(newImage);
                                 this.addTooltipHtml( 'newavatar_'+player_id, gamedatas.name[player_id],'' );
+
+                                if (gamedatas.countplayers == 1)
+                                {
+                                    dojo.place( this.format_block( 'jstpl_avataragent', {
+                                                                                                    
+                                    } ) , 'scorename_2' );
+
+                                    this.addTooltipHtml( 'avataragent', 'Travel Agent','' );
+
+                                }
                             }
                 
 
@@ -512,9 +524,140 @@ function (dojo, declare) {
                 }
 
 
+                ////////////////////// MODE SOLO ////////////////////
+
+                if (gamedatas.countplayers == 1)
+                {
+                    dojo.query(".left").addClass("hidden");
+                    dojo.query(".right").addClass("hidden");
+                    dojo.query("#playerview_agent").removeClass("hidden");
+
+                    var global = document.getElementById('global');
+                    global.style.height = "2270px"; 
 
 
-                
+                    for( var jour in gamedatas.tokenjour)
+                    {
+                        var tokenjour = gamedatas.tokenjour[jour];
+
+                        this.addTokenJour(tokenjour.name, tokenjour.level, 0);
+                        
+                    }
+
+
+                    var r = gamedatas.r[0];
+                    var g = gamedatas.g[0];
+                    var p = gamedatas.p[0];
+                    var y = gamedatas.y[0];
+                    var b = gamedatas.b[0];
+
+                    this.addMarqueur(r, g, p, y, b, 0);
+
+                    var smile = gamedatas.smile[0];
+                    var happy = gamedatas.happy[0];
+                    var angry = gamedatas.angry[0];
+                    var color = gamedatas.color[0];
+                    
+                    this.addHappy(smile, happy, angry, 0, 'f285a1');
+
+
+                    if(this.isSpectator)
+                    {
+                        var player = gamedatas.listplayers[0];
+                        dojo.query("#playerview_"+player).removeClass("masque");
+                        dojo.query("#mask_turn").addClass("masque");
+                        dojo.query("#mask_hand").addClass("masque");
+                        dojo.query("#mask_score").addClass("hidden");
+
+                    }
+
+
+                    if (gamedatas.turn == 14)
+                        {
+                            
+        
+                            this.addMaskTurn();
+                            this.addMaskHand();
+                            this.addSolo();
+        
+                            dojo.query("#mask_turn").addClass("masque");
+                            dojo.query("#mask_hand").addClass("masque");
+        
+        
+        
+        
+                        }
+
+                    if ((gamedatas.turn >= 15)&&(!this.isSpectator))
+                        {
+                            
+        
+                            this.addMaskTurn();
+                            this.addMaskHand();
+                            this.addSolo();
+        
+                            dojo.query("#mask_turn").addClass("masque");
+                            dojo.query("#mask_hand").addClass("masque");
+                            dojo.query("#mask_score").removeClass("hidden");
+                            dojo.query(".scorepad").removeClass("hidden");
+
+                            var playerview = document.querySelector('.playerview');
+                            playerview.style.top = "525px"; 
+
+                            var agent = document.querySelector('.playerview_agent');
+                            agent.style.top = "1380px"; 
+    
+                            var global = document.getElementById('global');
+                            global.style.height = "2180px";
+        
+        
+        
+        
+                        }
+
+                    if ((gamedatas.turn >= 15)&&(this.isSpectator))
+                        {
+                            
+        
+                            this.addMaskTurn();
+                            this.addMaskHand();
+                            this.addSolo();
+        
+                            dojo.query("#mask_turn").addClass("masque");
+                            dojo.query("#mask_hand").addClass("masque");
+                            dojo.query(".scorepad").removeClass("hidden");
+
+                            var playerview = document.querySelector('.playerview');
+                            playerview.style.top = "470px"; 
+
+                            var agent = document.querySelector('.playerview_agent');
+                            agent.style.top = "1325px"; 
+    
+                            var global = document.getElementById('global');
+                            global.style.height = "2125px";
+        
+        
+        
+        
+                        }
+
+
+
+                }
+
+
+
+
+
+
+
+                ////////////////////// FIN DE MODE SOLO ////////////////////
+
+
+
+
+
+
      
                 // Setup game notifications to handle (see "setupNotifications" method below)
                 this.setupNotifications();
@@ -982,6 +1125,30 @@ function (dojo, declare) {
                                             {
                                                 this.addActionButton( 'blue', `<div class="blue"></div>` ,'onOpButton', null, null, 'none' );
                                             }
+
+                                        if(args[this.getCurrentPlayerId()][0].buttons[nb] == "easy")
+                                            {
+                                                this.addActionButton( 'easy', _("Easy") ,'onOpButton', null, null, 'blue' );
+                                                var texteasy = _("Your opponent must meet the requirements of their “Highlight of the Day” bonuses in order to score them. It does not use Train tokens.");
+                                                var htmleasy = '<div class="toolt"><div class="infotoolt">'+this.format_block('jstpl_infotool',{text: texteasy})+'</div></div>';
+                                                this.addTooltipHtml( 'easy', htmleasy,1000);
+                                            }
+                                        if(args[this.getCurrentPlayerId()][0].buttons[nb] == "normal")
+                                            {
+                                                this.addActionButton( 'normal', _("Normal") ,'onOpButton', null, null, 'gray' );
+                                                var textnormal = _("Your opponent always scores all his “Highlights of the Day”. It does not use Train tokens.");
+                                                var htmlnormal = '<div class="toolt"><div class="infotoolt">'+this.format_block('jstpl_infotool',{text: textnormal})+'</div></div>';
+                                                this.addTooltipHtml( 'normal', htmlnormal,1000);
+                                            }
+                
+                                        if(args[this.getCurrentPlayerId()][0].buttons[nb] == "difficult")
+                                            {
+                                                this.addActionButton( 'difficult', _("Difficult") ,'onOpButton', null, null, 'red' );
+                                                var textdifficult = _("Your opponent always scores all his “Highlights of the Day” and places a Luxury Train token each time he travels.");
+                                                var htmldifficult = '<div class="toolt"><div class="infotoolt">'+this.format_block('jstpl_infotool',{text: textdifficult})+'</div></div>';
+                                                this.addTooltipHtml( 'difficult', htmldifficult,1000);
+                                            }
+                    
                     
                                     
                             }
@@ -1110,7 +1277,7 @@ function (dojo, declare) {
 
             addCardTokyoHand: function( id, card, ville, location, player )  
             {
-                if (player == this.getCurrentPlayerId())
+                if ((player == this.getCurrentPlayerId())||(this.gamedatas.countplayers == 1))
                 {
 
                     if((card>=1)&&(card <= 10))
@@ -1272,7 +1439,7 @@ function (dojo, declare) {
 
             addCardKyotoHand: function( id, card, ville, location, player )  
             {
-                if (player == this.getCurrentPlayerId())
+                if ((player == this.getCurrentPlayerId())||(this.gamedatas.countplayers == 1))
                 {
     
                     if((card>=1)&&(card <= 10))
@@ -1897,7 +2064,8 @@ function (dojo, declare) {
             {        	 
                 
                 
-
+            if (this.gamedatas.countplayers[0]>1)
+            {
                 const element = document.querySelector('.turn_board');
                 const element2 = document.querySelector('.playerhandtitle');
                 const element3 = document.querySelector('.playerhand');
@@ -1907,7 +2075,6 @@ function (dojo, declare) {
                 
                 if (element && element.classList.contains('hidden')) 
                 {
-                    
                     
                 } 
 
@@ -1925,6 +2092,43 @@ function (dojo, declare) {
                       });
                       global.style.height = (currentHeight - 150) + "px";
                 }
+            }
+
+            if (this.gamedatas.countplayers[0]==1)
+            {
+                
+                const element = document.querySelector('.turn_board');
+                const element2 = document.querySelector('.playerhandtitle');
+                const element3 = document.querySelector('.playerhand');
+                const element4 = document.querySelector('.playerview_agent');
+                var playerviews = document.querySelectorAll('.playerview');
+                var global = document.getElementById("global");
+                var currentHeight = global.clientHeight;
+                
+                if (element && element.classList.contains('hidden')) 
+                {
+                                        
+                } 
+
+                else 
+                {
+                    dojo.query(".turn_board").addClass("hidden");
+                    
+                    element2.style.top = "15px";
+                    element3.style.top = "43px";
+                    
+                        playerviews.forEach(function(playerview) {
+                        var currentTop = playerview.offsetTop;
+                        
+                        playerview.style.top = (currentTop - 155) + "px";
+                        });
+                        global.style.height = (currentHeight - 150) + "px";
+
+                        var currentTopsolo = element4.offsetTop;
+                        element4.style.top = (currentTopsolo -155) + "px";
+                }
+
+            }
    
 
             },
@@ -1932,7 +2136,8 @@ function (dojo, declare) {
             addMaskHand: function()
             {        	 
                 
-
+            if (this.gamedatas.countplayers[0]>1)
+            {
                 const element = document.querySelector('.playerhand');
                 var playerviews = document.querySelectorAll('.playerview');
                 var global = document.getElementById("global");
@@ -1950,13 +2155,58 @@ function (dojo, declare) {
                     playerviews.forEach(function(playerview) {
                         var currentTop = playerview.offsetTop;
                         
-                        playerview.style.top = (currentTop - 310) + "px";
+                        playerview.style.top = (currentTop - 320) + "px";
                       });
                       global.style.height = (currentHeight - 300) + "px";
+                }
+            }
+
+            if (this.gamedatas.countplayers[0]==1)
+                {
+                const element = document.querySelector('.playerhand');
+                var playerviews = document.querySelectorAll('.playerview');
+                const element4 = document.querySelector('.playerview_agent');
+                var global = document.getElementById("global");
+                var currentHeight = global.clientHeight;
+                
+                if (element && element.classList.contains('hidden')) 
+                {
+                    
+                } 
+                
+                else 
+                {
+                    dojo.query(".playerhand").addClass("hidden");
+                    dojo.query(".playerhandtitle").addClass("hidden");
+                    playerviews.forEach(function(playerview) {
+                        var currentTop = playerview.offsetTop;
+                        
+                        playerview.style.top = (currentTop - 320) + "px";
+                        });
+                        global.style.height = (currentHeight - 300) + "px";
+
+                        var currentTopsolo = element4.offsetTop;
+                      element4.style.top = (currentTopsolo -320) + "px";
+                }
                 }
 
                 
                 
+
+            },
+
+            addSolo: function()
+            {     
+                
+                var agent = document.querySelector('.playerview_agent');
+                var global = document.getElementById("global"); 
+
+                var currentglobal = global.clientHeight;
+                var currentagent = agent.offsetTop;
+
+                agent.style.top = (currentagent -160) + "px";
+                global.style.height = (currentglobal - 150) + "px";
+               
 
             },
 
@@ -2343,10 +2593,14 @@ function (dojo, declare) {
             },
 
             onMaskTurn: function(evt)
-            {        	 
+            {  
                 // Preventing default browser reaction
                 dojo.stopEvent( evt );
 
+
+                if (this.gamedatas.countplayers[0]>1)
+                {
+                
                 const element = document.querySelector('.turn_board');
                 const element2 = document.querySelector('.playerhandtitle');
                 const element3 = document.querySelector('.playerhand');
@@ -2385,15 +2639,70 @@ function (dojo, declare) {
                       });
                       global.style.height = (currentHeight - 150) + "px";
                 }
+            }
+
+            if (this.gamedatas.countplayers[0]==1)
+                {
+                
+                const element = document.querySelector('.turn_board');
+                const element2 = document.querySelector('.playerhandtitle');
+                const element3 = document.querySelector('.playerhand');
+                const element4 = document.querySelector('.playerview_agent');
+                var playerviews = document.querySelectorAll('.playerview');
+                var global = document.getElementById("global");
+                var currentHeight = global.clientHeight;
+                
+                if (element && element.classList.contains('hidden')) 
+                {
+                    dojo.query(".turn_board").removeClass("hidden");
+
+                    element2.style.top = "162px";
+                    element3.style.top = "190px";
+
+
+                    playerviews.forEach(function(playerview) {
+                        var currentTop = playerview.offsetTop;
+                        
+                        playerview.style.top = (currentTop + 135) + "px";
+                      });
+                      global.style.height = (currentHeight + 150) + "px";
+
+                      var currentTopsolo = element4.offsetTop;
+                      element4.style.top = (currentTopsolo +135) + "px";
+                    
+                } 
+
+                else 
+                {
+                    dojo.query(".turn_board").addClass("hidden");
+                    
+                    element2.style.top = "15px";
+                    element3.style.top = "43px";
+                    
+                        playerviews.forEach(function(playerview) {
+                        var currentTop = playerview.offsetTop;
+                        
+                        playerview.style.top = (currentTop - 155) + "px";
+                      });
+                      global.style.height = (currentHeight - 150) + "px";
+
+                      var currentTopsolo = element4.offsetTop;
+                      element4.style.top = (currentTopsolo -155) + "px";
+                }
+            }
+
    
 
             },
 
             onMaskHand: function(evt)
-            {        	 
+            {   
+                     	 
                 // Preventing default browser reaction
                 dojo.stopEvent( evt );
 
+                if (this.gamedatas.countplayers[0]>1)
+                {
                 const element = document.querySelector('.playerhand');
                 var playerviews = document.querySelectorAll('.playerview');
                 var global = document.getElementById("global");
@@ -2422,7 +2731,46 @@ function (dojo, declare) {
                       });
                       global.style.height = (currentHeight - 300) + "px";
                 }
+                }
 
+                if (this.gamedatas.countplayers[0]==1)
+                {
+                const element = document.querySelector('.playerhand');
+                var playerviews = document.querySelectorAll('.playerview');
+                const element4 = document.querySelector('.playerview_agent');
+                var global = document.getElementById("global");
+                var currentHeight = global.clientHeight;
+                
+                if (element && element.classList.contains('hidden')) 
+                {
+                    dojo.query(".playerhand").removeClass("hidden");
+                    dojo.query(".playerhandtitle").removeClass("hidden");
+                    playerviews.forEach(function(playerview) {
+                        var currentTop = playerview.offsetTop;
+                        
+                        playerview.style.top = (currentTop + 300) + "px";
+                        });
+                        global.style.height = (currentHeight + 300) + "px";
+
+                        var currentTopsolo = element4.offsetTop;
+                        element4.style.top = (currentTopsolo +300) + "px";
+                } 
+                
+                else 
+                {
+                    dojo.query(".playerhand").addClass("hidden");
+                    dojo.query(".playerhandtitle").addClass("hidden");
+                    playerviews.forEach(function(playerview) {
+                        var currentTop = playerview.offsetTop;
+                        
+                        playerview.style.top = (currentTop - 320) + "px";
+                        });
+                        global.style.height = (currentHeight - 300) + "px";
+
+                        var currentTopsolo = element4.offsetTop;
+                      element4.style.top = (currentTopsolo -320) + "px";
+                }
+                }
                 
                 
 
@@ -2455,7 +2803,9 @@ function (dojo, declare) {
             {        	 
                 // Preventing default browser reaction
                 dojo.stopEvent( evt );
-
+                
+                if(this.gamedatas.countplayers >= 2)
+                {
                 var playerviews = document.querySelectorAll('.playerview');
                 var global = document.getElementById("global");
                 var scorepad = document.getElementById("scorepad");
@@ -2483,6 +2833,33 @@ function (dojo, declare) {
                       });
                       global.style.height = (currentHeight - 467) + "px";
                 }
+                }
+
+
+                if(this.gamedatas.countplayers == 1)
+                    {
+                    var playerview = document.querySelector('.playerview');
+                    var agent = document.querySelector('.playerview_agent');
+                    var global = document.getElementById('global');
+                    var scorepad = document.getElementById("scorepad");
+                    
+                    if (scorepad && scorepad.classList.contains('hidden')) 
+                    {
+                        dojo.query("#scorepad").removeClass("hidden");
+                        playerview.style.top = "525px"; 
+                        agent.style.top = "1380px"; 
+                        global.style.height = "2180px"; 
+                    } 
+                    
+                    else 
+                    {
+                        dojo.query("#scorepad").addClass("hidden");
+                        playerview.style.top = "45px"; 
+                        agent.style.top = "900px"; 
+                        global.style.height = "1700px"; 
+
+                    }
+                    }
 
                 
                 
@@ -2532,6 +2909,7 @@ function (dojo, declare) {
                 dojo.subscribe( 'discard', this, "notif_discard" );
                 dojo.subscribe( 'addwalk', this, "notif_addwalk" );
                 dojo.subscribe( 'masque', this, "notif_masque" );
+                dojo.subscribe( 'masquesolo', this, "notif_masquesolo" );
                 dojo.subscribe( 'finallocation', this, "notif_finallocation" );
                 dojo.subscribe( 'changecard', this, "notif_changecard" );
                 dojo.subscribe( 'finalwalk', this, "notif_finalwalk" );
@@ -2588,17 +2966,37 @@ function (dojo, declare) {
 
             },
 
+            notif_masquesolo: function( notif )
+            {
+                
+                    this.addMaskTurn();
+                    this.addMaskHand();
+                    this.addSolo();
+
+                    dojo.query("#mask_turn").addClass("masque");
+                    dojo.query("#mask_hand").addClass("masque");
+                
+
+                
+
+
+            },
+
             notif_affichehand: function( notif )
             {
                 if(!this.isSpectator)
                 { 
                     const element = document.querySelector('.playerhand');
-                    var playerviews = document.querySelectorAll('.playerview');
-                    var global = document.getElementById("global");
-                    var currentHeight = global.clientHeight;
+                    
                 
                     if (element && element.classList.contains('hidden')) 
                     {
+                        if (this.gamedatas.countplayers[0]>1)
+                        {
+                            var playerviews = document.querySelectorAll('.playerview');
+                            var global = document.getElementById("global");
+                            var currentHeight = global.clientHeight;
+
                         dojo.query(".playerhand").removeClass("hidden");
                         dojo.query(".playerhandtitle").removeClass("hidden");
                         playerviews.forEach(function(playerview) {
@@ -2607,6 +3005,30 @@ function (dojo, declare) {
                             playerview.style.top = (currentTop + 300) + "px";
                         });
                         global.style.height = (currentHeight + 300) + "px";
+                        }
+
+                        if (this.gamedatas.countplayers[0] == 1)
+                        {
+                            var playerviews = document.querySelectorAll('.playerview');
+                            const element4 = document.querySelector('.playerview_agent');
+                            var global = document.getElementById("global");
+                            var currentHeight = global.clientHeight;
+
+                            dojo.query(".playerhand").removeClass("hidden");
+                            dojo.query(".playerhandtitle").removeClass("hidden");
+                            playerviews.forEach(function(playerview) {
+                            var currentTop = playerview.offsetTop;
+                        
+                            playerview.style.top = (currentTop + 300) + "px";
+                            });
+                            global.style.height = (currentHeight + 300) + "px";
+
+                            var currentTopsolo = element4.offsetTop;
+                            element4.style.top = (currentTopsolo +300) + "px";
+                        
+                        }
+
+
                     } 
                     
                 }
@@ -2633,18 +3055,20 @@ function (dojo, declare) {
             
             notif_movecard: function( notif )
             {
-                if(notif.args.playerid == this.getCurrentPlayerId())
+                if ((notif.args.playerid == this.getCurrentPlayerId())||(this.gamedatas.countplayers == 1)) 
                     {
                         this.notifqueue.setSynchronousDuration(500);
                     }
     
-                    if(notif.args.playerid != this.getCurrentPlayerId())
+                if ((notif.args.playerid != this.getCurrentPlayerId())&&(this.gamedatas.countplayers >= 2)) 
                     {
                         this.notifqueue.setSynchronousDuration(0);
                     }
 
+                const agent = notif.args.parent.split("_");    
 
-                if (notif.args.playerid == this.getCurrentPlayerId()) 
+
+                if ((notif.args.playerid == this.getCurrentPlayerId())||(this.gamedatas.countplayers == 1))
                 {
                     this.attachToNewParentNoDestroy( notif.args.mobile, notif.args.parent );
                     this.slideToObject( notif.args.mobile, notif.args.parent ).play();
@@ -2652,7 +3076,9 @@ function (dojo, declare) {
                                         
                 }
 
-                if (notif.args.playerid != this.getCurrentPlayerId()) 
+                  
+
+                if ((notif.args.playerid != this.getCurrentPlayerId())&&(this.gamedatas.countplayers >= 2))
                 {
                     if(notif.args.ville == 1)
                     {
@@ -2664,8 +3090,21 @@ function (dojo, declare) {
                     }
                 }
 
-                var element = document.getElementById(notif.args.location+'_'+notif.args.playerid);
-                element.style.zIndex = "10";
+
+                if (agent[3] != 0)
+                { 
+                    var element = document.getElementById(notif.args.location+'_'+notif.args.playerid);
+                    element.style.zIndex = "10";
+
+                }
+                
+                if (agent[3] == 0)
+                {   
+    
+                      
+                    var element = document.getElementById(notif.args.location+'_0');
+                    element.style.zIndex = "10";
+                }
 
             },
 
@@ -2694,8 +3133,9 @@ function (dojo, declare) {
 
             notif_drawcard: function( notif )
             {
-                if (notif.args.playerid == this.getCurrentPlayerId()) 
+                if ((notif.args.playerid == this.getCurrentPlayerId())||(this.gamedatas.countplayers == 1)) 
                 {
+                    
                     if(notif.args.ville == 1)
                     {
                         this.addCardTokyoHand (notif.args.id, notif.args.card, notif.args.ville, notif.args.location, notif.args.playerid );
@@ -2728,6 +3168,7 @@ function (dojo, declare) {
                         
                         
                     }
+                    
                 
                     
                 }
@@ -2756,20 +3197,7 @@ function (dojo, declare) {
                 }
             },
 
-            notif_passcard: function( notif )
-            {
-                if (notif.args.playerid == this.getCurrentPlayerId()) 
-                {
-                    dojo.destroy('card_'+notif.args.ville+'_'+notif.args.id);
-                }
-
-                if (notif.args.playerid != this.getCurrentPlayerId()) 
-                {
-                    ////// A FAIRE ///////
-                }
-
-            },
-
+            
             notif_turn: function( notif )
             {
                 this.attachToNewParentNoDestroy( 'turn', 'turnboard_marqueur_'+notif.args.turn );
@@ -2778,15 +3206,15 @@ function (dojo, declare) {
 
             notif_smile: function( notif )
             {
-                if(notif.args.player == this.getCurrentPlayerId())
-                {
-                    this.notifqueue.setSynchronousDuration(500);
-                }
-
-                if(notif.args.player != this.getCurrentPlayerId())
-                {
-                    this.notifqueue.setSynchronousDuration(0);
-                }
+                if ((notif.args.playerid == this.getCurrentPlayerId())||(this.gamedatas.countplayers == 1)) 
+                    {
+                        this.notifqueue.setSynchronousDuration(500);
+                    }
+    
+                if ((notif.args.playerid != this.getCurrentPlayerId())&&(this.gamedatas.countplayers >= 2)) 
+                    {
+                        this.notifqueue.setSynchronousDuration(0);
+                    }
 
                 this.attachToNewParentNoDestroy( 'smile_'+notif.args.player, 'smileposition_'+notif.args.position+'_'+notif.args.player);
                 this.slideToObject( 'smile_'+notif.args.player, 'smileposition_'+notif.args.position+'_'+notif.args.player ).play();
@@ -2794,12 +3222,12 @@ function (dojo, declare) {
 
             notif_happy: function( notif )
             {
-                if(notif.args.player == this.getCurrentPlayerId())
+                if ((notif.args.playerid == this.getCurrentPlayerId())||(this.gamedatas.countplayers == 1)) 
                     {
                         this.notifqueue.setSynchronousDuration(500);
                     }
     
-                    if(notif.args.player != this.getCurrentPlayerId())
+                if ((notif.args.playerid != this.getCurrentPlayerId())&&(this.gamedatas.countplayers >= 2)) 
                     {
                         this.notifqueue.setSynchronousDuration(0);
                     }
@@ -2809,12 +3237,12 @@ function (dojo, declare) {
 
             notif_angry: function( notif )
             {
-                if(notif.args.player == this.getCurrentPlayerId())
+                if ((notif.args.playerid == this.getCurrentPlayerId())||(this.gamedatas.countplayers == 1)) 
                     {
                         this.notifqueue.setSynchronousDuration(500);
                     }
     
-                    if(notif.args.player != this.getCurrentPlayerId())
+                if ((notif.args.playerid != this.getCurrentPlayerId())&&(this.gamedatas.countplayers >= 2)) 
                     {
                         this.notifqueue.setSynchronousDuration(0);
                     }
@@ -3098,15 +3526,15 @@ function (dojo, declare) {
             notif_movetoken: function( notif )
             {
 
-                if(notif.args.player == this.getCurrentPlayerId())
-                {
-                    this.notifqueue.setSynchronousDuration(500);
-                }
-
-                if(notif.args.player != this.getCurrentPlayerId())
-                {
-                    this.notifqueue.setSynchronousDuration(0);
-                }
+                if ((notif.args.playerid == this.getCurrentPlayerId())||(this.gamedatas.countplayers == 1)) 
+                    {
+                        this.notifqueue.setSynchronousDuration(500);
+                    }
+    
+                if ((notif.args.playerid != this.getCurrentPlayerId())&&(this.gamedatas.countplayers >= 2)) 
+                    {
+                        this.notifqueue.setSynchronousDuration(0);
+                    }
                                 
                 
                 if(notif.args.type == 'r')
@@ -3173,13 +3601,14 @@ function (dojo, declare) {
             notif_scorepad: function( notif )
             {
 
-                
+                if(this.gamedatas.countplayers >= 2)
+                {
                 
                 if(!this.isSpectator)
                     { 
                         this.addMaskTurn();
                         this.addMaskHand();
-    
+                            
                         dojo.query("#mask_turn").addClass("masque");
                         dojo.query("#mask_hand").addClass("masque");
                         dojo.query("#mask_score").removeClass("hidden");
@@ -3208,7 +3637,54 @@ function (dojo, declare) {
                             var global = document.getElementById('global');
                             global.style.height = "1476px"; 
                         }
-                
+
+                }
+
+                if(this.gamedatas.countplayers == 1)
+                {
+                    if(!this.isSpectator)
+                        { 
+                            this.addMaskTurn();
+                            this.addMaskHand();
+                            this.addSolo();
+        
+                            dojo.query("#mask_turn").addClass("masque");
+                            dojo.query("#mask_hand").addClass("masque");
+                            dojo.query("#mask_score").removeClass("hidden");
+                            dojo.query(".scorepad").removeClass("hidden");
+
+                            var playerview = document.querySelector('.playerview');
+                            playerview.style.top = "525px"; 
+
+                            var agent = document.querySelector('.playerview_agent');
+                            agent.style.top = "1380px"; 
+    
+                            var global = document.getElementById('global');
+                            global.style.height = "2180px"; 
+                        }
+        
+                        if(this.isSpectator)
+                            { 
+                            this.addMaskTurn();
+                            this.addMaskHand();
+                            this.addSolo();
+        
+                            dojo.query("#mask_turn").addClass("masque");
+                            dojo.query("#mask_hand").addClass("masque");
+                            dojo.query(".scorepad").removeClass("hidden");
+
+                            var playerview = document.querySelector('.playerview');
+                            playerview.style.top = "470px"; 
+
+                            var agent = document.querySelector('.playerview_agent');
+                            agent.style.top = "1325px"; 
+    
+                            var global = document.getElementById('global');
+                            global.style.height = "2125px"; 
+                            }
+    
+                }
+            
                 
 
             },

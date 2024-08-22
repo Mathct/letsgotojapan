@@ -594,6 +594,7 @@ display: none;
     border-radius: 8px;
     z-index: 1;
     
+    
 
  }
 
@@ -1448,5 +1449,52 @@ display: none;
   background-size: 200% 100%;
   background-position-x: -100%;
   
+  
+}
+
+
+
+
+/* MODE SOLO */
+
+.playerboard_agent {
+       
+  background-image: url('img/players_board.jpg');
+  background-size: 100% 500%;
+  background-position-y: -400%;
+  
+  position: absolute;
+  width: 1200px;
+  height: 386px;
+  z-index: 1;
+  top: 30px;
+  left: 0;
+  
+  
+}
+
+.playerview_agent {
+  width: 1200px;
+  height: 500px;
+  position: absolute;
+  top: 1475px;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 10px;
+
+}
+
+.avataragent {
+    
+    
+  background-image: url('img/avatar.png');
+  background-size: 100% 100%;
+  height: 32px;
+  width: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+
   
 }

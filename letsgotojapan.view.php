@@ -50,6 +50,7 @@ class view_letsgotojapan_letsgotojapan extends game_view
         /*********** Place your code below:  ************/
 
         $this->tpl['HAND'] = self::_("Your Hand");
+        $this->tpl['AGENT'] = self::_("Travel Agent");
 
         if($spectator === false)
         {
