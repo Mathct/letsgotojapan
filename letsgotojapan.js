@@ -3206,12 +3206,12 @@ function (dojo, declare) {
 
             notif_smile: function( notif )
             {
-                if ((notif.args.playerid == this.getCurrentPlayerId())||(this.gamedatas.countplayers == 1)) 
+                if ((notif.args.player == this.getCurrentPlayerId())||(this.gamedatas.countplayers == 1)) 
                     {
                         this.notifqueue.setSynchronousDuration(500);
                     }
     
-                if ((notif.args.playerid != this.getCurrentPlayerId())&&(this.gamedatas.countplayers >= 2)) 
+                if ((notif.args.player != this.getCurrentPlayerId())&&(this.gamedatas.countplayers >= 2)) 
                     {
                         this.notifqueue.setSynchronousDuration(0);
                     }
@@ -3222,12 +3222,12 @@ function (dojo, declare) {
 
             notif_happy: function( notif )
             {
-                if ((notif.args.playerid == this.getCurrentPlayerId())||(this.gamedatas.countplayers == 1)) 
+                if ((notif.args.player == this.getCurrentPlayerId())||(this.gamedatas.countplayers == 1)) 
                     {
                         this.notifqueue.setSynchronousDuration(500);
                     }
     
-                if ((notif.args.playerid != this.getCurrentPlayerId())&&(this.gamedatas.countplayers >= 2)) 
+                if ((notif.args.player != this.getCurrentPlayerId())&&(this.gamedatas.countplayers >= 2)) 
                     {
                         this.notifqueue.setSynchronousDuration(0);
                     }
@@ -3237,12 +3237,12 @@ function (dojo, declare) {
 
             notif_angry: function( notif )
             {
-                if ((notif.args.playerid == this.getCurrentPlayerId())||(this.gamedatas.countplayers == 1)) 
+                if ((notif.args.player == this.getCurrentPlayerId())||(this.gamedatas.countplayers == 1)) 
                     {
                         this.notifqueue.setSynchronousDuration(500);
                     }
     
-                if ((notif.args.playerid != this.getCurrentPlayerId())&&(this.gamedatas.countplayers >= 2)) 
+                if ((notif.args.player != this.getCurrentPlayerId())&&(this.gamedatas.countplayers >= 2)) 
                     {
                         this.notifqueue.setSynchronousDuration(0);
                     }
@@ -3526,12 +3526,12 @@ function (dojo, declare) {
             notif_movetoken: function( notif )
             {
 
-                if ((notif.args.playerid == this.getCurrentPlayerId())||(this.gamedatas.countplayers == 1)) 
+                if ((notif.args.player == this.getCurrentPlayerId())||(this.gamedatas.countplayers == 1)) 
                     {
                         this.notifqueue.setSynchronousDuration(500);
                     }
     
-                if ((notif.args.playerid != this.getCurrentPlayerId())&&(this.gamedatas.countplayers >= 2)) 
+                if ((notif.args.player != this.getCurrentPlayerId())&&(this.gamedatas.countplayers >= 2)) 
                     {
                         this.notifqueue.setSynchronousDuration(0);
                     }
