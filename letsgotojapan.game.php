@@ -21,6 +21,8 @@ require_once( APP_GAMEMODULE_PATH.'module/table/table.game.php' );
 include('modules/Pending.php');
 include('modules/CardTokyo.php');
 include('modules/CardKyoto.php');
+include('modules/AgentCardTokyo.php');
+include('modules/AgentCardKyoto.php');
 
 
 
@@ -297,6 +299,23 @@ class letsgotojapan extends Table
         $result['smile'][0] = self::getUniqueValueFromDB("SELECT smile FROM agent WHERE name='agent'");
         $result['happy'][0] = self::getUniqueValueFromDB("SELECT happy FROM agent WHERE name='agent'");
         $result['angry'][0] = self::getUniqueValueFromDB("SELECT angry FROM agent WHERE name='agent'");
+        $result['lundi'][0] = self::getUniqueValueFromDB("SELECT lundi FROM agent WHERE name='agent'");
+        $result['mardi'][0] = self::getUniqueValueFromDB("SELECT mardi FROM agent WHERE name='agent'");
+        $result['mercredi'][0] = self::getUniqueValueFromDB("SELECT mercredi FROM agent WHERE name='agent'");
+        $result['jeudi'][0] = self::getUniqueValueFromDB("SELECT jeudi FROM agent WHERE name='agent'");
+        $result['vendredi'][0] = self::getUniqueValueFromDB("SELECT vendredi FROM agent WHERE name='agent'");
+        $result['samedi'][0] = self::getUniqueValueFromDB("SELECT samedi FROM agent WHERE name='agent'");
+        $result['scorehumeur'][0] = self::getUniqueValueFromDB("SELECT scorehumeur FROM agent WHERE name='agent'");
+        $result['scoretoken'][0] = self::getUniqueValueFromDB("SELECT scoretoken FROM agent WHERE name='agent'");
+        $result['scoretrain'][0] = self::getUniqueValueFromDB("SELECT scoretrain FROM agent WHERE name='agent'");
+        $result['scorerecherche'][0] = self::getUniqueValueFromDB("SELECT scorerecherche FROM agent WHERE name='agent'");
+        $result['scoretotal'][0] = self::getUniqueValueFromDB("SELECT scoretotal FROM agent WHERE name='agent'");
+        $result['lundicheck'][0] = self::getUniqueValueFromDB("SELECT lundicheck FROM agent WHERE name='agent'");
+        $result['mardicheck'][0] = self::getUniqueValueFromDB("SELECT mardicheck FROM agent WHERE name='agent'");
+        $result['mercredicheck'][0] = self::getUniqueValueFromDB("SELECT mercredicheck FROM agent WHERE name='agent'");
+        $result['jeudicheck'][0] = self::getUniqueValueFromDB("SELECT jeudicheck FROM agent WHERE name='agent'");
+        $result['vendredicheck'][0] = self::getUniqueValueFromDB("SELECT vendredicheck FROM agent WHERE name='agent'");
+        $result['samedicheck'][0] = self::getUniqueValueFromDB("SELECT samedicheck FROM agent WHERE name='agent'");
     
 
         return $result;
@@ -396,14 +415,29 @@ function getPlayerRelativePositions()  // permet de mettre dans view.php les jou
 
 function CountTrip($id)
 {
+    if($id != 0)
+    {
     $count1 = count(array_merge(self::getObjectListFromDB( "SELECT card_location FROM tokyo WHERE card_location_arg = {$id} AND card_location LIKE 'cardposition_1%'", true ),self::getObjectListFromDB( "SELECT card_location FROM kyoto WHERE card_location_arg = {$id} AND card_location LIKE 'cardposition_1%'", true )));
     $count2 = count(array_merge(self::getObjectListFromDB( "SELECT card_location FROM tokyo WHERE card_location_arg = {$id} AND card_location LIKE 'cardposition_2%'", true ),self::getObjectListFromDB( "SELECT card_location FROM kyoto WHERE card_location_arg = {$id} AND card_location LIKE 'cardposition_2%'", true )));
     $count3 = count(array_merge(self::getObjectListFromDB( "SELECT card_location FROM tokyo WHERE card_location_arg = {$id} AND card_location LIKE 'cardposition_3%'", true ),self::getObjectListFromDB( "SELECT card_location FROM kyoto WHERE card_location_arg = {$id} AND card_location LIKE 'cardposition_3%'", true )));
     $count4 = count(array_merge(self::getObjectListFromDB( "SELECT card_location FROM tokyo WHERE card_location_arg = {$id} AND card_location LIKE 'cardposition_4%'", true ),self::getObjectListFromDB( "SELECT card_location FROM kyoto WHERE card_location_arg = {$id} AND card_location LIKE 'cardposition_4%'", true )));
     $count5 = count(array_merge(self::getObjectListFromDB( "SELECT card_location FROM tokyo WHERE card_location_arg = {$id} AND card_location LIKE 'cardposition_5%'", true ),self::getObjectListFromDB( "SELECT card_location FROM kyoto WHERE card_location_arg = {$id} AND card_location LIKE 'cardposition_5%'", true )));
     $count6 = count(array_merge(self::getObjectListFromDB( "SELECT card_location FROM tokyo WHERE card_location_arg = {$id} AND card_location LIKE 'cardposition_6%'", true ),self::getObjectListFromDB( "SELECT card_location FROM kyoto WHERE card_location_arg = {$id} AND card_location LIKE 'cardposition_6%'", true )));
-    $ret = [$count1,$count2,$count3,$count4,$count5,$count6];
+    }
 
+    if($id == 0)
+    {
+    $count1 = count(array_merge(self::getObjectListFromDB( "SELECT card_location FROM tokyo WHERE card_location_arg = 0 AND card_location LIKE 'cardposition_1%'", true ),self::getObjectListFromDB( "SELECT card_location FROM kyoto WHERE card_location_arg = 0 AND card_location LIKE 'cardposition_1%'", true )));
+    $count2 = count(array_merge(self::getObjectListFromDB( "SELECT card_location FROM tokyo WHERE card_location_arg = 0 AND card_location LIKE 'cardposition_2%'", true ),self::getObjectListFromDB( "SELECT card_location FROM kyoto WHERE card_location_arg = 0 AND card_location LIKE 'cardposition_2%'", true )));
+    $count3 = count(array_merge(self::getObjectListFromDB( "SELECT card_location FROM tokyo WHERE card_location_arg = 0 AND card_location LIKE 'cardposition_3%'", true ),self::getObjectListFromDB( "SELECT card_location FROM kyoto WHERE card_location_arg = 0 AND card_location LIKE 'cardposition_3%'", true )));
+    $count4 = count(array_merge(self::getObjectListFromDB( "SELECT card_location FROM tokyo WHERE card_location_arg = 0 AND card_location LIKE 'cardposition_4%'", true ),self::getObjectListFromDB( "SELECT card_location FROM kyoto WHERE card_location_arg = 0 AND card_location LIKE 'cardposition_4%'", true )));
+    $count5 = count(array_merge(self::getObjectListFromDB( "SELECT card_location FROM tokyo WHERE card_location_arg = 0 AND card_location LIKE 'cardposition_5%'", true ),self::getObjectListFromDB( "SELECT card_location FROM kyoto WHERE card_location_arg = 0 AND card_location LIKE 'cardposition_5%'", true )));
+    $count6 = count(array_merge(self::getObjectListFromDB( "SELECT card_location FROM tokyo WHERE card_location_arg = 0 AND card_location LIKE 'cardposition_6%'", true ),self::getObjectListFromDB( "SELECT card_location FROM kyoto WHERE card_location_arg = 0 AND card_location LIKE 'cardposition_6%'", true )));
+    }
+
+
+    $ret = [$count1,$count2,$count3,$count4,$count5,$count6];
+    
     return $ret;
  
 }
@@ -1191,6 +1225,8 @@ function CondenserExtraWalk($id, $jour, $new)
 
 function Smile($gain, $player)
 {
+    if($player!=0)
+    {
     if ($gain>0)
     {
         for($i=1; $i<=$gain; $i++)
@@ -1202,7 +1238,7 @@ function Smile($gain, $player)
                 'player' => $player,
                 )
                 );
-            //self::notifyAllPlayers( 'simplePause', '', [ 'time' => 500] );
+            
 
             if ($newsmile == 3)
             {
@@ -1213,7 +1249,7 @@ function Smile($gain, $player)
                     'player' => $player,
                     )
                     );
-                //self::notifyAllPlayers( 'simplePause', '', [ 'time' => 500] );
+                
                 
                 $happy = self::getUniqueValueFromDB("SELECT happy FROM player WHERE player_id={$player}");
                 if($happy < 3)
@@ -1247,7 +1283,7 @@ function Smile($gain, $player)
                 'player' => $player,
                 )
                 );
-            //self::notifyAllPlayers( 'simplePause', '', [ 'time' => 500] );
+            
 
             if ($newsmile == -3)
             {
@@ -1258,7 +1294,7 @@ function Smile($gain, $player)
                     'player' => $player,
                     )
                     );
-                //self::notifyAllPlayers( 'simplePause', '', [ 'time' => 500] );
+                
 
                 $angry = self::getUniqueValueFromDB("SELECT angry FROM player WHERE player_id={$player}");
                 if($angry < 3)
@@ -1278,6 +1314,99 @@ function Smile($gain, $player)
 
         }
 
+    }
+    }
+
+    if($player==0)
+    {
+    if ($gain>0)
+    {
+        for($i=1; $i<=$gain; $i++)
+        {
+            self::DbQuery( "UPDATE agent set smile = smile + 1  WHERE name = 'agent'" );
+            $newsmile = self::getUniqueValueFromDB("SELECT smile FROM agent WHERE name = 'agent'");
+            letsgotojapan::$instance->notifyAllPlayers('smile','', array(
+                'position' => $newsmile,
+                'player' => $player,
+                )
+                );
+            
+
+            if ($newsmile == 3)
+            {
+                self::DbQuery( "UPDATE agent set smile = 0 WHERE name = 'agent'" );;
+                $newsmile = self::getUniqueValueFromDB("SELECT smile FROM agent WHERE name = 'agent'");
+                letsgotojapan::$instance->notifyAllPlayers('smile','', array(
+                    'position' => $newsmile,
+                    'player' => $player,
+                    )
+                    );
+                
+                
+                $happy = self::getUniqueValueFromDB("SELECT happy FROM agent WHERE name = 'agent'");
+                if($happy < 3)
+                {
+                    self::DbQuery( "UPDATE agent set happy = happy + 1  WHERE name = 'agent'" );
+                    $newhappy = self::getUniqueValueFromDB("SELECT happy FROM agent WHERE name = 'agent'");
+                    letsgotojapan::$instance->notifyAllPlayers('happy','', array(
+                        'position' => $newhappy,
+                        'player' => $player,
+                        )
+                        );
+
+                }
+
+
+            }
+
+
+        }
+
+    }
+
+    if ($gain<0)
+    {
+        for($i=-1; $i>=$gain; $i--)
+        {
+            self::DbQuery( "UPDATE agent set smile = smile - 1  WHERE name = 'agent'" );
+            $newsmile = self::getUniqueValueFromDB("SELECT smile FROM agent WHERE name = 'agent'");
+            letsgotojapan::$instance->notifyAllPlayers('smile','', array(
+                'position' => $newsmile,
+                'player' => $player,
+                )
+                );
+            
+
+            if ($newsmile == -3)
+            {
+                self::DbQuery( "UPDATE agent set smile = 0 WHERE name = 'agent'" );;
+                $newsmile = self::getUniqueValueFromDB("SELECT smile FROM agent WHERE name = 'agent'");
+                letsgotojapan::$instance->notifyAllPlayers('smile','', array(
+                    'position' => $newsmile,
+                    'player' => $player,
+                    )
+                    );
+                
+
+                $angry = self::getUniqueValueFromDB("SELECT angry FROM agent WHERE name = 'agent'");
+                if($angry < 3)
+                {
+                    self::DbQuery( "UPDATE agent set angry = angry + 1  WHERE name = 'agent'" );
+                    $newangry = self::getUniqueValueFromDB("SELECT angry FROM agent WHERE name = 'agent'");
+                    letsgotojapan::$instance->notifyAllPlayers('angry','', array(
+                        'position' => $newangry,
+                        'player' => $player,
+                        )
+                        );
+
+                }
+
+            }
+
+
+        }
+
+    }
     }
 
 }
@@ -1329,6 +1458,8 @@ function getLogsType( $type )
 
 function Gain($type, $player)
 {
+    if($player !=0 )
+    {
     if($type == 'r')
     {
         self::DbQuery( "UPDATE player set r = r +1   WHERE player_id = {$player}" );
@@ -1611,6 +1742,294 @@ function Gain($type, $player)
         self::DbQuery( "UPDATE player set angry2 = angry2 +1   WHERE player_id = {$player}" );
         letsgotojapan::$instance->Smile(-1,$player);
     }
+    }
+
+
+    if($player == 0 )
+    {
+    if($type == 'r')
+    {
+        self::DbQuery( "UPDATE agent set r = r +1   WHERE name = 'agent'" );
+        $new = self::getUniqueValueFromDB("SELECT r FROM agent WHERE name = 'agent'");
+
+        
+        if($new < 12)
+        {
+        letsgotojapan::$instance->notifyAllPlayers('movetoken','', array(
+            'type' =>  'r',
+            'score' => $new,
+            'player' => $player,
+            'plus' => 0,
+                        
+            )
+            );
+        }
+        if ($new == 12)
+        {
+            letsgotojapan::$instance->notifyAllPlayers('movetoken','', array(
+                'type' =>  'r',
+                'score' => $new,
+                'player' => $player,
+                'plus' => 0,
+                            
+                )
+                );
+
+            letsgotojapan::$instance->notifyAllPlayers('movetoken','', array(
+                'type' =>  'r',
+                'score' => 0,
+                'player' => $player,
+                'plus' => 1,
+                            
+                )
+                );
+
+        }
+
+        if(($new > 12)&&($new<=24))
+        {
+        letsgotojapan::$instance->notifyAllPlayers('movetoken','', array(
+            'type' =>  'r',
+            'score' => $new-12,
+            'player' => $player,
+            'plus' => 1,
+                        
+            )
+            );
+        }
+
+    }
+
+    if($type == 'g')
+    {
+        self::DbQuery( "UPDATE agent set g = g +1   WHERE name = 'agent'" );
+        $new = self::getUniqueValueFromDB("SELECT g FROM agent WHERE name = 'agent'");
+        
+        if($new < 12)
+        {
+        letsgotojapan::$instance->notifyAllPlayers('movetoken','', array(
+            'type' =>  'g',
+            'score' => $new,
+            'player' => $player,
+            'plus' => 0,
+                        
+            )
+            );
+        }
+        if ($new == 12)
+        {
+            letsgotojapan::$instance->notifyAllPlayers('movetoken','', array(
+                'type' =>  'g',
+                'score' => $new,
+                'player' => $player,
+                'plus' => 0,
+                            
+                )
+                );
+
+            letsgotojapan::$instance->notifyAllPlayers('movetoken','', array(
+                'type' =>  'g',
+                'score' => 0,
+                'player' => $player,
+                'plus' => 1,
+                            
+                )
+                );
+
+        }
+
+        if(($new > 12)&&($new<=24))
+        {
+        letsgotojapan::$instance->notifyAllPlayers('movetoken','', array(
+            'type' =>  'g',
+            'score' => $new-12,
+            'player' => $player,
+            'plus' => 1,
+                        
+            )
+            );
+        }
+        
+    }
+
+    if($type == 'p')
+    {
+        self::DbQuery( "UPDATE agent set p = p +1   WHERE name = 'agent'" );
+        $new = self::getUniqueValueFromDB("SELECT p FROM agent WHERE name = 'agent'");
+
+        if($new < 12)
+        {
+        letsgotojapan::$instance->notifyAllPlayers('movetoken','', array(
+            'type' =>  'p',
+            'score' => $new,
+            'player' => $player,
+            'plus' => 0,
+                        
+            )
+            );
+        }
+        if ($new == 12)
+        {
+            letsgotojapan::$instance->notifyAllPlayers('movetoken','', array(
+                'type' =>  'p',
+                'score' => $new,
+                'player' => $player,
+                'plus' => 0,
+                            
+                )
+                );
+
+            letsgotojapan::$instance->notifyAllPlayers('movetoken','', array(
+                'type' =>  'p',
+                'score' => 0,
+                'player' => $player,
+                'plus' => 1,
+                            
+                )
+                );
+
+        }
+
+        if(($new > 12)&&($new<=24))
+        {
+        letsgotojapan::$instance->notifyAllPlayers('movetoken','', array(
+            'type' =>  'p',
+            'score' => $new-12,
+            'player' => $player,
+            'plus' => 1,
+                        
+            )
+            );
+        }
+    }
+
+    if($type == 'y')
+    {
+        self::DbQuery( "UPDATE agent set y = y +1   WHERE name = 'agent'" );
+        $new = self::getUniqueValueFromDB("SELECT y FROM agent WHERE name = 'agent'");
+
+        if($new < 12)
+        {
+        letsgotojapan::$instance->notifyAllPlayers('movetoken','', array(
+            'type' =>  'y',
+            'score' => $new,
+            'player' => $player,
+            'plus' => 0,
+                        
+            )
+            );
+        }
+        if ($new == 12)
+        {
+            letsgotojapan::$instance->notifyAllPlayers('movetoken','', array(
+                'type' =>  'y',
+                'score' => $new,
+                'player' => $player,
+                'plus' => 0,
+                            
+                )
+                );
+
+            letsgotojapan::$instance->notifyAllPlayers('movetoken','', array(
+                'type' =>  'y',
+                'score' => 0,
+                'player' => $player,
+                'plus' => 1,
+                            
+                )
+                );
+
+        }
+
+        if(($new > 12)&&($new<=24))
+        {
+        letsgotojapan::$instance->notifyAllPlayers('movetoken','', array(
+            'type' =>  'y',
+            'score' => $new-12,
+            'player' => $player,
+            'plus' => 1,
+                        
+            )
+            );
+        }
+    }
+
+    if($type == 'b')
+    {
+        self::DbQuery( "UPDATE agent set b = b +1   WHERE name = 'agent'" );
+        $new = self::getUniqueValueFromDB("SELECT b FROM agent WHERE name = 'agent'");
+
+        if($new < 12)
+        {
+        letsgotojapan::$instance->notifyAllPlayers('movetoken','', array(
+            'type' =>  'b',
+            'score' => $new,
+            'player' => $player,
+            'plus' => 0,
+                        
+            )
+            );
+        }
+        if ($new == 12)
+        {
+            letsgotojapan::$instance->notifyAllPlayers('movetoken','', array(
+                'type' =>  'b',
+                'score' => $new,
+                'player' => $player,
+                'plus' => 0,
+                            
+                )
+                );
+
+            letsgotojapan::$instance->notifyAllPlayers('movetoken','', array(
+                'type' =>  'b',
+                'score' => 0,
+                'player' => $player,
+                'plus' => 1,
+                            
+                )
+                );
+
+        }
+
+        if(($new > 12)&&($new<=24))
+        {
+        letsgotojapan::$instance->notifyAllPlayers('movetoken','', array(
+            'type' =>  'b',
+            'score' => $new-12,
+            'player' => $player,
+            'plus' => 1,
+                        
+            )
+            );
+        }
+    }
+
+    if($type == 'h1')
+    {
+        self::DbQuery( "UPDATE agent set happy1 = happy1 +1   WHERE name = 'agent'" );
+        letsgotojapan::$instance->Smile(1,$player);
+        
+    }
+
+    if($type == 'h2')
+    {
+        self::DbQuery( "UPDATE agent set happy2 = happy2 +1   WHERE name = 'agent'" );
+        letsgotojapan::$instance->Smile(1,$player);
+    }
+
+    if($type == 'a1')
+    {
+        self::DbQuery( "UPDATE agent set angry1 = angry1 +1   WHERE name = 'agent'" );
+        letsgotojapan::$instance->Smile(-1,$player);
+    }
+
+    if($type == 'a2')
+    {
+        self::DbQuery( "UPDATE agent set angry2 = angry2 +1   WHERE name = 'agent'" );
+        letsgotojapan::$instance->Smile(-1,$player);
+    }
+    }
 
     
     
@@ -1625,6 +2044,8 @@ function EtatToken($player)
 {
     $ret = array();
 
+    if($player !=0)
+    {
     $ret[] = self::getUniqueValueFromDB("SELECT r FROM player WHERE player_id = {$player}");
     $ret[] = self::getUniqueValueFromDB("SELECT g FROM player WHERE player_id = {$player}");
     $ret[] = self::getUniqueValueFromDB("SELECT p FROM player WHERE player_id = {$player}");
@@ -1636,6 +2057,22 @@ function EtatToken($player)
     $ret[] = self::getUniqueValueFromDB("SELECT angry2 FROM player WHERE player_id = {$player}");
     $ret[] = self::getUniqueValueFromDB("SELECT walkday FROM player WHERE player_id = {$player}");
     $ret[] = self::getUniqueValueFromDB("SELECT trainday FROM player WHERE player_id = {$player}");
+    }
+
+    if($player ==0)
+    {
+    $ret[] = self::getUniqueValueFromDB("SELECT r FROM agent WHERE name = 'agent'");
+    $ret[] = self::getUniqueValueFromDB("SELECT g FROM agent WHERE name = 'agent'");
+    $ret[] = self::getUniqueValueFromDB("SELECT p FROM agent WHERE name = 'agent'");
+    $ret[] = self::getUniqueValueFromDB("SELECT y FROM agent WHERE name = 'agent'");
+    $ret[] = self::getUniqueValueFromDB("SELECT b FROM agent WHERE name = 'agent'");
+    $ret[] = self::getUniqueValueFromDB("SELECT happy1 FROM agent WHERE name = 'agent'");
+    $ret[] = self::getUniqueValueFromDB("SELECT happy2 FROM agent WHERE name = 'agent'");
+    $ret[] = self::getUniqueValueFromDB("SELECT angry1 FROM agent WHERE name = 'agent'");
+    $ret[] = self::getUniqueValueFromDB("SELECT angry2 FROM agent WHERE name = 'agent'");
+    $ret[] = self::getUniqueValueFromDB("SELECT walkday FROM agent WHERE name = 'agent'");
+    $ret[] = self::getUniqueValueFromDB("SELECT trainday FROM agent WHERE name = 'agent'");
+    }
     
     
 

@@ -480,6 +480,12 @@ display: none;
    
 }
 
+.selected2.cardverso {
+  border: 2px solid rgb(0, 26, 255);
+  
+ 
+}
+
 .selected3.card {
 
     animation: clignotement 2s linear infinite;

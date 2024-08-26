@@ -642,6 +642,143 @@ function (dojo, declare) {
                         }
 
 
+                    /////// AGENT SCOREPAD/////
+
+                    var j1a = gamedatas.lundi[0];
+                    var j2a = gamedatas.mardi[0];
+                    var j3a = gamedatas.mercredi[0];
+                    var j4a = gamedatas.jeudi[0];
+                    var j5a = gamedatas.vendredi[0];
+                    var j6a = gamedatas.samedi[0];
+
+                    if (j1a != 0)
+                    {
+                        $('score_2_1').innerHTML = j1a;
+                    }
+
+                    if (j2a != 0)
+                    {
+                        $('score_2_2').innerHTML = j2a;
+                    }
+
+                    if (j3a != 0)
+                    {
+                        $('score_2_3').innerHTML = j3a;
+                    }
+
+                    if (j4a != 0)
+                    {
+                        $('score_2_4').innerHTML = j4a;
+                    }
+
+                    if (j5a != 0)
+                    {
+                        $('score_2_5').innerHTML = j5a;
+                    }
+
+                    if (j6a != 0)
+                    {
+                        $('score_2_6').innerHTML = j6a;
+                    }
+
+
+                    var scorehumeura = gamedatas.scorehumeur[0];
+                    var scoretokena = gamedatas.scoretoken[0];
+                    var scoretraina = gamedatas.scoretrain[0];
+                    var scorerecherchea = gamedatas.scorerecherche[0];
+                    var scoretotala = gamedatas.scoretotal[0];
+
+                    if (j6a != 0)
+                    {
+                        $('score_2_7').innerHTML = scorehumeura;
+                        $('score_2_8').innerHTML = scoretokena;
+                        $('score_2_9').innerHTML = scoretraina;
+                        $('score_2_10').innerHTML = scorerecherchea;
+                        $('score_2_11').innerHTML = scoretotala;
+
+                    }
+
+                    var jc1a = gamedatas.lundicheck[0];
+                    var jc2a = gamedatas.mardicheck[0];
+                    var jc3a = gamedatas.mercredicheck[0];
+                    var jc4a = gamedatas.jeudicheck[0];
+                    var jc5a = gamedatas.vendredicheck[0];
+                    var jc6a = gamedatas.samedicheck[0];
+                        
+                    
+                    if (jc1a == 1)
+                    {
+                        dojo.query("#checkscore_2_1").addClass("checkscoreok");
+                        
+                    }
+                    
+                    if (jc1a == 2)
+                    {
+                        
+                        dojo.query("#checkscore_2_1").addClass("checkscoreko");
+                    } 
+
+                    if (jc2a == 1)
+                    {
+                        dojo.query("#checkscore_2_2").addClass("checkscoreok");
+                        
+                    }
+                    
+                    if (jc2a == 2)
+                    {
+                        
+                        dojo.query("#checkscore_2_2").addClass("checkscoreko");
+                    }
+                    
+                    if (jc3a== 1)
+                    {
+                        dojo.query("#checkscore_2_3").addClass("checkscoreok");
+                        
+                    }
+                    
+                    if (jc3a == 2)
+                    {
+                        
+                        dojo.query("#checkscore_2_3").addClass("checkscoreko");
+                    } 
+
+                    if (jc4a == 1)
+                    {
+                        dojo.query("#checkscore_2_4").addClass("checkscoreok");
+                        
+                    }
+                    
+                    if (jc4a == 2)
+                    {
+                        
+                        dojo.query("#checkscore_2_4").addClass("checkscoreko");
+                    } 
+
+                    if (jc5a == 1)
+                    {
+                        dojo.query("#checkscore_2_5").addClass("checkscoreok");
+                        
+                    }
+                    
+                    if (jc5a == 2)
+                    {
+                        
+                        dojo.query("#checkscore_2_5").addClass("checkscoreko");
+                    } 
+
+                    if (jc6a == 1)
+                    {
+                        dojo.query("#checkscore_2_6").addClass("checkscoreok");
+                        
+                    }
+                    
+                    if (jc6a == 2)
+                    {
+                        
+                        dojo.query("#checkscore_2_6").addClass("checkscoreko");
+                    }
+
+
 
                 }
 
@@ -2922,6 +3059,8 @@ function (dojo, declare) {
                 dojo.subscribe( 'check', this, "notif_check" );
                 dojo.subscribe( 'checkscore', this, "notif_checkscore" );
                 dojo.subscribe( 'affichehand', this, "notif_affichehand" );
+                dojo.subscribe( 'score2solo', this, "notif_score2solo" );
+                dojo.subscribe( 'score2agent', this, "notif_score2agent" );
 
                 
 
@@ -3494,11 +3633,19 @@ function (dojo, declare) {
                 if (notif.args.ville == 1)
                     {
                         this.addCardTokyoTrip( notif.args.id, notif.args.type, 1, notif.args.location, notif.args.playerid, 0, 1 );
+                        if (notif.args.train >=1)
+                        {
+                            this.addTrain(notif.args.id, notif.args.ville, notif.args.train );
+                        }
                         
                     }
                     if (notif.args.ville == 2)
                     {
                         this.addCardKyotoTrip( notif.args.id, notif.args.type, 2, notif.args.location, notif.args.playerid, 0, 2 );
+                        if (notif.args.train >=1)
+                        {
+                            this.addTrain(notif.args.id, notif.args.ville, notif.args.train );
+                        }
                     
                     }
             },
@@ -3755,6 +3902,30 @@ function (dojo, declare) {
                 }
                 
 
+            },
+
+            notif_score2solo: function( notif )
+            {
+                $('score_'+notif.args.numero+'_7').innerHTML = notif.args.humeur;
+                $('score_'+notif.args.numero+'_8').innerHTML = notif.args.token;
+                $('score_'+notif.args.numero+'_9').innerHTML = notif.args.train;
+                $('score_'+notif.args.numero+'_10').innerHTML = notif.args.recherche;
+                $('score_'+notif.args.numero+'_11').innerHTML = notif.args.total;
+
+                this.scoreCtrl[ notif.args.player ].toValue( notif.args.pannel);
+                
+            },
+
+            notif_score2agent: function( notif )
+            {
+                $('score_2_7').innerHTML = notif.args.humeur;
+                $('score_2_8').innerHTML = notif.args.token;
+                $('score_2_9').innerHTML = notif.args.train;
+                $('score_2_10').innerHTML = notif.args.recherche;
+                $('score_2_11').innerHTML = notif.args.total;
+
+                
+                
             },
 
 

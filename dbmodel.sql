@@ -85,6 +85,7 @@ CREATE TABLE IF NOT EXISTS `tokens` (
 CREATE TABLE IF NOT EXISTS `agent` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NULL,
+  `sololvl` int(2) unsigned DEFAULT 0,
   `smile` int(2) DEFAULT 0,
   `happy` int(2) unsigned DEFAULT 0,
   `angry` int(2) unsigned DEFAULT 0,
@@ -97,6 +98,25 @@ CREATE TABLE IF NOT EXISTS `agent` (
   `happy2` int(2) unsigned DEFAULT 0,
   `angry1` int(2) unsigned DEFAULT 0,
   `angry2` int(2) unsigned DEFAULT 0,
+  `walkday` int(2) unsigned DEFAULT 0,
+  `trainday` int(2) unsigned DEFAULT 0,
+  `lundi` int(2) unsigned DEFAULT 0,
+  `mardi` int(2) unsigned DEFAULT 0,
+  `mercredi` int(2) unsigned DEFAULT 0,
+  `jeudi` int(2) unsigned DEFAULT 0,
+  `vendredi` int(2) unsigned DEFAULT 0,
+  `samedi` int(2) unsigned DEFAULT 0,
+  `lundicheck` int(2) unsigned DEFAULT 0,
+  `mardicheck` int(2) unsigned DEFAULT 0,
+  `mercredicheck` int(2) unsigned DEFAULT 0,
+  `jeudicheck` int(2) unsigned DEFAULT 0,
+  `vendredicheck` int(2) unsigned DEFAULT 0,
+  `samedicheck` int(2) unsigned DEFAULT 0,
+  `scorehumeur` int(2) DEFAULT 0,
+  `scoretoken` int(2) unsigned DEFAULT 0,
+  `scoretrain` int(2) unsigned DEFAULT 0,
+  `scorerecherche` int(2) unsigned DEFAULT 0,
+  `scoretotal` int(2) unsigned DEFAULT 0,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
@@ -139,4 +159,3 @@ ALTER TABLE `player` ADD `mercredicheck` int(2) unsigned DEFAULT 0;
 ALTER TABLE `player` ADD `jeudicheck` int(2) unsigned DEFAULT 0;
 ALTER TABLE `player` ADD `vendredicheck` int(2) unsigned DEFAULT 0;
 ALTER TABLE `player` ADD `samedicheck` int(2) unsigned DEFAULT 0;
-ALTER TABLE `player` ADD `sololvl` int(2) unsigned DEFAULT 0;

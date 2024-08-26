@@ -2773,10 +2773,11 @@ function argFinalStep1($parg1, $parg2)
                 }
             }
 
-            
+          
 
         $nombre = count ($card);
-        
+
+                
         for($index=0; $index<$nombre-1 ;$index++)
         {
             if(($card[$index][0] != $card[$index+1][0])&&($card[$index+1][3]==0))
@@ -2837,11 +2838,113 @@ function argFinalStep1($parg1, $parg2)
                 )
                 );
 
+
+
+            /////////////////////////////// PLACE TRAIN AGENT LVL 3 ///////////////////
+
+            $sololvl= self::getUniqueValueFromDB( "SELECT sololvl FROM agent WHERE name='agent'");
+            if($sololvl == 3)
+            {
+
+            $carda = array();
+            $resulta = array();
+        
+            for ($day=1; $day <=6; $day++)
+
+            {
+                for ($position= 1; $position <=3; $position++)
+                {
+                    $tokyocardid = self::getUniqueValueFromDB( "SELECT card_id id FROM tokyo WHERE card_location_arg = 0 AND card_location = 'cardposition_{$day}_{$position}'");
+                    $ville = self::getUniqueValueFromDB( "SELECT finallocation finallocation FROM tokyo WHERE card_location_arg = 0 AND card_location = 'cardposition_{$day}_{$position}'");
+                    
+                    if ($tokyocardid!=null)
+                    {
+                        $carda[]= [$ville,$tokyocardid];
+                        
+                    }
+
+                    else
+                    {
+                        $kyotocardid = self::getUniqueValueFromDB( "SELECT card_id id FROM kyoto WHERE card_location_arg = 0 AND card_location = 'cardposition_{$day}_{$position}'");
+                        $ville = self::getUniqueValueFromDB( "SELECT finallocation finallocation FROM kyoto WHERE card_location_arg = 0 AND card_location = 'cardposition_{$day}_{$position}'");
+                        
+                        if ($kyotocardid!=null)
+                        {
+                            $carda[]= [$ville,$kyotocardid];
+                        }
+
+                    }
+
+                }
+            }
+
+           
+
+            for($index=0; $index<17 ;$index++)
+            {
+                if($carda[$index][0] != $carda[$index+1][0])
+                {
+                    $resulta[] = 'card_'.$carda[$index+1][0].'_'.$carda[$index+1][1];
+                }
+                
+
+            }
+
+            $counta = count($resulta);
+
+            for ($a=1; $a<=$counta; $a++)
+            {
+                $explodea = explode('_', $resulta[$a-1]);
+
+                letsgotojapan::$instance->notifyAllPlayers('train','', array(
+        
+                    'id' => $explodea[2],
+                    'ville' => $explodea[1],
+                    'train' => 2,
+                    
+                    )
+                    );
+
+                
+                self::DbQuery( "UPDATE agent set scoretrain = scoretrain +2  WHERE name='agent'" );
+
+                if($explodea[1] == 1)
+                {
+                    self::DbQuery( "UPDATE tokyo set train = 2  WHERE card_id = {$explodea[2]}" );
+                }
+
+                if($explodea[1] == 2)
+                {
+                    self::DbQuery( "UPDATE kyoto set train = 2  WHERE card_id = {$explodea[2]}" );
+                }
+
+
+
+
+            }
+
+
+
+            letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '<b>The Travel Agent</b> managed the <b>trains</b>' ), array(
+                                
+                )
+                );
+
+            }
+
+            ///////////////////////////////////////////////////////////////////////////
+
+
+
+
             letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} has finished planning the <b>trip</b>' ), array(
                 'player_name' => $this->player_name,
                 
                 )
                 );
+
+
+            
             
             letsgotojapan::$instance->giveExtraTime($this->player_id);
             letsgotojapan::$instance->gamestate->setPlayerNonMultiactive($this->player_id, 'stop');
@@ -3196,6 +3299,10 @@ function argFinalStep1($parg1, $parg2)
                 $type = self::getUniqueValueFromDB( "SELECT card_type type FROM tokyo WHERE card_id ={$explode[2]}");
                 $location = self::getUniqueValueFromDB( "SELECT card_location location FROM tokyo WHERE card_id ={$explode[2]}");
 
+
+                $typetrain = self::getUniqueValueFromDB( "SELECT train FROM tokyo WHERE card_id ={$explode[2]}");
+                
+
                 
                 letsgotojapan::$instance->notifyAllPlayers('changecard','', array(
                 
@@ -3205,6 +3312,7 @@ function argFinalStep1($parg1, $parg2)
                     'type' => $type,
                     'location' => $location,
                     'playerid' => $this->player_id,
+                    'train' => $typetrain,
 
                     )
                     );
@@ -3232,6 +3340,7 @@ function argFinalStep1($parg1, $parg2)
                 $type = self::getUniqueValueFromDB( "SELECT card_type type FROM kyoto WHERE card_id ={$explode[2]}");
                 $location = self::getUniqueValueFromDB( "SELECT card_location location FROM kyoto WHERE card_id ={$explode[2]}");
 
+                $typetrain = self::getUniqueValueFromDB( "SELECT train FROM kyoto WHERE card_id ={$explode[2]}");
                 
                     letsgotojapan::$instance->notifyAllPlayers('changecard','', array(
                 
@@ -3241,6 +3350,7 @@ function argFinalStep1($parg1, $parg2)
                         'type' => $type,
                         'location' => $location,
                         'playerid' => $this->player_id,
+                        'train' => $typetrain,
 
                         )
                         );
@@ -3315,7 +3425,7 @@ function argFinalStep1($parg1, $parg2)
             
             $day = 1;  //// A MODIFIER
 
-            $counttrip = letsgotojapan::$instance->CountTrip($this->player_id);  /// nombre de cartes par jour
+            $counttrip = letsgotojapan::$instance->CountTrip($this->player_id);  
             $countday = $counttrip[$day-1];
             $bonuscard = array();
             $pvcard =0;
@@ -3634,10 +3744,286 @@ function argFinalStep1($parg1, $parg2)
                 'position' => $day,
                 'player_name' => $this->player_name,
                 'log' => letsgotojapan::$instance->getLogsType(8),
-                'day' => letsgotojapan::$instance->days[1]['name'],
+                'day' => letsgotojapan::$instance->days[1]['name'],   // changer jour
                 
                 )
-                );              
+                );     
+                
+            //////////////////////////////////////////////////////////////////////////////   
+            ////////////////////////////////// DEBUT SCORE AGENT /////////////////////////
+            ////////////////////////////////////////////////////////////////////////////// 
+
+
+
+            $counttrip = letsgotojapan::$instance->CountTrip(0);  
+            $countday = $counttrip[$day-1];
+            $bonuscard = array();
+            $pvcard =0;
+            $ville = 0;
+
+            for ($i=1; $i<=$countday; $i++)
+            {
+                $type = self::getUniqueValueFromDB( "SELECT card_type type FROM tokyo WHERE  card_location_arg = 0 AND card_location = 'cardposition_{$day}_{$i}'");
+
+                if ($type != null)
+                {
+                    $ville = 1;
+                
+                    $bonuscard = letsgotojapan::$instance->tokyocards[$type]['bonus'];
+                    $pvcard = letsgotojapan::$instance->tokyocards[$type]['pv'];
+                    
+
+                    $train = self::getUniqueValueFromDB( "SELECT train train FROM tokyo WHERE  card_location_arg = 0 AND card_location = 'cardposition_{$day}_{$i}'");
+                    if ($train != 0)
+                    {
+                        self::DbQuery( "UPDATE agent set trainday = trainday +1   WHERE name='agent'" );
+                    }
+                    if ($train == 2)
+                    {
+                        self::DbQuery( "UPDATE agent set happy1 = happy1 +1   WHERE name='agent'" );
+                        letsgotojapan::$instance->Smile(1,0);
+                    }
+
+                    
+                }
+
+                else
+                {
+                    $ville = 2;
+                    $type = self::getUniqueValueFromDB( "SELECT card_type type FROM kyoto WHERE  card_location_arg = 0 AND card_location = 'cardposition_{$day}_{$i}'");
+                    
+                        $bonuscard = letsgotojapan::$instance->kyotocards[$type]['bonus'];
+                        $pvcard = letsgotojapan::$instance->kyotocards[$type]['pv'];
+                    
+                    $train = self::getUniqueValueFromDB( "SELECT train train FROM kyoto WHERE  card_location_arg = 0 AND card_location = 'cardposition_{$day}_{$i}'");
+                    if ($train != 0)
+                    {
+                        self::DbQuery( "UPDATE agent set trainday = trainday +1   WHERE name='agent'" );
+                    }
+                    if ($train == 2)
+                    {
+                        self::DbQuery( "UPDATE agent set happy1 = happy1 +1   WHERE name='agent'" );
+                        letsgotojapan::$instance->Smile(1,0);
+                    }
+
+                    
+                }
+
+                self::DbQuery( "UPDATE agent set lundi = lundi + {$pvcard}  WHERE name='agent' " );   //// CHANGER LE JOUR
+
+
+                if($bonuscard[0]>=1)
+                {
+                    for($token=1; $token<=$bonuscard[0]; $token++)
+                    {
+                        letsgotojapan::$instance->Gain('r',0);
+                    }
+
+                }
+
+                if($bonuscard[1]>=1)
+                {
+                    for($token=1; $token<=$bonuscard[1]; $token++)
+                    {
+                        letsgotojapan::$instance->Gain('g',0);
+                    }
+
+                }
+
+                if($bonuscard[2]>=1)
+                {
+                    for($token=1; $token<=$bonuscard[2]; $token++)
+                    {
+                        letsgotojapan::$instance->Gain('p',0);
+                    }
+
+                }
+
+                if($bonuscard[3]>=1)
+                {
+                    for($token=1; $token<=$bonuscard[3]; $token++)
+                    {
+                        letsgotojapan::$instance->Gain('y',0);
+                    }
+
+                }
+
+                if($bonuscard[4]>=1)
+                {
+                    for($token=1; $token<=$bonuscard[4]; $token++)
+                    {
+                        letsgotojapan::$instance->Gain('b',0);
+                    }
+
+                }
+
+                if($bonuscard[5]>=1)
+                {
+                    for($token=1; $token<=$bonuscard[5]; $token++)
+                    {
+                        letsgotojapan::$instance->Gain('h1',0);
+                    }
+
+                }
+
+                if($bonuscard[6]>=1)
+                {
+                    for($token=1; $token<=$bonuscard[6]; $token++)
+                    {
+                        letsgotojapan::$instance->Gain('h2',0);
+                    }
+
+                }
+
+                if($bonuscard[7]>=1)
+                {
+                    for($token=1; $token<=$bonuscard[7]; $token++)
+                    {
+                        letsgotojapan::$instance->Gain('a1',0);
+                    }
+
+                }
+
+                if($bonuscard[8]>=1)
+                {
+                    for($token=1; $token<=$bonuscard[8]; $token++)
+                    {
+                        letsgotojapan::$instance->Gain('a2',0);
+                    }
+
+                }
+
+                
+                
+                
+
+            }
+
+            if($ville == 1)
+                {
+                    $lastday = self::getUniqueValueFromDB( "SELECT card_type type FROM tokyo WHERE  card_location_arg = 0 AND card_location = 'cardposition_{$day}_{$countday}'");
+                    $cardid = self::getUniqueValueFromDB( "SELECT card_id id FROM tokyo WHERE  card_location_arg = 0 AND card_location = 'cardposition_{$day}_{$countday}'");
+
+                    
+                    
+                    $method = "AgentTokyo_" . $lastday;
+                    $check = AgentCardTokyo::$method(0, 'lundi'); // A MODIFIER JOUR
+
+                    if($check == 1)
+                    {
+                        self::DbQuery( "UPDATE tokyo set checkcard = 1  WHERE card_id = {$cardid}" );
+                        self::DbQuery( "UPDATE agent set lundicheck = 1  WHERE name='agent'" ); // A MODIFIER JOUR
+                        letsgotojapan::$instance->notifyAllPlayers('checkscore','', array(
+                    
+                            'numero' => 2,
+                            'check' => 1,
+                            'position' => $day,
+                                                        
+                            )
+                            ); 
+                    }
+
+                    if($check == 2)
+                    {
+                        self::DbQuery( "UPDATE tokyo set checkcard = 2  WHERE card_id = {$cardid}" );
+                        self::DbQuery( "UPDATE agent set lundicheck = 2  WHERE name='agent'" ); // A MODIFIER JOUR
+                        letsgotojapan::$instance->notifyAllPlayers('checkscore','', array(
+                    
+                            'numero' => 2,
+                            'check' => 2,
+                            'position' => $day,
+                                                        
+                            )
+                            ); 
+                    }
+                    
+
+                    
+
+                    letsgotojapan::$instance->notifyAllPlayers('check','', array(
+                    
+                        'id' => $cardid,
+                        'ville' => 1,
+                        'check' => $check,
+                        
+                        )
+                        ); 
+
+                }
+
+            if($ville == 2)
+            {
+                $lastday = self::getUniqueValueFromDB( "SELECT card_type type FROM kyoto WHERE  card_location_arg = 0 AND card_location = 'cardposition_{$day}_{$countday}'");
+                $cardid = self::getUniqueValueFromDB( "SELECT card_id id FROM kyoto WHERE  card_location_arg = 0 AND card_location = 'cardposition_{$day}_{$countday}'");
+                
+                
+                $method = "AgentKyoto_" . $lastday;
+                $check = AgentCardKyoto::$method(0, 'lundi'); // A MODIFIER JOUR
+
+                if($check == 1)
+                    {
+                        self::DbQuery( "UPDATE kyoto set checkcard = 1  WHERE card_id = {$cardid}" );
+                        self::DbQuery( "UPDATE agent set lundicheck = 1  WHERE name='agent'" ); // A MODIFIER JOUR
+                        letsgotojapan::$instance->notifyAllPlayers('checkscore','', array(
+                    
+                            'numero' => 2,
+                            'check' => 1,
+                            'position' => $day,
+                                                        
+                            )
+                            ); 
+                        
+                    }
+
+                    if($check == 2)
+                    {
+                        self::DbQuery( "UPDATE kyoto set checkcard = 2  WHERE card_id = {$cardid}" );
+                        self::DbQuery( "UPDATE agent set lundicheck = 2  WHERE name='agent'" ); // A MODIFIER JOUR
+                        letsgotojapan::$instance->notifyAllPlayers('checkscore','', array(
+                    
+                            'numero' => 2,
+                            'check' => 2,
+                            'position' => $day,
+                                                        
+                            )
+                            ); 
+                    }
+                
+
+                
+
+                letsgotojapan::$instance->notifyAllPlayers('check','', array(
+                
+                    'id' => $cardid,
+                    'ville' => 2,
+                    'check' => $check,
+                    
+                    
+                    )
+                    ); 
+                
+            }
+
+
+            $finalscore = self::getUniqueValueFromDB( "SELECT lundi FROM agent WHERE name='agent'");   /// CHANGER JOUR
+            letsgotojapan::$instance->notifyAllPlayers('score',clienttranslate( '<b>The Travel Agent</b> gains ${score} ${log} for <b>${day}</b>'), array(
+                    
+                'numero' => 2,
+                'score' => $finalscore,
+                'position' => $day,
+                'log' => letsgotojapan::$instance->getLogsType(8),
+                'day' => letsgotojapan::$instance->days[1]['name'],   // changer jour
+                
+                )
+                ); 
+
+
+            
+
+
+            ////////////////////////////////////////////////////////////////////////////// 
+            ////////////////////////////////// FIN SCORE AGENT ///////////////////////////
+            ////////////////////////////////////////////////////////////////////////////// 
             
 
             letsgotojapan::$instance->addPending($this->player_id, "FinalStepMardiWalk"); // à modifier pour aller sur le mardi
@@ -3820,6 +4206,7 @@ function argFinalStep1($parg1, $parg2)
                 $type = self::getUniqueValueFromDB( "SELECT card_type type FROM tokyo WHERE card_id ={$explode[2]}");
                 $location = self::getUniqueValueFromDB( "SELECT card_location location FROM tokyo WHERE card_id ={$explode[2]}");
 
+                $typetrain = self::getUniqueValueFromDB( "SELECT train FROM tokyo WHERE card_id ={$explode[2]}");
                 
                 letsgotojapan::$instance->notifyAllPlayers('changecard','', array(
                 
@@ -3829,6 +4216,7 @@ function argFinalStep1($parg1, $parg2)
                     'type' => $type,
                     'location' => $location,
                     'playerid' => $this->player_id,
+                    'train' => $typetrain,
 
                     )
                     );
@@ -3856,7 +4244,8 @@ function argFinalStep1($parg1, $parg2)
                 $type = self::getUniqueValueFromDB( "SELECT card_type type FROM kyoto WHERE card_id ={$explode[2]}");
                 $location = self::getUniqueValueFromDB( "SELECT card_location location FROM kyoto WHERE card_id ={$explode[2]}");
 
-                
+                $typetrain = self::getUniqueValueFromDB( "SELECT train FROM kyoto WHERE card_id ={$explode[2]}");
+
                     letsgotojapan::$instance->notifyAllPlayers('changecard','', array(
                 
                         'cardid' => $result[0],
@@ -3865,6 +4254,7 @@ function argFinalStep1($parg1, $parg2)
                         'type' => $type,
                         'location' => $location,
                         'playerid' => $this->player_id,
+                        'train' => $typetrain,
 
                         )
                         );
@@ -4258,6 +4648,284 @@ function argFinalStep1($parg1, $parg2)
                 )
                 ); 
 
+
+
+            //////////////////////////////////////////////////////////////////////////////   
+            ////////////////////////////////// DEBUT SCORE AGENT /////////////////////////
+            ////////////////////////////////////////////////////////////////////////////// 
+
+
+
+            $counttrip = letsgotojapan::$instance->CountTrip(0);  
+            $countday = $counttrip[$day-1];
+            $bonuscard = array();
+            $pvcard =0;
+            $ville = 0;
+
+            for ($i=1; $i<=$countday; $i++)
+            {
+                $type = self::getUniqueValueFromDB( "SELECT card_type type FROM tokyo WHERE  card_location_arg = 0 AND card_location = 'cardposition_{$day}_{$i}'");
+
+                if ($type != null)
+                {
+                    $ville = 1;
+                
+                    $bonuscard = letsgotojapan::$instance->tokyocards[$type]['bonus'];
+                    $pvcard = letsgotojapan::$instance->tokyocards[$type]['pv'];
+                    
+
+                    $train = self::getUniqueValueFromDB( "SELECT train train FROM tokyo WHERE  card_location_arg = 0 AND card_location = 'cardposition_{$day}_{$i}'");
+                    if ($train != 0)
+                    {
+                        self::DbQuery( "UPDATE agent set trainday = trainday +1   WHERE name='agent'" );
+                    }
+                    if ($train == 2)
+                    {
+                        self::DbQuery( "UPDATE agent set happy1 = happy1 +1   WHERE name='agent'" );
+                        letsgotojapan::$instance->Smile(1,0);
+                    }
+
+                    
+                }
+
+                else
+                {
+                    $ville = 2;
+                    $type = self::getUniqueValueFromDB( "SELECT card_type type FROM kyoto WHERE  card_location_arg = 0 AND card_location = 'cardposition_{$day}_{$i}'");
+                    
+                        $bonuscard = letsgotojapan::$instance->kyotocards[$type]['bonus'];
+                        $pvcard = letsgotojapan::$instance->kyotocards[$type]['pv'];
+                    
+                    $train = self::getUniqueValueFromDB( "SELECT train train FROM kyoto WHERE  card_location_arg = 0 AND card_location = 'cardposition_{$day}_{$i}'");
+                    if ($train != 0)
+                    {
+                        self::DbQuery( "UPDATE agent set trainday = trainday +1   WHERE name='agent'" );
+                    }
+                    if ($train == 2)
+                    {
+                        self::DbQuery( "UPDATE agent set happy1 = happy1 +1   WHERE name='agent'" );
+                        letsgotojapan::$instance->Smile(1,0);
+                    }
+
+                    
+                }
+
+                self::DbQuery( "UPDATE agent set mardi = mardi + {$pvcard}  WHERE name='agent' " );   //// CHANGER LE JOUR
+
+
+                if($bonuscard[0]>=1)
+                {
+                    for($token=1; $token<=$bonuscard[0]; $token++)
+                    {
+                        letsgotojapan::$instance->Gain('r',0);
+                    }
+
+                }
+
+                if($bonuscard[1]>=1)
+                {
+                    for($token=1; $token<=$bonuscard[1]; $token++)
+                    {
+                        letsgotojapan::$instance->Gain('g',0);
+                    }
+
+                }
+
+                if($bonuscard[2]>=1)
+                {
+                    for($token=1; $token<=$bonuscard[2]; $token++)
+                    {
+                        letsgotojapan::$instance->Gain('p',0);
+                    }
+
+                }
+
+                if($bonuscard[3]>=1)
+                {
+                    for($token=1; $token<=$bonuscard[3]; $token++)
+                    {
+                        letsgotojapan::$instance->Gain('y',0);
+                    }
+
+                }
+
+                if($bonuscard[4]>=1)
+                {
+                    for($token=1; $token<=$bonuscard[4]; $token++)
+                    {
+                        letsgotojapan::$instance->Gain('b',0);
+                    }
+
+                }
+
+                if($bonuscard[5]>=1)
+                {
+                    for($token=1; $token<=$bonuscard[5]; $token++)
+                    {
+                        letsgotojapan::$instance->Gain('h1',0);
+                    }
+
+                }
+
+                if($bonuscard[6]>=1)
+                {
+                    for($token=1; $token<=$bonuscard[6]; $token++)
+                    {
+                        letsgotojapan::$instance->Gain('h2',0);
+                    }
+
+                }
+
+                if($bonuscard[7]>=1)
+                {
+                    for($token=1; $token<=$bonuscard[7]; $token++)
+                    {
+                        letsgotojapan::$instance->Gain('a1',0);
+                    }
+
+                }
+
+                if($bonuscard[8]>=1)
+                {
+                    for($token=1; $token<=$bonuscard[8]; $token++)
+                    {
+                        letsgotojapan::$instance->Gain('a2',0);
+                    }
+
+                }
+
+                
+                
+                
+
+            }
+
+            if($ville == 1)
+                {
+                    $lastday = self::getUniqueValueFromDB( "SELECT card_type type FROM tokyo WHERE  card_location_arg = 0 AND card_location = 'cardposition_{$day}_{$countday}'");
+                    $cardid = self::getUniqueValueFromDB( "SELECT card_id id FROM tokyo WHERE  card_location_arg = 0 AND card_location = 'cardposition_{$day}_{$countday}'");
+
+                    
+                    
+                    $method = "AgentTokyo_" . $lastday;
+                    $check = AgentCardTokyo::$method(0, 'mardi'); // A MODIFIER JOUR
+
+                    if($check == 1)
+                    {
+                        self::DbQuery( "UPDATE tokyo set checkcard = 1  WHERE card_id = {$cardid}" );
+                        self::DbQuery( "UPDATE agent set mardicheck = 1  WHERE name='agent'" ); // A MODIFIER JOUR
+                        letsgotojapan::$instance->notifyAllPlayers('checkscore','', array(
+                    
+                            'numero' => 2,
+                            'check' => 1,
+                            'position' => $day,
+                                                        
+                            )
+                            ); 
+                    }
+
+                    if($check == 2)
+                    {
+                        self::DbQuery( "UPDATE tokyo set checkcard = 2  WHERE card_id = {$cardid}" );
+                        self::DbQuery( "UPDATE agent set mardicheck = 2  WHERE name='agent'" ); // A MODIFIER JOUR
+                        letsgotojapan::$instance->notifyAllPlayers('checkscore','', array(
+                    
+                            'numero' => 2,
+                            'check' => 2,
+                            'position' => $day,
+                                                        
+                            )
+                            ); 
+                    }
+                    
+
+                    
+
+                    letsgotojapan::$instance->notifyAllPlayers('check','', array(
+                    
+                        'id' => $cardid,
+                        'ville' => 1,
+                        'check' => $check,
+                        
+                        )
+                        ); 
+
+                }
+
+            if($ville == 2)
+            {
+                $lastday = self::getUniqueValueFromDB( "SELECT card_type type FROM kyoto WHERE  card_location_arg = 0 AND card_location = 'cardposition_{$day}_{$countday}'");
+                $cardid = self::getUniqueValueFromDB( "SELECT card_id id FROM kyoto WHERE  card_location_arg = 0 AND card_location = 'cardposition_{$day}_{$countday}'");
+                
+                
+                $method = "AgentKyoto_" . $lastday;
+                $check = AgentCardKyoto::$method(0, 'mardi'); // A MODIFIER JOUR
+
+                if($check == 1)
+                    {
+                        self::DbQuery( "UPDATE kyoto set checkcard = 1  WHERE card_id = {$cardid}" );
+                        self::DbQuery( "UPDATE agent set mardicheck = 1  WHERE name='agent'" ); // A MODIFIER JOUR
+                        letsgotojapan::$instance->notifyAllPlayers('checkscore','', array(
+                    
+                            'numero' => 2,
+                            'check' => 1,
+                            'position' => $day,
+                                                        
+                            )
+                            ); 
+                        
+                    }
+
+                    if($check == 2)
+                    {
+                        self::DbQuery( "UPDATE kyoto set checkcard = 2  WHERE card_id = {$cardid}" );
+                        self::DbQuery( "UPDATE agent set mardicheck = 2  WHERE name='agent'" ); // A MODIFIER JOUR
+                        letsgotojapan::$instance->notifyAllPlayers('checkscore','', array(
+                    
+                            'numero' => 2,
+                            'check' => 2,
+                            'position' => $day,
+                                                        
+                            )
+                            ); 
+                    }
+                
+
+                
+
+                letsgotojapan::$instance->notifyAllPlayers('check','', array(
+                
+                    'id' => $cardid,
+                    'ville' => 2,
+                    'check' => $check,
+                    
+                    
+                    )
+                    ); 
+                
+            }
+
+
+            $finalscore = self::getUniqueValueFromDB( "SELECT mardi FROM agent WHERE name='agent'");   /// CHANGER JOUR
+            letsgotojapan::$instance->notifyAllPlayers('score',clienttranslate( '<b>The Travel Agent</b> gains ${score} ${log} for <b>${day}</b>'), array(
+                    
+                'numero' => 2,
+                'score' => $finalscore,
+                'position' => $day,
+                'log' => letsgotojapan::$instance->getLogsType(8),
+                'day' => letsgotojapan::$instance->days[2]['name'],   // changer jour
+                
+                )
+                ); 
+
+
+            
+
+
+            ////////////////////////////////////////////////////////////////////////////// 
+            ////////////////////////////////// FIN SCORE AGENT ///////////////////////////
+            ////////////////////////////////////////////////////////////////////////////// 
+
             letsgotojapan::$instance->addPending($this->player_id, "FinalStepMercrediWalk"); // à modifier pour aller sur le mardi
 
 
@@ -4437,7 +5105,8 @@ function argFinalStep1($parg1, $parg2)
                 $type = self::getUniqueValueFromDB( "SELECT card_type type FROM tokyo WHERE card_id ={$explode[2]}");
                 $location = self::getUniqueValueFromDB( "SELECT card_location location FROM tokyo WHERE card_id ={$explode[2]}");
 
-                
+                $typetrain = self::getUniqueValueFromDB( "SELECT train FROM tokyo WHERE card_id ={$explode[2]}");
+
                 letsgotojapan::$instance->notifyAllPlayers('changecard','', array(
                 
                     'cardid' => $result[0],
@@ -4446,6 +5115,8 @@ function argFinalStep1($parg1, $parg2)
                     'type' => $type,
                     'location' => $location,
                     'playerid' => $this->player_id,
+                    'train' => $typetrain,
+
 
                     )
                     );
@@ -4473,6 +5144,7 @@ function argFinalStep1($parg1, $parg2)
                 $type = self::getUniqueValueFromDB( "SELECT card_type type FROM kyoto WHERE card_id ={$explode[2]}");
                 $location = self::getUniqueValueFromDB( "SELECT card_location location FROM kyoto WHERE card_id ={$explode[2]}");
 
+                $typetrain = self::getUniqueValueFromDB( "SELECT train FROM kyoto WHERE card_id ={$explode[2]}");
                 
                     letsgotojapan::$instance->notifyAllPlayers('changecard','', array(
                 
@@ -4482,6 +5154,7 @@ function argFinalStep1($parg1, $parg2)
                         'type' => $type,
                         'location' => $location,
                         'playerid' => $this->player_id,
+                        'train' => $typetrain,
 
                         )
                         );
@@ -4877,6 +5550,282 @@ function argFinalStep1($parg1, $parg2)
                 )
                 );
 
+            //////////////////////////////////////////////////////////////////////////////   
+            ////////////////////////////////// DEBUT SCORE AGENT /////////////////////////
+            ////////////////////////////////////////////////////////////////////////////// 
+
+
+
+            $counttrip = letsgotojapan::$instance->CountTrip(0);  
+            $countday = $counttrip[$day-1];
+            $bonuscard = array();
+            $pvcard =0;
+            $ville = 0;
+
+            for ($i=1; $i<=$countday; $i++)
+            {
+                $type = self::getUniqueValueFromDB( "SELECT card_type type FROM tokyo WHERE  card_location_arg = 0 AND card_location = 'cardposition_{$day}_{$i}'");
+
+                if ($type != null)
+                {
+                    $ville = 1;
+                
+                    $bonuscard = letsgotojapan::$instance->tokyocards[$type]['bonus'];
+                    $pvcard = letsgotojapan::$instance->tokyocards[$type]['pv'];
+                    
+
+                    $train = self::getUniqueValueFromDB( "SELECT train train FROM tokyo WHERE  card_location_arg = 0 AND card_location = 'cardposition_{$day}_{$i}'");
+                    if ($train != 0)
+                    {
+                        self::DbQuery( "UPDATE agent set trainday = trainday +1   WHERE name='agent'" );
+                    }
+                    if ($train == 2)
+                    {
+                        self::DbQuery( "UPDATE agent set happy1 = happy1 +1   WHERE name='agent'" );
+                        letsgotojapan::$instance->Smile(1,0);
+                    }
+
+                    
+                }
+
+                else
+                {
+                    $ville = 2;
+                    $type = self::getUniqueValueFromDB( "SELECT card_type type FROM kyoto WHERE  card_location_arg = 0 AND card_location = 'cardposition_{$day}_{$i}'");
+                    
+                        $bonuscard = letsgotojapan::$instance->kyotocards[$type]['bonus'];
+                        $pvcard = letsgotojapan::$instance->kyotocards[$type]['pv'];
+                    
+                    $train = self::getUniqueValueFromDB( "SELECT train train FROM kyoto WHERE  card_location_arg = 0 AND card_location = 'cardposition_{$day}_{$i}'");
+                    if ($train != 0)
+                    {
+                        self::DbQuery( "UPDATE agent set trainday = trainday +1   WHERE name='agent'" );
+                    }
+                    if ($train == 2)
+                    {
+                        self::DbQuery( "UPDATE agent set happy1 = happy1 +1   WHERE name='agent'" );
+                        letsgotojapan::$instance->Smile(1,0);
+                    }
+
+                    
+                }
+
+                self::DbQuery( "UPDATE agent set mercredi = mercredi + {$pvcard}  WHERE name='agent' " );   //// CHANGER LE JOUR
+
+
+                if($bonuscard[0]>=1)
+                {
+                    for($token=1; $token<=$bonuscard[0]; $token++)
+                    {
+                        letsgotojapan::$instance->Gain('r',0);
+                    }
+
+                }
+
+                if($bonuscard[1]>=1)
+                {
+                    for($token=1; $token<=$bonuscard[1]; $token++)
+                    {
+                        letsgotojapan::$instance->Gain('g',0);
+                    }
+
+                }
+
+                if($bonuscard[2]>=1)
+                {
+                    for($token=1; $token<=$bonuscard[2]; $token++)
+                    {
+                        letsgotojapan::$instance->Gain('p',0);
+                    }
+
+                }
+
+                if($bonuscard[3]>=1)
+                {
+                    for($token=1; $token<=$bonuscard[3]; $token++)
+                    {
+                        letsgotojapan::$instance->Gain('y',0);
+                    }
+
+                }
+
+                if($bonuscard[4]>=1)
+                {
+                    for($token=1; $token<=$bonuscard[4]; $token++)
+                    {
+                        letsgotojapan::$instance->Gain('b',0);
+                    }
+
+                }
+
+                if($bonuscard[5]>=1)
+                {
+                    for($token=1; $token<=$bonuscard[5]; $token++)
+                    {
+                        letsgotojapan::$instance->Gain('h1',0);
+                    }
+
+                }
+
+                if($bonuscard[6]>=1)
+                {
+                    for($token=1; $token<=$bonuscard[6]; $token++)
+                    {
+                        letsgotojapan::$instance->Gain('h2',0);
+                    }
+
+                }
+
+                if($bonuscard[7]>=1)
+                {
+                    for($token=1; $token<=$bonuscard[7]; $token++)
+                    {
+                        letsgotojapan::$instance->Gain('a1',0);
+                    }
+
+                }
+
+                if($bonuscard[8]>=1)
+                {
+                    for($token=1; $token<=$bonuscard[8]; $token++)
+                    {
+                        letsgotojapan::$instance->Gain('a2',0);
+                    }
+
+                }
+
+                
+                
+                
+
+            }
+
+            if($ville == 1)
+                {
+                    $lastday = self::getUniqueValueFromDB( "SELECT card_type type FROM tokyo WHERE  card_location_arg = 0 AND card_location = 'cardposition_{$day}_{$countday}'");
+                    $cardid = self::getUniqueValueFromDB( "SELECT card_id id FROM tokyo WHERE  card_location_arg = 0 AND card_location = 'cardposition_{$day}_{$countday}'");
+
+                    
+                    
+                    $method = "AgentTokyo_" . $lastday;
+                    $check = AgentCardTokyo::$method(0, 'mercredi'); // A MODIFIER JOUR
+
+                    if($check == 1)
+                    {
+                        self::DbQuery( "UPDATE tokyo set checkcard = 1  WHERE card_id = {$cardid}" );
+                        self::DbQuery( "UPDATE agent set mercredicheck = 1  WHERE name='agent'" ); // A MODIFIER JOUR
+                        letsgotojapan::$instance->notifyAllPlayers('checkscore','', array(
+                    
+                            'numero' => 2,
+                            'check' => 1,
+                            'position' => $day,
+                                                        
+                            )
+                            ); 
+                    }
+
+                    if($check == 2)
+                    {
+                        self::DbQuery( "UPDATE tokyo set checkcard = 2  WHERE card_id = {$cardid}" );
+                        self::DbQuery( "UPDATE agent set mercredicheck = 2  WHERE name='agent'" ); // A MODIFIER JOUR
+                        letsgotojapan::$instance->notifyAllPlayers('checkscore','', array(
+                    
+                            'numero' => 2,
+                            'check' => 2,
+                            'position' => $day,
+                                                        
+                            )
+                            ); 
+                    }
+                    
+
+                    
+
+                    letsgotojapan::$instance->notifyAllPlayers('check','', array(
+                    
+                        'id' => $cardid,
+                        'ville' => 1,
+                        'check' => $check,
+                        
+                        )
+                        ); 
+
+                }
+
+            if($ville == 2)
+            {
+                $lastday = self::getUniqueValueFromDB( "SELECT card_type type FROM kyoto WHERE  card_location_arg = 0 AND card_location = 'cardposition_{$day}_{$countday}'");
+                $cardid = self::getUniqueValueFromDB( "SELECT card_id id FROM kyoto WHERE  card_location_arg = 0 AND card_location = 'cardposition_{$day}_{$countday}'");
+                
+                
+                $method = "AgentKyoto_" . $lastday;
+                $check = AgentCardKyoto::$method(0, 'mercredi'); // A MODIFIER JOUR
+
+                if($check == 1)
+                    {
+                        self::DbQuery( "UPDATE kyoto set checkcard = 1  WHERE card_id = {$cardid}" );
+                        self::DbQuery( "UPDATE agent set mercredicheck = 1  WHERE name='agent'" ); // A MODIFIER JOUR
+                        letsgotojapan::$instance->notifyAllPlayers('checkscore','', array(
+                    
+                            'numero' => 2,
+                            'check' => 1,
+                            'position' => $day,
+                                                        
+                            )
+                            ); 
+                        
+                    }
+
+                    if($check == 2)
+                    {
+                        self::DbQuery( "UPDATE kyoto set checkcard = 2  WHERE card_id = {$cardid}" );
+                        self::DbQuery( "UPDATE agent set mercredicheck = 2  WHERE name='agent'" ); // A MODIFIER JOUR
+                        letsgotojapan::$instance->notifyAllPlayers('checkscore','', array(
+                    
+                            'numero' => 2,
+                            'check' => 2,
+                            'position' => $day,
+                                                        
+                            )
+                            ); 
+                    }
+                
+
+                
+
+                letsgotojapan::$instance->notifyAllPlayers('check','', array(
+                
+                    'id' => $cardid,
+                    'ville' => 2,
+                    'check' => $check,
+                    
+                    
+                    )
+                    ); 
+                
+            }
+
+
+            $finalscore = self::getUniqueValueFromDB( "SELECT mercredi FROM agent WHERE name='agent'");   /// CHANGER JOUR
+            letsgotojapan::$instance->notifyAllPlayers('score',clienttranslate( '<b>The Travel Agent</b> gains ${score} ${log} for <b>${day}</b>'), array(
+                    
+                'numero' => 2,
+                'score' => $finalscore,
+                'position' => $day,
+                'log' => letsgotojapan::$instance->getLogsType(8),
+                'day' => letsgotojapan::$instance->days[3]['name'],   // changer jour
+                
+                )
+                ); 
+
+
+            
+
+
+            ////////////////////////////////////////////////////////////////////////////// 
+            ////////////////////////////////// FIN SCORE AGENT ///////////////////////////
+            ////////////////////////////////////////////////////////////////////////////// 
+
             letsgotojapan::$instance->addPending($this->player_id, "FinalStepJeudiWalk"); // à modifier pour aller sur le mardi
 
 
@@ -5059,6 +6008,7 @@ function argFinalStepJeudiWalk($parg1, $parg2)      //changer jour
                 $type = self::getUniqueValueFromDB( "SELECT card_type type FROM tokyo WHERE card_id ={$explode[2]}");
                 $location = self::getUniqueValueFromDB( "SELECT card_location location FROM tokyo WHERE card_id ={$explode[2]}");
 
+                $typetrain = self::getUniqueValueFromDB( "SELECT train FROM tokyo WHERE card_id ={$explode[2]}");
                 
                 letsgotojapan::$instance->notifyAllPlayers('changecard','', array(
                 
@@ -5068,6 +6018,7 @@ function argFinalStepJeudiWalk($parg1, $parg2)      //changer jour
                     'type' => $type,
                     'location' => $location,
                     'playerid' => $this->player_id,
+                    'train' => $typetrain,
 
                     )
                     );
@@ -5095,6 +6046,7 @@ function argFinalStepJeudiWalk($parg1, $parg2)      //changer jour
                 $type = self::getUniqueValueFromDB( "SELECT card_type type FROM kyoto WHERE card_id ={$explode[2]}");
                 $location = self::getUniqueValueFromDB( "SELECT card_location location FROM kyoto WHERE card_id ={$explode[2]}");
 
+                $typetrain = self::getUniqueValueFromDB( "SELECT train FROM kyoto WHERE card_id ={$explode[2]}");
                 
                     letsgotojapan::$instance->notifyAllPlayers('changecard','', array(
                 
@@ -5104,6 +6056,7 @@ function argFinalStepJeudiWalk($parg1, $parg2)      //changer jour
                         'type' => $type,
                         'location' => $location,
                         'playerid' => $this->player_id,
+                        'train' => $typetrain,
 
                         )
                         );
@@ -5499,6 +6452,283 @@ function FinalStepJeudi($parg1, $parg2, $varg1, $varg2)
             )
             );
 
+
+        //////////////////////////////////////////////////////////////////////////////   
+        ////////////////////////////////// DEBUT SCORE AGENT /////////////////////////
+        ////////////////////////////////////////////////////////////////////////////// 
+
+
+
+            $counttrip = letsgotojapan::$instance->CountTrip(0);  
+            $countday = $counttrip[$day-1];
+            $bonuscard = array();
+            $pvcard =0;
+            $ville = 0;
+
+            for ($i=1; $i<=$countday; $i++)
+            {
+                $type = self::getUniqueValueFromDB( "SELECT card_type type FROM tokyo WHERE  card_location_arg = 0 AND card_location = 'cardposition_{$day}_{$i}'");
+
+                if ($type != null)
+                {
+                    $ville = 1;
+                
+                    $bonuscard = letsgotojapan::$instance->tokyocards[$type]['bonus'];
+                    $pvcard = letsgotojapan::$instance->tokyocards[$type]['pv'];
+                    
+
+                    $train = self::getUniqueValueFromDB( "SELECT train train FROM tokyo WHERE  card_location_arg = 0 AND card_location = 'cardposition_{$day}_{$i}'");
+                    if ($train != 0)
+                    {
+                        self::DbQuery( "UPDATE agent set trainday = trainday +1   WHERE name='agent'" );
+                    }
+                    if ($train == 2)
+                    {
+                        self::DbQuery( "UPDATE agent set happy1 = happy1 +1   WHERE name='agent'" );
+                        letsgotojapan::$instance->Smile(1,0);
+                    }
+
+                    
+                }
+
+                else
+                {
+                    $ville = 2;
+                    $type = self::getUniqueValueFromDB( "SELECT card_type type FROM kyoto WHERE  card_location_arg = 0 AND card_location = 'cardposition_{$day}_{$i}'");
+                    
+                        $bonuscard = letsgotojapan::$instance->kyotocards[$type]['bonus'];
+                        $pvcard = letsgotojapan::$instance->kyotocards[$type]['pv'];
+                    
+                    $train = self::getUniqueValueFromDB( "SELECT train train FROM kyoto WHERE  card_location_arg = 0 AND card_location = 'cardposition_{$day}_{$i}'");
+                    if ($train != 0)
+                    {
+                        self::DbQuery( "UPDATE agent set trainday = trainday +1   WHERE name='agent'" );
+                    }
+                    if ($train == 2)
+                    {
+                        self::DbQuery( "UPDATE agent set happy1 = happy1 +1   WHERE name='agent'" );
+                        letsgotojapan::$instance->Smile(1,0);
+                    }
+
+                    
+                }
+
+                self::DbQuery( "UPDATE agent set jeudi = jeudi + {$pvcard}  WHERE name='agent' " );   //// CHANGER LE JOUR
+
+
+                if($bonuscard[0]>=1)
+                {
+                    for($token=1; $token<=$bonuscard[0]; $token++)
+                    {
+                        letsgotojapan::$instance->Gain('r',0);
+                    }
+
+                }
+
+                if($bonuscard[1]>=1)
+                {
+                    for($token=1; $token<=$bonuscard[1]; $token++)
+                    {
+                        letsgotojapan::$instance->Gain('g',0);
+                    }
+
+                }
+
+                if($bonuscard[2]>=1)
+                {
+                    for($token=1; $token<=$bonuscard[2]; $token++)
+                    {
+                        letsgotojapan::$instance->Gain('p',0);
+                    }
+
+                }
+
+                if($bonuscard[3]>=1)
+                {
+                    for($token=1; $token<=$bonuscard[3]; $token++)
+                    {
+                        letsgotojapan::$instance->Gain('y',0);
+                    }
+
+                }
+
+                if($bonuscard[4]>=1)
+                {
+                    for($token=1; $token<=$bonuscard[4]; $token++)
+                    {
+                        letsgotojapan::$instance->Gain('b',0);
+                    }
+
+                }
+
+                if($bonuscard[5]>=1)
+                {
+                    for($token=1; $token<=$bonuscard[5]; $token++)
+                    {
+                        letsgotojapan::$instance->Gain('h1',0);
+                    }
+
+                }
+
+                if($bonuscard[6]>=1)
+                {
+                    for($token=1; $token<=$bonuscard[6]; $token++)
+                    {
+                        letsgotojapan::$instance->Gain('h2',0);
+                    }
+
+                }
+
+                if($bonuscard[7]>=1)
+                {
+                    for($token=1; $token<=$bonuscard[7]; $token++)
+                    {
+                        letsgotojapan::$instance->Gain('a1',0);
+                    }
+
+                }
+
+                if($bonuscard[8]>=1)
+                {
+                    for($token=1; $token<=$bonuscard[8]; $token++)
+                    {
+                        letsgotojapan::$instance->Gain('a2',0);
+                    }
+
+                }
+
+                
+                
+                
+
+            }
+
+            if($ville == 1)
+                {
+                    $lastday = self::getUniqueValueFromDB( "SELECT card_type type FROM tokyo WHERE  card_location_arg = 0 AND card_location = 'cardposition_{$day}_{$countday}'");
+                    $cardid = self::getUniqueValueFromDB( "SELECT card_id id FROM tokyo WHERE  card_location_arg = 0 AND card_location = 'cardposition_{$day}_{$countday}'");
+
+                    
+                    
+                    $method = "AgentTokyo_" . $lastday;
+                    $check = AgentCardTokyo::$method(0, 'jeudi'); // A MODIFIER JOUR
+
+                    if($check == 1)
+                    {
+                        self::DbQuery( "UPDATE tokyo set checkcard = 1  WHERE card_id = {$cardid}" );
+                        self::DbQuery( "UPDATE agent set jeudicheck = 1  WHERE name='agent'" ); // A MODIFIER JOUR
+                        letsgotojapan::$instance->notifyAllPlayers('checkscore','', array(
+                    
+                            'numero' => 2,
+                            'check' => 1,
+                            'position' => $day,
+                                                        
+                            )
+                            ); 
+                    }
+
+                    if($check == 2)
+                    {
+                        self::DbQuery( "UPDATE tokyo set checkcard = 2  WHERE card_id = {$cardid}" );
+                        self::DbQuery( "UPDATE agent set jeudicheck = 2  WHERE name='agent'" ); // A MODIFIER JOUR
+                        letsgotojapan::$instance->notifyAllPlayers('checkscore','', array(
+                    
+                            'numero' => 2,
+                            'check' => 2,
+                            'position' => $day,
+                                                        
+                            )
+                            ); 
+                    }
+                    
+
+                    
+
+                    letsgotojapan::$instance->notifyAllPlayers('check','', array(
+                    
+                        'id' => $cardid,
+                        'ville' => 1,
+                        'check' => $check,
+                        
+                        )
+                        ); 
+
+                }
+
+            if($ville == 2)
+            {
+                $lastday = self::getUniqueValueFromDB( "SELECT card_type type FROM kyoto WHERE  card_location_arg = 0 AND card_location = 'cardposition_{$day}_{$countday}'");
+                $cardid = self::getUniqueValueFromDB( "SELECT card_id id FROM kyoto WHERE  card_location_arg = 0 AND card_location = 'cardposition_{$day}_{$countday}'");
+                
+                
+                $method = "AgentKyoto_" . $lastday;
+                $check = AgentCardKyoto::$method(0, 'jeudi'); // A MODIFIER JOUR
+
+                if($check == 1)
+                    {
+                        self::DbQuery( "UPDATE kyoto set checkcard = 1  WHERE card_id = {$cardid}" );
+                        self::DbQuery( "UPDATE agent set jeudicheck = 1  WHERE name='agent'" ); // A MODIFIER JOUR
+                        letsgotojapan::$instance->notifyAllPlayers('checkscore','', array(
+                    
+                            'numero' => 2,
+                            'check' => 1,
+                            'position' => $day,
+                                                        
+                            )
+                            ); 
+                        
+                    }
+
+                    if($check == 2)
+                    {
+                        self::DbQuery( "UPDATE kyoto set checkcard = 2  WHERE card_id = {$cardid}" );
+                        self::DbQuery( "UPDATE agent set jeudicheck = 2  WHERE name='agent'" ); // A MODIFIER JOUR
+                        letsgotojapan::$instance->notifyAllPlayers('checkscore','', array(
+                    
+                            'numero' => 2,
+                            'check' => 2,
+                            'position' => $day,
+                                                        
+                            )
+                            ); 
+                    }
+                
+
+                
+
+                letsgotojapan::$instance->notifyAllPlayers('check','', array(
+                
+                    'id' => $cardid,
+                    'ville' => 2,
+                    'check' => $check,
+                    
+                    
+                    )
+                    ); 
+                
+            }
+
+
+            $finalscore = self::getUniqueValueFromDB( "SELECT jeudi FROM agent WHERE name='agent'");   /// CHANGER JOUR
+            letsgotojapan::$instance->notifyAllPlayers('score',clienttranslate( '<b>The Travel Agent</b> gains ${score} ${log} for <b>${day}</b>'), array(
+                    
+                'numero' => 2,
+                'score' => $finalscore,
+                'position' => $day,
+                'log' => letsgotojapan::$instance->getLogsType(8),
+                'day' => letsgotojapan::$instance->days[4]['name'],   // changer jour
+                
+                )
+                ); 
+
+
+            
+
+
+            ////////////////////////////////////////////////////////////////////////////// 
+            ////////////////////////////////// FIN SCORE AGENT ///////////////////////////
+            ////////////////////////////////////////////////////////////////////////////// 
+
         letsgotojapan::$instance->addPending($this->player_id, "FinalStepVendrediWalk"); // à modifier pour aller sur le mardi
 
 
@@ -5680,6 +6910,7 @@ function argFinalStepVendrediWalk($parg1, $parg2)      //changer jour
                 $type = self::getUniqueValueFromDB( "SELECT card_type type FROM tokyo WHERE card_id ={$explode[2]}");
                 $location = self::getUniqueValueFromDB( "SELECT card_location location FROM tokyo WHERE card_id ={$explode[2]}");
 
+                $typetrain = self::getUniqueValueFromDB( "SELECT train FROM tokyo WHERE card_id ={$explode[2]}");
                 
                 letsgotojapan::$instance->notifyAllPlayers('changecard','', array(
                 
@@ -5689,6 +6920,7 @@ function argFinalStepVendrediWalk($parg1, $parg2)      //changer jour
                     'type' => $type,
                     'location' => $location,
                     'playerid' => $this->player_id,
+                    'train' => $typetrain,
 
                     )
                     );
@@ -5716,6 +6948,7 @@ function argFinalStepVendrediWalk($parg1, $parg2)      //changer jour
                 $type = self::getUniqueValueFromDB( "SELECT card_type type FROM kyoto WHERE card_id ={$explode[2]}");
                 $location = self::getUniqueValueFromDB( "SELECT card_location location FROM kyoto WHERE card_id ={$explode[2]}");
 
+                $typetrain = self::getUniqueValueFromDB( "SELECT train FROM kyoto WHERE card_id ={$explode[2]}");
                 
                     letsgotojapan::$instance->notifyAllPlayers('changecard','', array(
                 
@@ -5725,6 +6958,7 @@ function argFinalStepVendrediWalk($parg1, $parg2)      //changer jour
                         'type' => $type,
                         'location' => $location,
                         'playerid' => $this->player_id,
+                        'train' => $typetrain,
 
                         )
                         );
@@ -6122,6 +7356,283 @@ function FinalStepVendredi($parg1, $parg2, $varg1, $varg2)
             )
             );
 
+
+        //////////////////////////////////////////////////////////////////////////////   
+        ////////////////////////////////// DEBUT SCORE AGENT /////////////////////////
+        ////////////////////////////////////////////////////////////////////////////// 
+
+
+
+        $counttrip = letsgotojapan::$instance->CountTrip(0);  
+        $countday = $counttrip[$day-1];
+        $bonuscard = array();
+        $pvcard =0;
+        $ville = 0;
+
+        for ($i=1; $i<=$countday; $i++)
+        {
+            $type = self::getUniqueValueFromDB( "SELECT card_type type FROM tokyo WHERE  card_location_arg = 0 AND card_location = 'cardposition_{$day}_{$i}'");
+
+            if ($type != null)
+            {
+                $ville = 1;
+            
+                $bonuscard = letsgotojapan::$instance->tokyocards[$type]['bonus'];
+                $pvcard = letsgotojapan::$instance->tokyocards[$type]['pv'];
+                
+
+                $train = self::getUniqueValueFromDB( "SELECT train train FROM tokyo WHERE  card_location_arg = 0 AND card_location = 'cardposition_{$day}_{$i}'");
+                if ($train != 0)
+                {
+                    self::DbQuery( "UPDATE agent set trainday = trainday +1   WHERE name='agent'" );
+                }
+                if ($train == 2)
+                {
+                    self::DbQuery( "UPDATE agent set happy1 = happy1 +1   WHERE name='agent'" );
+                    letsgotojapan::$instance->Smile(1,0);
+                }
+
+                
+            }
+
+            else
+            {
+                $ville = 2;
+                $type = self::getUniqueValueFromDB( "SELECT card_type type FROM kyoto WHERE  card_location_arg = 0 AND card_location = 'cardposition_{$day}_{$i}'");
+                
+                    $bonuscard = letsgotojapan::$instance->kyotocards[$type]['bonus'];
+                    $pvcard = letsgotojapan::$instance->kyotocards[$type]['pv'];
+                
+                $train = self::getUniqueValueFromDB( "SELECT train train FROM kyoto WHERE  card_location_arg = 0 AND card_location = 'cardposition_{$day}_{$i}'");
+                if ($train != 0)
+                {
+                    self::DbQuery( "UPDATE agent set trainday = trainday +1   WHERE name='agent'" );
+                }
+                if ($train == 2)
+                {
+                    self::DbQuery( "UPDATE agent set happy1 = happy1 +1   WHERE name='agent'" );
+                    letsgotojapan::$instance->Smile(1,0);
+                }
+
+                
+            }
+
+            self::DbQuery( "UPDATE agent set vendredi = vendredi + {$pvcard}  WHERE name='agent' " );   //// CHANGER LE JOUR
+
+
+            if($bonuscard[0]>=1)
+            {
+                for($token=1; $token<=$bonuscard[0]; $token++)
+                {
+                    letsgotojapan::$instance->Gain('r',0);
+                }
+
+            }
+
+            if($bonuscard[1]>=1)
+            {
+                for($token=1; $token<=$bonuscard[1]; $token++)
+                {
+                    letsgotojapan::$instance->Gain('g',0);
+                }
+
+            }
+
+            if($bonuscard[2]>=1)
+            {
+                for($token=1; $token<=$bonuscard[2]; $token++)
+                {
+                    letsgotojapan::$instance->Gain('p',0);
+                }
+
+            }
+
+            if($bonuscard[3]>=1)
+            {
+                for($token=1; $token<=$bonuscard[3]; $token++)
+                {
+                    letsgotojapan::$instance->Gain('y',0);
+                }
+
+            }
+
+            if($bonuscard[4]>=1)
+            {
+                for($token=1; $token<=$bonuscard[4]; $token++)
+                {
+                    letsgotojapan::$instance->Gain('b',0);
+                }
+
+            }
+
+            if($bonuscard[5]>=1)
+            {
+                for($token=1; $token<=$bonuscard[5]; $token++)
+                {
+                    letsgotojapan::$instance->Gain('h1',0);
+                }
+
+            }
+
+            if($bonuscard[6]>=1)
+            {
+                for($token=1; $token<=$bonuscard[6]; $token++)
+                {
+                    letsgotojapan::$instance->Gain('h2',0);
+                }
+
+            }
+
+            if($bonuscard[7]>=1)
+            {
+                for($token=1; $token<=$bonuscard[7]; $token++)
+                {
+                    letsgotojapan::$instance->Gain('a1',0);
+                }
+
+            }
+
+            if($bonuscard[8]>=1)
+            {
+                for($token=1; $token<=$bonuscard[8]; $token++)
+                {
+                    letsgotojapan::$instance->Gain('a2',0);
+                }
+
+            }
+
+            
+            
+            
+
+        }
+
+        if($ville == 1)
+            {
+                $lastday = self::getUniqueValueFromDB( "SELECT card_type type FROM tokyo WHERE  card_location_arg = 0 AND card_location = 'cardposition_{$day}_{$countday}'");
+                $cardid = self::getUniqueValueFromDB( "SELECT card_id id FROM tokyo WHERE  card_location_arg = 0 AND card_location = 'cardposition_{$day}_{$countday}'");
+
+                
+                
+                $method = "AgentTokyo_" . $lastday;
+                $check = AgentCardTokyo::$method(0, 'vendredi'); // A MODIFIER JOUR
+
+                if($check == 1)
+                {
+                    self::DbQuery( "UPDATE tokyo set checkcard = 1  WHERE card_id = {$cardid}" );
+                    self::DbQuery( "UPDATE agent set vendredicheck = 1  WHERE name='agent'" ); // A MODIFIER JOUR
+                    letsgotojapan::$instance->notifyAllPlayers('checkscore','', array(
+                
+                        'numero' => 2,
+                        'check' => 1,
+                        'position' => $day,
+                                                    
+                        )
+                        ); 
+                }
+
+                if($check == 2)
+                {
+                    self::DbQuery( "UPDATE tokyo set checkcard = 2  WHERE card_id = {$cardid}" );
+                    self::DbQuery( "UPDATE agent set vendredicheck = 2  WHERE name='agent'" ); // A MODIFIER JOUR
+                    letsgotojapan::$instance->notifyAllPlayers('checkscore','', array(
+                
+                        'numero' => 2,
+                        'check' => 2,
+                        'position' => $day,
+                                                    
+                        )
+                        ); 
+                }
+                
+
+                
+
+                letsgotojapan::$instance->notifyAllPlayers('check','', array(
+                
+                    'id' => $cardid,
+                    'ville' => 1,
+                    'check' => $check,
+                    
+                    )
+                    ); 
+
+            }
+
+        if($ville == 2)
+        {
+            $lastday = self::getUniqueValueFromDB( "SELECT card_type type FROM kyoto WHERE  card_location_arg = 0 AND card_location = 'cardposition_{$day}_{$countday}'");
+            $cardid = self::getUniqueValueFromDB( "SELECT card_id id FROM kyoto WHERE  card_location_arg = 0 AND card_location = 'cardposition_{$day}_{$countday}'");
+            
+            
+            $method = "AgentKyoto_" . $lastday;
+            $check = AgentCardKyoto::$method(0, 'vendredi'); // A MODIFIER JOUR
+
+            if($check == 1)
+                {
+                    self::DbQuery( "UPDATE kyoto set checkcard = 1  WHERE card_id = {$cardid}" );
+                    self::DbQuery( "UPDATE agent set vendredicheck = 1  WHERE name='agent'" ); // A MODIFIER JOUR
+                    letsgotojapan::$instance->notifyAllPlayers('checkscore','', array(
+                
+                        'numero' => 2,
+                        'check' => 1,
+                        'position' => $day,
+                                                    
+                        )
+                        ); 
+                    
+                }
+
+                if($check == 2)
+                {
+                    self::DbQuery( "UPDATE kyoto set checkcard = 2  WHERE card_id = {$cardid}" );
+                    self::DbQuery( "UPDATE agent set vendredicheck = 2  WHERE name='agent'" ); // A MODIFIER JOUR
+                    letsgotojapan::$instance->notifyAllPlayers('checkscore','', array(
+                
+                        'numero' => 2,
+                        'check' => 2,
+                        'position' => $day,
+                                                    
+                        )
+                        ); 
+                }
+            
+
+            
+
+            letsgotojapan::$instance->notifyAllPlayers('check','', array(
+            
+                'id' => $cardid,
+                'ville' => 2,
+                'check' => $check,
+                
+                
+                )
+                ); 
+            
+        }
+
+
+        $finalscore = self::getUniqueValueFromDB( "SELECT vendredi FROM agent WHERE name='agent'");   /// CHANGER JOUR
+        letsgotojapan::$instance->notifyAllPlayers('score',clienttranslate( '<b>The Travel Agent</b> gains ${score} ${log} for <b>${day}</b>'), array(
+                
+            'numero' => 2,
+            'score' => $finalscore,
+            'position' => $day,
+            'log' => letsgotojapan::$instance->getLogsType(8),
+            'day' => letsgotojapan::$instance->days[5]['name'],   // changer jour
+            
+            )
+            ); 
+
+
+        
+
+
+        ////////////////////////////////////////////////////////////////////////////// 
+        ////////////////////////////////// FIN SCORE AGENT ///////////////////////////
+        ////////////////////////////////////////////////////////////////////////////// 
+
         letsgotojapan::$instance->addPending($this->player_id, "FinalStepSamediWalk"); // à modifier pour aller sur le mardi
 
 
@@ -6301,6 +7812,7 @@ function argFinalStepSamediWalk($parg1, $parg2)      //changer jour
                 $type = self::getUniqueValueFromDB( "SELECT card_type type FROM tokyo WHERE card_id ={$explode[2]}");
                 $location = self::getUniqueValueFromDB( "SELECT card_location location FROM tokyo WHERE card_id ={$explode[2]}");
 
+                $typetrain = self::getUniqueValueFromDB( "SELECT train FROM tokyo WHERE card_id ={$explode[2]}");
                 
                 letsgotojapan::$instance->notifyAllPlayers('changecard','', array(
                 
@@ -6310,6 +7822,7 @@ function argFinalStepSamediWalk($parg1, $parg2)      //changer jour
                     'type' => $type,
                     'location' => $location,
                     'playerid' => $this->player_id,
+                    'train' => $typetrain,
 
                     )
                     );
@@ -6337,6 +7850,7 @@ function argFinalStepSamediWalk($parg1, $parg2)      //changer jour
                 $type = self::getUniqueValueFromDB( "SELECT card_type type FROM kyoto WHERE card_id ={$explode[2]}");
                 $location = self::getUniqueValueFromDB( "SELECT card_location location FROM kyoto WHERE card_id ={$explode[2]}");
 
+                $typetrain = self::getUniqueValueFromDB( "SELECT train FROM kyoto WHERE card_id ={$explode[2]}");
                 
                     letsgotojapan::$instance->notifyAllPlayers('changecard','', array(
                 
@@ -6346,6 +7860,7 @@ function argFinalStepSamediWalk($parg1, $parg2)      //changer jour
                         'type' => $type,
                         'location' => $location,
                         'playerid' => $this->player_id,
+                        'train' => $typetrain,
 
                         )
                         );
@@ -6743,6 +8258,286 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
             );
 
 
+        //////////////////////////////////////////////////////////////////////////////   
+        ////////////////////////////////// DEBUT SCORE AGENT /////////////////////////
+        ////////////////////////////////////////////////////////////////////////////// 
+
+
+
+        $counttrip = letsgotojapan::$instance->CountTrip(0);  
+        $countday = $counttrip[$day-1];
+        $bonuscard = array();
+        $pvcard =0;
+        $ville = 0;
+
+        for ($i=1; $i<=$countday; $i++)
+        {
+            $type = self::getUniqueValueFromDB( "SELECT card_type type FROM tokyo WHERE  card_location_arg = 0 AND card_location = 'cardposition_{$day}_{$i}'");
+
+            if ($type != null)
+            {
+                $ville = 1;
+            
+                $bonuscard = letsgotojapan::$instance->tokyocards[$type]['bonus'];
+                $pvcard = letsgotojapan::$instance->tokyocards[$type]['pv'];
+                
+
+                $train = self::getUniqueValueFromDB( "SELECT train train FROM tokyo WHERE  card_location_arg = 0 AND card_location = 'cardposition_{$day}_{$i}'");
+                if ($train != 0)
+                {
+                    self::DbQuery( "UPDATE agent set trainday = trainday +1   WHERE name='agent'" );
+                }
+                if ($train == 2)
+                {
+                    self::DbQuery( "UPDATE agent set happy1 = happy1 +1   WHERE name='agent'" );
+                    letsgotojapan::$instance->Smile(1,0);
+                }
+
+                
+            }
+
+            else
+            {
+                $ville = 2;
+                $type = self::getUniqueValueFromDB( "SELECT card_type type FROM kyoto WHERE  card_location_arg = 0 AND card_location = 'cardposition_{$day}_{$i}'");
+                
+                    $bonuscard = letsgotojapan::$instance->kyotocards[$type]['bonus'];
+                    $pvcard = letsgotojapan::$instance->kyotocards[$type]['pv'];
+                
+                $train = self::getUniqueValueFromDB( "SELECT train train FROM kyoto WHERE  card_location_arg = 0 AND card_location = 'cardposition_{$day}_{$i}'");
+                if ($train != 0)
+                {
+                    self::DbQuery( "UPDATE agent set trainday = trainday +1   WHERE name='agent'" );
+                }
+                if ($train == 2)
+                {
+                    self::DbQuery( "UPDATE agent set happy1 = happy1 +1   WHERE name='agent'" );
+                    letsgotojapan::$instance->Smile(1,0);
+                }
+
+                
+            }
+
+            self::DbQuery( "UPDATE agent set samedi = samedi + {$pvcard}  WHERE name='agent' " );   //// CHANGER LE JOUR
+
+
+            if($bonuscard[0]>=1)
+            {
+                for($token=1; $token<=$bonuscard[0]; $token++)
+                {
+                    letsgotojapan::$instance->Gain('r',0);
+                }
+
+            }
+
+            if($bonuscard[1]>=1)
+            {
+                for($token=1; $token<=$bonuscard[1]; $token++)
+                {
+                    letsgotojapan::$instance->Gain('g',0);
+                }
+
+            }
+
+            if($bonuscard[2]>=1)
+            {
+                for($token=1; $token<=$bonuscard[2]; $token++)
+                {
+                    letsgotojapan::$instance->Gain('p',0);
+                }
+
+            }
+
+            if($bonuscard[3]>=1)
+            {
+                for($token=1; $token<=$bonuscard[3]; $token++)
+                {
+                    letsgotojapan::$instance->Gain('y',0);
+                }
+
+            }
+
+            if($bonuscard[4]>=1)
+            {
+                for($token=1; $token<=$bonuscard[4]; $token++)
+                {
+                    letsgotojapan::$instance->Gain('b',0);
+                }
+
+            }
+
+            if($bonuscard[5]>=1)
+            {
+                for($token=1; $token<=$bonuscard[5]; $token++)
+                {
+                    letsgotojapan::$instance->Gain('h1',0);
+                }
+
+            }
+
+            if($bonuscard[6]>=1)
+            {
+                for($token=1; $token<=$bonuscard[6]; $token++)
+                {
+                    letsgotojapan::$instance->Gain('h2',0);
+                }
+
+            }
+
+            if($bonuscard[7]>=1)
+            {
+                for($token=1; $token<=$bonuscard[7]; $token++)
+                {
+                    letsgotojapan::$instance->Gain('a1',0);
+                }
+
+            }
+
+            if($bonuscard[8]>=1)
+            {
+                for($token=1; $token<=$bonuscard[8]; $token++)
+                {
+                    letsgotojapan::$instance->Gain('a2',0);
+                }
+
+            }
+
+            
+            
+            
+
+        }
+
+        if($ville == 1)
+            {
+                $lastday = self::getUniqueValueFromDB( "SELECT card_type type FROM tokyo WHERE  card_location_arg = 0 AND card_location = 'cardposition_{$day}_{$countday}'");
+                $cardid = self::getUniqueValueFromDB( "SELECT card_id id FROM tokyo WHERE  card_location_arg = 0 AND card_location = 'cardposition_{$day}_{$countday}'");
+
+                
+                
+                $method = "AgentTokyo_" . $lastday;
+                $check = AgentCardTokyo::$method(0, 'samedi'); // A MODIFIER JOUR
+
+                if($check == 1)
+                {
+                    self::DbQuery( "UPDATE tokyo set checkcard = 1  WHERE card_id = {$cardid}" );
+                    self::DbQuery( "UPDATE agent set samedicheck = 1  WHERE name='agent'" ); // A MODIFIER JOUR
+                    letsgotojapan::$instance->notifyAllPlayers('checkscore','', array(
+                
+                        'numero' => 2,
+                        'check' => 1,
+                        'position' => $day,
+                                                    
+                        )
+                        ); 
+                }
+
+                if($check == 2)
+                {
+                    self::DbQuery( "UPDATE tokyo set checkcard = 2  WHERE card_id = {$cardid}" );
+                    self::DbQuery( "UPDATE agent set samedicheck = 2  WHERE name='agent'" ); // A MODIFIER JOUR
+                    letsgotojapan::$instance->notifyAllPlayers('checkscore','', array(
+                
+                        'numero' => 2,
+                        'check' => 2,
+                        'position' => $day,
+                                                    
+                        )
+                        ); 
+                }
+                
+
+                
+
+                letsgotojapan::$instance->notifyAllPlayers('check','', array(
+                
+                    'id' => $cardid,
+                    'ville' => 1,
+                    'check' => $check,
+                    
+                    )
+                    ); 
+
+            }
+
+        if($ville == 2)
+        {
+            $lastday = self::getUniqueValueFromDB( "SELECT card_type type FROM kyoto WHERE  card_location_arg = 0 AND card_location = 'cardposition_{$day}_{$countday}'");
+            $cardid = self::getUniqueValueFromDB( "SELECT card_id id FROM kyoto WHERE  card_location_arg = 0 AND card_location = 'cardposition_{$day}_{$countday}'");
+            
+            
+            $method = "AgentKyoto_" . $lastday;
+            $check = AgentCardKyoto::$method(0, 'samedi'); // A MODIFIER JOUR
+
+            if($check == 1)
+                {
+                    self::DbQuery( "UPDATE kyoto set checkcard = 1  WHERE card_id = {$cardid}" );
+                    self::DbQuery( "UPDATE agent set samedicheck = 1  WHERE name='agent'" ); // A MODIFIER JOUR
+                    letsgotojapan::$instance->notifyAllPlayers('checkscore','', array(
+                
+                        'numero' => 2,
+                        'check' => 1,
+                        'position' => $day,
+                                                    
+                        )
+                        ); 
+                    
+                }
+
+                if($check == 2)
+                {
+                    self::DbQuery( "UPDATE kyoto set checkcard = 2  WHERE card_id = {$cardid}" );
+                    self::DbQuery( "UPDATE agent set samedicheck = 2  WHERE name='agent'" ); // A MODIFIER JOUR
+                    letsgotojapan::$instance->notifyAllPlayers('checkscore','', array(
+                
+                        'numero' => 2,
+                        'check' => 2,
+                        'position' => $day,
+                                                    
+                        )
+                        ); 
+                }
+            
+
+            
+
+            letsgotojapan::$instance->notifyAllPlayers('check','', array(
+            
+                'id' => $cardid,
+                'ville' => 2,
+                'check' => $check,
+                
+                
+                )
+                ); 
+            
+        }
+
+
+        $finalscore = self::getUniqueValueFromDB( "SELECT samedi FROM agent WHERE name='agent'");   /// CHANGER JOUR
+        letsgotojapan::$instance->notifyAllPlayers('score',clienttranslate( '<b>The Travel Agent</b> gains ${score} ${log} for <b>${day}</b>'), array(
+                
+            'numero' => 2,
+            'score' => $finalscore,
+            'position' => $day,
+            'log' => letsgotojapan::$instance->getLogsType(8),
+            'day' => letsgotojapan::$instance->days[6]['name'],   // changer jour
+            
+            )
+            ); 
+
+
+        
+
+
+        ////////////////////////////////////////////////////////////////////////////// 
+        ////////////////////////////////// FIN SCORE AGENT ///////////////////////////
+        ////////////////////////////////////////////////////////////////////////////// 
+
+        
+        
+
+
         ///////////////////////// FIN DE SCORING ///////////////////    
 
         $scorehumeur =0;
@@ -6836,11 +8631,115 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
 
 
 
+        ///////////////////////// FIN DE SCORING AGENT /////////////////// 
 
-        self::DbQuery( "UPDATE player set player_score = {$scoretotal} WHERE player_id = {$this->player_id}" );
+        $scorehumeura =0;
+        $lvlhappya = self::getUniqueValueFromDB( "SELECT happy FROM agent WHERE name='agent'");
+        if($lvlhappya == 1)
+        {
+            $scorehumeura = $scorehumeura + 5;
+        }
+
+        if($lvlhappya == 2)
+        {
+            $scorehumeura = $scorehumeura + 12;
+        }
+
+        if($lvlhappya == 3)
+        {
+            $scorehumeura = $scorehumeura + 20;
+        }
+
+        $lvlangrya = self::getUniqueValueFromDB( "SELECT angry FROM agent WHERE name='agent'");
+        
+        if($lvlangrya == 1)
+        {
+            $scorehumeura = $scorehumeura - 3;
+        }
+
+        if($lvlangrya == 2)
+        {
+            $scorehumeura = $scorehumeura - 8;
+        }
+
+        if($lvlangrya == 3)
+        {
+            $scorehumeura = $scorehumeura - 15;
+        }
+
+        self::DbQuery( "UPDATE agent set scorehumeur = {$scorehumeura} WHERE name='agent'" );
 
 
-        letsgotojapan::$instance->notifyAllPlayers('score2',clienttranslate('${player_name} completes the trip to Japan with <b>${total}</b> ${log}'), array(
+        $scoretokena = 0;
+        $tableaua = array();
+        $tableaua[] = self::getUniqueValueFromDB( "SELECT r FROM agent WHERE name='agent'");
+        $tableaua[] = self::getUniqueValueFromDB( "SELECT g FROM agent WHERE name='agent'");
+        $tableaua[] = self::getUniqueValueFromDB( "SELECT p FROM agent WHERE name='agent'");
+        $tableaua[] = self::getUniqueValueFromDB( "SELECT y FROM agent WHERE name='agent'");
+        $tableaua[] = self::getUniqueValueFromDB( "SELECT b FROM agent WHERE name='agent'");
+
+        foreach($tableaua as $indexa)
+        {
+            if(($indexa >= 4)&&($indexa <7))
+            {
+                $scoretokena = $scoretokena + 4;  
+            }
+
+            if(($indexa >= 7)&&($indexa <10))
+            {
+                $scoretokena = $scoretokena + 8;  
+            }
+
+            if(($indexa >= 10)&&($indexa <12))
+            {
+                $scoretokena = $scoretokena + 12;  
+            }
+
+            if($indexa >= 12)
+            {
+                $scoretokena = $scoretokena + 15;  
+            }
+        }
+
+        self::DbQuery( "UPDATE agent set scoretoken = {$scoretokena} WHERE name='agent'" );
+
+        $scoretraina = 0;
+        $counttrainbonustokyoa = count(self::getObjectListFromDB( "SELECT card_id id FROM tokyo WHERE card_location_arg = 0 AND train = 2", true));
+        $counttrainbonuskyotoa = count(self::getObjectListFromDB( "SELECT card_id id FROM kyoto WHERE card_location_arg = 0 AND train = 2", true));
+        
+
+        $scoretraina = $counttrainbonustokyoa*2 + $counttrainbonuskyotoa*2;
+
+        self::DbQuery( "UPDATE agent set scoretrain = {$scoretraina} WHERE name='agent'" );
+
+        $scoretotala = self::getUniqueValueFromDB( "SELECT lundi FROM agent WHERE name='agent'") + self::getUniqueValueFromDB( "SELECT mardi FROM agent WHERE name='agent'") + self::getUniqueValueFromDB( "SELECT mercredi FROM agent WHERE name='agent'") + self::getUniqueValueFromDB( "SELECT jeudi FROM agent WHERE name='agent'") + self::getUniqueValueFromDB( "SELECT vendredi FROM agent WHERE name='agent'") + self::getUniqueValueFromDB( "SELECT samedi FROM agent WHERE name='agent'") + $scorehumeura + $scoretokena + $scoretraina;
+
+        self::DbQuery( "UPDATE agent set scoretotal = {$scoretotala} WHERE name='agent'" );
+        ////////////////////////////////////////////////////////////////////////
+
+        if ($scoretotala >= $scoretotal)
+        {
+            $scoretotalpannel = 0 - $scoretotal;
+            self::DbQuery( "UPDATE player set player_score = {$scoretotalpannel} WHERE player_id = {$this->player_id}" );
+
+        }
+
+        else
+
+        {
+            $scoretotalpannel = $scoretotal;
+            self::DbQuery( "UPDATE player set player_score = {$scoretotalpannel} WHERE player_id = {$this->player_id}" );
+        }
+
+
+
+        ///////////////////////////////////////////////////////////////////
+
+
+        
+
+
+        letsgotojapan::$instance->notifyAllPlayers('score2solo',clienttranslate('${player_name} completes the trip to Japan with <b>${total}</b> ${log}'), array(
                 
             'numero' => $this->player_no,
             'humeur' => $scorehumeur,
@@ -6851,7 +8750,23 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
             'player' => $this->player_id,
             'player_name' => $this->player_name,
             'log' => letsgotojapan::$instance->getLogsType(8),
+            'pannel' => $scoretotalpannel,
                       
+            
+            
+            )
+            );
+
+        letsgotojapan::$instance->notifyAllPlayers('score2agent',clienttranslate('<b>The Travel Agent</b> completes the trip to Japan with <b>${total}</b> ${log}'), array(
+            
+            'humeur' => $scorehumeura,
+            'token' => $scoretokena,
+            'train' => $scoretraina,
+            'recherche' => 0,
+            'total' => $scoretotala,
+            'log' => letsgotojapan::$instance->getLogsType(8),
+            
+                        
             
             
             )
@@ -7085,19 +9000,19 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
         
         if($varg1 == "easy")
         {
-            self::DbQuery( "UPDATE player set sololvl = 1  WHERE player_id = {$this->player_id}" );
+            self::DbQuery( "UPDATE agent set sololvl = 1  WHERE name = 'agent'" );
             
         }
 
         if($varg1 == "normal")
         {
-            self::DbQuery( "UPDATE player set sololvl = 2  WHERE player_id = {$this->player_id}" );
+            self::DbQuery( "UPDATE agent set sololvl = 2  WHERE name = 'agent'" );
             
         }
 
         if($varg1 == "difficult")
         {
-            self::DbQuery( "UPDATE player set sololvl = 3  WHERE player_id = {$this->player_id}" );
+            self::DbQuery( "UPDATE agent set sololvl = 3  WHERE name = 'agent'" );
             
         }
 
@@ -7377,6 +9292,17 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
                         )
                         );
 
+                    if (($type >=72)&&($type<=80))
+                    {
+                        self::DbQuery( "UPDATE tokyo set finallocation = 1  WHERE card_id={$cardid}" );
+                        letsgotojapan::$instance->notifyAllPlayers('finallocation','', array(
+                            'card' =>  'card_1_'.$cardid, // a changer
+                            'ville' => 1, // a changer
+                            )
+                        );
+
+                    }
+
 
                     }
                     
@@ -7406,6 +9332,17 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
         
                         )
                         );
+
+                    if (($type >=72)&&($type<=80))
+                    {
+                        self::DbQuery( "UPDATE kyoto set finallocation = 2  WHERE card_id={$cardid}" );
+                        letsgotojapan::$instance->notifyAllPlayers('finallocation','', array(
+                            'card' =>  'card_2_'.$cardid, // a changer
+                            'ville' => 2, // a changer
+                            )
+                        );
+
+                    }
 
 
 
@@ -8055,6 +9992,17 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
                         )
                         );
 
+                    if (($type >=72)&&($type<=80))
+                    {
+                        self::DbQuery( "UPDATE tokyo set finallocation = 1  WHERE card_id={$cardid}" );
+                        letsgotojapan::$instance->notifyAllPlayers('finallocation','', array(
+                            'card' =>  'card_1_'.$cardid, // a changer
+                            'ville' => 1, // a changer
+                            )
+                        );
+
+                    }
+
 
                     }
                     
@@ -8084,6 +10032,17 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
                 
                                 )
                                 );
+
+                            if (($type >=72)&&($type<=80))
+                            {
+                                self::DbQuery( "UPDATE kyoto set finallocation = 1  WHERE card_id={$cardid}" );
+                                letsgotojapan::$instance->notifyAllPlayers('finallocation','', array(
+                                    'card' =>  'card_2_'.$cardid, // a changer
+                                    'ville' => 2, // a changer
+                                    )
+                                );
+        
+                            }
 
 
 
@@ -8161,6 +10120,17 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
                         )
                         );
 
+                    if (($type >=72)&&($type<=80))
+                    {
+                        self::DbQuery( "UPDATE tokyo set finallocation = 1  WHERE card_id={$cardid}" );
+                        letsgotojapan::$instance->notifyAllPlayers('finallocation','', array(
+                            'card' =>  'card_1_'.$cardid, // a changer
+                            'ville' => 1, // a changer
+                            )
+                        );
+
+                    }
+
 
                     }
                     
@@ -8190,6 +10160,17 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
                 
                                 )
                                 );
+
+                                if (($type >=72)&&($type<=80))
+                                {
+                                    self::DbQuery( "UPDATE kyoto set finallocation = 1  WHERE card_id={$cardid}" );
+                                    letsgotojapan::$instance->notifyAllPlayers('finallocation','', array(
+                                        'card' =>  'card_2_'.$cardid, // a changer
+                                        'ville' => 2, // a changer
+                                        )
+                                    );
+            
+                                }
 
 
 
@@ -9458,6 +11439,17 @@ function SoloExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
                 )
                 );
 
+                if (($type >=72)&&($type<=80))
+                    {
+                        self::DbQuery( "UPDATE tokyo set finallocation = 1  WHERE card_id={$explode[2]}" );
+                        letsgotojapan::$instance->notifyAllPlayers('finallocation','', array(
+                            'card' =>  $varg1, // a changer
+                            'ville' => 1, // a changer
+                            )
+                        );
+
+                    }
+
         }
 
         if($explode[1] == 2)
@@ -9481,6 +11473,17 @@ function SoloExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
 
                 )
                 );
+
+                if (($type >=72)&&($type<=80))
+                    {
+                        self::DbQuery( "UPDATE kyoto set finallocation = 2  WHERE card_id={$explode[2]}" );
+                        letsgotojapan::$instance->notifyAllPlayers('finallocation','', array(
+                            'card' =>  $varg1, // a changer
+                            'ville' => 2, // a changer
+                            )
+                        );
+
+                    }
 
         }
 
@@ -9524,6 +11527,17 @@ function SoloExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
                 )
                 );
 
+                if (($type >=72)&&($type<=80))
+                    {
+                        self::DbQuery( "UPDATE tokyo set finallocation = 1  WHERE card_id={$explode2[2]}" );
+                        letsgotojapan::$instance->notifyAllPlayers('finallocation','', array(
+                            'card' =>  'card_1_'.$explode2[2], // a changer
+                            'ville' => 1, // a changer
+                            )
+                        );
+
+                    }
+
         }
 
         if($explode2[1] == 2)
@@ -9547,6 +11561,17 @@ function SoloExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
 
                 )
                 );
+
+                if (($type >=72)&&($type<=80))
+                    {
+                        self::DbQuery( "UPDATE kyoto set finallocation = 2  WHERE card_id={$explode2[2]}" );
+                        letsgotojapan::$instance->notifyAllPlayers('finallocation','', array(
+                            'card' =>  'card_2_'.$explode2[2], // a changer
+                            'ville' => 2, // a changer
+                            )
+                        );
+
+                    }
 
         }
 
