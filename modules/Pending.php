@@ -3388,7 +3388,7 @@ function argFinalStep1($parg1, $parg2)
 
         $wild = self::getUniqueValueFromDB( "SELECT wild FROM player WHERE player_id = {$this->player_id}");
 
-        if($wild >=1)
+        if(($wild >=1)&&($parg1 == 1))
         {
             $ret['titleyou'] = clienttranslate('Monday! Let\'s go! ${you} can use one (or more) <span class="wild"></span>');
             $ret['buttons'][]='yes';
@@ -3408,11 +3408,24 @@ function argFinalStep1($parg1, $parg2)
 
     function FinalStepLundi($parg1, $parg2, $varg1, $varg2)
     {
+        $testwild = 0;
+
+        if($parg1 == 2)
+        {
+            $testwild = 1;
+        }
+
         if($varg1 == "yes")
         {
             letsgotojapan::$instance->addPending($this->player_id, "FinalWild", 1);  // A MODIFIER: dernier chiffre est egal au jour
 
         }
+
+        if($varg1 == "no")
+        {
+            $testwild = 1;
+        }
+
 
         if(($varg1 == "no")||($varg1 == "continue"))
         {
@@ -3430,6 +3443,10 @@ function argFinalStep1($parg1, $parg2)
             $bonuscard = array();
             $pvcard =0;
             $ville = 0;
+
+
+            if(($parg1 != 1)&&($parg1 !=2))
+            {
 
             for ($i=1; $i<=$countday; $i++)
             {
@@ -3589,6 +3606,35 @@ function argFinalStep1($parg1, $parg2)
                 
                 
 
+            }
+
+            if($testwild == 0)
+            {
+            $wild = self::getUniqueValueFromDB( "SELECT wild FROM player WHERE player_id = {$this->player_id}");
+            if($wild >= 1)
+            {
+                letsgotojapan::$instance->addPending($this->player_id, "FinalStepLundi", 1); //Changer le jour
+            }
+            else
+            {
+                $testwild = 1;
+            }
+            }
+
+
+
+        }
+
+        if($testwild == 1)
+        {
+            $lastville = self::getUniqueValueFromDB( "SELECT card_type_arg ville FROM tokyo WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$countday}'");
+            if ($lastville != null)
+            {
+                $ville = 1;
+            }
+            else
+            {
+                $ville = 2;
             }
 
             if($ville == 1)
@@ -4034,7 +4080,7 @@ function argFinalStep1($parg1, $parg2)
             letsgotojapan::$instance->addPending($this->player_id, "FinalStepMardiWalk"); // à modifier pour aller sur le mardi
 
 
-           
+        }  
 
 
 
@@ -4297,7 +4343,7 @@ function argFinalStep1($parg1, $parg2)
 
         $wild = self::getUniqueValueFromDB( "SELECT wild FROM player WHERE player_id = {$this->player_id}");
 
-        if($wild >=1)
+        if(($wild >=1)&&($parg1 == 1))
         {
             $ret['titleyou'] = clienttranslate('Tuesday! Let\'s go! ${you} can use one (or more) <span class="wild"></span>');
             $ret['buttons'][]='yes';
@@ -4317,10 +4363,22 @@ function argFinalStep1($parg1, $parg2)
 
     function FinalStepMardi($parg1, $parg2, $varg1, $varg2)
     {
+        $testwild = 0;
+
+        if($parg1 == 2)
+        {
+            $testwild = 1;
+        }
+        
         if($varg1 == "yes")
         {
             letsgotojapan::$instance->addPending($this->player_id, "FinalWild", 2);  // A MODIFIER: dernier chiffre est egal au jour
 
+        }
+
+        if($varg1 == "no")
+        {
+            $testwild = 1;
         }
 
         if(($varg1 == "no")||($varg1 == "continue"))
@@ -4338,6 +4396,9 @@ function argFinalStep1($parg1, $parg2)
             $bonuscard = array();
             $pvcard =0;
             $ville = 0;
+
+            if(($parg1 != 1)&&($parg1 !=2))
+            {
 
             for ($i=1; $i<=$countday; $i++)
             {
@@ -4494,6 +4555,35 @@ function argFinalStep1($parg1, $parg2)
                 }
 
 
+            }
+
+            if($testwild == 0)
+            {
+            $wild = self::getUniqueValueFromDB( "SELECT wild FROM player WHERE player_id = {$this->player_id}");
+            if($wild >= 1)
+            {
+                letsgotojapan::$instance->addPending($this->player_id, "FinalStepMardi", 1); //Changer le jour
+            }
+            else
+            {
+                $testwild = 1;
+            }
+            }
+
+
+
+        }
+
+        if($testwild == 1)
+        {
+            $lastville = self::getUniqueValueFromDB( "SELECT card_type_arg ville FROM tokyo WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$countday}'");
+            if ($lastville != null)
+            {
+                $ville = 1;
+            }
+            else
+            {
+                $ville = 2;
             }
 
             if($ville == 1)
@@ -4938,7 +5028,7 @@ function argFinalStep1($parg1, $parg2)
             letsgotojapan::$instance->addPending($this->player_id, "FinalStepMercrediWalk"); // à modifier pour aller sur le mardi
 
 
-            
+        }   
 
 
 
@@ -5201,7 +5291,7 @@ function argFinalStep1($parg1, $parg2)
 
         $wild = self::getUniqueValueFromDB( "SELECT wild FROM player WHERE player_id = {$this->player_id}");
 
-        if($wild >=1)
+        if(($wild >=1)&&($parg1 == 1))
         {
             $ret['titleyou'] = clienttranslate('Wednesday! Let\'s go! ${you} can use one (or more) <span class="wild"></span>');
             $ret['buttons'][]='yes';
@@ -5221,10 +5311,23 @@ function argFinalStep1($parg1, $parg2)
 
     function FinalStepMercredi($parg1, $parg2, $varg1, $varg2)
     {
+        $testwild = 0;
+
+        if($parg1 == 2)
+        {
+            $testwild = 1;
+        }
+
         if($varg1 == "yes")
         {
             letsgotojapan::$instance->addPending($this->player_id, "FinalWild", 3);  // A MODIFIER: dernier chiffre est egal au jour
 
+        }
+
+        
+        if($varg1 == "no")
+        {
+            $testwild = 1;
         }
 
         if(($varg1 == "no")||($varg1 == "continue"))
@@ -5242,6 +5345,9 @@ function argFinalStep1($parg1, $parg2)
             $bonuscard = array();
             $pvcard =0;
             $ville = 0;
+
+            if(($parg1 != 1)&&($parg1 !=2))
+            {
 
             for ($i=1; $i<=$countday; $i++)
             {
@@ -5398,6 +5504,35 @@ function argFinalStep1($parg1, $parg2)
                 }
 
 
+            }
+
+            if($testwild == 0)
+            {
+            $wild = self::getUniqueValueFromDB( "SELECT wild FROM player WHERE player_id = {$this->player_id}");
+            if($wild >= 1)
+            {
+                letsgotojapan::$instance->addPending($this->player_id, "FinalStepMercredi", 1); //Changer le jour
+            }
+            else
+            {
+                $testwild = 1;
+            }
+            }
+
+
+
+        }
+
+        if($testwild == 1)
+        {
+            $lastville = self::getUniqueValueFromDB( "SELECT card_type_arg ville FROM tokyo WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$countday}'");
+            if ($lastville != null)
+            {
+                $ville = 1;
+            }
+            else
+            {
+                $ville = 2;
             }
 
             if($ville == 1)
@@ -5842,7 +5977,7 @@ function argFinalStep1($parg1, $parg2)
             letsgotojapan::$instance->addPending($this->player_id, "FinalStepJeudiWalk"); // à modifier pour aller sur le mardi
 
 
-            
+        }   
 
 
 
@@ -6100,14 +6235,14 @@ function argFinalStepJeudi($parg1, $parg2)
     $ret = array();
     $ret["selectable"] = array();
     $ret["selectable2"] = array();
-        $ret["selectableswitch"] = array();
+    $ret["selectableswitch"] = array();
     $ret["selected"] = array();
     $ret['buttons'] = array();
     
 
     $wild = self::getUniqueValueFromDB( "SELECT wild FROM player WHERE player_id = {$this->player_id}");
 
-    if($wild >=1)
+    if(($wild >=1)&&($parg1 == 1))
     {
         $ret['titleyou'] = clienttranslate('Thursday! Let\'s go! ${you} can use one (or more) <span class="wild"></span>');
         $ret['buttons'][]='yes';
@@ -6127,10 +6262,22 @@ function argFinalStepJeudi($parg1, $parg2)
 
 function FinalStepJeudi($parg1, $parg2, $varg1, $varg2)
 {
+    $testwild = 0;
+
+        if($parg1 == 2)
+        {
+            $testwild = 1;
+        }
+
     if($varg1 == "yes")
     {
         letsgotojapan::$instance->addPending($this->player_id, "FinalWild", 4);  // A MODIFIER: dernier chiffre est egal au jour
 
+    }
+
+    if($varg1 == "no")
+    {
+        $testwild = 1;
     }
 
     if(($varg1 == "no")||($varg1 == "continue"))
@@ -6149,6 +6296,9 @@ function FinalStepJeudi($parg1, $parg2, $varg1, $varg2)
         $bonuscard = array();
         $pvcard =0;
         $ville = 0;
+
+        if(($parg1 != 1)&&($parg1 !=2))
+        {
 
         for ($i=1; $i<=$countday; $i++)
         {
@@ -6305,6 +6455,34 @@ function FinalStepJeudi($parg1, $parg2, $varg1, $varg2)
             }
 
 
+        }
+        if($testwild == 0)
+        {
+        $wild = self::getUniqueValueFromDB( "SELECT wild FROM player WHERE player_id = {$this->player_id}");
+        if($wild >= 1)
+        {
+            letsgotojapan::$instance->addPending($this->player_id, "FinalStepJeudi", 1); //Changer le jour
+        }
+        else
+        {
+            $testwild = 1;
+        }
+        }
+
+
+
+    }
+
+    if($testwild == 1)
+    {
+        $lastville = self::getUniqueValueFromDB( "SELECT card_type_arg ville FROM tokyo WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$countday}'");
+        if ($lastville != null)
+        {
+            $ville = 1;
+        }
+        else
+        {
+            $ville = 2;
         }
 
         if($ville == 1)
@@ -6749,7 +6927,7 @@ function FinalStepJeudi($parg1, $parg2, $varg1, $varg2)
         letsgotojapan::$instance->addPending($this->player_id, "FinalStepVendrediWalk"); // à modifier pour aller sur le mardi
 
 
-        
+        }  
 
 
 
@@ -7013,7 +7191,7 @@ function argFinalStepVendredi($parg1, $parg2)
 
     $wild = self::getUniqueValueFromDB( "SELECT wild FROM player WHERE player_id = {$this->player_id}");
 
-    if($wild >=1)
+    if(($wild >=1)&&($parg1 == 1))
     {
         $ret['titleyou'] = clienttranslate('Friday! Let\'s go! ${you} can use one (or more) <span class="wild"></span>');
         $ret['buttons'][]='yes';
@@ -7033,11 +7211,23 @@ function argFinalStepVendredi($parg1, $parg2)
 
 function FinalStepVendredi($parg1, $parg2, $varg1, $varg2)
 {
+    $testwild = 0;
+
+        if($parg1 == 2)
+        {
+            $testwild = 1;
+        }
+
     if($varg1 == "yes")
     {
         letsgotojapan::$instance->addPending($this->player_id, "FinalWild", 5);  // A MODIFIER: dernier chiffre est egal au jour
 
     }
+
+    if($varg1 == "no")
+        {
+            $testwild = 1;
+        }
 
     if(($varg1 == "no")||($varg1 == "continue"))
     {
@@ -7055,6 +7245,9 @@ function FinalStepVendredi($parg1, $parg2, $varg1, $varg2)
         $bonuscard = array();
         $pvcard =0;
         $ville = 0;
+
+        if(($parg1 != 1)&&($parg1 !=2))
+            {
 
         for ($i=1; $i<=$countday; $i++)
         {
@@ -7211,6 +7404,35 @@ function FinalStepVendredi($parg1, $parg2, $varg1, $varg2)
             }
 
 
+        }
+
+        if($testwild == 0)
+        {
+        $wild = self::getUniqueValueFromDB( "SELECT wild FROM player WHERE player_id = {$this->player_id}");
+        if($wild >= 1)
+        {
+            letsgotojapan::$instance->addPending($this->player_id, "FinalStepVendredi", 1); //Changer le jour
+        }
+        else
+        {
+            $testwild = 1;
+        }
+        }
+
+
+
+    }
+
+    if($testwild == 1)
+    {
+        $lastville = self::getUniqueValueFromDB( "SELECT card_type_arg ville FROM tokyo WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$countday}'");
+        if ($lastville != null)
+        {
+            $ville = 1;
+        }
+        else
+        {
+            $ville = 2;
         }
 
         if($ville == 1)
@@ -7658,7 +7880,7 @@ function FinalStepVendredi($parg1, $parg2, $varg1, $varg2)
 
 
         
-
+    }
 
 
     }
@@ -7919,7 +8141,7 @@ function argFinalStepSamedi($parg1, $parg2)
 
     $wild = self::getUniqueValueFromDB( "SELECT wild FROM player WHERE player_id = {$this->player_id}");
 
-    if($wild >=1)
+    if(($wild >=1)&&($parg1 == 1))
     {
         $ret['titleyou'] = clienttranslate('Saturday! Let\'s go! ${you} can use one (or more) <span class="wild"></span>');
         $ret['buttons'][]='yes';
@@ -7939,11 +8161,23 @@ function argFinalStepSamedi($parg1, $parg2)
 
 function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
 {
+    $testwild = 0;
+
+        if($parg1 == 2)
+        {
+            $testwild = 1;
+        }
+
     if($varg1 == "yes")
     {
         letsgotojapan::$instance->addPending($this->player_id, "FinalWild", 6);  // A MODIFIER: dernier chiffre est egal au jour
 
     }
+
+    if($varg1 == "no")
+        {
+            $testwild = 1;
+        }
 
     if(($varg1 == "no")||($varg1 == "continue"))
     {
@@ -7960,6 +8194,9 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
         $bonuscard = array();
         $pvcard =0;
         $ville = 0;
+
+        if(($parg1 != 1)&&($parg1 !=2))
+            {
 
         for ($i=1; $i<=$countday; $i++)
         {
@@ -8116,6 +8353,35 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
             }
 
 
+        }
+
+        if($testwild == 0)
+        {
+        $wild = self::getUniqueValueFromDB( "SELECT wild FROM player WHERE player_id = {$this->player_id}");
+        if($wild >= 1)
+        {
+            letsgotojapan::$instance->addPending($this->player_id, "FinalStepSamedi", 1); //Changer le jour
+        }
+        else
+        {
+            $testwild = 1;
+        }
+        }
+
+
+
+    }
+
+    if($testwild == 1)
+    {
+        $lastville = self::getUniqueValueFromDB( "SELECT card_type_arg ville FROM tokyo WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$countday}'");
+        if ($lastville != null)
+        {
+            $ville = 1;
+        }
+        else
+        {
+            $ville = 2;
         }
 
         if($ville == 1)
@@ -8808,7 +9074,7 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
 
         {
             self::DbQuery( "UPDATE player set player_score = {$scoretotal} WHERE player_id = {$this->player_id}" );
-            
+
             letsgotojapan::$instance->notifyAllPlayers('score2',clienttranslate('${player_name} completes the trip to Japan with <b>${total}</b> ${log}'), array(
                 
                 'numero' => $this->player_no,
@@ -8835,7 +9101,7 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
 
 
         
-
+    }
 
 
     }
@@ -8884,27 +9150,27 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
         {
             if($parg1 == 1)
             {
-                letsgotojapan::$instance->addPending($this->player_id, "FinalStepLundi");
+                letsgotojapan::$instance->addPending($this->player_id, "FinalStepLundi",1);
             }
             if($parg1 == 2)
             {
-                letsgotojapan::$instance->addPending($this->player_id, "FinalStepMardi");
+                letsgotojapan::$instance->addPending($this->player_id, "FinalStepMardi",1);
             }
             if($parg1 == 3)
             {
-                letsgotojapan::$instance->addPending($this->player_id, "FinalStepMercredi");
+                letsgotojapan::$instance->addPending($this->player_id, "FinalStepMercredi",1);
             }
             if($parg1 == 4)
             {
-                letsgotojapan::$instance->addPending($this->player_id, "FinalStepJeudi");
+                letsgotojapan::$instance->addPending($this->player_id, "FinalStepJeudi",1);
             }
             if($parg1 == 5)
             {
-                letsgotojapan::$instance->addPending($this->player_id, "FinalStepVendredi");
+                letsgotojapan::$instance->addPending($this->player_id, "FinalStepVendredi",1);
             }
             if($parg1 == 6)
             {
-                letsgotojapan::$instance->addPending($this->player_id, "FinalStepSamedi");
+                letsgotojapan::$instance->addPending($this->player_id, "FinalStepSamedi",1);
             }
 
 
@@ -8941,27 +9207,27 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
         {
             if($parg2 == 1)
             {
-                letsgotojapan::$instance->addPending($this->player_id, "FinalStepLundi");
+                letsgotojapan::$instance->addPending($this->player_id, "FinalStepLundi",1);
             }
             if($parg2 == 2)
             {
-                letsgotojapan::$instance->addPending($this->player_id, "FinalStepMardi");
+                letsgotojapan::$instance->addPending($this->player_id, "FinalStepMardi",1);
             }
             if($parg2 == 3)
             {
-                letsgotojapan::$instance->addPending($this->player_id, "FinalStepMercredi");
+                letsgotojapan::$instance->addPending($this->player_id, "FinalStepMercredi",1);
             }
             if($parg2 == 4)
             {
-                letsgotojapan::$instance->addPending($this->player_id, "FinalStepJeudi");
+                letsgotojapan::$instance->addPending($this->player_id, "FinalStepJeudi",1);
             }
             if($parg2 == 5)
             {
-                letsgotojapan::$instance->addPending($this->player_id, "FinalStepVendredi");
+                letsgotojapan::$instance->addPending($this->player_id, "FinalStepVendredi",1);
             }
             if($parg2 == 6)
             {
-                letsgotojapan::$instance->addPending($this->player_id, "FinalStepSamedi");
+                letsgotojapan::$instance->addPending($this->player_id, "FinalStepSamedi",1);
             }
 
         }
@@ -8993,31 +9259,68 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
 
             self::DbQuery( "UPDATE player set wild = wild -1  WHERE player_id = {$this->player_id}" );
             letsgotojapan::$instance->MajPannel($this->player_id);
+
+            $wild = self::getUniqueValueFromDB( "SELECT wild FROM player WHERE player_id = {$this->player_id}");
+
+            if($wild >=1)
+            {
             
             if($parg2 == 1)
             {
-                letsgotojapan::$instance->addPending($this->player_id, "FinalStepLundi");
+                letsgotojapan::$instance->addPending($this->player_id, "FinalStepLundi",1);
             }
             if($parg2 == 2)
             {
-                letsgotojapan::$instance->addPending($this->player_id, "FinalStepMardi");
+                letsgotojapan::$instance->addPending($this->player_id, "FinalStepMardi",1);
             }
             if($parg2 == 3)
             {
-                letsgotojapan::$instance->addPending($this->player_id, "FinalStepMercredi");
+                letsgotojapan::$instance->addPending($this->player_id, "FinalStepMercredi",1);
             }
             if($parg2 == 4)
             {
-                letsgotojapan::$instance->addPending($this->player_id, "FinalStepJeudi");
+                letsgotojapan::$instance->addPending($this->player_id, "FinalStepJeudi",1);
             }
             if($parg2 == 5)
             {
-                letsgotojapan::$instance->addPending($this->player_id, "FinalStepVendredi");
+                letsgotojapan::$instance->addPending($this->player_id, "FinalStepVendredi",1);
             }
             if($parg2 == 6)
             {
-                letsgotojapan::$instance->addPending($this->player_id, "FinalStepSamedi");
+                letsgotojapan::$instance->addPending($this->player_id, "FinalStepSamedi",1);
             }
+            }
+
+            if($wild == 0)
+            {
+            
+            if($parg2 == 1)
+            {
+                letsgotojapan::$instance->addPending($this->player_id, "FinalStepLundi",2);
+            }
+            if($parg2 == 2)
+            {
+                letsgotojapan::$instance->addPending($this->player_id, "FinalStepMardi",2);
+            }
+            if($parg2 == 3)
+            {
+                letsgotojapan::$instance->addPending($this->player_id, "FinalStepMercredi",2);
+            }
+            if($parg2 == 4)
+            {
+                letsgotojapan::$instance->addPending($this->player_id, "FinalStepJeudi",2);
+            }
+            if($parg2 == 5)
+            {
+                letsgotojapan::$instance->addPending($this->player_id, "FinalStepVendredi",2);
+            }
+            if($parg2 == 6)
+            {
+                letsgotojapan::$instance->addPending($this->player_id, "FinalStepSamedi",2);
+            }
+            }
+
+
 
         }
        
