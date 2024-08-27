@@ -9262,22 +9262,52 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
             if($parg1 == 'red')
             {
                 letsgotojapan::$instance->Gain('r',$this->player_id);
+                letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} uses ${log1} and advances ${log2}' ), array(
+                    'player_name' => $this->player_name,
+                    'log1' => letsgotojapan::$instance->getLogsType(3),
+                    'log2' => letsgotojapan::$instance->getLogsType(9),
+                    )
+                    );
             }
             if($parg1 == 'green')
             {
                 letsgotojapan::$instance->Gain('g',$this->player_id);
+                letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} uses ${log1} and advances ${log2}' ), array(
+                    'player_name' => $this->player_name,
+                    'log1' => letsgotojapan::$instance->getLogsType(3),
+                    'log2' => letsgotojapan::$instance->getLogsType(10),
+                    )
+                    );
             }
             if($parg1 == 'pink')
             {
                 letsgotojapan::$instance->Gain('p',$this->player_id);
+                letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} uses ${log1} and advances ${log2}' ), array(
+                    'player_name' => $this->player_name,
+                    'log1' => letsgotojapan::$instance->getLogsType(3),
+                    'log2' => letsgotojapan::$instance->getLogsType(11),
+                    )
+                    );
             }
             if($parg1 == 'yellow')
             {
                 letsgotojapan::$instance->Gain('y',$this->player_id);
+                letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} uses ${log1} and advances ${log2}' ), array(
+                    'player_name' => $this->player_name,
+                    'log1' => letsgotojapan::$instance->getLogsType(3),
+                    'log2' => letsgotojapan::$instance->getLogsType(12),
+                    )
+                    );
             }
             if($parg1 == 'blue')
             {
                 letsgotojapan::$instance->Gain('b',$this->player_id);
+                letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} uses ${log1} and advances ${log2}' ), array(
+                    'player_name' => $this->player_name,
+                    'log1' => letsgotojapan::$instance->getLogsType(3),
+                    'log2' => letsgotojapan::$instance->getLogsType(13),
+                    )
+                    );
             }
 
             self::DbQuery( "UPDATE player set wild = wild -1  WHERE player_id = {$this->player_id}" );

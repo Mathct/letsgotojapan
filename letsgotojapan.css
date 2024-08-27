@@ -902,6 +902,81 @@ display: none;
       
   }
 
+  .logr{
+    width: 20px;
+    height: 20px;
+    background-image: url('img/tokenjour.png');
+    background-size: 600% 100%;
+    background-position-x: 0%;
+    display: inline-block;
+    margin-top: 3px;
+    filter: drop-shadow(1px 1px 2px black);
+    -webkit-filter: drop-shadow(1px 1px 2px black);
+    
+      
+  }
+
+  .logg{
+    width: 20px;
+    height: 20px;
+    background-image: url('img/tokenjour.png');
+    background-size: 600% 100%;
+    background-position-x: -100%;
+    display: inline-block;
+    margin-top: 3px;
+    filter: drop-shadow(1px 1px 2px black);
+    -webkit-filter: drop-shadow(1px 1px 2px black);
+    
+      
+  }
+
+  .logp{
+    width: 20px;
+    height: 20px;
+    background-image: url('img/tokenjour.png');
+    background-size: 600% 100%;
+    background-position-x: -200%;
+    display: inline-block;
+    margin-top: 3px;
+    filter: drop-shadow(1px 1px 2px black);
+    -webkit-filter: drop-shadow(1px 1px 2px black);
+    
+      
+  }
+
+  .logy{
+    width: 20px;
+    height: 20px;
+    background-image: url('img/tokenjour.png');
+    background-size: 600% 100%;
+    background-position-x: -300%;
+    display: inline-block;
+    margin-top: 3px;
+    filter: drop-shadow(1px 1px 2px black);
+    -webkit-filter: drop-shadow(1px 1px 2px black);
+    
+      
+  }
+
+  .logb{
+    width: 20px;
+    height: 20px;
+    background-image: url('img/tokenjour.png');
+    background-size: 600% 100%;
+    background-position-x: -400%;
+    display: inline-block;
+    margin-top: 3px;
+    filter: drop-shadow(1px 1px 2px black);
+    -webkit-filter: drop-shadow(1px 1px 2px black);
+    
+      
+  }
+
+
+
+
+
+/* FIN DE LOG */
 
 
 

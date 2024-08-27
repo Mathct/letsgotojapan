@@ -1457,6 +1457,16 @@ function getLogsType( $type )
     {return "<div class='logtrainmalus' title=''></div>";}
     if($type == 8)
     {return "<div class='logpv' title=''></div>";}
+    if($type == 9)
+    {return "<div class='logr' title=''></div>";}
+    if($type == 10)
+    {return "<div class='logg' title=''></div>";}
+    if($type ==11)
+    {return "<div class='logp' title=''></div>";}
+    if($type == 12)
+    {return "<div class='logy' title=''></div>";}
+    if($type == 13)
+    {return "<div class='logb' title=''></div>";}
     
         
 
