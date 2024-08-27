@@ -9016,19 +9016,42 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
         
         
 
-        if ($scoretotala >= $scoretotal)
+        if ($scoretotala > $scoretotal)
         {
             $scoretotalpannel = 0 - $scoretotal;
             self::DbQuery( "UPDATE player set player_score = {$scoretotalpannel} WHERE player_id = {$this->player_id}" );
 
         }
 
-        else
+        if ($scoretotala < $scoretotal)
 
         {
             $scoretotalpannel = $scoretotal;
             self::DbQuery( "UPDATE player set player_score = {$scoretotalpannel} WHERE player_id = {$this->player_id}" );
         }
+
+        if ($scoretotala == $scoretotal)
+
+        {
+            $lvltoken = (self::getUniqueValueFromDB( "SELECT r FROM player WHERE player_id = {$this->player_id}"))+(self::getUniqueValueFromDB( "SELECT g FROM player WHERE player_id = {$this->player_id}"))+(self::getUniqueValueFromDB( "SELECT p FROM player WHERE player_id = {$this->player_id}"))+(self::getUniqueValueFromDB( "SELECT y FROM player WHERE player_id = {$this->player_id}"))+(self::getUniqueValueFromDB( "SELECT b FROM player WHERE player_id = {$this->player_id}"));
+            $lvltokena = (self::getUniqueValueFromDB( "SELECT r FROM agent WHERE name='agent'"))+(self::getUniqueValueFromDB( "SELECT g FROM agent WHERE name='agent'"))+(self::getUniqueValueFromDB( "SELECT p FROM agent WHERE name='agent'"))+(self::getUniqueValueFromDB( "SELECT y FROM agent WHERE name='agent'"))+(self::getUniqueValueFromDB( "SELECT b FROM agent WHERE name='agent'"));
+
+            if ($lvltoken >= $lvltokena)
+            {
+                $scoretotalpannel = $scoretotal;
+                self::DbQuery( "UPDATE player set player_score = {$scoretotalpannel} WHERE player_id = {$this->player_id}" );
+            }
+
+            if ($lvltoken < $lvltokena)
+            {
+                $scoretotalpannel = 0 - $scoretotal;
+                self::DbQuery( "UPDATE player set player_score = {$scoretotalpannel} WHERE player_id = {$this->player_id}" );
+            }
+
+
+        }
+
+
 
 
 
