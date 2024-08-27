@@ -3276,7 +3276,7 @@ function (dojo, declare) {
 
             notif_discard: function( notif )
             {
-                if (notif.args.playerid == this.getCurrentPlayerId()) 
+                if ((notif.args.playerid == this.getCurrentPlayerId())||(this.gamedatas.countplayers == 1)) 
                 {
                     dojo.destroy(notif.args.carddiscard);
                 }
