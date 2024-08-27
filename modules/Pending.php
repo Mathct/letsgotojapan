@@ -8807,6 +8807,8 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
         if($countplayer >=2)
 
         {
+            self::DbQuery( "UPDATE player set player_score = {$scoretotal} WHERE player_id = {$this->player_id}" );
+            
             letsgotojapan::$instance->notifyAllPlayers('score2',clienttranslate('${player_name} completes the trip to Japan with <b>${total}</b> ${log}'), array(
                 
                 'numero' => $this->player_no,
