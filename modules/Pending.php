@@ -9671,7 +9671,7 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
                     foreach($tokyocard as $cardid)
                     {
   
-                    letsgotojapan::$instance->tokyo->pickCardForLocation( 'deck', 'discardboardhidden', $this->player_id); // changer ville
+                    
 
                     $type = self::getUniqueValueFromDB("SELECT card_type FROM tokyo WHERE card_id={$cardid}"); // changer ville
 
@@ -9699,6 +9699,13 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
                             )
                         );
 
+                        self::DbQuery( "UPDATE player set yellowpass = 1  WHERE player_id={$this->player_id}" );
+
+                    }
+
+                    else
+                    {
+                        letsgotojapan::$instance->tokyo->pickCardForLocation( 'deck', 'discardboardhidden', $this->player_id); // changer ville
                     }
 
 
@@ -9712,7 +9719,7 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
                 
                     foreach($kyotocard as $cardid)
                     {
-                    letsgotojapan::$instance->kyoto->pickCardForLocation( 'deck', 'discardboardhidden', $this->player_id); // changer ville
+                    
 
                     $type = self::getUniqueValueFromDB("SELECT card_type FROM kyoto WHERE card_id={$cardid}"); // changer ville
 
@@ -9740,6 +9747,13 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
                             )
                         );
 
+                        self::DbQuery( "UPDATE player set yellowpass = 1  WHERE player_id={$this->player_id}" );
+
+                    }
+
+                    else
+                    {
+                        letsgotojapan::$instance->kyoto->pickCardForLocation( 'deck', 'discardboardhidden', $this->player_id); // changer ville
                     }
 
 
@@ -9877,13 +9891,130 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
 
             else
             {
-            letsgotojapan::$instance->giveExtraTime($this->player_id);
-            letsgotojapan::$instance->gamestate->setPlayerNonMultiactive($this->player_id, 'stop');
+                $yellowpass = self::getUniqueValueFromDB("SELECT yellowpass FROM player WHERE player_id={$this->player_id}");
+
+                if ($yellowpass == 0)
+                {
+                    letsgotojapan::$instance->giveExtraTime($this->player_id);
+                    letsgotojapan::$instance->gamestate->setPlayerNonMultiactive($this->player_id, 'stop');
+                }
+
+                else
+                {
+                    letsgotojapan::$instance->addPending($this->player_id, "SoloPassYellow");
+                }
+
             }
             
             
         }
 
+    }
+
+    ////////////////////// SOLO PASS YELLOW ///////////////////////
+
+
+    function argSoloPassYellow($parg1, $parg2)
+    {
+        
+        $ret = array();
+        $ret["selectable"] = array();
+        $ret["selectable2"] = array();
+        $ret["selectableswitch"] = array();
+        $ret["selected"] = array();
+        $ret['buttons'] = array();
+        
+
+        $yellowpass = self::getUniqueValueFromDB("SELECT yellowpass FROM player WHERE player_id={$this->player_id}");
+
+        if($yellowpass == 2)
+        {
+            $ret['titleyou'] = clienttranslate('${you} can choose a card for your discard pile (passed yellow card) (1/2)');
+        }
+
+        if(($yellowpass == 1)&&($parg1 ==1))
+        {
+            $ret['titleyou'] = clienttranslate('${you} can choose a card for your discard pile (passed yellow card) (2/2)');
+        }
+
+        if(($yellowpass == 1)&&($parg1 !=1))
+        {
+            $ret['titleyou'] = clienttranslate('${you} can choose a card for your discard pile (passed yellow card)');
+        }
+
+
+
+
+        $ret['buttons'][]='tokyo';
+        $ret['buttons'][]='kyoto'; 
+
+        
+        
+        return $ret;
+    }
+
+    function SoloPassYellow($parg1, $parg2, $varg1, $varg2)
+    {
+        $counthandtokyocard2 = count(self::getObjectListFromDB( "SELECT card_id id FROM tokyo WHERE card_location ='playerhand' AND card_location_arg = {$this->player_id}", true ));
+        $counthandkyotocard2 = count(self::getObjectListFromDB( "SELECT card_id id FROM kyoto WHERE card_location ='playerhand' AND card_location_arg = {$this->player_id}", true ));
+        $playerhandcount2 = $counthandtokyocard2 + $counthandkyotocard2;
+        
+
+
+        if($varg1 == "tokyo")
+        {
+            letsgotojapan::$instance->tokyo->pickCardForLocation( 'deck', 'discardboardhidden', $this->player_id); // changer ville
+            self::DbQuery( "UPDATE player set yellowpass = yellowpass - 1  WHERE player_id={$this->player_id}" );
+        }
+
+        if($varg1 == "kyoto")
+        {
+            letsgotojapan::$instance->kyoto->pickCardForLocation( 'deck', 'discardboardhidden', $this->player_id); // changer ville
+            self::DbQuery( "UPDATE player set yellowpass = yellowpass - 1  WHERE player_id={$this->player_id}" );
+        }
+
+        $yellowpass = self::getUniqueValueFromDB("SELECT yellowpass FROM player WHERE player_id={$this->player_id}");
+
+        if($yellowpass == 0)
+        {
+
+            if ($playerhandcount2 == 0)
+            {
+                
+                letsgotojapan::$instance->giveExtraTime($this->player_id);
+                letsgotojapan::$instance->gamestate->setPlayerNonMultiactive($this->player_id, 'stop');
+                
+            }
+
+            if ($playerhandcount2 == 3)
+
+            {
+                
+                letsgotojapan::$instance->giveExtraTime($this->player_id);
+                letsgotojapan::$instance->addPending($this->player_id, "SoloPhase2Step1");
+            
+            }
+
+            if ($playerhandcount2 == 2)
+            {
+                
+                letsgotojapan::$instance->giveExtraTime($this->player_id);
+                letsgotojapan::$instance->addPending($this->player_id, "SoloPhase2Step3");
+            
+            }
+        }
+
+        else
+
+        {
+            letsgotojapan::$instance->addPending($this->player_id, "SoloPassYellow", 1);
+
+        }
+        
+       
+        
+       
+      
     }
 
 
@@ -9926,24 +10057,47 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
                 'log' => letsgotojapan::$instance->getLogsType(1),
                 )
                 );
+
+                $yellowpass = self::getUniqueValueFromDB("SELECT yellowpass FROM player WHERE player_id={$this->player_id}");
             
             if ($playerhandcount2 == 0)
             {
+                if ($yellowpass == 0)
+                {
                 letsgotojapan::$instance->giveExtraTime($this->player_id);
                 letsgotojapan::$instance->gamestate->setPlayerNonMultiactive($this->player_id, 'stop');
+                }
+                else
+                {
+                    letsgotojapan::$instance->addPending($this->player_id, "SoloPassYellow");
+                }
             }
 
             if ($playerhandcount2 == 3)
 
             {
+                if ($yellowpass == 0)
+                {
                 letsgotojapan::$instance->giveExtraTime($this->player_id);
                 letsgotojapan::$instance->addPending($this->player_id, "SoloPhase2Step1");
+                }
+                else
+                {
+                    letsgotojapan::$instance->addPending($this->player_id, "SoloPassYellow");
+                }
             }
 
             if ($playerhandcount2 == 2)
             {
+                if ($yellowpass == 0)
+                {
                 letsgotojapan::$instance->giveExtraTime($this->player_id);
                 letsgotojapan::$instance->addPending($this->player_id, "SoloPhase2Step3");
+                }
+                else
+                {
+                    letsgotojapan::$instance->addPending($this->player_id, "SoloPassYellow");
+                }
             }
 
         }
@@ -10002,23 +10156,46 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
                 )
                 );
 
-                if ($playerhandcount2 == 0)
+                $yellowpass = self::getUniqueValueFromDB("SELECT yellowpass FROM player WHERE player_id={$this->player_id}");
+            
+            if ($playerhandcount2 == 0)
             {
+                if ($yellowpass == 0)
+                {
                 letsgotojapan::$instance->giveExtraTime($this->player_id);
                 letsgotojapan::$instance->gamestate->setPlayerNonMultiactive($this->player_id, 'stop');
+                }
+                else
+                {
+                    letsgotojapan::$instance->addPending($this->player_id, "SoloPassYellow");
+                }
             }
 
             if ($playerhandcount2 == 3)
 
             {
+                if ($yellowpass == 0)
+                {
                 letsgotojapan::$instance->giveExtraTime($this->player_id);
                 letsgotojapan::$instance->addPending($this->player_id, "SoloPhase2Step1");
+                }
+                else
+                {
+                    letsgotojapan::$instance->addPending($this->player_id, "SoloPassYellow");
+                }
             }
 
             if ($playerhandcount2 == 2)
             {
+                if ($yellowpass == 0)
+                {
                 letsgotojapan::$instance->giveExtraTime($this->player_id);
                 letsgotojapan::$instance->addPending($this->player_id, "SoloPhase2Step3");
+                }
+                else
+                {
+                    letsgotojapan::$instance->addPending($this->player_id, "SoloPassYellow");
+                }
             }
 
         }
@@ -10033,23 +10210,46 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
                 )
                 );
 
-                if ($playerhandcount2 == 0)
+                $yellowpass = self::getUniqueValueFromDB("SELECT yellowpass FROM player WHERE player_id={$this->player_id}");
+            
+            if ($playerhandcount2 == 0)
             {
+                if ($yellowpass == 0)
+                {
                 letsgotojapan::$instance->giveExtraTime($this->player_id);
                 letsgotojapan::$instance->gamestate->setPlayerNonMultiactive($this->player_id, 'stop');
+                }
+                else
+                {
+                    letsgotojapan::$instance->addPending($this->player_id, "SoloPassYellow");
+                }
             }
 
             if ($playerhandcount2 == 3)
 
             {
+                if ($yellowpass == 0)
+                {
                 letsgotojapan::$instance->giveExtraTime($this->player_id);
                 letsgotojapan::$instance->addPending($this->player_id, "SoloPhase2Step1");
+                }
+                else
+                {
+                    letsgotojapan::$instance->addPending($this->player_id, "SoloPassYellow");
+                }
             }
 
             if ($playerhandcount2 == 2)
             {
+                if ($yellowpass == 0)
+                {
                 letsgotojapan::$instance->giveExtraTime($this->player_id);
                 letsgotojapan::$instance->addPending($this->player_id, "SoloPhase2Step3");
+                }
+                else
+                {
+                    letsgotojapan::$instance->addPending($this->player_id, "SoloPassYellow");
+                }
             }
 
         }
@@ -10097,23 +10297,46 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
                 )
                 );
 
-                if ($playerhandcount2 == 0)
+                $yellowpass = self::getUniqueValueFromDB("SELECT yellowpass FROM player WHERE player_id={$this->player_id}");
+            
+            if ($playerhandcount2 == 0)
             {
+                if ($yellowpass == 0)
+                {
                 letsgotojapan::$instance->giveExtraTime($this->player_id);
                 letsgotojapan::$instance->gamestate->setPlayerNonMultiactive($this->player_id, 'stop');
+                }
+                else
+                {
+                    letsgotojapan::$instance->addPending($this->player_id, "SoloPassYellow");
+                }
             }
 
             if ($playerhandcount2 == 3)
 
             {
+                if ($yellowpass == 0)
+                {
                 letsgotojapan::$instance->giveExtraTime($this->player_id);
                 letsgotojapan::$instance->addPending($this->player_id, "SoloPhase2Step1");
+                }
+                else
+                {
+                    letsgotojapan::$instance->addPending($this->player_id, "SoloPassYellow");
+                }
             }
 
             if ($playerhandcount2 == 2)
             {
+                if ($yellowpass == 0)
+                {
                 letsgotojapan::$instance->giveExtraTime($this->player_id);
                 letsgotojapan::$instance->addPending($this->player_id, "SoloPhase2Step3");
+                }
+                else
+                {
+                    letsgotojapan::$instance->addPending($this->player_id, "SoloPassYellow");
+                }
             }
 
 
@@ -10371,7 +10594,7 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
                     foreach($tokyocard as $cardid)
                     {
   
-                    letsgotojapan::$instance->tokyo->pickCardForLocation( 'deck', 'discardboardhidden', $this->player_id); // changer ville
+                   
 
                     $type = self::getUniqueValueFromDB("SELECT card_type FROM tokyo WHERE card_id={$cardid}"); // changer ville
 
@@ -10398,8 +10621,14 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
                             'ville' => 1, // a changer
                             )
                         );
+                        self::DbQuery( "UPDATE player set yellowpass = 1  WHERE player_id={$this->player_id}" );
 
                     }
+                    else
+                    {
+                        letsgotojapan::$instance->tokyo->pickCardForLocation( 'deck', 'discardboardhidden', $this->player_id); // changer ville
+                    }
+
 
 
                     }
@@ -10412,8 +10641,7 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
                         
                             foreach($kyotocard as $cardid)
                             {
-                            letsgotojapan::$instance->kyoto->pickCardForLocation( 'deck', 'discardboardhidden', $this->player_id); // changer ville
-
+                            
                             $type = self::getUniqueValueFromDB("SELECT card_type FROM kyoto WHERE card_id={$cardid}"); // changer ville
 
                             letsgotojapan::$instance->kyoto->moveCard( $cardid, 'cardposition_'.$positionagent, 0 ); // changer ville
@@ -10439,7 +10667,13 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
                                     'ville' => 2, // a changer
                                     )
                                 );
+                                self::DbQuery( "UPDATE player set yellowpass = 1  WHERE player_id={$this->player_id}" );
         
+                            }
+
+                            else
+                            {
+                                letsgotojapan::$instance->kyoto->pickCardForLocation( 'deck', 'discardboardhidden', $this->player_id); // changer ville
                             }
 
 
@@ -10499,8 +10733,7 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
                     foreach($tokyocard as $cardid)
                     {
   
-                    letsgotojapan::$instance->tokyo->pickCardForLocation( 'deck', 'discardboardhidden', $this->player_id); // changer ville
-
+                    
                     $type = self::getUniqueValueFromDB("SELECT card_type FROM tokyo WHERE card_id={$cardid}"); // changer ville
 
                     letsgotojapan::$instance->tokyo->moveCard( $cardid, 'cardposition_'.$positionagent, 0 ); // changer ville
@@ -10527,6 +10760,14 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
                             )
                         );
 
+                        self::DbQuery( "UPDATE player set yellowpass = 1  WHERE player_id={$this->player_id}" );
+
+
+                    }
+
+                    else
+                    {
+                        letsgotojapan::$instance->tokyo->pickCardForLocation( 'deck', 'discardboardhidden', $this->player_id); // changer ville
                     }
 
 
@@ -10540,7 +10781,7 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
                         
                             foreach($kyotocard as $cardid)
                             {
-                            letsgotojapan::$instance->kyoto->pickCardForLocation( 'deck', 'discardboardhidden', $this->player_id); // changer ville
+                            
 
                             $type = self::getUniqueValueFromDB("SELECT card_type FROM kyoto WHERE card_id={$cardid}"); // changer ville
 
@@ -10567,8 +10808,17 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
                                         'ville' => 2, // a changer
                                         )
                                     );
+
+                                    self::DbQuery( "UPDATE player set yellowpass = 1  WHERE player_id={$this->player_id}" );
+
             
                                 }
+
+                                else
+                                {
+                                    letsgotojapan::$instance->kyoto->pickCardForLocation( 'deck', 'discardboardhidden', $this->player_id); // changer ville
+                                }
+
 
 
 
@@ -10792,24 +11042,35 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
 
                 else
                 {
-                    if ($playerhandcount2 == 0)
+                    $yellowpass = self::getUniqueValueFromDB("SELECT yellowpass FROM player WHERE player_id={$this->player_id}");
+
+                    if ($yellowpass == 0)
                     {
-                    letsgotojapan::$instance->giveExtraTime($this->player_id);
-                    letsgotojapan::$instance->gamestate->setPlayerNonMultiactive($this->player_id, 'stop');
-                    }
-                    if ($playerhandcount2 == 3)
-                    {
+                        if ($playerhandcount2 == 0)
+                        {
                         letsgotojapan::$instance->giveExtraTime($this->player_id);
-                        letsgotojapan::$instance->addPending($this->player_id, "SoloPhase2Step1");
+                        letsgotojapan::$instance->gamestate->setPlayerNonMultiactive($this->player_id, 'stop');
+                        }
+                        if ($playerhandcount2 == 3)
+                        {
+                            letsgotojapan::$instance->giveExtraTime($this->player_id);
+                            letsgotojapan::$instance->addPending($this->player_id, "SoloPhase2Step1");
 
+                        }
+
+                        if ($playerhandcount2 == 2)
+                        {
+                            letsgotojapan::$instance->giveExtraTime($this->player_id);
+                            letsgotojapan::$instance->addPending($this->player_id, "SoloPhase2Step3");
+
+                        }
                     }
 
-                    if ($playerhandcount2 == 2)
+                    else
                     {
-                        letsgotojapan::$instance->giveExtraTime($this->player_id);
-                        letsgotojapan::$instance->addPending($this->player_id, "SoloPhase2Step3");
-
+                        letsgotojapan::$instance->addPending($this->player_id, "SoloPassYellow");
                     }
+
                 }
 
 
@@ -10955,24 +11216,47 @@ function SoloExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
         letsgotojapan::$instance->CondenserExtraWalk($this->player_id, $parg2, $varg1);
         }
 
-        if ($playerhandcount2 == 0)
-        {
-        letsgotojapan::$instance->giveExtraTime($this->player_id);
-        letsgotojapan::$instance->gamestate->setPlayerNonMultiactive($this->player_id, 'stop');
-        }
-        if ($playerhandcount2 == 3)
-        {
-            letsgotojapan::$instance->giveExtraTime($this->player_id);
-            letsgotojapan::$instance->addPending($this->player_id, "SoloPhase2Step1");
+        $yellowpass = self::getUniqueValueFromDB("SELECT yellowpass FROM player WHERE player_id={$this->player_id}");
+            
+            if ($playerhandcount2 == 0)
+            {
+                if ($yellowpass == 0)
+                {
+                letsgotojapan::$instance->giveExtraTime($this->player_id);
+                letsgotojapan::$instance->gamestate->setPlayerNonMultiactive($this->player_id, 'stop');
+                }
+                else
+                {
+                    letsgotojapan::$instance->addPending($this->player_id, "SoloPassYellow");
+                }
+            }
 
-        }
+            if ($playerhandcount2 == 3)
 
-        if ($playerhandcount2 == 2)
-        {
-            letsgotojapan::$instance->giveExtraTime($this->player_id);
-            letsgotojapan::$instance->addPending($this->player_id, "SoloPhase2Step3");
+            {
+                if ($yellowpass == 0)
+                {
+                letsgotojapan::$instance->giveExtraTime($this->player_id);
+                letsgotojapan::$instance->addPending($this->player_id, "SoloPhase2Step1");
+                }
+                else
+                {
+                    letsgotojapan::$instance->addPending($this->player_id, "SoloPassYellow");
+                }
+            }
 
-        }
+            if ($playerhandcount2 == 2)
+            {
+                if ($yellowpass == 0)
+                {
+                letsgotojapan::$instance->giveExtraTime($this->player_id);
+                letsgotojapan::$instance->addPending($this->player_id, "SoloPhase2Step3");
+                }
+                else
+                {
+                    letsgotojapan::$instance->addPending($this->player_id, "SoloPassYellow");
+                }
+            }
 
 
 
@@ -11818,7 +12102,7 @@ function SoloExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
         
         if($explode[1] == 1)
         {
-            letsgotojapan::$instance->tokyo->pickCardForLocation( 'deck', 'discardboardhidden', $this->player_id); // changer ville
+            
 
             $type = self::getUniqueValueFromDB("SELECT card_type FROM tokyo WHERE card_id={$explode[2]}"); // changer ville
 
@@ -11845,16 +12129,20 @@ function SoloExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
                             'ville' => 1, // a changer
                             )
                         );
+                    self::DbQuery( "UPDATE player set yellowpass = yellowpass + 1  WHERE player_id={$this->player_id}" );
 
                     }
+                else
+                {
+                    letsgotojapan::$instance->tokyo->pickCardForLocation( 'deck', 'discardboardhidden', $this->player_id); // changer ville
+                }
 
         }
 
         if($explode[1] == 2)
         {
 
-            letsgotojapan::$instance->kyoto->pickCardForLocation( 'deck', 'discardboardhidden', $this->player_id); // changer ville
-
+            
             $type = self::getUniqueValueFromDB("SELECT card_type FROM kyoto WHERE card_id={$explode[2]}"); // changer ville
 
             letsgotojapan::$instance->kyoto->moveCard( $explode[2], 'cardposition_'.$positionagent, 0 ); // changer ville
@@ -11880,7 +12168,14 @@ function SoloExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
                             'ville' => 2, // a changer
                             )
                         );
+                    
+                        self::DbQuery( "UPDATE player set yellowpass = yellowpass + 1  WHERE player_id={$this->player_id}" );
 
+                    }
+
+                    else
+                    {
+                        letsgotojapan::$instance->kyoto->pickCardForLocation( 'deck', 'discardboardhidden', $this->player_id); // changer ville
                     }
 
         }
@@ -11906,7 +12201,7 @@ function SoloExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
 
         if($explode2[1] == 1)
         {
-            letsgotojapan::$instance->tokyo->pickCardForLocation( 'deck', 'discardboardhidden', $this->player_id); // changer ville
+            
 
             $type = self::getUniqueValueFromDB("SELECT card_type FROM tokyo WHERE card_id={$explode2[2]}"); // changer ville
 
@@ -11934,6 +12229,12 @@ function SoloExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
                             )
                         );
 
+                        self::DbQuery( "UPDATE player set yellowpass = yellowpass + 1  WHERE player_id={$this->player_id}" );
+
+                    }
+                    else
+                    {
+                        letsgotojapan::$instance->tokyo->pickCardForLocation( 'deck', 'discardboardhidden', $this->player_id); // changer ville
                     }
 
         }
@@ -11941,7 +12242,7 @@ function SoloExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
         if($explode2[1] == 2)
         {
 
-            letsgotojapan::$instance->kyoto->pickCardForLocation( 'deck', 'discardboardhidden', $this->player_id); // changer ville
+            
 
             $type = self::getUniqueValueFromDB("SELECT card_type FROM kyoto WHERE card_id={$explode2[2]}"); // changer ville
 
@@ -11969,13 +12270,29 @@ function SoloExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
                             )
                         );
 
+                        self::DbQuery( "UPDATE player set yellowpass = yellowpass + 1  WHERE player_id={$this->player_id}" );
+
+                    }
+
+                    else
+                    {
+                        letsgotojapan::$instance->kyoto->pickCardForLocation( 'deck', 'discardboardhidden', $this->player_id); // changer ville
                     }
 
         }
 
+
+        $yellowpass = self::getUniqueValueFromDB("SELECT yellowpass FROM player WHERE player_id={$this->player_id}");
+        if($yellowpass == 0)
+        {
        
         letsgotojapan::$instance->giveExtraTime($this->player_id);
         letsgotojapan::$instance->gamestate->setPlayerNonMultiactive($this->player_id, 'stop');
+        }
+        else
+        {
+            letsgotojapan::$instance->addPending($this->player_id, "SoloPassYellow");
+        }
        
       
     }

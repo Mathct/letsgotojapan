@@ -159,3 +159,4 @@ ALTER TABLE `player` ADD `mercredicheck` int(2) unsigned DEFAULT 0;
 ALTER TABLE `player` ADD `jeudicheck` int(2) unsigned DEFAULT 0;
 ALTER TABLE `player` ADD `vendredicheck` int(2) unsigned DEFAULT 0;
 ALTER TABLE `player` ADD `samedicheck` int(2) unsigned DEFAULT 0;
+ALTER TABLE `player` ADD `yellowpass` int(2) unsigned DEFAULT 0;
