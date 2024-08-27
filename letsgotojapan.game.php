@@ -291,6 +291,10 @@ class letsgotojapan extends Table
 
         }
 
+        $count= count(self::getObjectListFromDB( "SELECT player_id id FROM player", true ));
+
+        if($count == 1)
+        {
         $result['r'][0] = self::getUniqueValueFromDB("SELECT r FROM agent WHERE name='agent'");
         $result['g'][0] = self::getUniqueValueFromDB("SELECT g FROM agent WHERE name='agent'");
         $result['p'][0] = self::getUniqueValueFromDB("SELECT p FROM agent WHERE name='agent'");
@@ -318,7 +322,7 @@ class letsgotojapan extends Table
         $result['samedicheck'][0] = self::getUniqueValueFromDB("SELECT samedicheck FROM agent WHERE name='agent'");
 
         $result['lvl'][] = self::getUniqueValueFromDB("SELECT sololvl FROM agent WHERE name='agent'");
-    
+        }
 
         return $result;
     }
