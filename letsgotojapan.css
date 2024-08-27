@@ -1504,3 +1504,9 @@ display: none;
 
   
 }
+
+.infolvl {
+  font-size: 13px;
+  text-align: justify;
+  font-style: italic;
+}

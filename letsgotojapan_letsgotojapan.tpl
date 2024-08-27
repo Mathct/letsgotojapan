@@ -531,6 +531,9 @@ var jstpl_kyotowalktool='<div class="kyotowalktool"></div>';
 var jstpl_infotool='<div class="infotexttoolt"><div style="text-align: center;">${text}</div></div>';
 var jstpl_avataragent='<div id="avataragent" class="avataragent"></div>';
 
+var jstpl_infolvl='<div id="infolvl_${id}" class="infolvl"></div>';
+
+
 </script>  
 
 {OVERALL_GAME_FOOTER}

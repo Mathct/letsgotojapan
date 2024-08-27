@@ -85,6 +85,30 @@ function (dojo, declare) {
                         var player_board_div = $('player_board_'+player_id);
                         dojo.place( this.format_block('jstpl_player_compteurs', {id: player_id} ), player_board_div );
                         
+                        if((gamedatas.countplayers == 1)&&(gamedatas.lvl == 1))
+                        {
+                            dojo.place( this.format_block('jstpl_infolvl', {id: player_id} ), player_board_div );
+                            var info = _("Easy level: Your opponent must meet the requirements of their “Highlight of the Day” bonuses in order to score them. It does not use Train tokens.");
+                            $('infolvl_'+player_id).innerHTML = info;
+
+                        }
+
+                        if((gamedatas.countplayers == 1)&&(gamedatas.lvl == 2))
+                        {
+                            dojo.place( this.format_block('jstpl_infolvl', {id: player_id} ), player_board_div );
+                            var info = _("Normal level: Your opponent always scores all his “Highlights of the Day”. It does not use Train tokens.");
+                            $('infolvl_'+player_id).innerHTML = info;
+
+                        }
+
+                        if((gamedatas.countplayers == 1)&&(gamedatas.lvl == 3))
+                        {
+                            dojo.place( this.format_block('jstpl_infolvl', {id: player_id} ), player_board_div );
+                            var info = _("Difficult level: Your opponent always scores all his “Highlights of the Day” and places a Luxury Train token each time he travels.");
+                            $('infolvl_'+player_id).innerHTML = info;
+
+                        }
+                        
                         
                     }
 
@@ -3061,6 +3085,7 @@ function (dojo, declare) {
                 dojo.subscribe( 'affichehand', this, "notif_affichehand" );
                 dojo.subscribe( 'score2solo', this, "notif_score2solo" );
                 dojo.subscribe( 'score2agent', this, "notif_score2agent" );
+                dojo.subscribe( 'infolvl', this, "notif_infolvl" );
 
                 
 
@@ -3923,6 +3948,39 @@ function (dojo, declare) {
                 $('score_2_9').innerHTML = notif.args.train;
                 $('score_2_10').innerHTML = notif.args.recherche;
                 $('score_2_11').innerHTML = notif.args.total;
+
+                
+                
+            },
+
+
+            notif_infolvl: function( notif )
+            {
+                var player_pannel = $('player_board_'+notif.args.playerid);
+
+                if(notif.args.lvl == 1)
+                    {
+                        dojo.place( this.format_block('jstpl_infolvl', {id: notif.args.playerid} ), player_pannel );
+                        var info = _("Easy level: Your opponent must meet the requirements of their “Highlight of the Day” bonuses in order to score them. It does not use Train tokens.");
+                        $('infolvl_'+notif.args.playerid).innerHTML = info;
+
+                    }
+
+                    if(notif.args.lvl == 2)
+                    {
+                        dojo.place( this.format_block('jstpl_infolvl', {id: notif.args.playerid} ), player_pannel );
+                        var info = _("Normal level: Your opponent always scores all his “Highlights of the Day”. It does not use Train tokens.");
+                        $('infolvl_'+notif.args.playerid).innerHTML = info;
+
+                    }
+
+                    if(notif.args.lvl == 3)
+                    {
+                        dojo.place( this.format_block('jstpl_infolvl', {id: notif.args.playerid} ), player_pannel );
+                        var info = _("Difficult level: Your opponent always scores all his “Highlights of the Day” and places a Luxury Train token each time he travels.");
+                        $('infolvl_'+notif.args.playerid).innerHTML = info;
+
+                    }
 
                 
                 

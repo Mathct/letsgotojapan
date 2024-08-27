@@ -316,6 +316,8 @@ class letsgotojapan extends Table
         $result['jeudicheck'][0] = self::getUniqueValueFromDB("SELECT jeudicheck FROM agent WHERE name='agent'");
         $result['vendredicheck'][0] = self::getUniqueValueFromDB("SELECT vendredicheck FROM agent WHERE name='agent'");
         $result['samedicheck'][0] = self::getUniqueValueFromDB("SELECT samedicheck FROM agent WHERE name='agent'");
+
+        $result['lvl'][] = self::getUniqueValueFromDB("SELECT sololvl FROM agent WHERE name='agent'");
     
 
         return $result;

@@ -9001,18 +9001,34 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
         if($varg1 == "easy")
         {
             self::DbQuery( "UPDATE agent set sololvl = 1  WHERE name = 'agent'" );
+
+            letsgotojapan::$instance->notifyAllPlayers('infolvl','', array(
+                'lvl' => 1,
+                'playerid' => $this->player_id,
+                )
+                );
             
         }
 
         if($varg1 == "normal")
         {
             self::DbQuery( "UPDATE agent set sololvl = 2  WHERE name = 'agent'" );
+            letsgotojapan::$instance->notifyAllPlayers('infolvl','', array(
+                'lvl' => 2,
+                'playerid' => $this->player_id,
+                )
+                );
             
         }
 
         if($varg1 == "difficult")
         {
             self::DbQuery( "UPDATE agent set sololvl = 3  WHERE name = 'agent'" );
+            letsgotojapan::$instance->notifyAllPlayers('infolvl','', array(
+                'lvl' => 3,
+                'playerid' => $this->player_id,
+                )
+                );
             
         }
 
