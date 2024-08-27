@@ -3753,6 +3753,11 @@ function argFinalStep1($parg1, $parg2)
             ////////////////////////////////// DEBUT SCORE AGENT /////////////////////////
             ////////////////////////////////////////////////////////////////////////////// 
 
+            $countplayer = count(self::getObjectListFromDB( "SELECT player_id id FROM player", true ));
+
+            if($countplayer == 1)
+
+            {
 
 
             $counttrip = letsgotojapan::$instance->CountTrip(0);  
@@ -4019,7 +4024,7 @@ function argFinalStep1($parg1, $parg2)
 
 
             
-
+            }
 
             ////////////////////////////////////////////////////////////////////////////// 
             ////////////////////////////////// FIN SCORE AGENT ///////////////////////////
@@ -4654,7 +4659,11 @@ function argFinalStep1($parg1, $parg2)
             ////////////////////////////////// DEBUT SCORE AGENT /////////////////////////
             ////////////////////////////////////////////////////////////////////////////// 
 
+            $countplayer = count(self::getObjectListFromDB( "SELECT player_id id FROM player", true ));
 
+            if($countplayer == 1)
+
+            {
 
             $counttrip = letsgotojapan::$instance->CountTrip(0);  
             $countday = $counttrip[$day-1];
@@ -4920,7 +4929,7 @@ function argFinalStep1($parg1, $parg2)
 
 
             
-
+            }
 
             ////////////////////////////////////////////////////////////////////////////// 
             ////////////////////////////////// FIN SCORE AGENT ///////////////////////////
@@ -5554,7 +5563,11 @@ function argFinalStep1($parg1, $parg2)
             ////////////////////////////////// DEBUT SCORE AGENT /////////////////////////
             ////////////////////////////////////////////////////////////////////////////// 
 
+            $countplayer = count(self::getObjectListFromDB( "SELECT player_id id FROM player", true ));
 
+            if($countplayer == 1)
+
+            {
 
             $counttrip = letsgotojapan::$instance->CountTrip(0);  
             $countday = $counttrip[$day-1];
@@ -5820,7 +5833,7 @@ function argFinalStep1($parg1, $parg2)
 
 
             
-
+            }
 
             ////////////////////////////////////////////////////////////////////////////// 
             ////////////////////////////////// FIN SCORE AGENT ///////////////////////////
@@ -6457,7 +6470,11 @@ function FinalStepJeudi($parg1, $parg2, $varg1, $varg2)
         ////////////////////////////////// DEBUT SCORE AGENT /////////////////////////
         ////////////////////////////////////////////////////////////////////////////// 
 
+        $countplayer = count(self::getObjectListFromDB( "SELECT player_id id FROM player", true ));
 
+        if($countplayer == 1)
+
+        {
 
             $counttrip = letsgotojapan::$instance->CountTrip(0);  
             $countday = $counttrip[$day-1];
@@ -6723,7 +6740,7 @@ function FinalStepJeudi($parg1, $parg2, $varg1, $varg2)
 
 
             
-
+            }
 
             ////////////////////////////////////////////////////////////////////////////// 
             ////////////////////////////////// FIN SCORE AGENT ///////////////////////////
@@ -7361,7 +7378,11 @@ function FinalStepVendredi($parg1, $parg2, $varg1, $varg2)
         ////////////////////////////////// DEBUT SCORE AGENT /////////////////////////
         ////////////////////////////////////////////////////////////////////////////// 
 
+        $countplayer = count(self::getObjectListFromDB( "SELECT player_id id FROM player", true ));
 
+        if($countplayer == 1)
+
+        {
 
         $counttrip = letsgotojapan::$instance->CountTrip(0);  
         $countday = $counttrip[$day-1];
@@ -7627,7 +7648,7 @@ function FinalStepVendredi($parg1, $parg2, $varg1, $varg2)
 
 
         
-
+        }
 
         ////////////////////////////////////////////////////////////////////////////// 
         ////////////////////////////////// FIN SCORE AGENT ///////////////////////////
@@ -8262,7 +8283,11 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
         ////////////////////////////////// DEBUT SCORE AGENT /////////////////////////
         ////////////////////////////////////////////////////////////////////////////// 
 
+        $countplayer = count(self::getObjectListFromDB( "SELECT player_id id FROM player", true ));
 
+            if($countplayer == 1)
+
+            {
 
         $counttrip = letsgotojapan::$instance->CountTrip(0);  
         $countday = $counttrip[$day-1];
@@ -8528,7 +8553,7 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
 
 
         
-
+         }
 
         ////////////////////////////////////////////////////////////////////////////// 
         ////////////////////////////////// FIN SCORE AGENT ///////////////////////////
@@ -8633,6 +8658,12 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
 
         ///////////////////////// FIN DE SCORING AGENT /////////////////// 
 
+        $countplayer = count(self::getObjectListFromDB( "SELECT player_id id FROM player", true ));
+
+        if($countplayer == 1)
+
+        {
+
         $scorehumeura =0;
         $lvlhappya = self::getUniqueValueFromDB( "SELECT happy FROM agent WHERE name='agent'");
         if($lvlhappya == 1)
@@ -8715,7 +8746,9 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
         $scoretotala = self::getUniqueValueFromDB( "SELECT lundi FROM agent WHERE name='agent'") + self::getUniqueValueFromDB( "SELECT mardi FROM agent WHERE name='agent'") + self::getUniqueValueFromDB( "SELECT mercredi FROM agent WHERE name='agent'") + self::getUniqueValueFromDB( "SELECT jeudi FROM agent WHERE name='agent'") + self::getUniqueValueFromDB( "SELECT vendredi FROM agent WHERE name='agent'") + self::getUniqueValueFromDB( "SELECT samedi FROM agent WHERE name='agent'") + $scorehumeura + $scoretokena + $scoretraina;
 
         self::DbQuery( "UPDATE agent set scoretotal = {$scoretotala} WHERE name='agent'" );
-        ////////////////////////////////////////////////////////////////////////
+
+        
+        
 
         if ($scoretotala >= $scoretotal)
         {
@@ -8733,10 +8766,7 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
 
 
 
-        ///////////////////////////////////////////////////////////////////
-
-
-        
+             
 
 
         letsgotojapan::$instance->notifyAllPlayers('score2solo',clienttranslate('${player_name} completes the trip to Japan with <b>${total}</b> ${log}'), array(
@@ -8771,6 +8801,30 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
             
             )
             );
+
+        }
+
+        if($countplayer >=2)
+
+        {
+            letsgotojapan::$instance->notifyAllPlayers('score2',clienttranslate('${player_name} completes the trip to Japan with <b>${total}</b> ${log}'), array(
+                
+                'numero' => $this->player_no,
+                'humeur' => $scorehumeur,
+                'token' => $scoretoken,
+                'train' => $scoretrain,
+                'recherche' => $scorerecherche,
+                'total' => $scoretotal,
+                'player' => $this->player_id,
+                'player_name' => $this->player_name,
+                'log' => letsgotojapan::$instance->getLogsType(8),
+                          
+                
+                
+                )
+                );
+
+        }
 
 
     
