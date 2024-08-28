@@ -2839,9 +2839,11 @@ function argFinalStep1($parg1, $parg2)
                 );
 
 
+            $countplayer= count(self::getObjectListFromDB( "SELECT player_id id FROM player", true ));
 
             /////////////////////////////// PLACE TRAIN AGENT LVL 3 ///////////////////
-
+            if($countplayer == 1)
+            {
             $sololvl= self::getUniqueValueFromDB( "SELECT sololvl FROM agent WHERE name='agent'");
             if($sololvl == 3)
             {
@@ -2931,6 +2933,8 @@ function argFinalStep1($parg1, $parg2)
                 );
 
             }
+
+        }
 
             ///////////////////////////////////////////////////////////////////////////
 
