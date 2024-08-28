@@ -9722,12 +9722,16 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
 
                     if (($type >=72)&&($type<=80))
                     {
-                        self::DbQuery( "UPDATE tokyo set finallocation = 1  WHERE card_id={$cardid}" );
+                        /*self::DbQuery( "UPDATE tokyo set finallocation = 1  WHERE card_id={$cardid}" );
                         letsgotojapan::$instance->notifyAllPlayers('finallocation','', array(
                             'card' =>  'card_1_'.$cardid, // a changer
                             'ville' => 1, // a changer
                             )
-                        );
+                        );*/
+
+
+                        $card1 = 'card_1_'.$cardid;
+                        self::DbQuery( "UPDATE agent set card1 = '$card1'  WHERE name='agent'" );
 
                         self::DbQuery( "UPDATE player set yellowpass = 1  WHERE player_id={$this->player_id}" );
 
@@ -9770,12 +9774,15 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
 
                     if (($type >=72)&&($type<=80))
                     {
-                        self::DbQuery( "UPDATE kyoto set finallocation = 2  WHERE card_id={$cardid}" );
+                        /*self::DbQuery( "UPDATE kyoto set finallocation = 2  WHERE card_id={$cardid}" );
                         letsgotojapan::$instance->notifyAllPlayers('finallocation','', array(
                             'card' =>  'card_2_'.$cardid, // a changer
                             'ville' => 2, // a changer
                             )
-                        );
+                        );*/
+
+                        $card1 = 'card_2_'.$cardid;
+                        self::DbQuery( "UPDATE agent set card1 = '$card1'  WHERE name='agent'" );
 
                         self::DbQuery( "UPDATE player set yellowpass = 1  WHERE player_id={$this->player_id}" );
 
@@ -9985,12 +9992,7 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
 
     function SoloPassYellow($parg1, $parg2, $varg1, $varg2)
     {
-        $counthandtokyocard2 = count(self::getObjectListFromDB( "SELECT card_id id FROM tokyo WHERE card_location ='playerhand' AND card_location_arg = {$this->player_id}", true ));
-        $counthandkyotocard2 = count(self::getObjectListFromDB( "SELECT card_id id FROM kyoto WHERE card_location ='playerhand' AND card_location_arg = {$this->player_id}", true ));
-        $playerhandcount2 = $counthandtokyocard2 + $counthandkyotocard2;
-        
-
-
+          
         if($varg1 == "tokyo")
         {
             letsgotojapan::$instance->tokyo->pickCardForLocation( 'deck', 'discardboardhidden', $this->player_id); // changer ville
@@ -10003,6 +10005,125 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
             self::DbQuery( "UPDATE player set yellowpass = yellowpass - 1  WHERE player_id={$this->player_id}" );
         }
 
+        if($parg1 !=1)
+        {
+        letsgotojapan::$instance->addPending($this->player_id, "SoloPassYellowStep2", 1);
+        }
+        
+        if($parg1 ==1)
+        {
+        letsgotojapan::$instance->addPending($this->player_id, "SoloPassYellowStep2", 2);
+        }
+        
+       
+      
+    }
+
+    function argSoloPassYellowStep2($parg1, $parg2)
+    {
+        
+        $ret = array();
+        $ret["selectable"] = array();
+        $ret["selectable2"] = array();
+        $ret["selectableswitch"] = array();
+        $ret["selected"] = array();
+        $ret["selected3"] = array();
+        $ret['buttons'] = array();
+        
+        $ret['titleyou'] = clienttranslate('${you} must choose the location for your opponent\'s yellow card');
+
+
+        if($parg1 == 1)
+        {
+        $card = self::getUniqueValueFromDB("SELECT card1 FROM agent WHERE name='agent'");
+        $ret["selected3"][] = $card;
+        }
+
+        if($parg1 == 2)
+        {
+        $card = self::getUniqueValueFromDB("SELECT card2 FROM agent WHERE name='agent'");
+        $ret["selected3"][] = $card;
+        }
+
+
+        
+
+        $ret['buttons'][]='tokyo';
+        $ret['buttons'][]='kyoto'; 
+
+        
+        
+        return $ret;
+    }
+
+    function SoloPassYellowStep2($parg1, $parg2, $varg1, $varg2)
+    {
+        if($parg1 == 1)
+        {
+            $card = self::getUniqueValueFromDB("SELECT card1 FROM agent WHERE name='agent'"); 
+            $explode = explode("_", $card);
+            $ville = $explode[1];
+            $cardid = $explode[2];
+            self::DbQuery( "UPDATE agent set card1 = 0  WHERE name='agent'" );
+
+        }
+
+        if($parg1 == 2)
+        {
+            $card = self::getUniqueValueFromDB("SELECT card2 FROM agent WHERE name='agent'");
+            $explode = explode("_", $card);
+            $ville = $explode[1];
+            $cardid = $explode[2];
+            self::DbQuery( "UPDATE agent set card2 = 0  WHERE name='agent'" );
+        }
+        
+        if($varg1 == "tokyo")
+        {
+            if($ville == 1)
+            {
+                self::DbQuery( "UPDATE tokyo set finallocation = 1  WHERE card_id={$cardid}" );
+            }
+
+            if($ville == 2)
+            {
+                self::DbQuery( "UPDATE kyoto set finallocation = 1  WHERE card_id={$cardid}" );
+            }
+
+            letsgotojapan::$instance->notifyAllPlayers('finallocation','', array(
+                'card' =>  $card, 
+                'ville' => 1, 
+                )
+            );
+            
+        }
+
+        if($varg1 == "kyoto")
+        {
+
+            if($ville == 1)
+            {
+                self::DbQuery( "UPDATE tokyo set finallocation = 2  WHERE card_id={$cardid}" );
+            }
+
+            if($ville == 2)
+            {
+                self::DbQuery( "UPDATE kyoto set finallocation = 2  WHERE card_id={$cardid}" );
+            }
+
+            letsgotojapan::$instance->notifyAllPlayers('finallocation','', array(
+                'card' =>  $card, 
+                'ville' => 2, 
+                )
+            );
+            
+        }
+
+
+
+        $counthandtokyocard2 = count(self::getObjectListFromDB( "SELECT card_id id FROM tokyo WHERE card_location ='playerhand' AND card_location_arg = {$this->player_id}", true ));
+        $counthandkyotocard2 = count(self::getObjectListFromDB( "SELECT card_id id FROM kyoto WHERE card_location ='playerhand' AND card_location_arg = {$this->player_id}", true ));
+        $playerhandcount2 = $counthandtokyocard2 + $counthandkyotocard2;
+        
         $yellowpass = self::getUniqueValueFromDB("SELECT yellowpass FROM player WHERE player_id={$this->player_id}");
 
         if($yellowpass == 0)
@@ -10040,7 +10161,7 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
             letsgotojapan::$instance->addPending($this->player_id, "SoloPassYellow", 1);
 
         }
-        
+
        
         
        
@@ -10645,12 +10766,15 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
 
                     if (($type >=72)&&($type<=80))
                     {
-                        self::DbQuery( "UPDATE tokyo set finallocation = 1  WHERE card_id={$cardid}" );
+                        /*self::DbQuery( "UPDATE tokyo set finallocation = 1  WHERE card_id={$cardid}" );
                         letsgotojapan::$instance->notifyAllPlayers('finallocation','', array(
                             'card' =>  'card_1_'.$cardid, // a changer
                             'ville' => 1, // a changer
                             )
-                        );
+                        );*/
+
+                        $card1 = 'card_1_'.$cardid;
+                        self::DbQuery( "UPDATE agent set card1 = '$card1'  WHERE name='agent'" );
                         self::DbQuery( "UPDATE player set yellowpass = 1  WHERE player_id={$this->player_id}" );
 
                     }
@@ -10691,12 +10815,14 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
 
                             if (($type >=72)&&($type<=80))
                             {
-                                self::DbQuery( "UPDATE kyoto set finallocation = 1  WHERE card_id={$cardid}" );
+                                /*self::DbQuery( "UPDATE kyoto set finallocation = 1  WHERE card_id={$cardid}" );
                                 letsgotojapan::$instance->notifyAllPlayers('finallocation','', array(
                                     'card' =>  'card_2_'.$cardid, // a changer
                                     'ville' => 2, // a changer
                                     )
-                                );
+                                );*/
+                                $card1 = 'card_2_'.$cardid;
+                                self::DbQuery( "UPDATE agent set card1 = '$card1'  WHERE name='agent'" );
                                 self::DbQuery( "UPDATE player set yellowpass = 1  WHERE player_id={$this->player_id}" );
         
                             }
@@ -10783,12 +10909,15 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
 
                     if (($type >=72)&&($type<=80))
                     {
-                        self::DbQuery( "UPDATE tokyo set finallocation = 1  WHERE card_id={$cardid}" );
+                        /*self::DbQuery( "UPDATE tokyo set finallocation = 1  WHERE card_id={$cardid}" );
                         letsgotojapan::$instance->notifyAllPlayers('finallocation','', array(
                             'card' =>  'card_1_'.$cardid, // a changer
                             'ville' => 1, // a changer
                             )
-                        );
+                        );*/
+
+                        $card1 = 'card_1_'.$cardid;
+                        self::DbQuery( "UPDATE agent set card1 = '$card1'  WHERE name='agent'" );
 
                         self::DbQuery( "UPDATE player set yellowpass = 1  WHERE player_id={$this->player_id}" );
 
@@ -10832,12 +10961,15 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
 
                                 if (($type >=72)&&($type<=80))
                                 {
-                                    self::DbQuery( "UPDATE kyoto set finallocation = 1  WHERE card_id={$cardid}" );
+                                    /*self::DbQuery( "UPDATE kyoto set finallocation = 1  WHERE card_id={$cardid}" );
                                     letsgotojapan::$instance->notifyAllPlayers('finallocation','', array(
                                         'card' =>  'card_2_'.$cardid, // a changer
                                         'ville' => 2, // a changer
                                         )
-                                    );
+                                    );*/
+
+                                    $card1 = 'card_2_'.$cardid;
+                                    self::DbQuery( "UPDATE agent set card1 = '$card1'  WHERE name='agent'" );
 
                                     self::DbQuery( "UPDATE player set yellowpass = 1  WHERE player_id={$this->player_id}" );
 
@@ -12153,12 +12285,15 @@ function SoloExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
 
                 if (($type >=72)&&($type<=80))
                     {
-                        self::DbQuery( "UPDATE tokyo set finallocation = 1  WHERE card_id={$explode[2]}" );
+                        /*self::DbQuery( "UPDATE tokyo set finallocation = 1  WHERE card_id={$explode[2]}" );
                         letsgotojapan::$instance->notifyAllPlayers('finallocation','', array(
                             'card' =>  $varg1, // a changer
                             'ville' => 1, // a changer
                             )
-                        );
+                        );*/
+
+                    $card1 = $varg1;
+                    self::DbQuery( "UPDATE agent set card1 = '$card1'  WHERE name='agent'" );
                     self::DbQuery( "UPDATE player set yellowpass = yellowpass + 1  WHERE player_id={$this->player_id}" );
 
                     }
@@ -12192,12 +12327,15 @@ function SoloExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
 
                 if (($type >=72)&&($type<=80))
                     {
-                        self::DbQuery( "UPDATE kyoto set finallocation = 2  WHERE card_id={$explode[2]}" );
+                        /*self::DbQuery( "UPDATE kyoto set finallocation = 2  WHERE card_id={$explode[2]}" );
                         letsgotojapan::$instance->notifyAllPlayers('finallocation','', array(
                             'card' =>  $varg1, // a changer
                             'ville' => 2, // a changer
                             )
-                        );
+                        );*/
+
+                        $card1 = $varg1;
+                        self::DbQuery( "UPDATE agent set card1 = '$card1'  WHERE name='agent'" );
                     
                         self::DbQuery( "UPDATE player set yellowpass = yellowpass + 1  WHERE player_id={$this->player_id}" );
 
@@ -12252,12 +12390,23 @@ function SoloExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
 
                 if (($type >=72)&&($type<=80))
                     {
-                        self::DbQuery( "UPDATE tokyo set finallocation = 1  WHERE card_id={$explode2[2]}" );
+                        /*self::DbQuery( "UPDATE tokyo set finallocation = 1  WHERE card_id={$explode2[2]}" );
                         letsgotojapan::$instance->notifyAllPlayers('finallocation','', array(
                             'card' =>  'card_1_'.$explode2[2], // a changer
                             'ville' => 1, // a changer
                             )
-                        );
+                        );*/
+
+                        $card1 = 'card_1_'.$explode2[2];
+                        $testcard1 = self::getUniqueValueFromDB("SELECT card1 FROM agent WHERE name='agent'");
+                        if($testcard1 == 0)
+                        {
+                            self::DbQuery( "UPDATE agent set card1 = '$card1'  WHERE name='agent'" );
+                        }
+                        else
+                        {
+                            self::DbQuery( "UPDATE agent set card2 = '$card1'  WHERE name='agent'" );
+                        }
 
                         self::DbQuery( "UPDATE player set yellowpass = yellowpass + 1  WHERE player_id={$this->player_id}" );
 
@@ -12293,12 +12442,23 @@ function SoloExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
 
                 if (($type >=72)&&($type<=80))
                     {
-                        self::DbQuery( "UPDATE kyoto set finallocation = 2  WHERE card_id={$explode2[2]}" );
+                        /*self::DbQuery( "UPDATE kyoto set finallocation = 2  WHERE card_id={$explode2[2]}" );
                         letsgotojapan::$instance->notifyAllPlayers('finallocation','', array(
                             'card' =>  'card_2_'.$explode2[2], // a changer
                             'ville' => 2, // a changer
                             )
-                        );
+                        );*/
+
+                        $card1 = 'card_2_'.$explode2[2];
+                        $testcard1 = self::getUniqueValueFromDB("SELECT card1 FROM agent WHERE name='agent'");
+                        if($testcard1 == 0)
+                        {
+                            self::DbQuery( "UPDATE agent set card1 = '$card1'  WHERE name='agent'" );
+                        }
+                        else
+                        {
+                            self::DbQuery( "UPDATE agent set card2 = '$card1'  WHERE name='agent'" );
+                        }
 
                         self::DbQuery( "UPDATE player set yellowpass = yellowpass + 1  WHERE player_id={$this->player_id}" );
 

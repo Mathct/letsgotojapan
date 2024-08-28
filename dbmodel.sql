@@ -85,6 +85,8 @@ CREATE TABLE IF NOT EXISTS `tokens` (
 CREATE TABLE IF NOT EXISTS `agent` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NULL,
+  `card1` varchar(50) DEFAULT 0,
+  `card2` varchar(50) DEFAULT 0,
   `sololvl` int(2) unsigned DEFAULT 0,
   `smile` int(2) DEFAULT 0,
   `happy` int(2) unsigned DEFAULT 0,
