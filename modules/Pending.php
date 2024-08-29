@@ -9870,8 +9870,17 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
                 {
                     if($result[$colorday-1]==0)
                     {
+                        $yellowpass = self::getUniqueValueFromDB("SELECT yellowpass FROM player WHERE player_id={$this->player_id}");
+                        
+                        if ($yellowpass == 0)
+                        {
                         letsgotojapan::$instance->giveExtraTime($this->player_id);
                         letsgotojapan::$instance->gamestate->setPlayerNonMultiactive($this->player_id, 'stop');
+                        }
+                        else
+                        {
+                            letsgotojapan::$instance->addPending($this->player_id, "SoloPassYellow");
+                        }
                     }
 
                     if($result[$colorday-1]==1)
@@ -9883,9 +9892,18 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
                             'log' => letsgotojapan::$instance->getLogsType(1),
                             )
                             );
+
+                        $yellowpass = self::getUniqueValueFromDB("SELECT yellowpass FROM player WHERE player_id={$this->player_id}");
                         
+                        if ($yellowpass == 0)
+                        {
                         letsgotojapan::$instance->giveExtraTime($this->player_id);
                         letsgotojapan::$instance->gamestate->setPlayerNonMultiactive($this->player_id, 'stop');
+                        }
+                        else
+                        {
+                            letsgotojapan::$instance->addPending($this->player_id, "SoloPassYellow");
+                        }
                     }
 
                     if($result[$colorday-1]>=2)
@@ -9902,8 +9920,17 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
 
                     if($calculhappy==0)
                     {
+                        $yellowpass = self::getUniqueValueFromDB("SELECT yellowpass FROM player WHERE player_id={$this->player_id}");
+                        
+                        if ($yellowpass == 0)
+                        {
                         letsgotojapan::$instance->giveExtraTime($this->player_id);
                         letsgotojapan::$instance->gamestate->setPlayerNonMultiactive($this->player_id, 'stop');
+                        }
+                        else
+                        {
+                            letsgotojapan::$instance->addPending($this->player_id, "SoloPassYellow");
+                        }
                     }
 
                     if($calculhappy==1)
@@ -9916,8 +9943,17 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
                             )
                             );
 
-                        letsgotojapan::$instance->giveExtraTime($this->player_id);
-                        letsgotojapan::$instance->gamestate->setPlayerNonMultiactive($this->player_id, 'stop');
+                            $yellowpass = self::getUniqueValueFromDB("SELECT yellowpass FROM player WHERE player_id={$this->player_id}");
+                        
+                            if ($yellowpass == 0)
+                            {
+                            letsgotojapan::$instance->giveExtraTime($this->player_id);
+                            letsgotojapan::$instance->gamestate->setPlayerNonMultiactive($this->player_id, 'stop');
+                            }
+                            else
+                            {
+                                letsgotojapan::$instance->addPending($this->player_id, "SoloPassYellow");
+                            }
                     }
 
                     if($calculhappy>=2)

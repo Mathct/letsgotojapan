@@ -93,7 +93,7 @@
     right: 10px;
     width: 100px;
     height: 50px;
-    background-image: url('img/icon_mask_hand.png');
+    background-image: url('img/icon_mask_hand2.png');
     background-size: 100% 100%;
     cursor: pointer;
     pointer-events: auto !important;
@@ -108,7 +108,7 @@
     right: 10px;
     width: 100px;
     height: 50px;
-    background-image: url('img/icon_mask_hand_h.png');
+    background-image: url('img/icon_mask_hand2_h.png');
     background-size: 100% 100%;
     cursor: pointer;
     pointer-events: auto !important;
@@ -293,6 +293,11 @@
     top: 190px;
     
 
+}
+
+.switch {
+  /*classe vide*/
+  text-decoration: none;
 }
 
 .playerboard {
@@ -599,6 +604,9 @@ display: none;
     position: absolute;
     border-radius: 8px;
     z-index: 1;
+    /*background-color: white;
+    border: 1px solid black;*/
+    
     
     
 
@@ -1558,7 +1566,7 @@ display: none;
   width: 1200px;
   height: 500px;
   position: absolute;
-  top: 1475px;
+  top: 1470px;
   left: 50%;
   transform: translateX(-50%);
   margin-top: 10px;
