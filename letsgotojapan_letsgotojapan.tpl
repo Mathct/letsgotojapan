@@ -190,7 +190,7 @@
                 <div id="tokenjourposition_5_{PLAYER_ID}" class="tokenjourposition" style="top: 85.5%; left: 66.7%;"></div>
                 <div id="tokenjourposition_6_{PLAYER_ID}" class="tokenjourposition" style="top: 85.5%; left: 83.8%;"></div>
 
-                <div id="cardposition_1_1_{PLAYER_ID}"class="cardposition" style="top: 101%; left: 2.3%;"></div>
+                <div id="cardposition_1_1_{PLAYER_ID}"class="cardposition" style="top: 101%; left: 2.3%; background-color: white;"></div>
                 <div id="cardposition_1_2_{PLAYER_ID}"class="cardposition" style="top: 115%; left: 2.3%;"></div>
                 <div id="cardposition_1_3_{PLAYER_ID}"class="cardposition" style="top: 129%; left: 2.3%;"></div>
                 <div id="cardposition_1_4_{PLAYER_ID}"class="cardposition" style="top: 143%; left: 2.3%;"></div>

@@ -322,6 +322,9 @@ class letsgotojapan extends Table
         $result['samedicheck'][0] = self::getUniqueValueFromDB("SELECT samedicheck FROM agent WHERE name='agent'");
 
         $result['lvl'][] = self::getUniqueValueFromDB("SELECT sololvl FROM agent WHERE name='agent'");
+
+        $result['maxtrip'][0] = max(self::CountTrip($current_player_id));
+        $result['phase'][0] = self::getUniqueValueFromDB("SELECT function FROM pending WHERE player_id={$current_player_id}");
         }
 
         return $result;
@@ -492,7 +495,7 @@ function Deployer($id)
             }
 
             
-
+            $maxtrip = max(letsgotojapan::$instance->CountTrip($id));
 
             letsgotojapan::$instance->notifyAllPlayers('deployer','', array(
                 'jour' =>  $jour,
@@ -502,6 +505,7 @@ function Deployer($id)
                 'ville1' => $ville1,
                 'ville2' => $ville2,
                 'playerid' => $id,
+                'maxtrip' => $maxtrip,
                     
                 )
                 );
@@ -630,6 +634,8 @@ function Condenser($id, $new)
                 }
 
                 
+                $maxtrip = max(letsgotojapan::$instance->CountTrip($id));
+                
                 letsgotojapan::$instance->notifyAllPlayers('condensersansmodif','', array(
                     'jour' =>  $jour,
                     'count' => $count,
@@ -640,6 +646,7 @@ function Condenser($id, $new)
                     'ville2' => $ville2,
                     'ville3' => $ville3,
                     'playerid' => $id,
+                    'maxtrip' => $maxtrip,
                         
                     )
                     );
@@ -695,11 +702,12 @@ function Condenser($id, $new)
 
                 }
 
-                
+                $maxtrip = max(letsgotojapan::$instance->CountTrip($id));
 
                 letsgotojapan::$instance->notifyAllPlayers('condenseravecmodif','', array(
                     'jour' =>  $jour,
                     'count' => $count,
+                    'count0' => 1,
                     'card1' => $card1,
                     'card2' => $card2,
                     'card3' => $card3,
@@ -707,6 +715,7 @@ function Condenser($id, $new)
                     'ville2' => $ville2,
                     'ville3' => $ville3,
                     'playerid' => $id,
+                    'maxtrip' => $maxtrip,
                         
                     )
                     );
@@ -721,6 +730,20 @@ function Condenser($id, $new)
                 $ville1 =1;
                 $ville2 =1;
                 $ville3 =1;
+
+                if($count == 1)
+                {
+
+                    $maxtrip = max(letsgotojapan::$instance->CountTrip($id));
+
+                    letsgotojapan::$instance->notifyAllPlayers('condenseravecmodif','', array(
+                        'count0' => 1,
+                        'maxtrip' => $maxtrip,
+                            
+                        )
+                        );
+
+                }
 
                 if($count == 2)
                 {
@@ -750,9 +773,12 @@ function Condenser($id, $new)
                             letsgotojapan::$instance->kyoto->moveCard( $card2, 'cardposition_'.$jour.'_2', $id);
                         }
 
+                        $maxtrip = max(letsgotojapan::$instance->CountTrip($id));
+
                         letsgotojapan::$instance->notifyAllPlayers('condenseravecmodif','', array(
                             'jour' =>  $jour,
                             'count' => $count,
+                            'count0' => 1,
                             'card1' => $card1,
                             'card2' => $card2,
                             'card3' => $card3,
@@ -760,6 +786,7 @@ function Condenser($id, $new)
                             'ville2' => $ville2,
                             'ville3' => $ville3,
                             'playerid' => $id,
+                            'maxtrip' => $maxtrip,
                                 
                             )
                             );
@@ -889,10 +916,12 @@ function Condenser($id, $new)
                     }
 
                     
+                    $maxtrip = max(letsgotojapan::$instance->CountTrip($id));
 
                         letsgotojapan::$instance->notifyAllPlayers('condenseravecmodif','', array(
                             'jour' =>  $jour,
                             'count' => $count,
+                            'count0' => 1,
                             'card1' => $card1,
                             'card2' => $card2,
                             'card3' => $card3,
@@ -900,6 +929,7 @@ function Condenser($id, $new)
                             'ville2' => $ville2,
                             'ville3' => $ville3,
                             'playerid' => $id,
+                            'maxtrip' => $maxtrip,
                                 
                             )
                             );

@@ -559,6 +559,8 @@ function (dojo, declare) {
 
                     var global = document.getElementById('global');
                     global.style.height = "2270px"; 
+                    var agent = document.querySelector('.playerview_agent');
+                    agent.style.top = "1150px"; 
 
 
                     for( var jour in gamedatas.tokenjour)
@@ -804,9 +806,58 @@ function (dojo, declare) {
 
                 }
 
+                if (gamedatas.turn < 14)
+                {
 
 
+                if ((gamedatas.maxtrip[0] == 1)&&((gamedatas.phase[0] == "SoloPhase1Step2")||(gamedatas.phase[0] == "SoloPhase2Step2")))
+                {
 
+                    var agent = document.querySelector('.playerview_agent');
+                        agent.style.top = "1254px";
+
+                }
+
+                if ((gamedatas.maxtrip[0] == 1)&&(gamedatas.phase[0] != "SoloPhase1Step2")&&(gamedatas.phase[0] != "SoloPhase2Step2"))
+                    {
+    
+                        var agent = document.querySelector('.playerview_agent');
+                            agent.style.top = "1254px";
+    
+                    }
+
+                if ((gamedatas.maxtrip[0] == 2)&&(gamedatas.phase[0] != "SoloPhase1Step2")&&(gamedatas.phase[0] != "SoloPhase2Step2"))
+                    {
+    
+                        var agent = document.querySelector('.playerview_agent');
+                            agent.style.top = "1202px";
+    
+                    }
+
+                if ((gamedatas.maxtrip[0] == 2)&&((gamedatas.phase[0] == "SoloPhase1Step2")||(gamedatas.phase[0] == "SoloPhase2Step2")))
+                    {
+    
+                        var agent = document.querySelector('.playerview_agent');
+                            agent.style.top = "1358px";
+    
+                    }
+
+                if ((gamedatas.maxtrip[0] == 3)&&(gamedatas.phase[0] != "SoloPhase1Step2")&&(gamedatas.phase[0] != "SoloPhase2Step2"))
+                    {
+    
+                        var agent = document.querySelector('.playerview_agent');
+                            agent.style.top = "1254px";
+    
+                    }
+
+                if ((gamedatas.maxtrip[0] == 3)&&((gamedatas.phase[0] == "SoloPhase1Step2")||(gamedatas.phase[0] == "SoloPhase2Step2")))
+                    {
+    
+                        var agent = document.querySelector('.playerview_agent');
+                            agent.style.top = "1358px";
+    
+                    }
+                }
 
 
 
@@ -2382,7 +2433,7 @@ function (dojo, declare) {
 
                     var playerviews = document.querySelectorAll('.playerview');
                     var global = document.getElementById("global");
-                    const element4 = document.querySelector('.playerview_agent');
+                    var element4 = document.querySelector('.playerview_agent');
 
                     element4.style.top = "850px";
                     
@@ -3815,6 +3866,34 @@ function (dojo, declare) {
 
             notif_deployer: function( notif )
             {
+                if(this.gamedatas.countplayers == 1)
+                {
+                    if (notif.args.count == 1)
+                    {
+
+                        var agent = document.querySelector('.playerview_agent');
+                        
+                        var currentTop = agent.offsetTop;
+                        
+                        if (currentTop != 1368)  // marge de 10 de plus
+                        {
+                            agent.style.top = "1254px";
+                        }
+
+                    }
+
+                    if (notif.args.count == 2)
+                        {
+    
+                            var agent = document.querySelector('.playerview_agent');
+                            agent.style.top = "1358px";
+    
+                        }
+
+
+                }
+
+                
                 this.attachToNewParentNoDestroy( 'card_'+notif.args.ville1+'_'+notif.args.card1, 'cardposition_'+notif.args.jour+'_2_'+notif.args.playerid );
                 this.slideToObject( 'card_'+notif.args.ville1+'_'+notif.args.card1 , 'cardposition_'+notif.args.jour+'_2_'+notif.args.playerid ).play();
                 var element1 = document.getElementById('cardposition_'+notif.args.jour+'_2_'+notif.args.playerid);
@@ -3830,6 +3909,7 @@ function (dojo, declare) {
 
                     
                 }
+                
                
 
             },
@@ -3860,6 +3940,12 @@ function (dojo, declare) {
 
             notif_condensersansmodif: function( notif )
             {
+
+                
+
+                
+
+
                 this.attachToNewParentNoDestroy( 'card_'+notif.args.ville1+'_'+notif.args.card1, 'cardposition_'+notif.args.jour+'_1_'+notif.args.playerid );
                 this.slideToObject( 'card_'+notif.args.ville1+'_'+notif.args.card1 , 'cardposition_'+notif.args.jour+'_1_'+notif.args.playerid ).play();
                 
@@ -3917,6 +4003,41 @@ function (dojo, declare) {
                         element6.style.zIndex = "0";
     
                     }
+
+                    if(this.gamedatas.countplayers == 1)
+                        {
+                            setTimeout(() => 
+                                {
+                                
+                                
+                            if ((notif.args.count == 1)||(notif.args.maxtrip == 1))
+                            {
+        
+                                var agent = document.querySelector('.playerview_agent');
+                                agent.style.top = "1150px";
+        
+                            }
+        
+                            if ((notif.args.count == 2)||(notif.args.maxtrip == 2))
+                                {
+            
+                                    var agent = document.querySelector('.playerview_agent');
+                                    agent.style.top = "1202px";
+            
+                                }
+    
+                            if ((notif.args.count == 3)||(notif.args.maxtrip == 3))
+                                {
+            
+                                    var agent = document.querySelector('.playerview_agent');
+                                    agent.style.top = "1254px";
+            
+                                }
+
+                            }, "500");
+        
+        
+                        }
                
 
             },
@@ -3993,6 +4114,75 @@ function (dojo, declare) {
                         element6.style.zIndex = "0";
     
                     }
+
+                    if(this.gamedatas.countplayers == 1)
+                        {
+                           
+
+
+
+                                
+                            if (((notif.args.count == 1)||(notif.args.count0 == 1))&&(notif.args.maxtrip == 1))
+                            {
+                                
+        
+                                var agent = document.querySelector('.playerview_agent');
+                                agent.style.top = "1150px";
+        
+                            }
+
+                            if (((notif.args.count == 1)||(notif.args.count0 == 1))&&(notif.args.maxtrip == 2))
+                                {
+                                   
+            
+                                    var agent = document.querySelector('.playerview_agent');
+                                    agent.style.top = "1202px";
+            
+                                }
+
+                            if (((notif.args.count == 1)||(notif.args.count0 == 1))&&(notif.args.maxtrip == 3))
+                                {
+                                    
+                                    var agent = document.querySelector('.playerview_agent');
+                                    agent.style.top = "1254px";
+            
+                                }
+
+
+                                
+                             if ((notif.args.count == 2)&&(notif.args.maxtrip == 2))
+                                    {
+                                        
+                                        var agent = document.querySelector('.playerview_agent');
+                                        agent.style.top = "1202px";
+                
+                                    }
+    
+                            if ((notif.args.count == 2)&&(notif.args.maxtrip == 3))
+                                    {
+                                        
+                
+                                        var agent = document.querySelector('.playerview_agent');
+                                        agent.style.top = "1254px";
+                
+                                    }
+
+                            if ((notif.args.count == 3)&&(notif.args.maxtrip == 3))
+                                {
+                                    
+            
+                                    var agent = document.querySelector('.playerview_agent');
+                                    agent.style.top = "1254px";
+            
+                                }
+
+        
+                            
+
+                            
+        
+        
+                        }        
                
 
             },
