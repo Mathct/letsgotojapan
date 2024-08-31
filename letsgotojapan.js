@@ -606,8 +606,8 @@ function (dojo, declare) {
                             this.addMask();
                             
         
-                            dojo.query("#mask_turn").addClass("masque");
-                            dojo.query("#mask_hand").addClass("masque");
+                            dojo.query("#mask_turn").addClass("hidden");
+                            dojo.query("#mask_hand").addClass("hidden");
         
         
         
@@ -621,8 +621,8 @@ function (dojo, declare) {
                             this.addMask();
                             
         
-                            dojo.query("#mask_turn").addClass("masque");
-                            dojo.query("#mask_hand").addClass("masque");
+                            dojo.query("#mask_turn").addClass("hidden");
+                            dojo.query("#mask_hand").addClass("hidden");
                             dojo.query("#mask_score").removeClass("hidden");
                             dojo.query(".scorepad").removeClass("hidden");
 
@@ -647,8 +647,8 @@ function (dojo, declare) {
                             this.addMask();
                             
         
-                            dojo.query("#mask_turn").addClass("masque");
-                            dojo.query("#mask_hand").addClass("masque");
+                            dojo.query("#mask_turn").addClass("hidden");
+                            dojo.query("#mask_hand").addClass("hidden");
                             dojo.query(".scorepad").removeClass("hidden");
 
                             var playerview = document.querySelector('.playerview');
@@ -804,7 +804,7 @@ function (dojo, declare) {
 
 
 
-                }
+                
 
                 if (gamedatas.turn < 14)
                 {
@@ -822,7 +822,7 @@ function (dojo, declare) {
                     {
     
                         var agent = document.querySelector('.playerview_agent');
-                            agent.style.top = "1254px";
+                            agent.style.top = "1150px";
     
                     }
 
@@ -857,9 +857,38 @@ function (dojo, declare) {
                             agent.style.top = "1358px";
     
                     }
+                
+
+                
+                if ((gamedatas.maxtrip[0] == 3)&&(gamedatas.phase[0] == "SoloExtraWalkStep2"))
+                    {
+    
+                        var agent = document.querySelector('.playerview_agent');
+                            agent.style.top = "1470px";
+    
+                    }
+
+                if ((gamedatas.maxtrip[0] == 4)&&(gamedatas.phase[0] != "SoloPhase1Step2")&&(gamedatas.phase[0] != "SoloPhase2Step2"))
+                    {
+    
+                        var agent = document.querySelector('.playerview_agent');
+                            agent.style.top = "1315px";
+                            console.warn('test1')
+    
+                    }
+                
+                if ((gamedatas.maxtrip[0] == 4)&&((gamedatas.phase[0] == "SoloPhase1Step2")||(gamedatas.phase[0] == "SoloPhase2Step2")))
+                    {
+    
+                        var agent = document.querySelector('.playerview_agent');
+                            agent.style.top = "1358px";
+    
+                    }
+
                 }
+                
 
-
+            }
 
                 ////////////////////// FIN DE MODE SOLO ////////////////////
 
@@ -2436,12 +2465,15 @@ function (dojo, declare) {
                     var element4 = document.querySelector('.playerview_agent');
 
                     element4.style.top = "850px";
+
+                    
                     
                     
                     dojo.query(".turn_board").addClass("hidden");
                     dojo.query(".playerhand").addClass("hidden");
                     dojo.query(".playerhandtitle").addClass("hidden");
 
+                    
                     playerviews.forEach(function(playerview) {
                        
                         
@@ -3142,7 +3174,7 @@ function (dojo, declare) {
                         {
                         element2.style.top = "162px";
                         element3.style.top = "190px";
-                        element4.style.top = "1470px";
+                        element4.style.top = "1150px";
     
     
                         playerviews.forEach(function(playerview) {
@@ -3155,9 +3187,9 @@ function (dojo, declare) {
                         else
                         {
     
-                            element2.style.top = "1170px";
-                            element3.style.top = "1200px";
-                            element4.style.top = "1470px";
+                            element2.style.top = "850px";
+                            element3.style.top = "880px";
+                            element4.style.top = "1150px";
                         
                             playerviews.forEach(function(playerview) {
                             
@@ -3177,9 +3209,9 @@ function (dojo, declare) {
                         if (element3 && !element3.classList.contains('switch')) 
                         {
                         
-                        element2.style.top = "12px";
-                        element3.style.top = "40px";
-                        element4.style.top = "1320px";
+                            element2.style.top = "12px";
+                            element3.style.top = "40px";
+                            element4.style.top = "1000px";
                         
                             playerviews.forEach(function(playerview) {
                             
@@ -3191,10 +3223,10 @@ function (dojo, declare) {
                         else
                         {
     
-                            element2.style.top = "1020px";
-                            element3.style.top = "1050px";
-                            element4.style.top = "1320px";
-                        
+                            element2.style.top = "700px";
+                            element3.style.top = "730px";
+                            element4.style.top = "1000px";
+                            
                             playerviews.forEach(function(playerview) {
                             
                             
@@ -3301,6 +3333,43 @@ function (dojo, declare) {
 
                 if (this.gamedatas.countplayers[0]==1)
                 {
+                    // compteur de cart et selectable par colone
+
+                    var playerid = this.getCurrentPlayerId();
+                    const totalCounts = [0, 0, 0, 0, 0, 0];
+
+                    for (let x = 1; x <= 6; x++) {
+                        for (let y = 1; y <= 7; y++) {
+                            const container = document.getElementById(`cardposition_${x}_${y}_${playerid}`);
+                            if (container) {
+                                // Vérifier si le conteneur a la classe 'selectable'
+                                if (container.classList.contains('selectable')) {
+                                    totalCounts[x - 1]++;
+                                }
+                                // Vérifier si le conteneur contient un élément avec la classe 'card'
+                                if (container.querySelector('.card')) {
+                                    totalCounts[x - 1]++;
+                                }
+
+                                if (container.querySelector('.cardverso')) {
+                                    totalCounts[x - 1]++;
+                                }
+                            }
+                        }
+                    }
+
+                    var maxCount = Math.max(...totalCounts);
+                    if (maxCount == 0)
+                    {
+                        var maxCount =1;
+                    }
+
+                    
+                   
+                    
+
+
+
                     
                     const element = document.querySelector('.turn_board');
                     const element2 = document.querySelector('.playerhandtitle');
@@ -3316,8 +3385,13 @@ function (dojo, declare) {
                         {
                         dojo.query(".playerhand").removeClass("switch");
     
+                        
+                        /*element2.style.top = (850 + (maxCount-1)*52)+"px";
+                        element3.style.top = (880 + (maxCount-1)*52)+"px";*/
+                        element4.style.top = (1150 + (maxCount-1)*52)+"px";
                         element2.style.top = "162px";
                         element3.style.top = "190px";
+                        //element4.style.top = "1150px";
     
     
                         playerviews.forEach(function(playerview) {
@@ -3334,6 +3408,7 @@ function (dojo, declare) {
     
                             element2.style.top = "12px";
                             element3.style.top = "40px";
+                            element4.style.top = "1000px";
         
         
                             playerviews.forEach(function(playerview) {
@@ -3355,8 +3430,22 @@ function (dojo, declare) {
                         {
                         dojo.query(".playerhand").addClass("switch");
                         
-                        element2.style.top = "1170px";
-                        element3.style.top = "1200px";
+                        if (maxCount!=4)
+                        {
+                        element2.style.top = (850 + (maxCount-1)*52)+"px";
+                        element3.style.top = (880 + (maxCount-1)*52)+"px";
+                        element4.style.top = (1150 + (maxCount-1)*52)+"px";
+                        }
+
+                        if (maxCount==4)
+                        {
+                        element2.style.top = (850 + 9 + (maxCount-1)*52)+"px"; //+9 pour 61 au lieu de 52
+                        element3.style.top = (880 + 9+(maxCount-1)*52)+"px";
+                        element4.style.top = (1150 + 9+(maxCount-1)*52)+"px";
+                        }
+                        //element2.style.top = "850px";
+                        //element3.style.top = "880px";
+                        //element4.style.top = "1150px";
                         
                             playerviews.forEach(function(playerview) {
                             
@@ -3370,8 +3459,9 @@ function (dojo, declare) {
 
                             dojo.query(".playerhand").addClass("switch");
                         
-                            element2.style.top = "1020px";
-                            element3.style.top = "1050px";
+                            element2.style.top = "700px";
+                            element3.style.top = "730px";
+                            element4.style.top = "1000px";
                         
                             playerviews.forEach(function(playerview) {
                             
@@ -3685,7 +3775,7 @@ function (dojo, declare) {
                 if ((notif.args.playerid == this.getCurrentPlayerId())||(this.gamedatas.countplayers == 1))
                 {
                     this.attachToNewParentNoDestroy( notif.args.mobile, notif.args.parent );
-                    this.slideToObject( notif.args.mobile, notif.args.parent ).play();
+                    this.slideToObject( notif.args.mobile, notif.args.parent, 400 ).play();
 
                                         
                 }
@@ -3875,10 +3965,23 @@ function (dojo, declare) {
                         
                         var currentTop = agent.offsetTop;
                         
-                        if (currentTop != 1368)  // marge de 10 de plus
+                        if ((currentTop != 1368)&&(currentTop != 1325)) // marge de 10 de plus seulement pour l'agent (premier chiffre pour le top 3 deployé et l'autre top 4 non deployé)
                         {
                             agent.style.top = "1254px";
                         }
+
+                        const element2 = document.querySelector('.playerhandtitle');
+                        const element3 = document.querySelector('.playerhand');
+                        var currentTop2 = element3.offsetTop;
+                        if (element3 && element3.classList.contains('switch'))
+                        {
+                            if ((currentTop2 != 1088)&&(currentTop2 != 1045)) 
+                            {
+                                element2.style.top = "954px";
+                                element3.style.top = "984px";
+                            }
+
+                        } 
 
                     }
 
@@ -3887,6 +3990,17 @@ function (dojo, declare) {
     
                             var agent = document.querySelector('.playerview_agent');
                             agent.style.top = "1358px";
+
+                            const element2 = document.querySelector('.playerhandtitle');
+                            const element3 = document.querySelector('.playerhand');
+                       
+                            if (element3 && element3.classList.contains('switch'))
+                            {
+                                
+                                    element2.style.top = "1058px";
+                                    element3.style.top = "1088px";
+                                
+                            } 
     
                         }
 
@@ -3933,6 +4047,25 @@ function (dojo, declare) {
                 element3.style.zIndex = "10";
 
 
+                if(this.gamedatas.countplayers == 1)
+                    {
+                            var agent = document.querySelector('.playerview_agent');
+                            agent.style.top = "1470px";
+
+                            const element2 = document.querySelector('.playerhandtitle');
+                                const element3 = document.querySelector('.playerhand');
+
+                            if (element3 && element3.classList.contains('switch'))
+                                {
+                                    
+                                        element2.style.top = "1170px";   //+61
+                                        element3.style.top = "1200px";
+                                    
+                                }
+                            
+                             
+    
+                    }
                
                
 
@@ -4008,13 +4141,25 @@ function (dojo, declare) {
                         {
                             setTimeout(() => 
                                 {
-                                
+                            
+                                const element2 = document.querySelector('.playerhandtitle');
+                                const element3 = document.querySelector('.playerhand');
                                 
                             if ((notif.args.count == 1)||(notif.args.maxtrip == 1))
                             {
         
                                 var agent = document.querySelector('.playerview_agent');
                                 agent.style.top = "1150px";
+
+                                
+                       
+                                if (element3 && element3.classList.contains('switch'))
+                                {
+                                    
+                                        element2.style.top = "850px";
+                                        element3.style.top = "880px";
+                                    
+                                } 
         
                             }
         
@@ -4023,6 +4168,14 @@ function (dojo, declare) {
             
                                     var agent = document.querySelector('.playerview_agent');
                                     agent.style.top = "1202px";
+
+                                    if (element3 && element3.classList.contains('switch'))
+                                        {
+                                            
+                                                element2.style.top = "902px";
+                                                element3.style.top = "932px";
+                                            
+                                        } 
             
                                 }
     
@@ -4031,8 +4184,32 @@ function (dojo, declare) {
             
                                     var agent = document.querySelector('.playerview_agent');
                                     agent.style.top = "1254px";
+
+                                    if (element3 && element3.classList.contains('switch'))
+                                        {
+                                            
+                                                element2.style.top = "954px";
+                                                element3.style.top = "986px";
+                                            
+                                        } 
             
                                 }
+
+                            if(notif.args.maxtrip == 4)
+                            {
+                                var agent = document.querySelector('.playerview_agent');
+                                agent.style.top = "1315px";
+                                
+
+                                if (element3 && element3.classList.contains('switch'))
+                                    {
+                                        
+                                            element2.style.top = "1015px";   //+61 au lieu de +52
+                                            element3.style.top = "1045px";
+                                        
+                                    }
+
+                            }
 
                             }, "500");
         
@@ -4118,7 +4295,8 @@ function (dojo, declare) {
                     if(this.gamedatas.countplayers == 1)
                         {
                            
-
+                            const element2 = document.querySelector('.playerhandtitle');
+                            const element3 = document.querySelector('.playerhand');
 
 
                                 
@@ -4128,6 +4306,14 @@ function (dojo, declare) {
         
                                 var agent = document.querySelector('.playerview_agent');
                                 agent.style.top = "1150px";
+
+                                if (element3 && element3.classList.contains('switch'))
+                                    {
+                                        
+                                            element2.style.top = "850px";
+                                            element3.style.top = "880px";
+                                        
+                                    } 
         
                             }
 
@@ -4137,6 +4323,14 @@ function (dojo, declare) {
             
                                     var agent = document.querySelector('.playerview_agent');
                                     agent.style.top = "1202px";
+
+                                    if (element3 && element3.classList.contains('switch'))
+                                        {
+                                            
+                                                element2.style.top = "902px";
+                                                element3.style.top = "932px";
+                                            
+                                        } 
             
                                 }
 
@@ -4145,6 +4339,13 @@ function (dojo, declare) {
                                     
                                     var agent = document.querySelector('.playerview_agent');
                                     agent.style.top = "1254px";
+                                    if (element3 && element3.classList.contains('switch'))
+                                        {
+                                            
+                                                element2.style.top = "954px";
+                                                element3.style.top = "986px";
+                                            
+                                        } 
             
                                 }
 
@@ -4155,6 +4356,14 @@ function (dojo, declare) {
                                         
                                         var agent = document.querySelector('.playerview_agent');
                                         agent.style.top = "1202px";
+
+                                        if (element3 && element3.classList.contains('switch'))
+                                            {
+                                                
+                                                    element2.style.top = "902px";
+                                                    element3.style.top = "932px";
+                                                
+                                            } 
                 
                                     }
     
@@ -4164,6 +4373,13 @@ function (dojo, declare) {
                 
                                         var agent = document.querySelector('.playerview_agent');
                                         agent.style.top = "1254px";
+                                        if (element3 && element3.classList.contains('switch'))
+                                            {
+                                                
+                                                    element2.style.top = "954px";
+                                                    element3.style.top = "986px";
+                                                
+                                            } 
                 
                                     }
 
@@ -4173,8 +4389,33 @@ function (dojo, declare) {
             
                                     var agent = document.querySelector('.playerview_agent');
                                     agent.style.top = "1254px";
+                                    if (element3 && element3.classList.contains('switch'))
+                                        {
+                                            
+                                                element2.style.top = "954px";
+                                                element3.style.top = "986px";
+                                            
+                                        } 
             
                                 }
+
+                            if (notif.args.maxtrip == 4)
+                                {
+                                    
+            
+                                    var agent = document.querySelector('.playerview_agent');
+                                    agent.style.top = "1315px";
+                                    
+                                    if (element3 && element3.classList.contains('switch'))
+                                        {
+                                            
+                                                element2.style.top = "1015px";   //+61
+                                                element3.style.top = "1045px";
+                                            
+                                        }
+            
+                                }
+    
 
         
                             
@@ -4217,7 +4458,27 @@ function (dojo, declare) {
                     element7.style.zIndex = "0";
     
                     
-               
+                    if(this.gamedatas.countplayers == 1)
+                        {
+                                var agent = document.querySelector('.playerview_agent');
+                                agent.style.top = "1315px";
+                                
+
+                                const element2 = document.querySelector('.playerhandtitle');
+                                const element3 = document.querySelector('.playerhand');
+
+                                if (element3 && element3.classList.contains('switch'))
+                                    {
+                                        
+                                            element2.style.top = "1015px";   //+61
+                                            element3.style.top = "1045px";
+                                        
+                                    }
+
+                                
+                                 
+        
+                        }
 
             },
 
@@ -4301,7 +4562,7 @@ function (dojo, declare) {
                 if(notif.args.type == 'r')
                 {
                     this.attachToNewParentNoDestroy( 'marqueur_r_'+notif.args.player, 'marqueurposition_'+notif.args.score+'_1_'+notif.args.player);
-                    this.slideToObject( 'marqueur_r_'+notif.args.player, 'marqueurposition_'+notif.args.score+'_1_'+notif.args.player).play();
+                    this.slideToObject( 'marqueur_r_'+notif.args.player, 'marqueurposition_'+notif.args.score+'_1_'+notif.args.player,400).play();
 
                     if(notif.args.plus == 1)
                         {
@@ -4312,7 +4573,7 @@ function (dojo, declare) {
                 if(notif.args.type == 'g')
                     {
                         this.attachToNewParentNoDestroy( 'marqueur_g_'+notif.args.player, 'marqueurposition_'+notif.args.score+'_2_'+notif.args.player);
-                        this.slideToObject( 'marqueur_g_'+notif.args.player, 'marqueurposition_'+notif.args.score+'_2_'+notif.args.player).play();
+                        this.slideToObject( 'marqueur_g_'+notif.args.player, 'marqueurposition_'+notif.args.score+'_2_'+notif.args.player,400).play();
     
                         if(notif.args.plus == 1)
                             {
@@ -4323,7 +4584,7 @@ function (dojo, declare) {
                 if(notif.args.type == 'p')
                     {
                         this.attachToNewParentNoDestroy( 'marqueur_p_'+notif.args.player, 'marqueurposition_'+notif.args.score+'_3_'+notif.args.player);
-                        this.slideToObject( 'marqueur_p_'+notif.args.player, 'marqueurposition_'+notif.args.score+'_3_'+notif.args.player).play();
+                        this.slideToObject( 'marqueur_p_'+notif.args.player, 'marqueurposition_'+notif.args.score+'_3_'+notif.args.player,400).play();
     
                         if(notif.args.plus == 1)
                             {
@@ -4334,7 +4595,7 @@ function (dojo, declare) {
                 if(notif.args.type == 'y')
                     {
                         this.attachToNewParentNoDestroy( 'marqueur_y_'+notif.args.player, 'marqueurposition_'+notif.args.score+'_4_'+notif.args.player);
-                        this.slideToObject( 'marqueur_y_'+notif.args.player, 'marqueurposition_'+notif.args.score+'_4_'+notif.args.player).play();
+                        this.slideToObject( 'marqueur_y_'+notif.args.player, 'marqueurposition_'+notif.args.score+'_4_'+notif.args.player,400).play();
                         if(notif.args.plus == 1)
                         {
                             $('marqueur_y_'+notif.args.player).innerHTML = '+12';
@@ -4345,7 +4606,7 @@ function (dojo, declare) {
                 if(notif.args.type == 'b')
                     {
                         this.attachToNewParentNoDestroy( 'marqueur_b_'+notif.args.player, 'marqueurposition_'+notif.args.score+'_5_'+notif.args.player);
-                        this.slideToObject( 'marqueur_b_'+notif.args.player, 'marqueurposition_'+notif.args.score+'_5_'+notif.args.player).play();
+                        this.slideToObject( 'marqueur_b_'+notif.args.player, 'marqueurposition_'+notif.args.score+'_5_'+notif.args.player,400).play();
     
                         if(notif.args.plus == 1)
                             {
