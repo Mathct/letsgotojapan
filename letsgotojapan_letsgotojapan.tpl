@@ -489,7 +489,7 @@
 
 <script type="text/javascript">
 
-var jstpl_titre='<div id="titre"></div>';
+var jstpl_titre='<div id="titre" style="display: flex; align-items: center; flex-direction: column; justify-content: center;"><div id="title"></div></div>';
 var jstpl_eye='<div id="eye_${id}" class="eye" style="display: inline-block;"></div>';
 var jstpl_tokenjour='<div id="tokenjour_${jour}" class="tokenjour" style="background-position-x: ${x}%;"></div>';
 var jstpl_smile='<div id="smile_${id}" class="smile" style="background-color: #${color}"></div>';
