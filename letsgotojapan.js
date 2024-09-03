@@ -944,14 +944,40 @@ function (dojo, declare) {
                 dojo.query(".selectable3discard").removeClass("selectable3discard"); 
                 dojo.query(".selected3discard").removeClass("selected3discard"); 
                 dojo.query(".noanimation").removeClass("noanimation"); 
+
+                dojo.query(".selectablevide").removeClass("selectablevide"); // A VIRER
                 
                 switch( stateName )
                 {
                     case 'playerTurn':
                         this.args = args.args;
+
+                        //// OTHER PLAYER "SELECTABLEVIDE" A SUPPRIMER PLUS TARD
+                        for (var otherplayer in this.args)
+                            {
+                                
+                                if (otherplayer != this.getCurrentPlayerId())
+                                {
+                                    
+                                    for (var position in this.args[otherplayer][0].selectable)
+                                    {
+                                        if(this.args[otherplayer][0].selectable[position].startsWith("cardposition"))
+                                        {
+                                         
+                                        dojo.query("#"+this.args[otherplayer][0].selectable[position]).addClass("selectablevide");
+                                        }
+                                    }
+                                    
+                                }
+                                
+                            }
+
+                        //// FIN OTHER PLAYER A SUPPRIMER PLUS TARD
                         
                         if ((this.getCurrentPlayerId())&&(this.args[this.getCurrentPlayerId()])&&(this.isCurrentPlayerActive()))
                         {
+
+                            
                             if (this.args[this.getCurrentPlayerId()][0].selectable)
                             {
                             for( var sid in this.args[this.getCurrentPlayerId()][0].selectable)
@@ -1532,7 +1558,15 @@ function (dojo, declare) {
                                                 
                         } ) , location+'_'+player );
 
-                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_tokyo1tool',{x: (card-1)*(-100), y: 0})+'</div></div>';
+                        
+                        var name = _(this.gamedatas.tokyocards[card].name);
+                        name = name.split(' ').map(word => {
+                            return word.charAt(0).toUpperCase() + word.slice(1);
+                        }).join(' ');
+                        var text1 = _(this.gamedatas.tokyocards[card].text1);
+                        var text2 = _(this.gamedatas.tokyocards[card].text2);
+                        var text3 = _(this.gamedatas.tokyocards[card].text3);
+                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_tokyo1tool',{x: (card-1)*(-100), y: 0, name: name, text1: text1, text2: text2, text3: text3})+'</div></div>';
                         this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
 
                     }
@@ -1550,7 +1584,14 @@ function (dojo, declare) {
                                                 
                         } ) , location+'_'+player );
 
-                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_tokyo1tool',{x: (card-11)*(-100), y: -100})+'</div></div>';
+                        var name = _(this.gamedatas.tokyocards[card].name);
+                        name = name.split(' ').map(word => {
+                            return word.charAt(0).toUpperCase() + word.slice(1);
+                        }).join(' ');
+                        var text1 = _(this.gamedatas.tokyocards[card].text1);
+                        var text2 = _(this.gamedatas.tokyocards[card].text2);
+                        var text3 = _(this.gamedatas.tokyocards[card].text3);
+                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_tokyo1tool',{x: (card-11)*(-100), y: -100, name: name, text1: text1, text2: text2, text3: text3})+'</div></div>';
                         this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
                     }
@@ -1568,7 +1609,14 @@ function (dojo, declare) {
                                                 
                         } ) , location+'_'+player );
 
-                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_tokyo1tool',{x: (card-21)*(-100), y: -200})+'</div></div>';
+                        var name = _(this.gamedatas.tokyocards[card].name);
+                        name = name.split(' ').map(word => {
+                            return word.charAt(0).toUpperCase() + word.slice(1);
+                        }).join(' ');
+                        var text1 = _(this.gamedatas.tokyocards[card].text1);
+                        var text2 = _(this.gamedatas.tokyocards[card].text2);
+                        var text3 = _(this.gamedatas.tokyocards[card].text3);
+                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_tokyo1tool',{x: (card-21)*(-100), y: -200, name: name, text1: text1, text2: text2, text3: text3})+'</div></div>';
                         this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
                     }
@@ -1585,8 +1633,15 @@ function (dojo, declare) {
                             ville: ville,
                                                 
                         } ) , location+'_'+player );
-
-                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_tokyo1tool',{x: (card-31)*(-100), y: -300})+'</div></div>';
+                        
+                        var name = _(this.gamedatas.tokyocards[card].name);
+                        name = name.split(' ').map(word => {
+                            return word.charAt(0).toUpperCase() + word.slice(1);
+                        }).join(' ');
+                        var text1 = _(this.gamedatas.tokyocards[card].text1);
+                        var text2 = _(this.gamedatas.tokyocards[card].text2);
+                        var text3 = _(this.gamedatas.tokyocards[card].text3);
+                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_tokyo1tool',{x: (card-31)*(-100), y: -300, name: name, text1: text1, text2: text2, text3: text3})+'</div></div>';
                         this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
                     }
@@ -1856,7 +1911,14 @@ function (dojo, declare) {
                                                 
                         } ) , location+'_'+player );
 
-                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_tokyo1tool',{x: (card-1)*(-100), y: 0})+'</div></div>';
+                        var name = _(this.gamedatas.tokyocards[card].name);
+                        name = name.split(' ').map(word => {
+                            return word.charAt(0).toUpperCase() + word.slice(1);
+                        }).join(' ');
+                        var text1 = _(this.gamedatas.tokyocards[card].text1);
+                        var text2 = _(this.gamedatas.tokyocards[card].text2);
+                        var text3 = _(this.gamedatas.tokyocards[card].text3);
+                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_tokyo1tool',{x: (card-1)*(-100), y: 0, name: name, text1: text1, text2: text2, text3: text3})+'</div></div>';
                         this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
 
 
@@ -1875,7 +1937,14 @@ function (dojo, declare) {
                                                 
                         } ) , location+'_'+player );
 
-                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_tokyo1tool',{x: (card-11)*(-100), y: -100})+'</div></div>';
+                        var name = _(this.gamedatas.tokyocards[card].name);
+                        name = name.split(' ').map(word => {
+                            return word.charAt(0).toUpperCase() + word.slice(1);
+                        }).join(' ');
+                        var text1 = _(this.gamedatas.tokyocards[card].text1);
+                        var text2 = _(this.gamedatas.tokyocards[card].text2);
+                        var text3 = _(this.gamedatas.tokyocards[card].text3);
+                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_tokyo1tool',{x: (card-11)*(-100), y: -100, name: name, text1: text1, text2: text2, text3: text3})+'</div></div>';
                         this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
                     }
@@ -1893,7 +1962,14 @@ function (dojo, declare) {
                                                 
                         } ) , location+'_'+player );
 
-                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_tokyo1tool',{x: (card-21)*(-100), y: -200})+'</div></div>';
+                        var name = _(this.gamedatas.tokyocards[card].name);
+                        name = name.split(' ').map(word => {
+                            return word.charAt(0).toUpperCase() + word.slice(1);
+                        }).join(' ');
+                        var text1 = _(this.gamedatas.tokyocards[card].text1);
+                        var text2 = _(this.gamedatas.tokyocards[card].text2);
+                        var text3 = _(this.gamedatas.tokyocards[card].text3);
+                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_tokyo1tool',{x: (card-21)*(-100), y: -200, name: name, text1: text1, text2: text2, text3: text3})+'</div></div>';
                         this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
                     }
@@ -1911,7 +1987,14 @@ function (dojo, declare) {
                                                 
                         } ) , location+'_'+player );
 
-                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_tokyo1tool',{x: (card-31)*(-100), y: -300})+'</div></div>';
+                        var name = _(this.gamedatas.tokyocards[card].name);
+                        name = name.split(' ').map(word => {
+                            return word.charAt(0).toUpperCase() + word.slice(1);
+                        }).join(' ');
+                        var text1 = _(this.gamedatas.tokyocards[card].text1);
+                        var text2 = _(this.gamedatas.tokyocards[card].text2);
+                        var text3 = _(this.gamedatas.tokyocards[card].text3);
+                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_tokyo1tool',{x: (card-31)*(-100), y: -300, name: name, text1: text1, text2: text2, text3: text3})+'</div></div>';
                         this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
                     }
@@ -2721,6 +2804,49 @@ function (dojo, declare) {
 
                             dojo.query("#"+idsSansMasque[0]).addClass("masque");
                             dojo.query("#playerview_"+this.getCurrentPlayerId()).removeClass("masque");
+
+                            const element2 = document.querySelector('.playerhandtitle');
+                            const element3 = document.querySelector('.playerhand');
+                            if (element3 && element3.classList.contains('switch')) 
+                            {
+                                var dom = "playerview_"+this.getCurrentPlayerId();
+                                var split = dom.split("_");
+                                var playerid = split[1]
+
+                                const totalCounts = [0, 0, 0, 0, 0, 0];
+
+                                for (let x = 1; x <= 6; x++) {
+                                    for (let y = 1; y <= 7; y++) {
+                                        const container = document.getElementById(`cardposition_${x}_${y}_${playerid}`);
+                                        if (container) {
+                                            // Vérifier si le conteneur a la classe 'selectable'
+                                            if (container.classList.contains('selectable')) {
+                                                totalCounts[x - 1]++;
+                                            }
+                                            // Vérifier si le conteneur contient un élément avec la classe 'card'
+                                            if (container.querySelector('.card')) {
+                                                totalCounts[x - 1]++;
+                                            }
+
+                                            if (container.querySelector('.cardverso')) {
+                                                totalCounts[x - 1]++;
+                                            }
+                                        }
+                                    }
+                                }
+
+                                var maxCount = Math.max(...totalCounts);
+                                if (maxCount == 0)
+                                {
+                                    var maxCount =1;
+                                }
+
+                                element2.style.top = (850 + (maxCount-1)*53)+"px";
+                                element3.style.top = (880 + (maxCount-1)*53)+"px";
+                            
+                            }
+
+
                     }
 
 
@@ -2799,12 +2925,103 @@ function (dojo, declare) {
                     dojo.query("#"+variable).addClass("masque");
                     dojo.query("#"+idsAll[index+1]).removeClass("masque");
 
+                    const element2 = document.querySelector('.playerhandtitle');
+                    const element3 = document.querySelector('.playerhand');
+                    if (element3 && element3.classList.contains('switch')) 
+                    {
+                        var split = idsAll[index+1].split("_");
+                        var playerid = split[1]
+
+                        const totalCounts = [0, 0, 0, 0, 0, 0];
+
+                        for (let x = 1; x <= 6; x++) {
+                            for (let y = 1; y <= 7; y++) {
+                                const container = document.getElementById(`cardposition_${x}_${y}_${playerid}`);
+                                if (container) {
+                                    // Vérifier si le conteneur a la classe 'selectable'
+                                    if (container.classList.contains('selectable')) {
+                                        totalCounts[x - 1]++;
+                                    }
+                                    // Vérifier si le conteneur contient un élément avec la classe 'card'
+                                    if (container.querySelector('.card')) {
+                                        totalCounts[x - 1]++;
+                                    }
+
+                                    if (container.querySelector('.cardverso')) {
+                                        totalCounts[x - 1]++;
+                                    }
+
+                                    if (container.classList.contains('selectablevide')) {    /// ATENTION SANS LE POINT DEVANT LA CLASSE
+                                        totalCounts[x - 1]++;
+                                    }
+                                }
+                            }
+                        }
+
+                        var maxCount = Math.max(...totalCounts);
+                        if (maxCount == 0)
+                        {
+                            var maxCount =1;
+                        }
+
+                        element2.style.top = (850 + (maxCount-1)*53)+"px";
+                        element3.style.top = (880 + (maxCount-1)*53)+"px";
+                    
+                    }
+
                 }
 
                 if(index == (this.gamedatas.countplayers[0]-1))
                 {
                     dojo.query("#"+variable).addClass("masque");
                     dojo.query("#"+idsAll[0]).removeClass("masque");
+
+                    const element2 = document.querySelector('.playerhandtitle');
+                    const element3 = document.querySelector('.playerhand');
+
+                    if (element3 && element3.classList.contains('switch')) 
+                    {
+                        var split = idsAll[0].split("_");
+                        var playerid = split[1]
+
+                        const totalCounts = [0, 0, 0, 0, 0, 0];
+
+                        for (let x = 1; x <= 6; x++) {
+                            for (let y = 1; y <= 7; y++) {
+                                const container = document.getElementById(`cardposition_${x}_${y}_${playerid}`);
+                                if (container) {
+                                    // Vérifier si le conteneur a la classe 'selectable'
+                                    if (container.classList.contains('selectable')) {
+                                        totalCounts[x - 1]++;
+                                    }
+                                    // Vérifier si le conteneur contient un élément avec la classe 'card'
+                                    if (container.querySelector('.card')) {
+                                        totalCounts[x - 1]++;
+                                    }
+
+                                    if (container.querySelector('.cardverso')) {
+                                        totalCounts[x - 1]++;
+                                    }
+
+                                    if (container.classList.contains('selectablevide')) {    /// ATENTION SANS LE POINT DEVANT LA CLASSE
+                                        totalCounts[x - 1]++;
+                                    }
+                                }
+                            }
+                        }
+
+                        var maxCount = Math.max(...totalCounts);
+                        if (maxCount == 0)
+                        {
+                            var maxCount =1;
+                        }
+
+                        
+
+                        element2.style.top = (850 + (maxCount-1)*53)+"px";
+                        element3.style.top = (880 + (maxCount-1)*53)+"px";
+                    
+                    }
 
                 }
     
@@ -2848,12 +3065,101 @@ function (dojo, declare) {
                     dojo.query("#"+variable).addClass("masque");
                     dojo.query("#"+idsAll[index-1]).removeClass("masque");
 
+                    const element2 = document.querySelector('.playerhandtitle');
+                    const element3 = document.querySelector('.playerhand');
+                    if (element3 && element3.classList.contains('switch')) 
+                    {
+                        var split = idsAll[index-1].split("_");
+                        var playerid = split[1]
+
+                        const totalCounts = [0, 0, 0, 0, 0, 0];
+
+                        for (let x = 1; x <= 6; x++) {
+                            for (let y = 1; y <= 7; y++) {
+                                const container = document.getElementById(`cardposition_${x}_${y}_${playerid}`);
+                                if (container) {
+                                    // Vérifier si le conteneur a la classe 'selectable'
+                                    if (container.classList.contains('selectable')) {
+                                        totalCounts[x - 1]++;
+                                    }
+                                    // Vérifier si le conteneur contient un élément avec la classe 'card'
+                                    if (container.querySelector('.card')) {
+                                        totalCounts[x - 1]++;
+                                    }
+
+                                    if (container.querySelector('.cardverso')) {
+                                        totalCounts[x - 1]++;
+                                    }
+
+                                    if (container.classList.contains('selectablevide')) {    /// ATENTION SANS LE POINT DEVANT LA CLASSE
+                                        totalCounts[x - 1]++;
+                                    }
+                                
+                                }
+                            }
+                        }
+
+                        var maxCount = Math.max(...totalCounts);
+                        if (maxCount == 0)
+                        {
+                            var maxCount =1;
+                        }
+
+                        element2.style.top = (850 + (maxCount-1)*53)+"px";
+                        element3.style.top = (880 + (maxCount-1)*53)+"px";
+                    
+                    }
+
                 }
 
                 if(index == 0)
                 {
                     dojo.query("#"+variable).addClass("masque");
                     dojo.query("#"+idsAll[this.gamedatas.countplayers[0]-1]).removeClass("masque");
+
+                    const element2 = document.querySelector('.playerhandtitle');
+                    const element3 = document.querySelector('.playerhand');
+                    if (element3 && element3.classList.contains('switch')) 
+                    {
+                        var split = idsAll[this.gamedatas.countplayers[0]-1].split("_");
+                        var playerid = split[1]
+
+                        const totalCounts = [0, 0, 0, 0, 0, 0];
+
+                        for (let x = 1; x <= 6; x++) {
+                            for (let y = 1; y <= 7; y++) {
+                                const container = document.getElementById(`cardposition_${x}_${y}_${playerid}`);
+                                if (container) {
+                                    // Vérifier si le conteneur a la classe 'selectable'
+                                    if (container.classList.contains('selectable')) {
+                                        totalCounts[x - 1]++;
+                                    }
+                                    // Vérifier si le conteneur contient un élément avec la classe 'card'
+                                    if (container.querySelector('.card')) {
+                                        totalCounts[x - 1]++;
+                                    }
+
+                                    if (container.querySelector('.cardverso')) {
+                                        totalCounts[x - 1]++;
+                                    }
+
+                                    if (container.classList.contains('selectablevide')) {    /// ATENTION SANS LE POINT DEVANT LA CLASSE
+                                        totalCounts[x - 1]++;
+                                    }
+                                }
+                            }
+                        }
+
+                        var maxCount = Math.max(...totalCounts);
+                        if (maxCount == 0)
+                        {
+                            var maxCount =1;
+                        }
+
+                        element2.style.top = (850 + (maxCount-1)*53)+"px";
+                        element3.style.top = (880 + (maxCount-1)*53)+"px";
+                    
+                    }
 
                 }
     
@@ -2880,6 +3186,47 @@ function (dojo, declare) {
 
                     dojo.query("#"+idsSansMasque[0]).addClass("masque");
                     dojo.query("#playerview_"+nombre[0]).removeClass("masque");
+
+                    const element2 = document.querySelector('.playerhandtitle');
+                    const element3 = document.querySelector('.playerhand');
+                    if (element3 && element3.classList.contains('switch')) 
+                    {
+                        var dom = "playerview_"+nombre[0];
+                        var split = dom.split("_");
+                        var playerid = split[1]
+
+                        const totalCounts = [0, 0, 0, 0, 0, 0];
+
+                        for (let x = 1; x <= 6; x++) {
+                            for (let y = 1; y <= 7; y++) {
+                                const container = document.getElementById(`cardposition_${x}_${y}_${playerid}`);
+                                if (container) {
+                                    // Vérifier si le conteneur a la classe 'selectable'
+                                    if (container.classList.contains('selectable')) {
+                                        totalCounts[x - 1]++;
+                                    }
+                                    // Vérifier si le conteneur contient un élément avec la classe 'card'
+                                    if (container.querySelector('.card')) {
+                                        totalCounts[x - 1]++;
+                                    }
+
+                                    if (container.querySelector('.cardverso')) {
+                                        totalCounts[x - 1]++;
+                                    }
+                                }
+                            }
+                        }
+
+                        var maxCount = Math.max(...totalCounts);
+                        if (maxCount == 0)
+                        {
+                            var maxCount =1;
+                        }
+
+                        element2.style.top = (850 + (maxCount-1)*53)+"px";
+                        element3.style.top = (880 + (maxCount-1)*53)+"px";
+                    
+                    }
 
                 
                 
@@ -3300,10 +3647,65 @@ function (dojo, declare) {
                     {
                         if (element && !element.classList.contains('hidden'))
                         {
+
+                            var elements = document.querySelectorAll('[id^="playerview"]:not(.masque)');
+                            var idsSansMasque = [];
+                            elements.forEach(function(element) {
+                                // Obtenez l'ID de chaque élément
+                                var id = element.id;
+                                
+                                // Ajoutez l'ID à la liste
+                                idsSansMasque.push(id);
+                            });
+
+                            var split = idsSansMasque[0].split("_");
+                            var playerid = split[1]
+
+                            const totalCounts = [0, 0, 0, 0, 0, 0];
+
+                            for (let x = 1; x <= 6; x++) {
+                                for (let y = 1; y <= 7; y++) {
+                                    const container = document.getElementById(`cardposition_${x}_${y}_${playerid}`);
+                                    if (container) {
+                                        // Vérifier si le conteneur a la classe 'selectable'
+                                        if (container.classList.contains('selectable')) {   /// ATENTION SANS LE POINT DEVANT LA CLASSE
+                                            totalCounts[x - 1]++;
+                                            
+                                        }
+                                        // Vérifier si le conteneur contient un élément avec la classe 'card'
+                                        if (container.querySelector('.card')) {
+                                            totalCounts[x - 1]++;
+                                        }
+                                        // Vérifier si le conteneur contient un élément avec la classe 'cardverso'
+                                        if (container.querySelector('.cardverso')) {
+                                            totalCounts[x - 1]++;
+                                        }
+                                        // Vérifier si le conteneur a la classe 'selectablevide'
+                                        if (container.classList.contains('selectablevide')) {    /// ATENTION SANS LE POINT DEVANT LA CLASSE
+                                            totalCounts[x - 1]++;
+                                        }
+                                    }
+                                }
+                            }
+
+                            var maxCount = Math.max(...totalCounts);
+                            if (maxCount == 0)
+                            {
+                                var maxCount =1;
+                            }
+
+                            
+                          
+                                    
+                            
+
+
                         dojo.query(".playerhand").addClass("switch");
                         
-                        element2.style.top = "1170px";
-                        element3.style.top = "1200px";
+                        /*element2.style.top = "1170px";
+                        element3.style.top = "1200px";*/
+                        element2.style.top = (850 + (maxCount-1)*53)+"px";
+                        element3.style.top = (880 + (maxCount-1)*53)+"px";
                         
                             playerviews.forEach(function(playerview) {
                             
@@ -3956,57 +4358,128 @@ function (dojo, declare) {
 
             notif_deployer: function( notif )
             {
+
                 if(this.gamedatas.countplayers == 1)
-                {
-                    if (notif.args.count == 1)
                     {
-
-                        var agent = document.querySelector('.playerview_agent');
-                        
-                        var currentTop = agent.offsetTop;
-                        
-                        if ((currentTop != 1368)&&(currentTop != 1325)) // marge de 10 de plus seulement pour l'agent (premier chiffre pour le top 3 deployé et l'autre top 4 non deployé)
-                        {
-                            agent.style.top = "1254px";
-                        }
-
-                        const element2 = document.querySelector('.playerhandtitle');
-                        const element3 = document.querySelector('.playerhand');
-                        var currentTop2 = element3.offsetTop;
-                        if (element3 && element3.classList.contains('switch'))
-                        {
-                            if ((currentTop2 != 1088)&&(currentTop2 != 1045)) 
-                            {
-                                element2.style.top = "954px";
-                                element3.style.top = "984px";
-                            }
-
-                        } 
-
-                    }
-
-                    if (notif.args.count == 2)
+                        if (notif.args.count == 1)
                         {
     
                             var agent = document.querySelector('.playerview_agent');
-                            agent.style.top = "1358px";
-
+                            
+                            var currentTop = agent.offsetTop;
+                            
+                            if ((currentTop != 1368)&&(currentTop != 1325)) // marge de 10 de plus seulement pour l'agent (premier chiffre pour le top 3 deployé et l'autre top 4 non deployé)
+                            {
+                                agent.style.top = "1254px";
+                            }
+    
                             const element2 = document.querySelector('.playerhandtitle');
                             const element3 = document.querySelector('.playerhand');
-                       
+                            var currentTop2 = element3.offsetTop;
                             if (element3 && element3.classList.contains('switch'))
                             {
-                                
-                                    element2.style.top = "1058px";
-                                    element3.style.top = "1088px";
-                                
+                                if ((currentTop2 != 1088)&&(currentTop2 != 1045)) 
+                                {
+                                    element2.style.top = "954px";
+                                    element3.style.top = "984px";
+                                }
+    
                             } 
     
                         }
+    
+                        if (notif.args.count == 2)
+                            {
+        
+                                var agent = document.querySelector('.playerview_agent');
+                                agent.style.top = "1358px";
+    
+                                const element2 = document.querySelector('.playerhandtitle');
+                                const element3 = document.querySelector('.playerhand');
+                           
+                                if (element3 && element3.classList.contains('switch'))
+                                {
+                                    
+                                        element2.style.top = "1058px";
+                                        element3.style.top = "1088px";
+                                    
+                                } 
+        
+                            }
+    
+    
+                    }
 
-
-                }
-
+                if(this.gamedatas.countplayers > 1)
+                    {
+    
+                    var playerhandtitle = document.querySelector('.playerhandtitle');
+                    var playerhand = document.querySelector('.playerhand');
+                    if (playerhand && playerhand.classList.contains('switch')) 
+                        {
+                            
+    
+                            var elements = document.querySelectorAll('[id^="playerview"]:not(.masque)');
+                                var idsSansMasque = [];
+                                elements.forEach(function(element) {
+                                    // Obtenez l'ID de chaque élément
+                                    var id = element.id;
+                                    
+                                    // Ajoutez l'ID à la liste
+                                    idsSansMasque.push(id);
+                                });
+    
+                                var split = idsSansMasque[0].split("_");
+                                var playerid = split[1]
+    
+                                
+                                const totalCounts = [0, 0, 0, 0, 0, 0];
+                                setTimeout(() =>        /// pour laisser le temps au dom de prendre les infos
+                                    {
+                                for (let x = 1; x <= 6; x++) {
+                                    for (let y = 1; y <= 7; y++) {
+                                        const container = document.getElementById(`cardposition_${x}_${y}_${playerid}`);
+                                        
+                                        if (container) {
+                                            // Vérifier si le conteneur a la classe 'selectable'
+                                            if (container.classList.contains('selectable')) {   /// ATENTION SANS LE POINT DEVANT LA CLASSE
+                                                totalCounts[x - 1]++;
+    
+                                            }
+                                            // Vérifier si le conteneur contient un élément avec la classe 'card'
+                                            if (container.querySelector('.card')) {
+                                                totalCounts[x - 1]++;
+                                                
+                                            }
+                                            // Vérifier si le conteneur contient un élément avec la classe 'cardverso'
+                                            if (container.querySelector('.cardverso')) {
+                                                totalCounts[x - 1]++;
+                                            }
+                                            // Vérifier si le conteneur a la classe 'selectablevide'
+                                            if (container.classList.contains('selectablevide')) {    /// ATENTION SANS LE POINT DEVANT LA CLASSE
+                                                totalCounts[x - 1]++;
+                                            }
+                                        }
+                                    }
+                                }
+    
+                                var maxCount = Math.max(...totalCounts);
+                                if (maxCount == 0)
+                                {
+                                    var maxCount =1;
+                                }
+    
+                                
+                                playerhandtitle.style.top = (850 + (maxCount-1)*53)+"px";
+                                playerhand.style.top = (880 + (maxCount-1)*53)+"px";
+    
+                            }, "100"); /// pour laisser le temps au dom de prendre les infos
+    
+                        }
+    
+    
+    
+                    }
                 
                 this.attachToNewParentNoDestroy( 'card_'+notif.args.ville1+'_'+notif.args.card1, 'cardposition_'+notif.args.jour+'_2_'+notif.args.playerid );
                 this.slideToObject( 'card_'+notif.args.ville1+'_'+notif.args.card1 , 'cardposition_'+notif.args.jour+'_2_'+notif.args.playerid ).play();
@@ -4020,11 +4493,9 @@ function (dojo, declare) {
                 this.slideToObject( 'card_'+notif.args.ville2+'_'+notif.args.card2 , 'cardposition_'+notif.args.jour+'_4_'+notif.args.playerid ).play();
                 var element2 = document.getElementById('cardposition_'+notif.args.jour+'_4_'+notif.args.playerid);
                 element2.style.zIndex = "10";
-
-                    
+   
                 }
-                
-               
+
 
             },
 
@@ -4066,6 +4537,77 @@ function (dojo, declare) {
                              
     
                     }
+
+                    if(this.gamedatas.countplayers > 1)
+                        {
+        
+                        var playerhandtitle = document.querySelector('.playerhandtitle');
+                        var playerhand = document.querySelector('.playerhand');
+                        if (playerhand && playerhand.classList.contains('switch')) 
+                            {
+                                
+        
+                                var elements = document.querySelectorAll('[id^="playerview"]:not(.masque)');
+                                    var idsSansMasque = [];
+                                    elements.forEach(function(element) {
+                                        // Obtenez l'ID de chaque élément
+                                        var id = element.id;
+                                        
+                                        // Ajoutez l'ID à la liste
+                                        idsSansMasque.push(id);
+                                    });
+        
+                                    var split = idsSansMasque[0].split("_");
+                                    var playerid = split[1]
+        
+                                    
+                                    const totalCounts = [0, 0, 0, 0, 0, 0];
+                                    setTimeout(() =>        /// pour laisser le temps au dom de prendre les infos
+                                        {
+                                    for (let x = 1; x <= 6; x++) {
+                                        for (let y = 1; y <= 7; y++) {
+                                            const container = document.getElementById(`cardposition_${x}_${y}_${playerid}`);
+                                            
+                                            if (container) {
+                                                // Vérifier si le conteneur a la classe 'selectable'
+                                                if (container.classList.contains('selectable')) {   /// ATENTION SANS LE POINT DEVANT LA CLASSE
+                                                    totalCounts[x - 1]++;
+        
+                                                }
+                                                // Vérifier si le conteneur contient un élément avec la classe 'card'
+                                                if (container.querySelector('.card')) {
+                                                    totalCounts[x - 1]++;
+                                                    
+                                                }
+                                                // Vérifier si le conteneur contient un élément avec la classe 'cardverso'
+                                                if (container.querySelector('.cardverso')) {
+                                                    totalCounts[x - 1]++;
+                                                }
+                                                // Vérifier si le conteneur a la classe 'selectablevide'
+                                                if (container.classList.contains('selectablevide')) {    /// ATENTION SANS LE POINT DEVANT LA CLASSE
+                                                    totalCounts[x - 1]++;
+                                                }
+                                            }
+                                        }
+                                    }
+        
+                                    var maxCount = Math.max(...totalCounts);
+                                    if (maxCount == 0)
+                                    {
+                                        var maxCount =1;
+                                    }
+        
+                                    
+                                    playerhandtitle.style.top = (850 + (maxCount-1)*53)+"px";
+                                    playerhand.style.top = (880 + (maxCount-1)*53)+"px";
+        
+                                }, "100"); /// pour laisser le temps au dom de prendre les infos
+        
+                            }
+        
+        
+        
+                        }
                
                
 
@@ -4215,6 +4757,77 @@ function (dojo, declare) {
         
         
                         }
+
+                        if(this.gamedatas.countplayers > 1)
+                            {
+            
+                            var playerhandtitle = document.querySelector('.playerhandtitle');
+                            var playerhand = document.querySelector('.playerhand');
+                            if (playerhand && playerhand.classList.contains('switch')) 
+                                {
+                                    
+            
+                                    var elements = document.querySelectorAll('[id^="playerview"]:not(.masque)');
+                                        var idsSansMasque = [];
+                                        elements.forEach(function(element) {
+                                            // Obtenez l'ID de chaque élément
+                                            var id = element.id;
+                                            
+                                            // Ajoutez l'ID à la liste
+                                            idsSansMasque.push(id);
+                                        });
+            
+                                        var split = idsSansMasque[0].split("_");
+                                        var playerid = split[1]
+            
+                                        
+                                        const totalCounts = [0, 0, 0, 0, 0, 0];
+                                        setTimeout(() =>        /// pour laisser le temps au dom de prendre les infos
+                                            {
+                                        for (let x = 1; x <= 6; x++) {
+                                            for (let y = 1; y <= 7; y++) {
+                                                const container = document.getElementById(`cardposition_${x}_${y}_${playerid}`);
+                                                
+                                                if (container) {
+                                                    // Vérifier si le conteneur a la classe 'selectable'
+                                                    if (container.classList.contains('selectable')) {   /// ATENTION SANS LE POINT DEVANT LA CLASSE
+                                                        totalCounts[x - 1]++;
+            
+                                                    }
+                                                    // Vérifier si le conteneur contient un élément avec la classe 'card'
+                                                    if (container.querySelector('.card')) {
+                                                        totalCounts[x - 1]++;
+                                                        
+                                                    }
+                                                    // Vérifier si le conteneur contient un élément avec la classe 'cardverso'
+                                                    if (container.querySelector('.cardverso')) {
+                                                        totalCounts[x - 1]++;
+                                                    }
+                                                    // Vérifier si le conteneur a la classe 'selectablevide'
+                                                    if (container.classList.contains('selectablevide')) {    /// ATENTION SANS LE POINT DEVANT LA CLASSE
+                                                        totalCounts[x - 1]++;
+                                                    }
+                                                }
+                                            }
+                                        }
+            
+                                        var maxCount = Math.max(...totalCounts);
+                                        if (maxCount == 0)
+                                        {
+                                            var maxCount =1;
+                                        }
+            
+                                        
+                                        playerhandtitle.style.top = (850 + (maxCount-1)*53)+"px";
+                                        playerhand.style.top = (880 + (maxCount-1)*53)+"px";
+            
+                                    }, "300"); /// pour laisser le temps au dom de prendre les infos
+            
+                                }
+            
+            
+            
+                            }
                
 
             },
@@ -4423,7 +5036,78 @@ function (dojo, declare) {
                             
         
         
-                        }        
+                        }  
+                
+                        if(this.gamedatas.countplayers > 1)
+                            {
+            
+                            var playerhandtitle = document.querySelector('.playerhandtitle');
+                            var playerhand = document.querySelector('.playerhand');
+                            if (playerhand && playerhand.classList.contains('switch')) 
+                                {
+                                    
+            
+                                    var elements = document.querySelectorAll('[id^="playerview"]:not(.masque)');
+                                        var idsSansMasque = [];
+                                        elements.forEach(function(element) {
+                                            // Obtenez l'ID de chaque élément
+                                            var id = element.id;
+                                            
+                                            // Ajoutez l'ID à la liste
+                                            idsSansMasque.push(id);
+                                        });
+            
+                                        var split = idsSansMasque[0].split("_");
+                                        var playerid = split[1]
+            
+                                        
+                                        const totalCounts = [0, 0, 0, 0, 0, 0];
+                                        setTimeout(() =>        /// pour laisser le temps au dom de prendre les infos
+                                            {
+                                        for (let x = 1; x <= 6; x++) {
+                                            for (let y = 1; y <= 7; y++) {
+                                                const container = document.getElementById(`cardposition_${x}_${y}_${playerid}`);
+                                                
+                                                if (container) {
+                                                    // Vérifier si le conteneur a la classe 'selectable'
+                                                    if (container.classList.contains('selectable')) {   /// ATENTION SANS LE POINT DEVANT LA CLASSE
+                                                        totalCounts[x - 1]++;
+            
+                                                    }
+                                                    // Vérifier si le conteneur contient un élément avec la classe 'card'
+                                                    if (container.querySelector('.card')) {
+                                                        totalCounts[x - 1]++;
+                                                        
+                                                    }
+                                                    // Vérifier si le conteneur contient un élément avec la classe 'cardverso'
+                                                    if (container.querySelector('.cardverso')) {
+                                                        totalCounts[x - 1]++;
+                                                    }
+                                                    // Vérifier si le conteneur a la classe 'selectablevide'
+                                                    if (container.classList.contains('selectablevide')) {    /// ATENTION SANS LE POINT DEVANT LA CLASSE
+                                                        totalCounts[x - 1]++;
+                                                    }
+                                                }
+                                            }
+                                        }
+            
+                                        var maxCount = Math.max(...totalCounts);
+                                        if (maxCount == 0)
+                                        {
+                                            var maxCount =1;
+                                        }
+            
+                                        
+                                        playerhandtitle.style.top = (850 + (maxCount-1)*53)+"px";
+                                        playerhand.style.top = (880 + (maxCount-1)*53)+"px";
+            
+                                    }, "700"); /// pour laisser le temps au dom de prendre les infos
+            
+                                }
+            
+            
+            
+                            }
                
 
             },
@@ -4479,6 +5163,77 @@ function (dojo, declare) {
                                  
         
                         }
+
+                        if(this.gamedatas.countplayers > 1)
+                            {
+            
+                            var playerhandtitle = document.querySelector('.playerhandtitle');
+                            var playerhand = document.querySelector('.playerhand');
+                            if (playerhand && playerhand.classList.contains('switch')) 
+                                {
+                                    
+            
+                                    var elements = document.querySelectorAll('[id^="playerview"]:not(.masque)');
+                                        var idsSansMasque = [];
+                                        elements.forEach(function(element) {
+                                            // Obtenez l'ID de chaque élément
+                                            var id = element.id;
+                                            
+                                            // Ajoutez l'ID à la liste
+                                            idsSansMasque.push(id);
+                                        });
+            
+                                        var split = idsSansMasque[0].split("_");
+                                        var playerid = split[1]
+            
+                                        
+                                        const totalCounts = [0, 0, 0, 0, 0, 0];
+                                        setTimeout(() =>        /// pour laisser le temps au dom de prendre les infos
+                                            {
+                                        for (let x = 1; x <= 6; x++) {
+                                            for (let y = 1; y <= 7; y++) {
+                                                const container = document.getElementById(`cardposition_${x}_${y}_${playerid}`);
+                                                
+                                                if (container) {
+                                                    // Vérifier si le conteneur a la classe 'selectable'
+                                                    if (container.classList.contains('selectable')) {   /// ATENTION SANS LE POINT DEVANT LA CLASSE
+                                                        totalCounts[x - 1]++;
+            
+                                                    }
+                                                    // Vérifier si le conteneur contient un élément avec la classe 'card'
+                                                    if (container.querySelector('.card')) {
+                                                        totalCounts[x - 1]++;
+                                                        
+                                                    }
+                                                    // Vérifier si le conteneur contient un élément avec la classe 'cardverso'
+                                                    if (container.querySelector('.cardverso')) {
+                                                        totalCounts[x - 1]++;
+                                                    }
+                                                    // Vérifier si le conteneur a la classe 'selectablevide'
+                                                    if (container.classList.contains('selectablevide')) {    /// ATENTION SANS LE POINT DEVANT LA CLASSE
+                                                        totalCounts[x - 1]++;
+                                                    }
+                                                }
+                                            }
+                                        }
+            
+                                        var maxCount = Math.max(...totalCounts);
+                                        if (maxCount == 0)
+                                        {
+                                            var maxCount =1;
+                                        }
+            
+                                        
+                                        playerhandtitle.style.top = (850 + (maxCount-1)*53)+"px";
+                                        playerhand.style.top = (880 + (maxCount-1)*53)+"px";
+            
+                                    }, "100"); /// pour laisser le temps au dom de prendre les infos
+            
+                                }
+            
+            
+            
+                            }
 
             },
 

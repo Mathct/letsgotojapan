@@ -1595,3 +1595,18 @@ display: none;
   text-align: justify;
   font-style: italic;
 }
+
+
+
+/* ICON TOOLTIPS */
+
+.pvtool{
+  width: 15px;
+  height: 15px;
+  background-image: url('img/logpv.png');
+  background-size: 100% 100%;
+  display: inline-block;
+  
+    
+}
+

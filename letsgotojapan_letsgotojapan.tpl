@@ -521,7 +521,8 @@ var jstpl_check='<div id="check_${ville}_${id}" class="check_${type}"></div>';
 
 var jstpl_marqueur='<div id="marqueur_${type}_${id}" class="marqueur" style="background-position-x: ${x}%;"></div>';
 
-var jstpl_tokyo1tool='<div class="tokyo1tool" style="background-position-x: ${x}%; background-position-y: ${y}%;"></div>';
+<!-- var jstpl_tokyo1tool='<div class="tokyo1tool" style="background-position-x: ${x}%; background-position-y: ${y}%;"></div><br><div style="text-align: center; font-weight: bold;">${name}</div><div style="text-align: center;">${text1}</div><br><div style="text-align: center; font-weight: bold;">${text2}</div><div style="text-align: center;">${text3}</div>'; -->
+var jstpl_tokyo1tool='<div class="tokyo1tool" style="background-position-x: ${x}%; background-position-y: ${y}%;">';
 var jstpl_tokyo2tool='<div class="tokyo2tool" style="background-position-x: ${x}%; background-position-y: ${y}%;"></div>';
 var jstpl_kyoto1tool='<div class="kyoto1tool" style="background-position-x: ${x}%; background-position-y: ${y}%;"></div>';
 var jstpl_kyoto2tool='<div class="kyoto2tool" style="background-position-x: ${x}%; background-position-y: ${y}%;"></div>';

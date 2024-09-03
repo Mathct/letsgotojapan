@@ -327,6 +327,9 @@ class letsgotojapan extends Table
         $result['phase'][0] = self::getUniqueValueFromDB("SELECT function FROM pending WHERE player_id={$current_player_id}");
         }
 
+        $result['tokyocards'] = $this->tokyocards;
+        $result['kyotocards'] = $this->kyotocards;
+
         return $result;
     }
 
