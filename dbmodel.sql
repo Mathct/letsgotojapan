@@ -73,6 +73,43 @@ CREATE TABLE IF NOT EXISTS `kyoto` (
   PRIMARY KEY (`card_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
+CREATE TABLE IF NOT EXISTS `copytokyo` (
+  `card_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `card_type` int(11) NOT NULL,
+  `card_type_arg` int(11) NOT NULL,
+  `card_location` varchar(50) NOT NULL,
+  `card_location_arg` int(11) NOT NULL,
+  `walk` int(2) unsigned DEFAULT 0,
+  `finallocation` int(2) unsigned DEFAULT 1,
+  `finalwalk` int(2) unsigned DEFAULT 0,
+  PRIMARY KEY (`card_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+CREATE TABLE IF NOT EXISTS `copykyoto` (
+  `card_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `card_type` int(11) NOT NULL,
+  `card_type_arg` int(11) NOT NULL,
+  `card_location` varchar(50) NOT NULL,
+  `card_location_arg` int(16) NOT NULL,
+  `walk` int(2) unsigned DEFAULT 0,
+  `finallocation` int(2) unsigned DEFAULT 2,
+  `finalwalk` int(2) unsigned DEFAULT 0,
+  PRIMARY KEY (`card_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+CREATE TABLE IF NOT EXISTS `copybonus` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `player_id` int(16) NULL,
+  `smile` int(2) DEFAULT 0,
+  `happy` int(2) unsigned DEFAULT 0,
+  `angry` int(2) unsigned DEFAULT 0,
+  `recherche` int(2) unsigned DEFAULT 0,
+  `train` int(2) unsigned DEFAULT 0,
+  `trainstart` int(2) unsigned DEFAULT 1,
+  `wild` int(2) unsigned DEFAULT 0,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
 CREATE TABLE IF NOT EXISTS `tokens` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `type` varchar(50) NULL,  
