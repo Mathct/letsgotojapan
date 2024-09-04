@@ -3002,6 +3002,16 @@ function st_MultiPlayerActivation()
             
             $this->gamestate->nextState('end');
         }
+
+        if ($newturn == 8) 
+        {
+        letsgotojapan::$instance->notifyAllPlayers('changesens',clienttranslate( '<b>Round 8: The direction of card passing is reversed</b>' ), array(
+            
+            
+            )
+            );
+        }
+
     }
 
 

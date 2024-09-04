@@ -152,7 +152,7 @@
 
         <!-- BEGIN player -->
         <div id="playerview_{PLAYER_ID}" class="playerview">
-            <div id="nameplayer_{PLAYER_ID}" class="nameplayer" style="color:#{COLOR}; outline: 0.5px solid #{COLOR};"><div class="left"><<<&nbsp;&nbsp;&nbsp;</div><span style="font-weight: bold;">{PLAYER_NAME}</span><div class="right">&nbsp;&nbsp;&nbsp;>>></div></div>
+            <div id="nameplayer_{PLAYER_ID}" class="nameplayer" style="color:#{COLOR}; outline: 0.5px solid #{COLOR};"><div class="passingl hidden"></div><div class="left"><<<&nbsp;&nbsp;&nbsp;</div><span style="font-weight: bold;">{PLAYER_NAME}</span><div class="right">&nbsp;&nbsp;&nbsp;>>></div><div class="passingr hidden"></div></div>
             <div id="playerboard_{PLAYER_ID}" class="playerboard color_{COLOR}">
 
                 <div id="smileposition_-3_{PLAYER_ID}" class="smileposition" style="top: 10.4%; left: 36.1%;"></div>

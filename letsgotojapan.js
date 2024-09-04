@@ -223,6 +223,25 @@ function (dojo, declare) {
 
                 this.addTurn(gamedatas.turn);
 
+
+
+                /// affichage change sens en multi
+                if ((gamedatas.turn < 8)&&(!this.isSpectator)&&(gamedatas.countplayers >= 2))
+                    {
+                        dojo.query(".passingr").removeClass("hidden");
+                    }
+                    
+                if ((gamedatas.turn >= 8)&&(gamedatas.turn <=13)&&(!this.isSpectator)&&(gamedatas.countplayers >= 2))
+                    {
+                        dojo.query(".passingl").removeClass("hidden");
+                    }
+
+                
+
+
+
+                /// cacher les boutons, la main et le plateau de tour en multi à partir du tour 14
+                
                 if ((gamedatas.turn >= 14)&&(!this.isSpectator)&&(gamedatas.countplayers >=2))
                 {
                     
@@ -231,9 +250,6 @@ function (dojo, declare) {
 
                     dojo.query("#mask_turn").addClass("masque");
                     dojo.query("#mask_hand").addClass("masque");
-
-
-
 
                 }
 
@@ -251,10 +267,7 @@ function (dojo, declare) {
                     global.style.height = "1530px"; 
                         
     
-    
-    
-    
-                    }
+                }
 
                 ////////////////////////////////   CARD PLAYER HAND AND TRIP   ///////////////////////////////
 
@@ -4031,6 +4044,10 @@ function (dojo, declare) {
                 dojo.subscribe( 'score2agent', this, "notif_score2agent" );
                 dojo.subscribe( 'infolvl', this, "notif_infolvl" );
 
+                dojo.subscribe( 'changesens', this, "notif_changesens" );
+
+                
+
                 
 
 
@@ -5587,6 +5604,14 @@ function (dojo, declare) {
                 
                 
             },
+
+            notif_changesens: function( notif )
+            {
+                dojo.query(".passingr").addClass("hidden");  
+                dojo.query(".passingl").removeClass("hidden");         
+                
+            },
+            
 
 
     
