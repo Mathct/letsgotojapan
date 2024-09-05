@@ -1394,7 +1394,19 @@ display: none;
   padding-left: 10px;
   padding-top: 10px;
   padding-bottom: 10px;
-  
+    
+}
+
+.cardbleu {
+  background-color: rgba(182, 220, 231, 0.5);
+}
+
+.cardrose{
+  background-color: rgba(244, 215, 226, 0.5);
+}
+
+.cardjaune{
+  background-color: rgba(245, 230, 204, 0.5);
 }
 
 .infotoolt {
@@ -1600,7 +1612,161 @@ display: none;
 
 /* ICON TOOLTIPS */
 
+.hautdecarte {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.prerequis {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.recherchetool{
+  width: 40px;
+  height: 40px;
+  background-image: url('img/logtoken.png');
+  background-size: 400% 100%;
+  background-position-x: -100%;
+  display: inline-block;
+}
+
+.wtool{
+  width: 30px;
+  height: 30px;
+  background-image: url('img/logtoken.png');
+  background-size: 400% 100%;
+  background-position-x: -300%;
+  display: inline-block;
+}
+
+
 .pvtool{
+  width: 25px;
+  height: 25px;
+  background-image: url('img/logpv.png');
+  background-size: 100% 100%;
+  display: inline-block;
+  
+    
+}
+
+.rtool{
+  width: 30px;
+  height: 30px;
+  background-image: url('img/tokenjour.png');
+  background-size: 600% 100%;
+  background-position-x: 0%;
+  display: inline-block;
+  
+    
+}
+
+.gtool{
+  width: 30px;
+  height: 30px;
+  background-image: url('img/tokenjour.png');
+  background-size: 600% 100%;
+  background-position-x: -100%;
+  display: inline-block;
+  
+    
+}
+
+.ptool{
+  width: 30px;
+  height: 30px;
+  background-image: url('img/tokenjour.png');
+  background-size: 600% 100%;
+  background-position-x: -200%;
+  display: inline-block;
+  
+    
+}
+
+.ytool{
+  width: 30px;
+  height: 30px;
+  background-image: url('img/tokenjour.png');
+  background-size: 600% 100%;
+  background-position-x: -300%;
+  display: inline-block;
+  
+    
+}
+
+.btool{
+  width: 30px;
+  height: 30px;
+  background-image: url('img/tokenjour.png');
+  background-size: 600% 100%;
+  background-position-x: -400%;
+  display: inline-block;
+  
+    
+}
+
+.h1tool{
+  width: 30px;
+  height: 30px;
+  background-image: url('img/humeurtoken.png');
+  background-size: 400% 100%;
+  background-position-x: 0%;
+  display: inline-block;
+  
+    
+}
+
+.h2tool{
+  width: 30px;
+  height: 30px;
+  background-image: url('img/humeurtoken.png');
+  background-size: 400% 100%;
+  background-position-x: -100%;
+  display: inline-block;
+  
+    
+}
+
+.a1tool{
+  width: 30px;
+  height: 30px;
+  background-image: url('img/humeurtoken.png');
+  background-size: 400% 100%;
+  background-position-x: -200%;
+  display: inline-block;
+  
+    
+}
+
+.a2tool{
+  width: 30px;
+  height: 30px;
+  background-image: url('img/humeurtoken.png');
+  background-size: 400% 100%;
+  background-position-x: -300%;
+  display: inline-block;
+  
+    
+}
+
+.decal{
+  vertical-align: -5px;
+}
+
+.tokyotool {
+  width: 83px;
+  height: 30px;
+  background-image: url('img/tokyotool.png');
+  background-size: 100% 100%;
+  display: inline-block;
+  vertical-align: -2px;
+  
+}
+
+.littlepvtool{
   width: 15px;
   height: 15px;
   background-image: url('img/logpv.png');
@@ -1609,6 +1775,67 @@ display: none;
   
     
 }
+
+.littlertool{
+  width: 15px;
+  height: 15px;
+  background-image: url('img/tokenjour.png');
+  background-size: 600% 100%;
+  background-position-x: 0%;
+  display: inline-block;
+  
+    
+}
+
+.littlegtool{
+  width: 15px;
+  height: 15px;
+  background-image: url('img/tokenjour.png');
+  background-size: 600% 100%;
+  background-position-x: -100%;
+  display: inline-block;
+  
+    
+}
+
+.littleptool{
+  width: 15px;
+  height: 15px;
+  background-image: url('img/tokenjour.png');
+  background-size: 600% 100%;
+  background-position-x: -200%;
+  display: inline-block;
+  
+    
+}
+
+.littleytool{
+  width: 15px;
+  height: 15px;
+  background-image: url('img/tokenjour.png');
+  background-size: 600% 100%;
+  background-position-x: -300%;
+  display: inline-block;
+  
+    
+}
+
+.littlebtool{
+  width: 15px;
+  height: 15px;
+  background-image: url('img/tokenjour.png');
+  background-size: 600% 100%;
+  background-position-x: -400%;
+  display: inline-block;
+  
+    
+}
+
+
+
+
+
+/* ICON PASSING */
 
 .passingl {
   background-image: url('img/passingl.png');

@@ -521,14 +521,15 @@ var jstpl_check='<div id="check_${ville}_${id}" class="check_${type}"></div>';
 
 var jstpl_marqueur='<div id="marqueur_${type}_${id}" class="marqueur" style="background-position-x: ${x}%;"></div>';
 
-<!-- var jstpl_tokyo1tool='<div class="tokyo1tool" style="background-position-x: ${x}%; background-position-y: ${y}%;"></div><br><div style="text-align: center; font-weight: bold;">${name}</div><div style="text-align: center;">${text1}</div><br><div style="text-align: center; font-weight: bold;">${text2}</div><div style="text-align: center;">${text3}</div>'; -->
-var jstpl_tokyo1tool='<div class="tokyo1tool" style="background-position-x: ${x}%; background-position-y: ${y}%;">';
-var jstpl_tokyo2tool='<div class="tokyo2tool" style="background-position-x: ${x}%; background-position-y: ${y}%;"></div>';
-var jstpl_kyoto1tool='<div class="kyoto1tool" style="background-position-x: ${x}%; background-position-y: ${y}%;"></div>';
-var jstpl_kyoto2tool='<div class="kyoto2tool" style="background-position-x: ${x}%; background-position-y: ${y}%;"></div>';
-var jstpl_tokyowalktool='<div class="tokyowalktool"></div>';
-var jstpl_kyotowalktool='<div class="kyotowalktool"></div>';
-var jstpl_kyotowalktool='<div class="kyotowalktool"></div>';
+var jstpl_tokyo1tool='<div class="hautdecarte"><div>${gain}</div><div style="font-size: 30px; font-weight: bold;">${gainpv}</div></div><div style="text-align: center; font-weight: bold;">${name}</div><div style="text-align: center;">${text1}</div><br><div style="text-align: center; font-weight: bold;">${text2}</div><div class="prerequis"><div style="font-weight: bold;">If:&nbsp;</div><div style="text-align: center;">${prerequis}</div></div><br><div style="text-align: center; font-weight: bold;">Then:</div><div style="text-align: center; font-size: 30px; font-weight: bold;">${gaintotal}</div><div style="text-align: center;">${text3}</div>';
+var jstpl_tokyo2tool='<div class="hautdecarte"><div>${gain}</div><div style="font-size: 30px; font-weight: bold;">${gainpv}</div></div><div style="text-align: center; font-weight: bold;">${name}</div><div style="text-align: center;">${text1}</div><br><div style="text-align: center; font-weight: bold;">${text2}</div><div class="prerequis"><div style="font-weight: bold;">If:&nbsp;</div><div style="text-align: center;">${prerequis}</div></div><br><div style="text-align: center; font-weight: bold;">Then:</div><div style="text-align: center; font-size: 30px; font-weight: bold;">${gaintotal}</div><div style="text-align: center;">${text3}</div>';
+var jstpl_kyoto1tool='<div class="hautdecarte"><div>${gain}</div><div style="font-size: 30px; font-weight: bold;">${gainpv}</div></div><div style="text-align: center; font-weight: bold;">${name}</div><div style="text-align: center;">${text1}</div><br><div style="text-align: center; font-weight: bold;">${text2}</div><div class="prerequis"><div style="font-weight: bold;">If:&nbsp;</div><div style="text-align: center;">${prerequis}</div></div><br><div style="text-align: center; font-weight: bold;">Then:</div><div style="text-align: center; font-size: 30px; font-weight: bold;">${gaintotal}</div><div style="text-align: center;">${text3}</div>';
+var jstpl_kyoto2tool='<div class="hautdecarte"><div>${gain}</div><div style="font-size: 30px; font-weight: bold;">${gainpv}</div></div><div style="text-align: center; font-weight: bold;">${name}</div><div style="text-align: center;">${text1}</div><br><div style="text-align: center; font-weight: bold;">${text2}</div><div class="prerequis"><div style="font-weight: bold;">If:&nbsp;</div><div style="text-align: center;">${prerequis}</div></div><br><div style="text-align: center; font-weight: bold;">Then:</div><div style="text-align: center; font-size: 30px; font-weight: bold;">${gaintotal}</div><div style="text-align: center;">${text3}</div>';
+
+var jstpl_tokyowalktool='<div class="hautdecarte"><div>${gain}</div><div style="font-size: 30px; font-weight: bold;">${gainpv}</div></div><div style="text-align: center; font-weight: bold;">${name}</div><br><div style="text-align: center;">${recherche}</div><br><div style="text-align: center; font-size: 30px; font-weight: bold;">${gaintotal}</div>';
+var jstpl_kyotowalktool='<div class="hautdecarte"><div>${gain}</div><div style="font-size: 30px; font-weight: bold;">${gainpv}</div></div><div style="text-align: center; font-weight: bold;">${name}</div><br><div style="text-align: center;">${recherche}</div><br><div style="text-align: center; font-size: 30px; font-weight: bold;">${gaintotal}</div>';
+
+
 var jstpl_infotool='<div class="infotexttoolt"><div style="text-align: center;">${text}</div></div>';
 var jstpl_avataragent='<div id="avataragent" class="avataragent"></div>';
 

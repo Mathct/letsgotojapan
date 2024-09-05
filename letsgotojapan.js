@@ -1204,7 +1204,12 @@ function (dojo, declare) {
                                         {
                                                                                         
                                             this.addActionButton(args[this.getCurrentPlayerId()][0].buttons[nb], `<div class="cardtokyoversobouton"></div>`, 'onOpButton', null, null, 'none');
-                                            var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_tokyowalktool')+'</div></div>';
+                                            var name =_('Go For A Walk');
+                                            var gain ='<div class="h1tool"></div><div class="wtool"></div>';
+                                            var recherche ='<div class="recherchetool"></div>';
+                                            var gainpv ='1<div class="pvtool"></div>';
+                                            var gaintotal='2<div class="pvtool"></div>';
+                                            var html = '<div class="toolt"><div class="cardtoolt cardbleu">'+this.format_block('jstpl_tokyowalktool',{name: name, gain: gain, gainpv: gainpv, gaintotal: gaintotal, recherche: recherche})+'</div></div>';
                                             this.addTooltipHtml( 'cardtokyoverso', html,1000);
 
                                     
@@ -1214,7 +1219,12 @@ function (dojo, declare) {
                                         {
                                                                                         
                                             this.addActionButton(args[this.getCurrentPlayerId()][0].buttons[nb], `<div class="cardkyotoversobouton"></div>`, 'onOpButton', null, null, 'none');
-                                            var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_kyotowalktool')+'</div></div>';
+                                            var name =_('Go For A Walk');
+                                            var gain ='<div class="h1tool"></div><div class="wtool"></div>';
+                                            var recherche ='<div class="recherchetool"></div>';
+                                            var gainpv ='1<div class="pvtool"></div>';
+                                            var gaintotal='2<div class="pvtool"></div>';
+                                            var html = '<div class="toolt"><div class="cardtoolt cardrose">'+this.format_block('jstpl_kyotowalktool',{name: name, gain: gain, gainpv: gainpv, gaintotal: gaintotal, recherche: recherche})+'</div></div>';
                                             this.addTooltipHtml( 'cardkyotoverso', html,1000);
                                         }
                                     if(args[this.getCurrentPlayerId()][0].buttons[nb].startsWith("cardbouton_1"))
@@ -1576,10 +1586,137 @@ function (dojo, declare) {
                         name = name.split(' ').map(word => {
                             return word.charAt(0).toUpperCase() + word.slice(1);
                         }).join(' ');
+
+                        
+
+                        var gain='';
+                        var bonus = this.gamedatas.tokyocards[card].bonus;
+                        bonus.forEach((valeur, index) => {
+                            
+                            if(index ==0)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="rtool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="rtool"></div><div class="rtool"></div>'
+                                    }
+                            }
+                            if(index ==1)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="gtool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="gtool"></div><div class="gtool"></div>'
+                                    }
+                            }
+
+                            if(index ==2)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="ptool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="ptool"></div><div class="ptool"></div>'
+                                        }
+                                }
+
+                            if(index ==3)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="ytool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="ytool"></div><div class="ytool"></div>'
+                                    }
+                            }
+
+                            
+                            if(index ==4)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="btool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="btool"></div><div class="btool"></div>'
+                                    }
+                            }
+
+                            if(index ==5)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="h1tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="h1tool"></div><div class="h1tool"></div>'
+                                        }
+                                }
+
+                            if(index ==6)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="h2tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="h2tool"></div><div class="h2tool"></div>'
+                                        }
+                                }
+
+                            if(index ==7)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="a1tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="a1tool"></div><div class="a1tool"></div>'
+                                        }
+                                }
+
+                            if(index ==8)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="a2tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="a2tool"></div><div class="a2tool"></div>'
+                                        }
+                                }
+                        });
+                        var gainpv = this.gamedatas.tokyocards[card].pv+'<div class="pvtool"></div>';
+                        var prerequis = this.gamedatas.tokyocards[card].prerequis;
+                        var gaintotal = this.gamedatas.tokyocards[card].gaintotal;
                         var text1 = _(this.gamedatas.tokyocards[card].text1);
                         var text2 = _(this.gamedatas.tokyocards[card].text2);
                         var text3 = _(this.gamedatas.tokyocards[card].text3);
-                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_tokyo1tool',{x: (card-1)*(-100), y: 0, name: name, text1: text1, text2: text2, text3: text3})+'</div></div>';
+                        var html = '<div class="toolt"><div class="cardtoolt cardbleu">'+this.format_block('jstpl_tokyo1tool',{x: (card-1)*(-100), y: 0, name: name, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
                         this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
 
                     }
@@ -1601,10 +1738,138 @@ function (dojo, declare) {
                         name = name.split(' ').map(word => {
                             return word.charAt(0).toUpperCase() + word.slice(1);
                         }).join(' ');
+
+                        var gain='';
+                        var bonus = this.gamedatas.tokyocards[card].bonus;
+                        bonus.forEach((valeur, index) => {
+                            
+                            if(index ==0)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="rtool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="rtool"></div><div class="rtool"></div>'
+                                    }
+                            }
+                            if(index ==1)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="gtool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="gtool"></div><div class="gtool"></div>'
+                                    }
+                            }
+
+                            if(index ==2)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="ptool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="ptool"></div><div class="ptool"></div>'
+                                        }
+                                }
+
+                            if(index ==3)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="ytool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="ytool"></div><div class="ytool"></div>'
+                                    }
+                            }
+
+                            
+                            if(index ==4)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="btool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="btool"></div><div class="btool"></div>'
+                                    }
+                            }
+
+                            if(index ==5)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="h1tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="h1tool"></div><div class="h1tool"></div>'
+                                        }
+                                }
+
+                            if(index ==6)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="h2tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="h2tool"></div><div class="h2tool"></div>'
+                                        }
+                                }
+
+                            if(index ==7)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="a1tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="a1tool"></div><div class="a1tool"></div>'
+                                        }
+                                }
+
+                            if(index ==8)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="a2tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="a2tool"></div><div class="a2tool"></div>'
+                                        }
+                                }
+                        });
+
+                        
+                        
+                        var gainpv = this.gamedatas.tokyocards[card].pv+'<div class="pvtool"></div>';
+                        var prerequis = this.gamedatas.tokyocards[card].prerequis;
+                        var gaintotal = this.gamedatas.tokyocards[card].gaintotal;
                         var text1 = _(this.gamedatas.tokyocards[card].text1);
                         var text2 = _(this.gamedatas.tokyocards[card].text2);
                         var text3 = _(this.gamedatas.tokyocards[card].text3);
-                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_tokyo1tool',{x: (card-11)*(-100), y: -100, name: name, text1: text1, text2: text2, text3: text3})+'</div></div>';
+                        var html = '<div class="toolt"><div class="cardtoolt cardbleu">'+this.format_block('jstpl_tokyo1tool',{x: (card-11)*(-100), y: -100, name: name, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
                         this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
                     }
@@ -1626,10 +1891,134 @@ function (dojo, declare) {
                         name = name.split(' ').map(word => {
                             return word.charAt(0).toUpperCase() + word.slice(1);
                         }).join(' ');
+                        var gain='';
+                        var bonus = this.gamedatas.tokyocards[card].bonus;
+                        bonus.forEach((valeur, index) => {
+                            
+                            if(index ==0)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="rtool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="rtool"></div><div class="rtool"></div>'
+                                    }
+                            }
+                            if(index ==1)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="gtool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="gtool"></div><div class="gtool"></div>'
+                                    }
+                            }
+
+                            if(index ==2)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="ptool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="ptool"></div><div class="ptool"></div>'
+                                        }
+                                }
+
+                            if(index ==3)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="ytool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="ytool"></div><div class="ytool"></div>'
+                                    }
+                            }
+
+                            
+                            if(index ==4)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="btool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="btool"></div><div class="btool"></div>'
+                                    }
+                            }
+
+                            if(index ==5)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="h1tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="h1tool"></div><div class="h1tool"></div>'
+                                        }
+                                }
+
+                            if(index ==6)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="h2tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="h2tool"></div><div class="h2tool"></div>'
+                                        }
+                                }
+
+                            if(index ==7)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="a1tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="a1tool"></div><div class="a1tool"></div>'
+                                        }
+                                }
+
+                            if(index ==8)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="a2tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="a2tool"></div><div class="a2tool"></div>'
+                                        }
+                                }
+                        });
+                        var gainpv = this.gamedatas.tokyocards[card].pv+'<div class="pvtool"></div>';
+                        var prerequis = this.gamedatas.tokyocards[card].prerequis;
+                        var gaintotal = this.gamedatas.tokyocards[card].gaintotal;
                         var text1 = _(this.gamedatas.tokyocards[card].text1);
                         var text2 = _(this.gamedatas.tokyocards[card].text2);
                         var text3 = _(this.gamedatas.tokyocards[card].text3);
-                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_tokyo1tool',{x: (card-21)*(-100), y: -200, name: name, text1: text1, text2: text2, text3: text3})+'</div></div>';
+                        var html = '<div class="toolt"><div class="cardtoolt cardbleu">'+this.format_block('jstpl_tokyo1tool',{x: (card-21)*(-100), y: -200, name: name, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
                         this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
                     }
@@ -1651,10 +2040,134 @@ function (dojo, declare) {
                         name = name.split(' ').map(word => {
                             return word.charAt(0).toUpperCase() + word.slice(1);
                         }).join(' ');
+                        var gain='';
+                        var bonus = this.gamedatas.tokyocards[card].bonus;
+                        bonus.forEach((valeur, index) => {
+                            
+                            if(index ==0)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="rtool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="rtool"></div><div class="rtool"></div>'
+                                    }
+                            }
+                            if(index ==1)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="gtool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="gtool"></div><div class="gtool"></div>'
+                                    }
+                            }
+
+                            if(index ==2)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="ptool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="ptool"></div><div class="ptool"></div>'
+                                        }
+                                }
+
+                            if(index ==3)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="ytool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="ytool"></div><div class="ytool"></div>'
+                                    }
+                            }
+
+                            
+                            if(index ==4)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="btool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="btool"></div><div class="btool"></div>'
+                                    }
+                            }
+
+                            if(index ==5)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="h1tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="h1tool"></div><div class="h1tool"></div>'
+                                        }
+                                }
+
+                            if(index ==6)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="h2tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="h2tool"></div><div class="h2tool"></div>'
+                                        }
+                                }
+
+                            if(index ==7)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="a1tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="a1tool"></div><div class="a1tool"></div>'
+                                        }
+                                }
+
+                            if(index ==8)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="a2tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="a2tool"></div><div class="a2tool"></div>'
+                                        }
+                                }
+                        });
+                        var gainpv = this.gamedatas.tokyocards[card].pv+'<div class="pvtool"></div>';
+                        var prerequis = this.gamedatas.tokyocards[card].prerequis;
+                        var gaintotal = this.gamedatas.tokyocards[card].gaintotal;
                         var text1 = _(this.gamedatas.tokyocards[card].text1);
                         var text2 = _(this.gamedatas.tokyocards[card].text2);
                         var text3 = _(this.gamedatas.tokyocards[card].text3);
-                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_tokyo1tool',{x: (card-31)*(-100), y: -300, name: name, text1: text1, text2: text2, text3: text3})+'</div></div>';
+                        var html = '<div class="toolt"><div class="cardtoolt cardbleu">'+this.format_block('jstpl_tokyo1tool',{x: (card-31)*(-100), y: -300, name: name, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
                         this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
                     }
@@ -1672,7 +2185,138 @@ function (dojo, declare) {
                                                 
                         } ) , location+'_'+player );
 
-                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_tokyo2tool',{x: (card-41)*(-100), y: 0})+'</div></div>';
+                        var name = _(this.gamedatas.tokyocards[card].name);
+                        name = name.split(' ').map(word => {
+                            return word.charAt(0).toUpperCase() + word.slice(1);
+                        }).join(' ');
+                        var gain='';
+                        var bonus = this.gamedatas.tokyocards[card].bonus;
+                        bonus.forEach((valeur, index) => {
+                            
+                            if(index ==0)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="rtool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="rtool"></div><div class="rtool"></div>'
+                                    }
+                            }
+                            if(index ==1)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="gtool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="gtool"></div><div class="gtool"></div>'
+                                    }
+                            }
+
+                            if(index ==2)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="ptool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="ptool"></div><div class="ptool"></div>'
+                                        }
+                                }
+
+                            if(index ==3)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="ytool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="ytool"></div><div class="ytool"></div>'
+                                    }
+                            }
+
+                            
+                            if(index ==4)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="btool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="btool"></div><div class="btool"></div>'
+                                    }
+                            }
+
+                            if(index ==5)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="h1tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="h1tool"></div><div class="h1tool"></div>'
+                                        }
+                                }
+
+                            if(index ==6)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="h2tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="h2tool"></div><div class="h2tool"></div>'
+                                        }
+                                }
+
+                            if(index ==7)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="a1tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="a1tool"></div><div class="a1tool"></div>'
+                                        }
+                                }
+
+                            if(index ==8)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="a2tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="a2tool"></div><div class="a2tool"></div>'
+                                        }
+                                }
+                        });
+                        var gainpv = this.gamedatas.tokyocards[card].pv+'<div class="pvtool"></div>';
+                        var prerequis = this.gamedatas.tokyocards[card].prerequis;
+                        var gaintotal = this.gamedatas.tokyocards[card].gaintotal;
+                        var text1 = _(this.gamedatas.tokyocards[card].text1);
+                        var text2 = _(this.gamedatas.tokyocards[card].text2);
+                        var text3 = _(this.gamedatas.tokyocards[card].text3);
+                        var html = '<div class="toolt"><div class="cardtoolt cardbleu">'+this.format_block('jstpl_tokyo2tool',{x: (card-41)*(-100), y: 0, name: name, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
                         this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
                     }
@@ -1690,7 +2334,138 @@ function (dojo, declare) {
                                                 
                         } ) , location+'_'+player );
 
-                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_tokyo2tool',{x: (card-51)*(-100), y: -100})+'</div></div>';
+                        var name = _(this.gamedatas.tokyocards[card].name);
+                        name = name.split(' ').map(word => {
+                            return word.charAt(0).toUpperCase() + word.slice(1);
+                        }).join(' ');
+                        var gain='';
+                        var bonus = this.gamedatas.tokyocards[card].bonus;
+                        bonus.forEach((valeur, index) => {
+                            
+                            if(index ==0)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="rtool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="rtool"></div><div class="rtool"></div>'
+                                    }
+                            }
+                            if(index ==1)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="gtool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="gtool"></div><div class="gtool"></div>'
+                                    }
+                            }
+
+                            if(index ==2)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="ptool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="ptool"></div><div class="ptool"></div>'
+                                        }
+                                }
+
+                            if(index ==3)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="ytool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="ytool"></div><div class="ytool"></div>'
+                                    }
+                            }
+
+                            
+                            if(index ==4)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="btool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="btool"></div><div class="btool"></div>'
+                                    }
+                            }
+
+                            if(index ==5)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="h1tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="h1tool"></div><div class="h1tool"></div>'
+                                        }
+                                }
+
+                            if(index ==6)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="h2tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="h2tool"></div><div class="h2tool"></div>'
+                                        }
+                                }
+
+                            if(index ==7)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="a1tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="a1tool"></div><div class="a1tool"></div>'
+                                        }
+                                }
+
+                            if(index ==8)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="a2tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="a2tool"></div><div class="a2tool"></div>'
+                                        }
+                                }
+                        });
+                        var gainpv = this.gamedatas.tokyocards[card].pv+'<div class="pvtool"></div>';
+                        var prerequis = this.gamedatas.tokyocards[card].prerequis;
+                        var gaintotal = this.gamedatas.tokyocards[card].gaintotal;
+                        var text1 = _(this.gamedatas.tokyocards[card].text1);
+                        var text2 = _(this.gamedatas.tokyocards[card].text2);
+                        var text3 = _(this.gamedatas.tokyocards[card].text3);
+                        var html = '<div class="toolt"><div class="cardtoolt cardbleu">'+this.format_block('jstpl_tokyo2tool',{x: (card-51)*(-100), y: -100, name: name, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
                         this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
                     }
@@ -1708,7 +2483,138 @@ function (dojo, declare) {
                                                 
                         } ) , location+'_'+player );
 
-                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_tokyo2tool',{x: (card-61)*(-100), y: -200})+'</div></div>';
+                        var name = _(this.gamedatas.tokyocards[card].name);
+                        name = name.split(' ').map(word => {
+                            return word.charAt(0).toUpperCase() + word.slice(1);
+                        }).join(' ');
+                        var gain='';
+                        var bonus = this.gamedatas.tokyocards[card].bonus;
+                        bonus.forEach((valeur, index) => {
+                            
+                            if(index ==0)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="rtool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="rtool"></div><div class="rtool"></div>'
+                                    }
+                            }
+                            if(index ==1)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="gtool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="gtool"></div><div class="gtool"></div>'
+                                    }
+                            }
+
+                            if(index ==2)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="ptool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="ptool"></div><div class="ptool"></div>'
+                                        }
+                                }
+
+                            if(index ==3)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="ytool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="ytool"></div><div class="ytool"></div>'
+                                    }
+                            }
+
+                            
+                            if(index ==4)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="btool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="btool"></div><div class="btool"></div>'
+                                    }
+                            }
+
+                            if(index ==5)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="h1tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="h1tool"></div><div class="h1tool"></div>'
+                                        }
+                                }
+
+                            if(index ==6)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="h2tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="h2tool"></div><div class="h2tool"></div>'
+                                        }
+                                }
+
+                            if(index ==7)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="a1tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="a1tool"></div><div class="a1tool"></div>'
+                                        }
+                                }
+
+                            if(index ==8)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="a2tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="a2tool"></div><div class="a2tool"></div>'
+                                        }
+                                }
+                        });
+                        var gainpv = this.gamedatas.tokyocards[card].pv+'<div class="pvtool"></div>';
+                        var prerequis = this.gamedatas.tokyocards[card].prerequis;
+                        var gaintotal = this.gamedatas.tokyocards[card].gaintotal;
+                        var text1 = _(this.gamedatas.tokyocards[card].text1);
+                        var text2 = _(this.gamedatas.tokyocards[card].text2);
+                        var text3 = _(this.gamedatas.tokyocards[card].text3);
+                        var html = '<div class="toolt"><div class="cardtoolt cardbleu">'+this.format_block('jstpl_tokyo2tool',{x: (card-61)*(-100), y: -200, name: name, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
                         this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
                     }
@@ -1726,7 +2632,145 @@ function (dojo, declare) {
                                                 
                         } ) , location+'_'+player );
 
-                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_tokyo2tool',{x: (card-71)*(-100), y: -300})+'</div></div>';
+                        var name = _(this.gamedatas.tokyocards[card].name);
+                        name = name.split(' ').map(word => {
+                            return word.charAt(0).toUpperCase() + word.slice(1);
+                        }).join(' ');
+                        var gain='';
+                        var bonus = this.gamedatas.tokyocards[card].bonus;
+                        bonus.forEach((valeur, index) => {
+                            
+                            if(index ==0)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="rtool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="rtool"></div><div class="rtool"></div>'
+                                    }
+                            }
+                            if(index ==1)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="gtool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="gtool"></div><div class="gtool"></div>'
+                                    }
+                            }
+
+                            if(index ==2)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="ptool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="ptool"></div><div class="ptool"></div>'
+                                        }
+                                }
+
+                            if(index ==3)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="ytool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="ytool"></div><div class="ytool"></div>'
+                                    }
+                            }
+
+                            
+                            if(index ==4)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="btool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="btool"></div><div class="btool"></div>'
+                                    }
+                            }
+
+                            if(index ==5)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="h1tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="h1tool"></div><div class="h1tool"></div>'
+                                        }
+                                }
+
+                            if(index ==6)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="h2tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="h2tool"></div><div class="h2tool"></div>'
+                                        }
+                                }
+
+                            if(index ==7)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="a1tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="a1tool"></div><div class="a1tool"></div>'
+                                        }
+                                }
+
+                            if(index ==8)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="a2tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="a2tool"></div><div class="a2tool"></div>'
+                                        }
+                                }
+                        });
+                        var gainpv = this.gamedatas.tokyocards[card].pv+'<div class="pvtool"></div>';
+                        var prerequis = this.gamedatas.tokyocards[card].prerequis;
+                        var gaintotal = this.gamedatas.tokyocards[card].gaintotal;
+                        var text1 = _(this.gamedatas.tokyocards[card].text1);
+                        var text2 = _(this.gamedatas.tokyocards[card].text2);
+                        var text3 = _(this.gamedatas.tokyocards[card].text3);
+                        if(card ==71)
+                        {
+                        var html = '<div class="toolt"><div class="cardtoolt cardbleu">'+this.format_block('jstpl_tokyo2tool',{x: (card-71)*(-100), y: -300, name: name, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
+                        }
+                        else
+                        {
+                        var html = '<div class="toolt"><div class="cardtoolt cardjaune">'+this.format_block('jstpl_tokyo2tool',{x: (card-71)*(-100), y: -300, name: name, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
+                        }
                         this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
                     }
@@ -1762,7 +2806,138 @@ function (dojo, declare) {
                                                 
                         } ) , location+'_'+player );
 
-                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_kyoto1tool',{x: (card-1)*(-100), y: 0})+'</div></div>';
+                        var name = _(this.gamedatas.kyotocards[card].name);
+                        name = name.split(' ').map(word => {
+                            return word.charAt(0).toUpperCase() + word.slice(1);
+                        }).join(' ');
+                        var gain='';
+                        var bonus = this.gamedatas.kyotocards[card].bonus;
+                        bonus.forEach((valeur, index) => {
+                            
+                            if(index ==0)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="rtool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="rtool"></div><div class="rtool"></div>'
+                                    }
+                            }
+                            if(index ==1)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="gtool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="gtool"></div><div class="gtool"></div>'
+                                    }
+                            }
+
+                            if(index ==2)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="ptool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="ptool"></div><div class="ptool"></div>'
+                                        }
+                                }
+
+                            if(index ==3)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="ytool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="ytool"></div><div class="ytool"></div>'
+                                    }
+                            }
+
+                            
+                            if(index ==4)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="btool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="btool"></div><div class="btool"></div>'
+                                    }
+                            }
+
+                            if(index ==5)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="h1tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="h1tool"></div><div class="h1tool"></div>'
+                                        }
+                                }
+
+                            if(index ==6)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="h2tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="h2tool"></div><div class="h2tool"></div>'
+                                        }
+                                }
+
+                            if(index ==7)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="a1tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="a1tool"></div><div class="a1tool"></div>'
+                                        }
+                                }
+
+                            if(index ==8)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="a2tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="a2tool"></div><div class="a2tool"></div>'
+                                        }
+                                }
+                        });
+                        var gainpv = this.gamedatas.kyotocards[card].pv+'<div class="pvtool"></div>';
+                        var prerequis = this.gamedatas.kyotocards[card].prerequis;
+                        var gaintotal = this.gamedatas.kyotocards[card].gaintotal;
+                        var text1 = _(this.gamedatas.kyotocards[card].text1);
+                        var text2 = _(this.gamedatas.kyotocards[card].text2);
+                        var text3 = _(this.gamedatas.kyotocards[card].text3);
+                        var html = '<div class="toolt"><div class="cardtoolt cardrose">'+this.format_block('jstpl_kyoto1tool',{x: (card-1)*(-100), y: 0, name: name, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
                         this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
     
                     }
@@ -1780,7 +2955,138 @@ function (dojo, declare) {
                                                 
                         } ) , location+'_'+player );
 
-                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_kyoto1tool',{x: (card-11)*(-100), y: -100})+'</div></div>';
+                        var name = _(this.gamedatas.kyotocards[card].name);
+                        name = name.split(' ').map(word => {
+                            return word.charAt(0).toUpperCase() + word.slice(1);
+                        }).join(' ');
+                        var gain='';
+                        var bonus = this.gamedatas.kyotocards[card].bonus;
+                        bonus.forEach((valeur, index) => {
+                            
+                            if(index ==0)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="rtool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="rtool"></div><div class="rtool"></div>'
+                                    }
+                            }
+                            if(index ==1)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="gtool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="gtool"></div><div class="gtool"></div>'
+                                    }
+                            }
+
+                            if(index ==2)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="ptool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="ptool"></div><div class="ptool"></div>'
+                                        }
+                                }
+
+                            if(index ==3)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="ytool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="ytool"></div><div class="ytool"></div>'
+                                    }
+                            }
+
+                            
+                            if(index ==4)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="btool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="btool"></div><div class="btool"></div>'
+                                    }
+                            }
+
+                            if(index ==5)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="h1tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="h1tool"></div><div class="h1tool"></div>'
+                                        }
+                                }
+
+                            if(index ==6)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="h2tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="h2tool"></div><div class="h2tool"></div>'
+                                        }
+                                }
+
+                            if(index ==7)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="a1tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="a1tool"></div><div class="a1tool"></div>'
+                                        }
+                                }
+
+                            if(index ==8)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="a2tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="a2tool"></div><div class="a2tool"></div>'
+                                        }
+                                }
+                        });
+                        var gainpv = this.gamedatas.kyotocards[card].pv+'<div class="pvtool"></div>';
+                        var prerequis = this.gamedatas.kyotocards[card].prerequis;
+                        var gaintotal = this.gamedatas.kyotocards[card].gaintotal;
+                        var text1 = _(this.gamedatas.kyotocards[card].text1);
+                        var text2 = _(this.gamedatas.kyotocards[card].text2);
+                        var text3 = _(this.gamedatas.kyotocards[card].text3);
+                        var html = '<div class="toolt"><div class="cardtoolt cardrose">'+this.format_block('jstpl_kyoto1tool',{x: (card-11)*(-100), y: -100, name: name, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
                         this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
                     }
@@ -1798,7 +3104,138 @@ function (dojo, declare) {
                                                 
                         } ) , location+'_'+player );
 
-                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_kyoto1tool',{x: (card-21)*(-100), y: -200})+'</div></div>';
+                        var name = _(this.gamedatas.kyotocards[card].name);
+                        name = name.split(' ').map(word => {
+                            return word.charAt(0).toUpperCase() + word.slice(1);
+                        }).join(' ');
+                        var gain='';
+                        var bonus = this.gamedatas.kyotocards[card].bonus;
+                        bonus.forEach((valeur, index) => {
+                            
+                            if(index ==0)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="rtool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="rtool"></div><div class="rtool"></div>'
+                                    }
+                            }
+                            if(index ==1)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="gtool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="gtool"></div><div class="gtool"></div>'
+                                    }
+                            }
+
+                            if(index ==2)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="ptool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="ptool"></div><div class="ptool"></div>'
+                                        }
+                                }
+
+                            if(index ==3)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="ytool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="ytool"></div><div class="ytool"></div>'
+                                    }
+                            }
+
+                            
+                            if(index ==4)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="btool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="btool"></div><div class="btool"></div>'
+                                    }
+                            }
+
+                            if(index ==5)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="h1tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="h1tool"></div><div class="h1tool"></div>'
+                                        }
+                                }
+
+                            if(index ==6)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="h2tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="h2tool"></div><div class="h2tool"></div>'
+                                        }
+                                }
+
+                            if(index ==7)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="a1tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="a1tool"></div><div class="a1tool"></div>'
+                                        }
+                                }
+
+                            if(index ==8)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="a2tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="a2tool"></div><div class="a2tool"></div>'
+                                        }
+                                }
+                        });
+                        var gainpv = this.gamedatas.kyotocards[card].pv+'<div class="pvtool"></div>';
+                        var prerequis = this.gamedatas.kyotocards[card].prerequis;
+                        var gaintotal = this.gamedatas.kyotocards[card].gaintotal;
+                        var text1 = _(this.gamedatas.kyotocards[card].text1);
+                        var text2 = _(this.gamedatas.kyotocards[card].text2);
+                        var text3 = _(this.gamedatas.kyotocards[card].text3);
+                        var html = '<div class="toolt"><div class="cardtoolt cardrose">'+this.format_block('jstpl_kyoto1tool',{x: (card-21)*(-100), y: -200, name: name, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
                         this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
                     }
@@ -1816,7 +3253,138 @@ function (dojo, declare) {
                                                 
                         } ) , location+'_'+player );
 
-                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_kyoto1tool',{x: (card-31)*(-100), y: -300})+'</div></div>';
+                        var name = _(this.gamedatas.kyotocards[card].name);
+                        name = name.split(' ').map(word => {
+                            return word.charAt(0).toUpperCase() + word.slice(1);
+                        }).join(' ');
+                        var gain='';
+                        var bonus = this.gamedatas.kyotocards[card].bonus;
+                        bonus.forEach((valeur, index) => {
+                            
+                            if(index ==0)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="rtool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="rtool"></div><div class="rtool"></div>'
+                                    }
+                            }
+                            if(index ==1)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="gtool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="gtool"></div><div class="gtool"></div>'
+                                    }
+                            }
+
+                            if(index ==2)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="ptool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="ptool"></div><div class="ptool"></div>'
+                                        }
+                                }
+
+                            if(index ==3)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="ytool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="ytool"></div><div class="ytool"></div>'
+                                    }
+                            }
+
+                            
+                            if(index ==4)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="btool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="btool"></div><div class="btool"></div>'
+                                    }
+                            }
+
+                            if(index ==5)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="h1tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="h1tool"></div><div class="h1tool"></div>'
+                                        }
+                                }
+
+                            if(index ==6)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="h2tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="h2tool"></div><div class="h2tool"></div>'
+                                        }
+                                }
+
+                            if(index ==7)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="a1tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="a1tool"></div><div class="a1tool"></div>'
+                                        }
+                                }
+
+                            if(index ==8)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="a2tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="a2tool"></div><div class="a2tool"></div>'
+                                        }
+                                }
+                        });
+                        var gainpv = this.gamedatas.kyotocards[card].pv+'<div class="pvtool"></div>';
+                        var prerequis = this.gamedatas.kyotocards[card].prerequis;
+                        var gaintotal = this.gamedatas.kyotocards[card].gaintotal;
+                        var text1 = _(this.gamedatas.kyotocards[card].text1);
+                        var text2 = _(this.gamedatas.kyotocards[card].text2);
+                        var text3 = _(this.gamedatas.kyotocards[card].text3);
+                        var html = '<div class="toolt"><div class="cardtoolt cardrose">'+this.format_block('jstpl_kyoto1tool',{x: (card-31)*(-100), y: -300, name: name, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
                         this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
                     }
@@ -1834,7 +3402,138 @@ function (dojo, declare) {
                                                 
                         } ) , location+'_'+player );
 
-                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_kyoto2tool',{x: (card-41)*(-100), y: 0})+'</div></div>';
+                        var name = _(this.gamedatas.kyotocards[card].name);
+                        name = name.split(' ').map(word => {
+                            return word.charAt(0).toUpperCase() + word.slice(1);
+                        }).join(' ');
+                        var gain='';
+                        var bonus = this.gamedatas.kyotocards[card].bonus;
+                        bonus.forEach((valeur, index) => {
+                            
+                            if(index ==0)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="rtool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="rtool"></div><div class="rtool"></div>'
+                                    }
+                            }
+                            if(index ==1)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="gtool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="gtool"></div><div class="gtool"></div>'
+                                    }
+                            }
+
+                            if(index ==2)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="ptool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="ptool"></div><div class="ptool"></div>'
+                                        }
+                                }
+
+                            if(index ==3)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="ytool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="ytool"></div><div class="ytool"></div>'
+                                    }
+                            }
+
+                            
+                            if(index ==4)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="btool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="btool"></div><div class="btool"></div>'
+                                    }
+                            }
+
+                            if(index ==5)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="h1tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="h1tool"></div><div class="h1tool"></div>'
+                                        }
+                                }
+
+                            if(index ==6)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="h2tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="h2tool"></div><div class="h2tool"></div>'
+                                        }
+                                }
+
+                            if(index ==7)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="a1tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="a1tool"></div><div class="a1tool"></div>'
+                                        }
+                                }
+
+                            if(index ==8)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="a2tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="a2tool"></div><div class="a2tool"></div>'
+                                        }
+                                }
+                        });
+                        var gainpv = this.gamedatas.kyotocards[card].pv+'<div class="pvtool"></div>';
+                        var prerequis = this.gamedatas.kyotocards[card].prerequis;
+                        var gaintotal = this.gamedatas.kyotocards[card].gaintotal;
+                        var text1 = _(this.gamedatas.kyotocards[card].text1);
+                        var text2 = _(this.gamedatas.kyotocards[card].text2);
+                        var text3 = _(this.gamedatas.kyotocards[card].text3);
+                        var html = '<div class="toolt"><div class="cardtoolt cardrose">'+this.format_block('jstpl_kyoto2tool',{x: (card-41)*(-100), y: 0, name: name, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
                         this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
                     }
@@ -1852,7 +3551,138 @@ function (dojo, declare) {
                                                 
                         } ) , location+'_'+player );
 
-                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_kyoto2tool',{x: (card-51)*(-100), y: -100})+'</div></div>';
+                        var name = _(this.gamedatas.kyotocards[card].name);
+                        name = name.split(' ').map(word => {
+                            return word.charAt(0).toUpperCase() + word.slice(1);
+                        }).join(' ');
+                        var gain='';
+                        var bonus = this.gamedatas.kyotocards[card].bonus;
+                        bonus.forEach((valeur, index) => {
+                            
+                            if(index ==0)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="rtool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="rtool"></div><div class="rtool"></div>'
+                                    }
+                            }
+                            if(index ==1)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="gtool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="gtool"></div><div class="gtool"></div>'
+                                    }
+                            }
+
+                            if(index ==2)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="ptool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="ptool"></div><div class="ptool"></div>'
+                                        }
+                                }
+
+                            if(index ==3)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="ytool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="ytool"></div><div class="ytool"></div>'
+                                    }
+                            }
+
+                            
+                            if(index ==4)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="btool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="btool"></div><div class="btool"></div>'
+                                    }
+                            }
+
+                            if(index ==5)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="h1tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="h1tool"></div><div class="h1tool"></div>'
+                                        }
+                                }
+
+                            if(index ==6)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="h2tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="h2tool"></div><div class="h2tool"></div>'
+                                        }
+                                }
+
+                            if(index ==7)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="a1tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="a1tool"></div><div class="a1tool"></div>'
+                                        }
+                                }
+
+                            if(index ==8)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="a2tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="a2tool"></div><div class="a2tool"></div>'
+                                        }
+                                }
+                        });
+                        var gainpv = this.gamedatas.kyotocards[card].pv+'<div class="pvtool"></div>';
+                        var prerequis = this.gamedatas.kyotocards[card].prerequis;
+                        var gaintotal = this.gamedatas.kyotocards[card].gaintotal;
+                        var text1 = _(this.gamedatas.kyotocards[card].text1);
+                        var text2 = _(this.gamedatas.kyotocards[card].text2);
+                        var text3 = _(this.gamedatas.kyotocards[card].text3);
+                        var html = '<div class="toolt"><div class="cardtoolt cardrose">'+this.format_block('jstpl_kyoto2tool',{x: (card-51)*(-100), y: -100, name: name, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
                         this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
                     }
@@ -1870,7 +3700,138 @@ function (dojo, declare) {
                                                 
                         } ) , location+'_'+player );
 
-                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_kyoto2tool',{x: (card-61)*(-100), y: -200})+'</div></div>';
+                        var name = _(this.gamedatas.kyotocards[card].name);
+                        name = name.split(' ').map(word => {
+                            return word.charAt(0).toUpperCase() + word.slice(1);
+                        }).join(' ');
+                        var gain='';
+                        var bonus = this.gamedatas.kyotocards[card].bonus;
+                        bonus.forEach((valeur, index) => {
+                            
+                            if(index ==0)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="rtool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="rtool"></div><div class="rtool"></div>'
+                                    }
+                            }
+                            if(index ==1)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="gtool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="gtool"></div><div class="gtool"></div>'
+                                    }
+                            }
+
+                            if(index ==2)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="ptool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="ptool"></div><div class="ptool"></div>'
+                                        }
+                                }
+
+                            if(index ==3)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="ytool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="ytool"></div><div class="ytool"></div>'
+                                    }
+                            }
+
+                            
+                            if(index ==4)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="btool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="btool"></div><div class="btool"></div>'
+                                    }
+                            }
+
+                            if(index ==5)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="h1tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="h1tool"></div><div class="h1tool"></div>'
+                                        }
+                                }
+
+                            if(index ==6)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="h2tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="h2tool"></div><div class="h2tool"></div>'
+                                        }
+                                }
+
+                            if(index ==7)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="a1tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="a1tool"></div><div class="a1tool"></div>'
+                                        }
+                                }
+
+                            if(index ==8)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="a2tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="a2tool"></div><div class="a2tool"></div>'
+                                        }
+                                }
+                        });
+                        var gainpv = this.gamedatas.kyotocards[card].pv+'<div class="pvtool"></div>';
+                        var prerequis = this.gamedatas.kyotocards[card].prerequis;
+                        var gaintotal = this.gamedatas.kyotocards[card].gaintotal;
+                        var text1 = _(this.gamedatas.kyotocards[card].text1);
+                        var text2 = _(this.gamedatas.kyotocards[card].text2);
+                        var text3 = _(this.gamedatas.kyotocards[card].text3);
+                        var html = '<div class="toolt"><div class="cardtoolt cardrose">'+this.format_block('jstpl_kyoto2tool',{x: (card-61)*(-100), y: -200, name: name, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
                         this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
                     }
@@ -1888,7 +3849,145 @@ function (dojo, declare) {
                                                 
                         } ) , location+'_'+player );
 
-                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_kyoto2tool',{x: (card-71)*(-100), y: -300})+'</div></div>';
+                        var name = _(this.gamedatas.kyotocards[card].name);
+                        name = name.split(' ').map(word => {
+                            return word.charAt(0).toUpperCase() + word.slice(1);
+                        }).join(' ');
+                        var gain='';
+                        var bonus = this.gamedatas.kyotocards[card].bonus;
+                        bonus.forEach((valeur, index) => {
+                            
+                            if(index ==0)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="rtool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="rtool"></div><div class="rtool"></div>'
+                                    }
+                            }
+                            if(index ==1)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="gtool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="gtool"></div><div class="gtool"></div>'
+                                    }
+                            }
+
+                            if(index ==2)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="ptool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="ptool"></div><div class="ptool"></div>'
+                                        }
+                                }
+
+                            if(index ==3)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="ytool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="ytool"></div><div class="ytool"></div>'
+                                    }
+                            }
+
+                            
+                            if(index ==4)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="btool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="btool"></div><div class="btool"></div>'
+                                    }
+                            }
+
+                            if(index ==5)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="h1tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="h1tool"></div><div class="h1tool"></div>'
+                                        }
+                                }
+
+                            if(index ==6)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="h2tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="h2tool"></div><div class="h2tool"></div>'
+                                        }
+                                }
+
+                            if(index ==7)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="a1tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="a1tool"></div><div class="a1tool"></div>'
+                                        }
+                                }
+
+                            if(index ==8)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="a2tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="a2tool"></div><div class="a2tool"></div>'
+                                        }
+                                }
+                        });
+                        var gainpv = this.gamedatas.kyotocards[card].pv+'<div class="pvtool"></div>';
+                        var prerequis = this.gamedatas.kyotocards[card].prerequis;
+                        var gaintotal = this.gamedatas.kyotocards[card].gaintotal;
+                        var text1 = _(this.gamedatas.kyotocards[card].text1);
+                        var text2 = _(this.gamedatas.kyotocards[card].text2);
+                        var text3 = _(this.gamedatas.kyotocards[card].text3);
+                        if(card ==71)
+                        {
+                        var html = '<div class="toolt"><div class="cardtoolt cardrose">'+this.format_block('jstpl_kyoto2tool',{x: (card-71)*(-100), y: -300, name: name, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
+                        }
+                        else
+                        {
+                        var html = '<div class="toolt"><div class="cardtoolt cardjaune">'+this.format_block('jstpl_kyoto2tool',{x: (card-71)*(-100), y: -300, name: name, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
+                        }
                         this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
                     }
@@ -1928,10 +4027,134 @@ function (dojo, declare) {
                         name = name.split(' ').map(word => {
                             return word.charAt(0).toUpperCase() + word.slice(1);
                         }).join(' ');
+                        var gain='';
+                        var bonus = this.gamedatas.tokyocards[card].bonus;
+                        bonus.forEach((valeur, index) => {
+                            
+                            if(index ==0)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="rtool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="rtool"></div><div class="rtool"></div>'
+                                    }
+                            }
+                            if(index ==1)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="gtool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="gtool"></div><div class="gtool"></div>'
+                                    }
+                            }
+
+                            if(index ==2)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="ptool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="ptool"></div><div class="ptool"></div>'
+                                        }
+                                }
+
+                            if(index ==3)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="ytool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="ytool"></div><div class="ytool"></div>'
+                                    }
+                            }
+
+                            
+                            if(index ==4)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="btool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="btool"></div><div class="btool"></div>'
+                                    }
+                            }
+
+                            if(index ==5)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="h1tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="h1tool"></div><div class="h1tool"></div>'
+                                        }
+                                }
+
+                            if(index ==6)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="h2tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="h2tool"></div><div class="h2tool"></div>'
+                                        }
+                                }
+
+                            if(index ==7)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="a1tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="a1tool"></div><div class="a1tool"></div>'
+                                        }
+                                }
+
+                            if(index ==8)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="a2tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="a2tool"></div><div class="a2tool"></div>'
+                                        }
+                                }
+                        });
+                        var gainpv = this.gamedatas.tokyocards[card].pv+'<div class="pvtool"></div>';
+                        var prerequis = this.gamedatas.tokyocards[card].prerequis;
+                        var gaintotal = this.gamedatas.tokyocards[card].gaintotal;
                         var text1 = _(this.gamedatas.tokyocards[card].text1);
                         var text2 = _(this.gamedatas.tokyocards[card].text2);
                         var text3 = _(this.gamedatas.tokyocards[card].text3);
-                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_tokyo1tool',{x: (card-1)*(-100), y: 0, name: name, text1: text1, text2: text2, text3: text3})+'</div></div>';
+                        var html = '<div class="toolt"><div class="cardtoolt cardbleu">'+this.format_block('jstpl_tokyo1tool',{x: (card-1)*(-100), y: 0, name: name, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
                         this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
 
 
@@ -1954,10 +4177,134 @@ function (dojo, declare) {
                         name = name.split(' ').map(word => {
                             return word.charAt(0).toUpperCase() + word.slice(1);
                         }).join(' ');
+                        var gain='';
+                        var bonus = this.gamedatas.tokyocards[card].bonus;
+                        bonus.forEach((valeur, index) => {
+                            
+                            if(index ==0)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="rtool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="rtool"></div><div class="rtool"></div>'
+                                    }
+                            }
+                            if(index ==1)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="gtool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="gtool"></div><div class="gtool"></div>'
+                                    }
+                            }
+
+                            if(index ==2)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="ptool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="ptool"></div><div class="ptool"></div>'
+                                        }
+                                }
+
+                            if(index ==3)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="ytool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="ytool"></div><div class="ytool"></div>'
+                                    }
+                            }
+
+                            
+                            if(index ==4)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="btool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="btool"></div><div class="btool"></div>'
+                                    }
+                            }
+
+                            if(index ==5)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="h1tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="h1tool"></div><div class="h1tool"></div>'
+                                        }
+                                }
+
+                            if(index ==6)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="h2tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="h2tool"></div><div class="h2tool"></div>'
+                                        }
+                                }
+
+                            if(index ==7)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="a1tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="a1tool"></div><div class="a1tool"></div>'
+                                        }
+                                }
+
+                            if(index ==8)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="a2tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="a2tool"></div><div class="a2tool"></div>'
+                                        }
+                                }
+                        });
+                        var gainpv = this.gamedatas.tokyocards[card].pv+'<div class="pvtool"></div>';
+                        var prerequis = this.gamedatas.tokyocards[card].prerequis;
+                        var gaintotal = this.gamedatas.tokyocards[card].gaintotal;
                         var text1 = _(this.gamedatas.tokyocards[card].text1);
                         var text2 = _(this.gamedatas.tokyocards[card].text2);
                         var text3 = _(this.gamedatas.tokyocards[card].text3);
-                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_tokyo1tool',{x: (card-11)*(-100), y: -100, name: name, text1: text1, text2: text2, text3: text3})+'</div></div>';
+                        var html = '<div class="toolt"><div class="cardtoolt cardbleu">'+this.format_block('jstpl_tokyo1tool',{x: (card-11)*(-100), y: -100, name: name, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
                         this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
                     }
@@ -1979,10 +4326,134 @@ function (dojo, declare) {
                         name = name.split(' ').map(word => {
                             return word.charAt(0).toUpperCase() + word.slice(1);
                         }).join(' ');
+                        var gain='';
+                        var bonus = this.gamedatas.tokyocards[card].bonus;
+                        bonus.forEach((valeur, index) => {
+                            
+                            if(index ==0)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="rtool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="rtool"></div><div class="rtool"></div>'
+                                    }
+                            }
+                            if(index ==1)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="gtool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="gtool"></div><div class="gtool"></div>'
+                                    }
+                            }
+
+                            if(index ==2)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="ptool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="ptool"></div><div class="ptool"></div>'
+                                        }
+                                }
+
+                            if(index ==3)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="ytool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="ytool"></div><div class="ytool"></div>'
+                                    }
+                            }
+
+                            
+                            if(index ==4)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="btool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="btool"></div><div class="btool"></div>'
+                                    }
+                            }
+
+                            if(index ==5)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="h1tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="h1tool"></div><div class="h1tool"></div>'
+                                        }
+                                }
+
+                            if(index ==6)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="h2tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="h2tool"></div><div class="h2tool"></div>'
+                                        }
+                                }
+
+                            if(index ==7)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="a1tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="a1tool"></div><div class="a1tool"></div>'
+                                        }
+                                }
+
+                            if(index ==8)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="a2tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="a2tool"></div><div class="a2tool"></div>'
+                                        }
+                                }
+                        });
+                        var gainpv = this.gamedatas.tokyocards[card].pv+'<div class="pvtool"></div>';
+                        var prerequis = this.gamedatas.tokyocards[card].prerequis;
+                        var gaintotal = this.gamedatas.tokyocards[card].gaintotal;
                         var text1 = _(this.gamedatas.tokyocards[card].text1);
                         var text2 = _(this.gamedatas.tokyocards[card].text2);
                         var text3 = _(this.gamedatas.tokyocards[card].text3);
-                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_tokyo1tool',{x: (card-21)*(-100), y: -200, name: name, text1: text1, text2: text2, text3: text3})+'</div></div>';
+                        var html = '<div class="toolt"><div class="cardtoolt cardbleu">'+this.format_block('jstpl_tokyo1tool',{x: (card-21)*(-100), y: -200, name: name, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
                         this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
                     }
@@ -2004,10 +4475,134 @@ function (dojo, declare) {
                         name = name.split(' ').map(word => {
                             return word.charAt(0).toUpperCase() + word.slice(1);
                         }).join(' ');
+                        var gain='';
+                        var bonus = this.gamedatas.tokyocards[card].bonus;
+                        bonus.forEach((valeur, index) => {
+                            
+                            if(index ==0)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="rtool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="rtool"></div><div class="rtool"></div>'
+                                    }
+                            }
+                            if(index ==1)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="gtool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="gtool"></div><div class="gtool"></div>'
+                                    }
+                            }
+
+                            if(index ==2)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="ptool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="ptool"></div><div class="ptool"></div>'
+                                        }
+                                }
+
+                            if(index ==3)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="ytool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="ytool"></div><div class="ytool"></div>'
+                                    }
+                            }
+
+                            
+                            if(index ==4)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="btool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="btool"></div><div class="btool"></div>'
+                                    }
+                            }
+
+                            if(index ==5)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="h1tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="h1tool"></div><div class="h1tool"></div>'
+                                        }
+                                }
+
+                            if(index ==6)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="h2tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="h2tool"></div><div class="h2tool"></div>'
+                                        }
+                                }
+
+                            if(index ==7)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="a1tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="a1tool"></div><div class="a1tool"></div>'
+                                        }
+                                }
+
+                            if(index ==8)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="a2tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="a2tool"></div><div class="a2tool"></div>'
+                                        }
+                                }
+                        });
+                        var gainpv = this.gamedatas.tokyocards[card].pv+'<div class="pvtool"></div>';
+                        var prerequis = this.gamedatas.tokyocards[card].prerequis;
+                        var gaintotal = this.gamedatas.tokyocards[card].gaintotal;
                         var text1 = _(this.gamedatas.tokyocards[card].text1);
                         var text2 = _(this.gamedatas.tokyocards[card].text2);
                         var text3 = _(this.gamedatas.tokyocards[card].text3);
-                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_tokyo1tool',{x: (card-31)*(-100), y: -300, name: name, text1: text1, text2: text2, text3: text3})+'</div></div>';
+                        var html = '<div class="toolt"><div class="cardtoolt cardbleu">'+this.format_block('jstpl_tokyo1tool',{x: (card-31)*(-100), y: -300, name: name, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
                         this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
                     }
@@ -2025,7 +4620,138 @@ function (dojo, declare) {
                                                 
                         } ) , location+'_'+player );
 
-                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_tokyo2tool',{x: (card-41)*(-100), y: 0})+'</div></div>';
+                        var name = _(this.gamedatas.tokyocards[card].name);
+                        name = name.split(' ').map(word => {
+                            return word.charAt(0).toUpperCase() + word.slice(1);
+                        }).join(' ');
+                        var gain='';
+                        var bonus = this.gamedatas.tokyocards[card].bonus;
+                        bonus.forEach((valeur, index) => {
+                            
+                            if(index ==0)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="rtool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="rtool"></div><div class="rtool"></div>'
+                                    }
+                            }
+                            if(index ==1)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="gtool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="gtool"></div><div class="gtool"></div>'
+                                    }
+                            }
+
+                            if(index ==2)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="ptool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="ptool"></div><div class="ptool"></div>'
+                                        }
+                                }
+
+                            if(index ==3)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="ytool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="ytool"></div><div class="ytool"></div>'
+                                    }
+                            }
+
+                            
+                            if(index ==4)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="btool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="btool"></div><div class="btool"></div>'
+                                    }
+                            }
+
+                            if(index ==5)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="h1tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="h1tool"></div><div class="h1tool"></div>'
+                                        }
+                                }
+
+                            if(index ==6)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="h2tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="h2tool"></div><div class="h2tool"></div>'
+                                        }
+                                }
+
+                            if(index ==7)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="a1tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="a1tool"></div><div class="a1tool"></div>'
+                                        }
+                                }
+
+                            if(index ==8)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="a2tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="a2tool"></div><div class="a2tool"></div>'
+                                        }
+                                }
+                        });
+                        var gainpv = this.gamedatas.tokyocards[card].pv+'<div class="pvtool"></div>';
+                        var prerequis = this.gamedatas.tokyocards[card].prerequis;
+                        var gaintotal = this.gamedatas.tokyocards[card].gaintotal;
+                        var text1 = _(this.gamedatas.tokyocards[card].text1);
+                        var text2 = _(this.gamedatas.tokyocards[card].text2);
+                        var text3 = _(this.gamedatas.tokyocards[card].text3);
+                        var html = '<div class="toolt"><div class="cardtoolt cardbleu">'+this.format_block('jstpl_tokyo2tool',{x: (card-41)*(-100), y: 0, name: name, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
                         this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
                     }
@@ -2043,7 +4769,138 @@ function (dojo, declare) {
                                                 
                         } ) , location+'_'+player );
 
-                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_tokyo2tool',{x: (card-51)*(-100), y: -100})+'</div></div>';
+                        var name = _(this.gamedatas.tokyocards[card].name);
+                        name = name.split(' ').map(word => {
+                            return word.charAt(0).toUpperCase() + word.slice(1);
+                        }).join(' ');
+                        var gain='';
+                        var bonus = this.gamedatas.tokyocards[card].bonus;
+                        bonus.forEach((valeur, index) => {
+                            
+                            if(index ==0)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="rtool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="rtool"></div><div class="rtool"></div>'
+                                    }
+                            }
+                            if(index ==1)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="gtool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="gtool"></div><div class="gtool"></div>'
+                                    }
+                            }
+
+                            if(index ==2)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="ptool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="ptool"></div><div class="ptool"></div>'
+                                        }
+                                }
+
+                            if(index ==3)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="ytool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="ytool"></div><div class="ytool"></div>'
+                                    }
+                            }
+
+                            
+                            if(index ==4)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="btool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="btool"></div><div class="btool"></div>'
+                                    }
+                            }
+
+                            if(index ==5)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="h1tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="h1tool"></div><div class="h1tool"></div>'
+                                        }
+                                }
+
+                            if(index ==6)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="h2tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="h2tool"></div><div class="h2tool"></div>'
+                                        }
+                                }
+
+                            if(index ==7)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="a1tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="a1tool"></div><div class="a1tool"></div>'
+                                        }
+                                }
+
+                            if(index ==8)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="a2tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="a2tool"></div><div class="a2tool"></div>'
+                                        }
+                                }
+                        });
+                        var gainpv = this.gamedatas.tokyocards[card].pv+'<div class="pvtool"></div>';
+                        var prerequis = this.gamedatas.tokyocards[card].prerequis;
+                        var gaintotal = this.gamedatas.tokyocards[card].gaintotal;
+                        var text1 = _(this.gamedatas.tokyocards[card].text1);
+                        var text2 = _(this.gamedatas.tokyocards[card].text2);
+                        var text3 = _(this.gamedatas.tokyocards[card].text3);
+                        var html = '<div class="toolt"><div class="cardtoolt cardbleu">'+this.format_block('jstpl_tokyo2tool',{x: (card-51)*(-100), y: -100, name: name, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
                         this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
                     }
@@ -2061,7 +4918,138 @@ function (dojo, declare) {
                                                 
                         } ) , location+'_'+player );
 
-                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_tokyo2tool',{x: (card-61)*(-100), y: -200})+'</div></div>';
+                        var name = _(this.gamedatas.tokyocards[card].name);
+                        name = name.split(' ').map(word => {
+                            return word.charAt(0).toUpperCase() + word.slice(1);
+                        }).join(' ');
+                        var gain='';
+                        var bonus = this.gamedatas.tokyocards[card].bonus;
+                        bonus.forEach((valeur, index) => {
+                            
+                            if(index ==0)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="rtool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="rtool"></div><div class="rtool"></div>'
+                                    }
+                            }
+                            if(index ==1)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="gtool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="gtool"></div><div class="gtool"></div>'
+                                    }
+                            }
+
+                            if(index ==2)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="ptool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="ptool"></div><div class="ptool"></div>'
+                                        }
+                                }
+
+                            if(index ==3)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="ytool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="ytool"></div><div class="ytool"></div>'
+                                    }
+                            }
+
+                            
+                            if(index ==4)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="btool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="btool"></div><div class="btool"></div>'
+                                    }
+                            }
+
+                            if(index ==5)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="h1tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="h1tool"></div><div class="h1tool"></div>'
+                                        }
+                                }
+
+                            if(index ==6)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="h2tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="h2tool"></div><div class="h2tool"></div>'
+                                        }
+                                }
+
+                            if(index ==7)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="a1tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="a1tool"></div><div class="a1tool"></div>'
+                                        }
+                                }
+
+                            if(index ==8)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="a2tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="a2tool"></div><div class="a2tool"></div>'
+                                        }
+                                }
+                        });
+                        var gainpv = this.gamedatas.tokyocards[card].pv+'<div class="pvtool"></div>';
+                        var prerequis = this.gamedatas.tokyocards[card].prerequis;
+                        var gaintotal = this.gamedatas.tokyocards[card].gaintotal;
+                        var text1 = _(this.gamedatas.tokyocards[card].text1);
+                        var text2 = _(this.gamedatas.tokyocards[card].text2);
+                        var text3 = _(this.gamedatas.tokyocards[card].text3);
+                        var html = '<div class="toolt"><div class="cardtoolt cardbleu">'+this.format_block('jstpl_tokyo2tool',{x: (card-61)*(-100), y: -200, name: name, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
                         this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
                     }
@@ -2081,7 +5069,145 @@ function (dojo, declare) {
                                                 
                         } ) , location+'_'+player );
 
-                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_tokyo2tool',{x: (card-71)*(-100), y: -300})+'</div></div>';
+                        var name = _(this.gamedatas.tokyocards[card].name);
+                        name = name.split(' ').map(word => {
+                            return word.charAt(0).toUpperCase() + word.slice(1);
+                        }).join(' ');
+                        var gain='';
+                        var bonus = this.gamedatas.tokyocards[card].bonus;
+                        bonus.forEach((valeur, index) => {
+                            
+                            if(index ==0)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="rtool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="rtool"></div><div class="rtool"></div>'
+                                    }
+                            }
+                            if(index ==1)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="gtool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="gtool"></div><div class="gtool"></div>'
+                                    }
+                            }
+
+                            if(index ==2)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="ptool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="ptool"></div><div class="ptool"></div>'
+                                        }
+                                }
+
+                            if(index ==3)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="ytool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="ytool"></div><div class="ytool"></div>'
+                                    }
+                            }
+
+                            
+                            if(index ==4)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="btool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="btool"></div><div class="btool"></div>'
+                                    }
+                            }
+
+                            if(index ==5)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="h1tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="h1tool"></div><div class="h1tool"></div>'
+                                        }
+                                }
+
+                            if(index ==6)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="h2tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="h2tool"></div><div class="h2tool"></div>'
+                                        }
+                                }
+
+                            if(index ==7)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="a1tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="a1tool"></div><div class="a1tool"></div>'
+                                        }
+                                }
+
+                            if(index ==8)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="a2tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="a2tool"></div><div class="a2tool"></div>'
+                                        }
+                                }
+                        });
+                        var gainpv = this.gamedatas.tokyocards[card].pv+'<div class="pvtool"></div>';
+                        var prerequis = this.gamedatas.tokyocards[card].prerequis;
+                        var gaintotal = this.gamedatas.tokyocards[card].gaintotal;
+                        var text1 = _(this.gamedatas.tokyocards[card].text1);
+                        var text2 = _(this.gamedatas.tokyocards[card].text2);
+                        var text3 = _(this.gamedatas.tokyocards[card].text3);
+                        if(card ==71)
+                        {
+                        var html = '<div class="toolt"><div class="cardtoolt cardbleu">'+this.format_block('jstpl_tokyo2tool',{x: (card-71)*(-100), y: -300, name: name, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
+                        }
+                        else
+                        {
+                        var html = '<div class="toolt"><div class="cardtoolt cardjaune">'+this.format_block('jstpl_tokyo2tool',{x: (card-71)*(-100), y: -300, name: name, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
+                        }
                         this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
                     }
@@ -2140,7 +5266,12 @@ function (dojo, declare) {
                         var element = document.getElementById(location+'_'+player);
                         element.style.zIndex = "10";
 
-                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_tokyowalktool')+'</div></div>';
+                        var name =_('Go For A Walk');
+                        var gain ='<div class="h1tool"></div><div class="wtool"></div>';
+                        var recherche ='<div class="recherchetool"></div>';
+                        var gainpv ='1<div class="pvtool"></div>';
+                        var gaintotal='2<div class="pvtool"></div>';
+                        var html = '<div class="toolt"><div class="cardtoolt cardbleu">'+this.format_block('jstpl_tokyowalktool',{name: name, gain: gain, gainpv: gainpv, gaintotal: gaintotal, recherche: recherche})+'</div></div>';
                         this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
 
                 }
@@ -2169,7 +5300,138 @@ function (dojo, declare) {
                                                 
                         } ) , location+'_'+player );
 
-                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_kyoto1tool',{x: (card-1)*(-100), y: 0})+'</div></div>';
+                        var name = _(this.gamedatas.kyotocards[card].name);
+                        name = name.split(' ').map(word => {
+                            return word.charAt(0).toUpperCase() + word.slice(1);
+                        }).join(' ');
+                        var gain='';
+                        var bonus = this.gamedatas.kyotocards[card].bonus;
+                        bonus.forEach((valeur, index) => {
+                            
+                            if(index ==0)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="rtool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="rtool"></div><div class="rtool"></div>'
+                                    }
+                            }
+                            if(index ==1)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="gtool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="gtool"></div><div class="gtool"></div>'
+                                    }
+                            }
+
+                            if(index ==2)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="ptool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="ptool"></div><div class="ptool"></div>'
+                                        }
+                                }
+
+                            if(index ==3)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="ytool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="ytool"></div><div class="ytool"></div>'
+                                    }
+                            }
+
+                            
+                            if(index ==4)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="btool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="btool"></div><div class="btool"></div>'
+                                    }
+                            }
+
+                            if(index ==5)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="h1tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="h1tool"></div><div class="h1tool"></div>'
+                                        }
+                                }
+
+                            if(index ==6)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="h2tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="h2tool"></div><div class="h2tool"></div>'
+                                        }
+                                }
+
+                            if(index ==7)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="a1tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="a1tool"></div><div class="a1tool"></div>'
+                                        }
+                                }
+
+                            if(index ==8)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="a2tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="a2tool"></div><div class="a2tool"></div>'
+                                        }
+                                }
+                        });
+                        var gainpv = this.gamedatas.kyotocards[card].pv+'<div class="pvtool"></div>';
+                        var prerequis = this.gamedatas.kyotocards[card].prerequis;
+                        var gaintotal = this.gamedatas.kyotocards[card].gaintotal;
+                        var text1 = _(this.gamedatas.kyotocards[card].text1);
+                        var text2 = _(this.gamedatas.kyotocards[card].text2);
+                        var text3 = _(this.gamedatas.kyotocards[card].text3);
+                        var html = '<div class="toolt"><div class="cardtoolt cardrose">'+this.format_block('jstpl_kyoto1tool',{x: (card-1)*(-100), y: 0, name: name, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
                         this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
     
                     }
@@ -2187,7 +5449,138 @@ function (dojo, declare) {
                                                 
                         } ) , location+'_'+player );
 
-                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_kyoto1tool',{x: (card-11)*(-100), y: -100})+'</div></div>';
+                        var name = _(this.gamedatas.kyotocards[card].name);
+                        name = name.split(' ').map(word => {
+                            return word.charAt(0).toUpperCase() + word.slice(1);
+                        }).join(' ');
+                        var gain='';
+                        var bonus = this.gamedatas.kyotocards[card].bonus;
+                        bonus.forEach((valeur, index) => {
+                            
+                            if(index ==0)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="rtool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="rtool"></div><div class="rtool"></div>'
+                                    }
+                            }
+                            if(index ==1)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="gtool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="gtool"></div><div class="gtool"></div>'
+                                    }
+                            }
+
+                            if(index ==2)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="ptool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="ptool"></div><div class="ptool"></div>'
+                                        }
+                                }
+
+                            if(index ==3)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="ytool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="ytool"></div><div class="ytool"></div>'
+                                    }
+                            }
+
+                            
+                            if(index ==4)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="btool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="btool"></div><div class="btool"></div>'
+                                    }
+                            }
+
+                            if(index ==5)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="h1tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="h1tool"></div><div class="h1tool"></div>'
+                                        }
+                                }
+
+                            if(index ==6)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="h2tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="h2tool"></div><div class="h2tool"></div>'
+                                        }
+                                }
+
+                            if(index ==7)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="a1tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="a1tool"></div><div class="a1tool"></div>'
+                                        }
+                                }
+
+                            if(index ==8)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="a2tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="a2tool"></div><div class="a2tool"></div>'
+                                        }
+                                }
+                        });
+                        var gainpv = this.gamedatas.kyotocards[card].pv+'<div class="pvtool"></div>';
+                        var prerequis = this.gamedatas.kyotocards[card].prerequis;
+                        var gaintotal = this.gamedatas.kyotocards[card].gaintotal;
+                        var text1 = _(this.gamedatas.kyotocards[card].text1);
+                        var text2 = _(this.gamedatas.kyotocards[card].text2);
+                        var text3 = _(this.gamedatas.kyotocards[card].text3);
+                        var html = '<div class="toolt"><div class="cardtoolt cardrose">'+this.format_block('jstpl_kyoto1tool',{x: (card-11)*(-100), y: -100, name: name, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
                         this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
                     }
@@ -2205,7 +5598,138 @@ function (dojo, declare) {
                                                 
                         } ) , location+'_'+player );
 
-                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_kyoto1tool',{x: (card-21)*(-100), y: -200})+'</div></div>';
+                        var name = _(this.gamedatas.kyotocards[card].name);
+                        name = name.split(' ').map(word => {
+                            return word.charAt(0).toUpperCase() + word.slice(1);
+                        }).join(' ');
+                        var gain='';
+                        var bonus = this.gamedatas.kyotocards[card].bonus;
+                        bonus.forEach((valeur, index) => {
+                            
+                            if(index ==0)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="rtool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="rtool"></div><div class="rtool"></div>'
+                                    }
+                            }
+                            if(index ==1)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="gtool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="gtool"></div><div class="gtool"></div>'
+                                    }
+                            }
+
+                            if(index ==2)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="ptool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="ptool"></div><div class="ptool"></div>'
+                                        }
+                                }
+
+                            if(index ==3)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="ytool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="ytool"></div><div class="ytool"></div>'
+                                    }
+                            }
+
+                            
+                            if(index ==4)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="btool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="btool"></div><div class="btool"></div>'
+                                    }
+                            }
+
+                            if(index ==5)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="h1tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="h1tool"></div><div class="h1tool"></div>'
+                                        }
+                                }
+
+                            if(index ==6)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="h2tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="h2tool"></div><div class="h2tool"></div>'
+                                        }
+                                }
+
+                            if(index ==7)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="a1tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="a1tool"></div><div class="a1tool"></div>'
+                                        }
+                                }
+
+                            if(index ==8)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="a2tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="a2tool"></div><div class="a2tool"></div>'
+                                        }
+                                }
+                        });
+                        var gainpv = this.gamedatas.kyotocards[card].pv+'<div class="pvtool"></div>';
+                        var prerequis = this.gamedatas.kyotocards[card].prerequis;
+                        var gaintotal = this.gamedatas.kyotocards[card].gaintotal;
+                        var text1 = _(this.gamedatas.kyotocards[card].text1);
+                        var text2 = _(this.gamedatas.kyotocards[card].text2);
+                        var text3 = _(this.gamedatas.kyotocards[card].text3);
+                        var html = '<div class="toolt"><div class="cardtoolt cardrose">'+this.format_block('jstpl_kyoto1tool',{x: (card-21)*(-100), y: -200, name: name, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
                         this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
                     }
@@ -2223,7 +5747,138 @@ function (dojo, declare) {
                                                 
                         } ) , location+'_'+player );
 
-                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_kyoto1tool',{x: (card-31)*(-100), y: -300})+'</div></div>';
+                        var name = _(this.gamedatas.kyotocards[card].name);
+                        name = name.split(' ').map(word => {
+                            return word.charAt(0).toUpperCase() + word.slice(1);
+                        }).join(' ');
+                        var gain='';
+                        var bonus = this.gamedatas.kyotocards[card].bonus;
+                        bonus.forEach((valeur, index) => {
+                            
+                            if(index ==0)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="rtool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="rtool"></div><div class="rtool"></div>'
+                                    }
+                            }
+                            if(index ==1)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="gtool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="gtool"></div><div class="gtool"></div>'
+                                    }
+                            }
+
+                            if(index ==2)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="ptool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="ptool"></div><div class="ptool"></div>'
+                                        }
+                                }
+
+                            if(index ==3)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="ytool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="ytool"></div><div class="ytool"></div>'
+                                    }
+                            }
+
+                            
+                            if(index ==4)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="btool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="btool"></div><div class="btool"></div>'
+                                    }
+                            }
+
+                            if(index ==5)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="h1tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="h1tool"></div><div class="h1tool"></div>'
+                                        }
+                                }
+
+                            if(index ==6)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="h2tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="h2tool"></div><div class="h2tool"></div>'
+                                        }
+                                }
+
+                            if(index ==7)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="a1tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="a1tool"></div><div class="a1tool"></div>'
+                                        }
+                                }
+
+                            if(index ==8)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="a2tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="a2tool"></div><div class="a2tool"></div>'
+                                        }
+                                }
+                        });
+                        var gainpv = this.gamedatas.kyotocards[card].pv+'<div class="pvtool"></div>';
+                        var prerequis = this.gamedatas.kyotocards[card].prerequis;
+                        var gaintotal = this.gamedatas.kyotocards[card].gaintotal;
+                        var text1 = _(this.gamedatas.kyotocards[card].text1);
+                        var text2 = _(this.gamedatas.kyotocards[card].text2);
+                        var text3 = _(this.gamedatas.kyotocards[card].text3);
+                        var html = '<div class="toolt"><div class="cardtoolt cardrose">'+this.format_block('jstpl_kyoto1tool',{x: (card-31)*(-100), y: -300, name: name, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
                         this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
                     }
@@ -2241,7 +5896,138 @@ function (dojo, declare) {
                                                 
                         } ) , location+'_'+player );
 
-                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_kyoto2tool',{x: (card-41)*(-100), y: 0})+'</div></div>';
+                        var name = _(this.gamedatas.kyotocards[card].name);
+                        name = name.split(' ').map(word => {
+                            return word.charAt(0).toUpperCase() + word.slice(1);
+                        }).join(' ');
+                        var gain='';
+                        var bonus = this.gamedatas.kyotocards[card].bonus;
+                        bonus.forEach((valeur, index) => {
+                            
+                            if(index ==0)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="rtool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="rtool"></div><div class="rtool"></div>'
+                                    }
+                            }
+                            if(index ==1)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="gtool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="gtool"></div><div class="gtool"></div>'
+                                    }
+                            }
+
+                            if(index ==2)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="ptool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="ptool"></div><div class="ptool"></div>'
+                                        }
+                                }
+
+                            if(index ==3)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="ytool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="ytool"></div><div class="ytool"></div>'
+                                    }
+                            }
+
+                            
+                            if(index ==4)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="btool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="btool"></div><div class="btool"></div>'
+                                    }
+                            }
+
+                            if(index ==5)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="h1tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="h1tool"></div><div class="h1tool"></div>'
+                                        }
+                                }
+
+                            if(index ==6)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="h2tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="h2tool"></div><div class="h2tool"></div>'
+                                        }
+                                }
+
+                            if(index ==7)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="a1tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="a1tool"></div><div class="a1tool"></div>'
+                                        }
+                                }
+
+                            if(index ==8)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="a2tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="a2tool"></div><div class="a2tool"></div>'
+                                        }
+                                }
+                        });
+                        var gainpv = this.gamedatas.kyotocards[card].pv+'<div class="pvtool"></div>';
+                        var prerequis = this.gamedatas.kyotocards[card].prerequis;
+                        var gaintotal = this.gamedatas.kyotocards[card].gaintotal;
+                        var text1 = _(this.gamedatas.kyotocards[card].text1);
+                        var text2 = _(this.gamedatas.kyotocards[card].text2);
+                        var text3 = _(this.gamedatas.kyotocards[card].text3);
+                        var html = '<div class="toolt"><div class="cardtoolt cardrose">'+this.format_block('jstpl_kyoto2tool',{x: (card-41)*(-100), y: 0, name: name, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
                         this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
                     }
@@ -2259,7 +6045,138 @@ function (dojo, declare) {
                                                 
                         } ) , location+'_'+player );
 
-                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_kyoto2tool',{x: (card-51)*(-100), y: -100})+'</div></div>';
+                        var name = _(this.gamedatas.kyotocards[card].name);
+                        name = name.split(' ').map(word => {
+                            return word.charAt(0).toUpperCase() + word.slice(1);
+                        }).join(' ');
+                        var gain='';
+                        var bonus = this.gamedatas.kyotocards[card].bonus;
+                        bonus.forEach((valeur, index) => {
+                            
+                            if(index ==0)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="rtool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="rtool"></div><div class="rtool"></div>'
+                                    }
+                            }
+                            if(index ==1)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="gtool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="gtool"></div><div class="gtool"></div>'
+                                    }
+                            }
+
+                            if(index ==2)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="ptool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="ptool"></div><div class="ptool"></div>'
+                                        }
+                                }
+
+                            if(index ==3)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="ytool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="ytool"></div><div class="ytool"></div>'
+                                    }
+                            }
+
+                            
+                            if(index ==4)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="btool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="btool"></div><div class="btool"></div>'
+                                    }
+                            }
+
+                            if(index ==5)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="h1tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="h1tool"></div><div class="h1tool"></div>'
+                                        }
+                                }
+
+                            if(index ==6)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="h2tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="h2tool"></div><div class="h2tool"></div>'
+                                        }
+                                }
+
+                            if(index ==7)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="a1tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="a1tool"></div><div class="a1tool"></div>'
+                                        }
+                                }
+
+                            if(index ==8)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="a2tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="a2tool"></div><div class="a2tool"></div>'
+                                        }
+                                }
+                        });
+                        var gainpv = this.gamedatas.kyotocards[card].pv+'<div class="pvtool"></div>';
+                        var prerequis = this.gamedatas.kyotocards[card].prerequis;
+                        var gaintotal = this.gamedatas.kyotocards[card].gaintotal;
+                        var text1 = _(this.gamedatas.kyotocards[card].text1);
+                        var text2 = _(this.gamedatas.kyotocards[card].text2);
+                        var text3 = _(this.gamedatas.kyotocards[card].text3);
+                        var html = '<div class="toolt"><div class="cardtoolt cardrose">'+this.format_block('jstpl_kyoto2tool',{x: (card-51)*(-100), y: -100, name: name, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
                         this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
                     }
@@ -2277,7 +6194,138 @@ function (dojo, declare) {
                                                 
                         } ) , location+'_'+player );
 
-                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_kyoto2tool',{x: (card-61)*(-100), y: -200})+'</div></div>';
+                        var name = _(this.gamedatas.kyotocards[card].name);
+                        name = name.split(' ').map(word => {
+                            return word.charAt(0).toUpperCase() + word.slice(1);
+                        }).join(' ');
+                        var gain='';
+                        var bonus = this.gamedatas.kyotocards[card].bonus;
+                        bonus.forEach((valeur, index) => {
+                            
+                            if(index ==0)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="rtool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="rtool"></div><div class="rtool"></div>'
+                                    }
+                            }
+                            if(index ==1)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="gtool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="gtool"></div><div class="gtool"></div>'
+                                    }
+                            }
+
+                            if(index ==2)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="ptool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="ptool"></div><div class="ptool"></div>'
+                                        }
+                                }
+
+                            if(index ==3)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="ytool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="ytool"></div><div class="ytool"></div>'
+                                    }
+                            }
+
+                            
+                            if(index ==4)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="btool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="btool"></div><div class="btool"></div>'
+                                    }
+                            }
+
+                            if(index ==5)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="h1tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="h1tool"></div><div class="h1tool"></div>'
+                                        }
+                                }
+
+                            if(index ==6)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="h2tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="h2tool"></div><div class="h2tool"></div>'
+                                        }
+                                }
+
+                            if(index ==7)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="a1tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="a1tool"></div><div class="a1tool"></div>'
+                                        }
+                                }
+
+                            if(index ==8)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="a2tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="a2tool"></div><div class="a2tool"></div>'
+                                        }
+                                }
+                        });
+                        var gainpv = this.gamedatas.kyotocards[card].pv+'<div class="pvtool"></div>';
+                        var prerequis = this.gamedatas.kyotocards[card].prerequis;
+                        var gaintotal = this.gamedatas.kyotocards[card].gaintotal;
+                        var text1 = _(this.gamedatas.kyotocards[card].text1);
+                        var text2 = _(this.gamedatas.kyotocards[card].text2);
+                        var text3 = _(this.gamedatas.kyotocards[card].text3);
+                        var html = '<div class="toolt"><div class="cardtoolt cardrose">'+this.format_block('jstpl_kyoto2tool',{x: (card-61)*(-100), y: -200, name: name, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
                         this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
                     }
@@ -2295,7 +6343,145 @@ function (dojo, declare) {
                                                 
                         } ) , location+'_'+player );
 
-                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_kyoto2tool',{x: (card-71)*(-100), y: -300})+'</div></div>';
+                        var name = _(this.gamedatas.kyotocards[card].name);
+                        name = name.split(' ').map(word => {
+                            return word.charAt(0).toUpperCase() + word.slice(1);
+                        }).join(' ');
+                        var gain='';
+                        var bonus = this.gamedatas.kyotocards[card].bonus;
+                        bonus.forEach((valeur, index) => {
+                            
+                            if(index ==0)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="rtool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="rtool"></div><div class="rtool"></div>'
+                                    }
+                            }
+                            if(index ==1)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="gtool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="gtool"></div><div class="gtool"></div>'
+                                    }
+                            }
+
+                            if(index ==2)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="ptool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="ptool"></div><div class="ptool"></div>'
+                                        }
+                                }
+
+                            if(index ==3)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="ytool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="ytool"></div><div class="ytool"></div>'
+                                    }
+                            }
+
+                            
+                            if(index ==4)
+                            {
+                                if(valeur == 1)
+                                {
+                                    gain += '<div class="btool"></div>'
+                                }
+
+                                if(valeur == 2)
+                                    {
+                                        gain += '<div class="btool"></div><div class="btool"></div>'
+                                    }
+                            }
+
+                            if(index ==5)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="h1tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="h1tool"></div><div class="h1tool"></div>'
+                                        }
+                                }
+
+                            if(index ==6)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="h2tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="h2tool"></div><div class="h2tool"></div>'
+                                        }
+                                }
+
+                            if(index ==7)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="a1tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="a1tool"></div><div class="a1tool"></div>'
+                                        }
+                                }
+
+                            if(index ==8)
+                                {
+                                    if(valeur == 1)
+                                    {
+                                        gain += '<div class="a2tool"></div>'
+                                    }
+    
+                                    if(valeur == 2)
+                                        {
+                                            gain += '<div class="a2tool"></div><div class="a2tool"></div>'
+                                        }
+                                }
+                        });
+                        var gainpv = this.gamedatas.kyotocards[card].pv+'<div class="pvtool"></div>';
+                        var prerequis = this.gamedatas.kyotocards[card].prerequis;
+                        var gaintotal = this.gamedatas.kyotocards[card].gaintotal;
+                        var text1 = _(this.gamedatas.kyotocards[card].text1);
+                        var text2 = _(this.gamedatas.kyotocards[card].text2);
+                        var text3 = _(this.gamedatas.kyotocards[card].text3);
+                        if(card ==71)
+                        {
+                        var html = '<div class="toolt"><div class="cardtoolt cardrose">'+this.format_block('jstpl_kyoto2tool',{x: (card-71)*(-100), y: -300, name: name, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
+                        }
+                        else
+                        {
+                        var html = '<div class="toolt"><div class="cardtoolt cardjaune">'+this.format_block('jstpl_kyoto2tool',{x: (card-71)*(-100), y: -300, name: name, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
+                        }
                         this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
                     }
@@ -2353,7 +6539,12 @@ function (dojo, declare) {
                             var element = document.getElementById(location+'_'+player);
                             element.style.zIndex = "10";
 
-                        var html = '<div class="toolt"><div class="cardtoolt">'+this.format_block('jstpl_kyotowalktool')+'</div></div>';
+                        var name =_('Go For A Walk');
+                        var gain ='<div class="h1tool"></div><div class="wtool"></div>';
+                        var recherche ='<div class="recherchetool"></div>';
+                        var gainpv ='1<div class="pvtool"></div>';
+                        var gaintotal='2<div class="pvtool"></div>';
+                        var html = '<div class="toolt"><div class="cardtoolt cardrose">'+this.format_block('jstpl_kyotowalktool',{name: name, gain: gain, gainpv: gainpv, gaintotal: gaintotal, recherche: recherche})+'</div></div>';
                         this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
     
                     }
