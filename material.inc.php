@@ -1282,7 +1282,7 @@ $this->kyotocards = [
     'text1' => clienttranslate(""),
     'text2' => clienttranslate(""),
     'text3' => clienttranslate(""),
-    'gaintotal' => '',
+    'gaintotal' => '3<div class="pvtool"></div> per <div class="kyototool"></div> ',
   ],
 
   '31' => [

@@ -1766,6 +1766,16 @@ display: none;
   
 }
 
+.kyototool {
+  width: 83px;
+  height: 30px;
+  background-image: url('img/kyototool.png');
+  background-size: 100% 100%;
+  display: inline-block;
+  vertical-align: -2px;
+  
+}
+
 .littlepvtool{
   width: 15px;
   height: 15px;
