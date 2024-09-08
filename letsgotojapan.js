@@ -1209,7 +1209,9 @@ function (dojo, declare) {
                                             var recherche ='<div class="recherchetool"></div>';
                                             var gainpv ='1<div class="pvtool"></div>';
                                             var gaintotal='2<div class="pvtool"></div>';
-                                            var html = '<div class="toolt"><div class="cardtoolt cardbleu">'+this.format_block('jstpl_tokyowalktool',{name: name, gain: gain, gainpv: gainpv, gaintotal: gaintotal, recherche: recherche})+'</div></div>';
+                                            var text1 = _('Gain:');
+                                            var text2 = _('If your Highlight of the Day:');
+                                            var html = '<div class="toolt"><div class="cardtoolt cardbleu">'+this.format_block('jstpl_tokyowalktool',{name: name, gain: gain, gainpv: gainpv, gaintotal: gaintotal, recherche: recherche, text1: text1, text2: text2})+'</div></div>';
                                             this.addTooltipHtml( 'cardtokyoverso', html,1000);
 
                                     
@@ -1224,7 +1226,9 @@ function (dojo, declare) {
                                             var recherche ='<div class="recherchetool"></div>';
                                             var gainpv ='1<div class="pvtool"></div>';
                                             var gaintotal='2<div class="pvtool"></div>';
-                                            var html = '<div class="toolt"><div class="cardtoolt cardrose">'+this.format_block('jstpl_kyotowalktool',{name: name, gain: gain, gainpv: gainpv, gaintotal: gaintotal, recherche: recherche})+'</div></div>';
+                                            var text1 = _('Gain:');
+                                            var text2 = _('If your Highlight of the Day:');
+                                            var html = '<div class="toolt"><div class="cardtoolt cardrose">'+this.format_block('jstpl_kyotowalktool',{name: name, gain: gain, gainpv: gainpv, gaintotal: gaintotal, recherche: recherche, text1: text1, text2: text2})+'</div></div>';
                                             this.addTooltipHtml( 'cardkyotoverso', html,1000);
                                         }
                                     if(args[this.getCurrentPlayerId()][0].buttons[nb].startsWith("cardbouton_1"))
@@ -5271,7 +5275,9 @@ function (dojo, declare) {
                         var recherche ='<div class="recherchetool"></div>';
                         var gainpv ='1<div class="pvtool"></div>';
                         var gaintotal='2<div class="pvtool"></div>';
-                        var html = '<div class="toolt"><div class="cardtoolt cardbleu">'+this.format_block('jstpl_tokyowalktool',{name: name, gain: gain, gainpv: gainpv, gaintotal: gaintotal, recherche: recherche})+'</div></div>';
+                        var text1 = _('Gain:');
+                        var text2 = _('If your Highlight of the Day:');
+                        var html = '<div class="toolt"><div class="cardtoolt cardbleu">'+this.format_block('jstpl_tokyowalktool',{name: name, gain: gain, gainpv: gainpv, gaintotal: gaintotal, recherche: recherche, text1: text1, text2: text2})+'</div></div>';
                         this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
 
                 }
@@ -6544,7 +6550,9 @@ function (dojo, declare) {
                         var recherche ='<div class="recherchetool"></div>';
                         var gainpv ='1<div class="pvtool"></div>';
                         var gaintotal='2<div class="pvtool"></div>';
-                        var html = '<div class="toolt"><div class="cardtoolt cardrose">'+this.format_block('jstpl_kyotowalktool',{name: name, gain: gain, gainpv: gainpv, gaintotal: gaintotal, recherche: recherche})+'</div></div>';
+                        var text1 = _('Gain:');
+                        var text2 = _('If your Highlight of the Day:');
+                        var html = '<div class="toolt"><div class="cardtoolt cardrose">'+this.format_block('jstpl_kyotowalktool',{name: name, gain: gain, gainpv: gainpv, gaintotal: gaintotal, recherche: recherche, text1: text1, text2: text2})+'</div></div>';
                         this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
     
                     }
