@@ -188,6 +188,16 @@ class letsgotojapan extends Table
 
         self::DbQuery( "INSERT INTO agent (name) VALUES ('agent')" );
 
+        //Pref Confirm///
+
+        foreach( $players as $player_id => $player )
+            {
+                
+                self::DbQuery( "INSERT INTO prefconfirm (player_id, valeur) VALUES ($player_id, 1)" );
+                
+
+            }
+
         
         //////// LANCEMENT DU JEU ///////
 

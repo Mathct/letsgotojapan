@@ -119,6 +119,13 @@ CREATE TABLE IF NOT EXISTS `tokens` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
+CREATE TABLE IF NOT EXISTS `prefconfirm` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `player_id` int(16) NULL,
+  `valeur` int(10) NULL,  
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
 CREATE TABLE IF NOT EXISTS `agent` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NULL,

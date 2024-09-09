@@ -1633,7 +1633,7 @@ display: none;
   display: inline-block;
 }
 
-.wtool{
+.wtool{ /*walk*/
   width: 30px;
   height: 30px;
   background-image: url('img/logtoken.png');
@@ -1641,6 +1641,16 @@ display: none;
   background-position-x: -300%;
   display: inline-block;
 }
+
+.witool{ /*wild*/
+  width: 30px;
+  height: 30px;
+  background-image: url('img/logtoken.png');
+  background-size: 400% 100%;
+  background-position-x: -200%;
+  display: inline-block;
+}
+
 
 
 .pvtool{
@@ -1741,6 +1751,17 @@ display: none;
     
 }
 
+.noa1tool{
+  width: 30px;
+  height: 30px;
+  background-image: url('img/nohumeurtoken.png');
+  background-size: 400% 100%;
+  background-position-x: -200%;
+  display: inline-block;
+  
+    
+}
+
 .a2tool{
   width: 30px;
   height: 30px;
@@ -1776,6 +1797,14 @@ display: none;
   
 }
 
+.traveltool{
+  width: 48px;
+  height: 30px;
+  background-image: url('img/travel.png');
+  background-size: 100% 100%;
+  display: inline-block;
+}
+
 .littlepvtool{
   width: 15px;
   height: 15px;
@@ -1793,6 +1822,7 @@ display: none;
   background-size: 600% 100%;
   background-position-x: 0%;
   display: inline-block;
+  vertical-align: -3px;
   
     
 }
@@ -1804,6 +1834,7 @@ display: none;
   background-size: 600% 100%;
   background-position-x: -100%;
   display: inline-block;
+  vertical-align: -3px;
   
     
 }
@@ -1815,6 +1846,7 @@ display: none;
   background-size: 600% 100%;
   background-position-x: -200%;
   display: inline-block;
+  vertical-align: -3px;
   
     
 }
@@ -1826,6 +1858,7 @@ display: none;
   background-size: 600% 100%;
   background-position-x: -300%;
   display: inline-block;
+  vertical-align: -3px;
   
     
 }
@@ -1836,6 +1869,18 @@ display: none;
   background-image: url('img/tokenjour.png');
   background-size: 600% 100%;
   background-position-x: -400%;
+  display: inline-block;
+  vertical-align: -3px;
+  
+    
+}
+
+.littlea1tool{
+  width: 15px;
+  height: 15px;
+  background-image: url('img/humeurtoken.png');
+  background-size: 400% 100%;
+  background-position-x: -200%;
   display: inline-block;
   
     
