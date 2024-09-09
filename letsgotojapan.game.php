@@ -2366,6 +2366,15 @@ function actValidate3Discard( $arg1, $arg2, $arg3)
     
 }
 
+function actConfirmPref($arg1, $arg2)
+{
+    $etat = self::getUniqueValueFromDB("SELECT valeur FROM prefconfirm WHERE player_id={$arg1}");
+    if($etat != $arg2)
+    {
+        self::DbQuery( "UPDATE prefconfirm set valeur = '{$arg2}' WHERE player_id = {$arg1}" );
+    }
+}
+
 
 
 

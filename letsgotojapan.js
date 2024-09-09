@@ -8467,20 +8467,16 @@ function (dojo, declare) {
             },
 
             onGameUserPreferenceChanged(prefId, prefValue) {
-                if (prefId === 101) {
 
 
-                    if((prefValue == 1)&&(!this.isSpectator))
-                    {
-                        //console.warn (this.getCurrentPlayerId()+' active 1')
-                    }
-                    if((prefValue == 2)&&(!this.isSpectator))
-                    {
-                        //console.warn (this.getCurrentPlayerId()+' active 2')
-                    }
-                    
-                   
-                    
+                if ((prefId === 101)&&(!this.isSpectator))
+                {       
+                    /*this.ajaxcall( "/letsgotojapan/letsgotojapan/actConfirmPref.html", { 
+                    lock: true,
+                    arg1: this.getCurrentPlayerId(),
+                    arg2: prefValue,
+                    }, 
+                    this, function( result ) {}, function( is_error) {} );*/
                 }
             },
     

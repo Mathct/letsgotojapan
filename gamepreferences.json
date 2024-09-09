@@ -18,7 +18,7 @@
 
     "101": {
       "name": "Confirmation step",
-      "needReload": false,
+      "needReload": true,
       "values": {
         "1": {
           "name": "Enabled"

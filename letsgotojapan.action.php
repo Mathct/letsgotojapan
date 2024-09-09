@@ -98,6 +98,18 @@
   	    self::ajaxResponse( );
   	}
 
+	  public function actConfirmPref()
+  	{
+  	    self::setAjaxMode();
+  	    
+  	    $arg1 = self::getArg( "arg1", AT_alphanum );
+  	    $arg2 = self::getArg( "arg2", AT_alphanum );
+		  	    
+  	    $this->game->actConfirmPref( $arg1, $arg2);
+  	    
+  	    self::ajaxResponse( );
+  	}
+
   }
   
 
