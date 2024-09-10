@@ -1773,6 +1773,61 @@ display: none;
     
 }
 
+.nortool{
+  width: 30px;
+  height: 30px;
+  background-image: url('img/notokenjour.png');
+  background-size: 600% 100%;
+  background-position-x: 0%;
+  display: inline-block;
+  
+    
+}
+
+.nogtool{
+  width: 30px;
+  height: 30px;
+  background-image: url('img/notokenjour.png');
+  background-size: 600% 100%;
+  background-position-x: -100%;
+  display: inline-block;
+  
+    
+}
+
+.noptool{
+  width: 30px;
+  height: 30px;
+  background-image: url('img/notokenjour.png');
+  background-size: 600% 100%;
+  background-position-x: -200%;
+  display: inline-block;
+  
+    
+}
+
+.noytool{
+  width: 30px;
+  height: 30px;
+  background-image: url('img/notokenjour.png');
+  background-size: 600% 100%;
+  background-position-x: -300%;
+  display: inline-block;
+  
+    
+}
+
+.nobtool{
+  width: 30px;
+  height: 30px;
+  background-image: url('img/notokenjour.png');
+  background-size: 600% 100%;
+  background-position-x: -400%;
+  display: inline-block;
+  
+    
+}
+
 .decal{
   vertical-align: -5px;
 }
