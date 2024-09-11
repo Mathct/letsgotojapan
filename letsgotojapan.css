@@ -544,6 +544,13 @@ display: none;
     
 }
 
+.selected.cardposition {
+  border: none !important;
+  background-color:  rgba(255, 0, 0, 0.6);
+  z-index: 10 !important;
+  
+}
+
 
 
 /* SWITCH PLAYER */

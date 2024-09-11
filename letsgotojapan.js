@@ -8470,13 +8470,16 @@ function (dojo, declare) {
 
 
                 if ((prefId === 101)&&(!this.isSpectator))
-                {       
-                    /*this.ajaxcall( "/letsgotojapan/letsgotojapan/actConfirmPref.html", { 
+                {  
+                    if(this.gamedatas.countplayers == 1)
+                    {     
+                    this.ajaxcall( "/letsgotojapan/letsgotojapan/actConfirmPref.html", { 
                     lock: true,
                     arg1: this.getCurrentPlayerId(),
                     arg2: prefValue,
                     }, 
-                    this, function( result ) {}, function( is_error) {} );*/
+                    this, function( result ) {}, function( is_error) {} );
+                    }
                 }
             },
     
