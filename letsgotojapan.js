@@ -8466,22 +8466,29 @@ function (dojo, declare) {
 
             },
 
+            
             onGameUserPreferenceChanged(prefId, prefValue) {
 
+                if(!this.isReadOnly())
+                {
 
                 if ((prefId === 101)&&(!this.isSpectator))
                 {  
-                    //if(this.gamedatas.countplayers == 1)
-                    //{     
+                     
                     this.ajaxcall( "/letsgotojapan/letsgotojapan/actConfirmPref.html", { 
                     lock: true,
                     arg1: this.getCurrentPlayerId(),
                     arg2: prefValue,
                     }, 
                     this, function( result ) {}, function( is_error) {} );
-                    //}
+                    
                 }
+            }
             },
+            
+            isReadOnly: function () { 
+                return this.isSpectator || typeof g_replayFrom != 'undefined' || g_archive_mode; 
+              },
     
             
 ///////////////////////////////////////////////////////////////////////////////// 

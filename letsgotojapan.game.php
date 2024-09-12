@@ -199,6 +199,54 @@ class letsgotojapan extends Table
             }
 
         
+
+        /// SAVE COPY FIRST BASES
+/*
+        if($countplayer >1)
+        {
+            $copydecktokyo = self::getObjectListFromDB( "SELECT card_id id, card_type type, card_type_arg type_arg, card_location location, card_location_arg location_arg, walk walk, finallocation finallocation, finalwalk finalwalk FROM tokyo WHERE card_location != 'deck' and card_location != 'discard' and card_location != 'discardboardhidden' and card_location != 'discardboard' and card_location != 'playerhand'");
+            $copydeckkyoto = self::getObjectListFromDB( "SELECT card_id id, card_type type, card_type_arg type_arg, card_location location, card_location_arg location_arg, walk walk, finallocation finallocation, finalwalk finalwalk FROM kyoto WHERE card_location != 'deck' and card_location != 'discard' and card_location != 'discardboardhidden' and card_location != 'discardboard' and card_location != 'playerhand'");
+            $copybonus = self::getObjectListFromDB( "SELECT player_id id, smile smile, happy happy, angry angry, recherche recherche, train train, trainstart trainstart, wild wild FROM player");
+
+            $listplayers = self::getObjectListFromDB( "SELECT player_id id FROM player", true );
+
+            foreach ($listplayers as $player_id)
+            {
+                if($copydecktokyo != NULL)
+                {
+                    foreach ($copydecktokyo as $tokyo)
+                    {
+                        if($player_id == $tokyo['location_arg'])
+                        {
+                            self::DbQuery("INSERT INTO copytokyo (card_id, card_type, card_type_arg, card_location, card_location_arg, walk, finallocation, finalwalk) VALUES ('{$tokyo['id']}', '{$tokyo['type']}', '{$tokyo['type_arg']}', '{$tokyo['location']}', '{$tokyo['location_arg']}', '{$tokyo['walk']}', '{$tokyo['finallocation']}', '{$tokyo['finalwalk']}')");
+                        }
+                    }
+                }
+
+                if($copydeckkyoto != NULL)
+                {
+                    foreach ($copydeckkyoto as $kyoto)
+                    {
+                        if($player_id == $kyoto['location_arg'])
+                        {
+                            self::DbQuery("INSERT INTO copykyoto (card_id, card_type, card_type_arg, card_location, card_location_arg, walk, finallocation, finalwalk) VALUES ('{$kyoto['id']}', '{$kyoto['type']}', '{$kyoto['type_arg']}', '{$kyoto['location']}', '{$kyoto['location_arg']}', '{$kyoto['walk']}', '{$kyoto['finallocation']}', '{$kyoto['finalwalk']}')");
+                        }
+                    }
+                }
+
+                foreach($copybonus as $bonus)
+                {
+                    if($player_id == $bonus['id'])
+                    {
+                    self::DbQuery("INSERT INTO copybonus (player_id, smile, happy, angry, recherche, train, trainstart, wild) VALUES ('{$bonus['id']}', '{$bonus['smile']}', '{$bonus['happy']}', '{$bonus['angry']}', '{$bonus['recherche']}', '{$bonus['train']}', '{$bonus['trainstart']}', '{$bonus['wild']}')");
+                    }
+                }
+
+            }
+
+        }*/
+
+
         //////// LANCEMENT DU JEU ///////
 
 
@@ -2463,12 +2511,18 @@ function st_MultiPlayerActivation()
 
     if ($countplayer>=2)
     {
-        /*if($newturn <= 13)
+
+/*
+        /// INIT AND SAVE COPY BASES
+        if($newturn <= 13)
         {
             self::DbQuery("DELETE FROM `copytokyo`;");
             self::DbQuery("DELETE FROM `copykyoto`;");
-            $copydecktokyo = self::getObjectListFromDB( "SELECT card_id id, card_type type, card_type_arg type_arg, card_location location, card_location_arg location_arg, walk walk, finallocation finallocation, finalwalk finalwalk FROM tokyo WHERE card_location != 'deck' and card_location != 'discard' and card_location != 'discardboardhidden' and card_location != 'discardboard'");
-            $copydeckkyoto = self::getObjectListFromDB( "SELECT card_id id, card_type type, card_type_arg type_arg, card_location location, card_location_arg location_arg, walk walk, finallocation finallocation, finalwalk finalwalk FROM kyoto WHERE card_location != 'deck' and card_location != 'discard' and card_location != 'discardboardhidden' and card_location != 'discardboard'");
+            self::DbQuery("DELETE FROM `copybonus`;");
+
+            $copydecktokyo = self::getObjectListFromDB( "SELECT card_id id, card_type type, card_type_arg type_arg, card_location location, card_location_arg location_arg, walk walk, finallocation finallocation, finalwalk finalwalk FROM tokyo WHERE card_location != 'deck' and card_location != 'discard' and card_location != 'discardboardhidden' and card_location != 'discardboard' and card_location != 'playerhand'");
+            $copydeckkyoto = self::getObjectListFromDB( "SELECT card_id id, card_type type, card_type_arg type_arg, card_location location, card_location_arg location_arg, walk walk, finallocation finallocation, finalwalk finalwalk FROM kyoto WHERE card_location != 'deck' and card_location != 'discard' and card_location != 'discardboardhidden' and card_location != 'discardboard' and card_location != 'playerhand'");
+            $copybonus = self::getObjectListFromDB( "SELECT player_id id, smile smile, happy happy, angry angry, recherche recherche, train train, trainstart trainstart, wild wild FROM player");
 
             $listplayers = self::getObjectListFromDB( "SELECT player_id id FROM player", true );
 
@@ -2496,11 +2550,21 @@ function st_MultiPlayerActivation()
                     }
                 }
 
+                foreach($copybonus as $bonus)
+                {
+                    if($player_id == $bonus['id'])
+                    {
+                    self::DbQuery("INSERT INTO copybonus (player_id, smile, happy, angry, recherche, train, trainstart, wild) VALUES ('{$bonus['id']}', '{$bonus['smile']}', '{$bonus['happy']}', '{$bonus['angry']}', '{$bonus['recherche']}', '{$bonus['train']}', '{$bonus['trainstart']}', '{$bonus['wild']}')");
+                    }
+                }
+
             }
 
 
-        }*/
+        }   
+        /// END INIT AND SAVE COPY BASES
 
+*/
 
         if (($newturn < 5)||($newturn == 11))  
         {
