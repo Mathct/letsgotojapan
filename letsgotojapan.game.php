@@ -200,8 +200,8 @@ class letsgotojapan extends Table
 
         
 
-        /// SAVE COPY FIRST BASES
-/*
+        /// SAVE COPY FIRST BASES MULTI PLAYER ////
+
         if($countplayer >1)
         {
             $copydecktokyo = self::getObjectListFromDB( "SELECT card_id id, card_type type, card_type_arg type_arg, card_location location, card_location_arg location_arg, walk walk, finallocation finallocation, finalwalk finalwalk FROM tokyo WHERE card_location != 'deck' and card_location != 'discard' and card_location != 'discardboardhidden' and card_location != 'discardboard' and card_location != 'playerhand'");
@@ -244,7 +244,7 @@ class letsgotojapan extends Table
 
             }
 
-        }*/
+        }
 
 
         //////// LANCEMENT DU JEU ///////
@@ -301,6 +301,9 @@ class letsgotojapan extends Table
         $result['tokyo'] = self::getObjectListFromDB( "SELECT card_id id, card_type type, card_type_arg type_arg, card_location location, card_location_arg location_arg, walk walk, finallocation finallocation, finalwalk finalwalk, train train, checkcard checkcard FROM tokyo WHERE card_location != 'deck' and card_location != 'discard'");
         $result['kyoto'] = self::getObjectListFromDB( "SELECT card_id id, card_type type, card_type_arg type_arg, card_location location, card_location_arg location_arg, walk walk, finallocation finallocation, finalwalk finalwalk, train train, checkcard checkcard FROM kyoto WHERE card_location != 'deck' and card_location != 'discard'");
 
+        $result['copytokyo'] = self::getObjectListFromDB( "SELECT card_id id, card_type type, card_type_arg type_arg, card_location location, card_location_arg location_arg, walk walk, finallocation finallocation, finalwalk finalwalk FROM copytokyo WHERE card_location != 'deck' and card_location != 'discard'");
+        $result['copykyoto'] = self::getObjectListFromDB( "SELECT card_id id, card_type type, card_type_arg type_arg, card_location location, card_location_arg location_arg, walk walk, finallocation finallocation, finalwalk finalwalk FROM copykyoto WHERE card_location != 'deck' and card_location != 'discard'");
+
         $result['turn'] = self::getUniqueValueFromDB("SELECT level FROM tokens WHERE name = 'turn'");
 
         $result['tokenjour'] = self::getObjectListFromDB( "SELECT name name, level level FROM tokens WHERE type = 'general'");
@@ -309,12 +312,18 @@ class letsgotojapan extends Table
         foreach($listplayers as $player)
         {
             $result['smile'][$player] = self::getUniqueValueFromDB("SELECT smile FROM player WHERE player_id={$player}");
+            $result['copysmile'][$player] = self::getUniqueValueFromDB("SELECT smile FROM copybonus WHERE player_id={$player}");
             $result['happy'][$player] = self::getUniqueValueFromDB("SELECT happy FROM player WHERE player_id={$player}");
+            $result['copyhappy'][$player] = self::getUniqueValueFromDB("SELECT happy FROM copybonus WHERE player_id={$player}");
             $result['angry'][$player] = self::getUniqueValueFromDB("SELECT angry FROM player WHERE player_id={$player}");
+            $result['copyangry'][$player] = self::getUniqueValueFromDB("SELECT angry FROM copybonus WHERE player_id={$player}");
             $result['color'][$player] = self::getUniqueValueFromDB("SELECT player_color FROM player WHERE player_id={$player}");
             $result['nbrerecherche'][$player] = self::getUniqueValueFromDB("SELECT recherche FROM player WHERE player_id={$player}");
+            $result['copynbrerecherche'][$player] = self::getUniqueValueFromDB("SELECT recherche FROM copybonus WHERE player_id={$player}");
             $result['nbretrain'][$player] = self::getUniqueValueFromDB("SELECT train FROM player WHERE player_id={$player}");
+            $result['copynbretrain'][$player] = self::getUniqueValueFromDB("SELECT train FROM copybonus WHERE player_id={$player}");
             $result['nbrewild'][$player] = self::getUniqueValueFromDB("SELECT wild FROM player WHERE player_id={$player}");
+            $result['copynbrewild'][$player] = self::getUniqueValueFromDB("SELECT wild FROM copybonus WHERE player_id={$player}");
             $result['nbretrainstart'][$player] = self::getUniqueValueFromDB("SELECT trainstart FROM player WHERE player_id={$player}");
             $result['compteurcardtokyodiscard'][$player] = count(self::getObjectListFromDB( "SELECT card_id id FROM tokyo WHERE card_location = 'discardboard' and card_location_arg = {$player}", true));
             $result['compteurcardkyotodiscard'][$player] = count(self::getObjectListFromDB( "SELECT card_id id FROM kyoto WHERE card_location = 'discardboard' and card_location_arg = {$player}", true));
@@ -381,8 +390,9 @@ class letsgotojapan extends Table
 
         $result['lvl'][] = self::getUniqueValueFromDB("SELECT sololvl FROM agent WHERE name='agent'");
 
-        $result['maxtrip'][0] = max(self::CountTrip($current_player_id));
-        $result['phase'][0] = self::getUniqueValueFromDB("SELECT function FROM pending WHERE player_id={$current_player_id}");
+        $playersolo = self::getUniqueValueFromDB("SELECT player_id FROM player WHERE player_no=1");
+        $result['maxtrip'][0] = max(self::CountTrip($playersolo));
+        $result['phase'][0] = self::getUniqueValueFromDB("SELECT function FROM pending WHERE player_id={$playersolo}");
         }
 
         $result['tokyocards'] = $this->tokyocards;
@@ -1322,6 +1332,8 @@ function CondenserExtraWalk($id, $jour, $new)
 
 function Smile($gain, $player)
 {
+    $turn = self::getUniqueValueFromDB("SELECT level FROM tokens WHERE name = 'turn'");
+
     if($player!=0)
     {
     if ($gain>0)
@@ -1333,6 +1345,7 @@ function Smile($gain, $player)
             letsgotojapan::$instance->notifyAllPlayers('smile','', array(
                 'position' => $newsmile,
                 'player' => $player,
+                'turn' => $turn,
                 )
                 );
             
@@ -1344,6 +1357,7 @@ function Smile($gain, $player)
                 letsgotojapan::$instance->notifyAllPlayers('smile','', array(
                     'position' => $newsmile,
                     'player' => $player,
+                    'turn' => $turn,
                     )
                     );
                 
@@ -1356,6 +1370,7 @@ function Smile($gain, $player)
                     letsgotojapan::$instance->notifyAllPlayers('happy','', array(
                         'position' => $newhappy,
                         'player' => $player,
+                        'turn' => $turn,
                         )
                         );
 
@@ -1378,6 +1393,7 @@ function Smile($gain, $player)
             letsgotojapan::$instance->notifyAllPlayers('smile','', array(
                 'position' => $newsmile,
                 'player' => $player,
+                'turn' => $turn,
                 )
                 );
             
@@ -1389,6 +1405,7 @@ function Smile($gain, $player)
                 letsgotojapan::$instance->notifyAllPlayers('smile','', array(
                     'position' => $newsmile,
                     'player' => $player,
+                    'turn' => $turn,
                     )
                     );
                 
@@ -1401,6 +1418,7 @@ function Smile($gain, $player)
                     letsgotojapan::$instance->notifyAllPlayers('angry','', array(
                         'position' => $newangry,
                         'player' => $player,
+                        'turn' => $turn,
                         )
                         );
 
@@ -1425,6 +1443,7 @@ function Smile($gain, $player)
             letsgotojapan::$instance->notifyAllPlayers('smile','', array(
                 'position' => $newsmile,
                 'player' => $player,
+                'turn' => $turn,
                 )
                 );
             
@@ -1436,6 +1455,7 @@ function Smile($gain, $player)
                 letsgotojapan::$instance->notifyAllPlayers('smile','', array(
                     'position' => $newsmile,
                     'player' => $player,
+                    'turn' => $turn,
                     )
                     );
                 
@@ -1448,6 +1468,7 @@ function Smile($gain, $player)
                     letsgotojapan::$instance->notifyAllPlayers('happy','', array(
                         'position' => $newhappy,
                         'player' => $player,
+                        'turn' => $turn,
                         )
                         );
 
@@ -1470,6 +1491,7 @@ function Smile($gain, $player)
             letsgotojapan::$instance->notifyAllPlayers('smile','', array(
                 'position' => $newsmile,
                 'player' => $player,
+                'turn' => $turn,
                 )
                 );
             
@@ -1481,6 +1503,7 @@ function Smile($gain, $player)
                 letsgotojapan::$instance->notifyAllPlayers('smile','', array(
                     'position' => $newsmile,
                     'player' => $player,
+                    'turn' => $turn,
                     )
                     );
                 
@@ -1493,6 +1516,7 @@ function Smile($gain, $player)
                     letsgotojapan::$instance->notifyAllPlayers('angry','', array(
                         'position' => $newangry,
                         'player' => $player,
+                        'turn' => $turn,
                         )
                         );
 
@@ -1510,6 +1534,7 @@ function Smile($gain, $player)
 
 function MajPannel ($id)
 {
+    $turn = self::getUniqueValueFromDB("SELECT level FROM tokens WHERE name = 'turn'");
 
     $recherche = self::getUniqueValueFromDB("SELECT recherche FROM player WHERE player_id={$id}");
     $train = self::getUniqueValueFromDB("SELECT train FROM player WHERE player_id={$id}");
@@ -1522,6 +1547,7 @@ function MajPannel ($id)
         'train' => $train,
         'trainstart' => $trainstart,
         'wild' => $wild,
+        'turn' => $turn,
         
         )
         );
@@ -2284,6 +2310,8 @@ function actValidate3Discard( $arg1, $arg2, $arg3)
     $explode2 = explode("_", $arg2);
     $explode3 = explode("_", $arg3);
 
+    $nbrejoueurs = count(self::getObjectListFromDB( "SELECT player_id id FROM player", true ));
+
     if($explode1[1] == 1)
     {
         letsgotojapan::$instance->tokyo->moveCard( $explode1[2], 'discard' ); 
@@ -2354,11 +2382,23 @@ function actValidate3Discard( $arg1, $arg2, $arg3)
     self::DbQuery( "UPDATE player set recherche = recherche - 1  WHERE player_id = {$id}" );
     letsgotojapan::$instance->MajPannel($id);
     $name = self::getUniqueValueFromDB("SELECT player_name FROM player WHERE player_id = {$id}");
+    if ($nbrejoueurs == 1)
+    {
     letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} uses ${log}' ), array(
         'player_name' => $name,
         'log' => letsgotojapan::$instance->getLogsType(2),
         )
         );
+    }
+
+    if ($nbrejoueurs >= 2)
+    {
+        letsgotojapan::$instance->notifyPlayer($id,'message',clienttranslate( 'You use ${log}' ), array(
+        'player_name' => $name,
+        'log' => letsgotojapan::$instance->getLogsType(2),
+        )
+        );
+    }
 
     self::DbQuery( "UPDATE player set select1 = '0'  WHERE player_id = {$id}" );
     self::DbQuery( "UPDATE player set select2 = '0'  WHERE player_id = {$id}" );
@@ -2373,7 +2413,7 @@ function actValidate3Discard( $arg1, $arg2, $arg3)
     $counthandkyotocard = count(self::getObjectListFromDB( "SELECT card_id id FROM kyoto WHERE card_location ='playerhand' AND card_location_arg = {$id}", true ));
     $playerhandcount = $counthandtokyocard + $counthandkyotocard;
 
-    $nbrejoueurs = count(self::getObjectListFromDB( "SELECT player_id id FROM player", true ));
+    
 
     if ($nbrejoueurs >= 2)
     {
@@ -2511,11 +2551,32 @@ function st_MultiPlayerActivation()
 
     if ($countplayer>=2)
     {
-
-/*
-        /// INIT AND SAVE COPY BASES
-        if($newturn <= 13)
+        if($newturn <= 14)
         {
+        // DESTROY CARD
+
+        $destroytokyo = self::getObjectListFromDB( "SELECT card_id id, card_location_arg location_arg FROM copytokyo WHERE card_location != 'deck' and card_location != 'discard' and card_location != 'discardboardhidden' and card_location != 'discardboard' and card_location != 'playerhand'");
+        $destroykyoto = self::getObjectListFromDB( "SELECT card_id id, card_location_arg location_arg FROM copykyoto WHERE card_location != 'deck' and card_location != 'discard' and card_location != 'discardboardhidden' and card_location != 'discardboard' and card_location != 'playerhand'");
+
+        letsgotojapan::$instance->notifyAllPlayers('destroytokyo','', array(
+            'tableau' => $destroytokyo,
+            
+            )
+            );
+            
+        
+        letsgotojapan::$instance->notifyAllPlayers('destroykyoto','', array(
+            'tableau' => $destroykyoto,
+            
+            )
+            );
+        
+        // END DESTROY CARD
+
+
+
+        /// RESET AND SAVE COPY BASES MULTI PLAYER
+       
             self::DbQuery("DELETE FROM `copytokyo`;");
             self::DbQuery("DELETE FROM `copykyoto`;");
             self::DbQuery("DELETE FROM `copybonus`;");
@@ -2558,13 +2619,77 @@ function st_MultiPlayerActivation()
                     }
                 }
 
+
+                //MAJ PANNEL
+
+                $recherche = self::getUniqueValueFromDB("SELECT recherche FROM player WHERE player_id={$player_id}");
+                $train = self::getUniqueValueFromDB("SELECT train FROM player WHERE player_id={$player_id}");
+                $trainstart = self::getUniqueValueFromDB("SELECT trainstart FROM player WHERE player_id={$player_id}");
+                $wild = self::getUniqueValueFromDB("SELECT wild FROM player WHERE player_id={$player_id}");
+            
+                letsgotojapan::$instance->notifyAllPlayers('majpannelall','', array(
+                    'id' =>  $player_id,
+                    'recherche' => $recherche,
+                    'train' => $train,
+                    'trainstart' => $trainstart,
+                    'wild' => $wild,
+                    
+                    )
+                    );
+
+                //MAJ SMILE
+
+                $smile = self::getUniqueValueFromDB("SELECT smile FROM copybonus WHERE player_id={$player_id}");
+                $happy = self::getUniqueValueFromDB("SELECT happy FROM copybonus WHERE player_id={$player_id}");
+                $angry = self::getUniqueValueFromDB("SELECT angry FROM copybonus WHERE player_id={$player_id}");
+
+                letsgotojapan::$instance->notifyAllPlayers('majsmileall','', array(
+                    'id' =>  $player_id,
+                    'smile' => $smile,
+                    'happy' => $happy,
+                    'angry' => $angry,
+                    
+                    
+                    )
+                    );
+                
+
             }
 
 
-        }   
-        /// END INIT AND SAVE COPY BASES
+       
+        /// END RESET AND SAVE COPY BASES MULTI PLAYER
 
-*/
+
+        
+
+
+        // DISPLAY CARD
+
+        $displaytokyo = self::getObjectListFromDB( "SELECT card_id id, card_type type, card_type_arg type_arg, card_location location, card_location_arg location_arg, walk walk, finallocation finallocation, finalwalk finalwalk FROM copytokyo WHERE card_location != 'deck' and card_location != 'discard' and card_location != 'discardboardhidden' and card_location != 'discardboard' and card_location != 'playerhand'");
+        $displaykyoto = self::getObjectListFromDB( "SELECT card_id id, card_type type, card_type_arg type_arg, card_location location, card_location_arg location_arg, walk walk, finallocation finallocation, finalwalk finalwalk FROM copykyoto WHERE card_location != 'deck' and card_location != 'discard' and card_location != 'discardboardhidden' and card_location != 'discardboard' and card_location != 'playerhand'");
+
+        letsgotojapan::$instance->notifyAllPlayers('displaytokyo','', array(
+            'tableau' => $displaytokyo,
+            
+            )
+            );
+            
+        
+        letsgotojapan::$instance->notifyAllPlayers('displaykyoto','', array(
+            'tableau' => $displaykyoto,
+            
+            )
+            );
+
+
+        // END DISPLAY CARD
+
+
+        
+        }   
+
+
 
         if (($newturn < 5)||($newturn == 11))  
         {
@@ -2575,11 +2700,7 @@ function st_MultiPlayerActivation()
             )
             );
 
-            letsgotojapan::$instance->notifyAllPlayers('affichehand','', array(
-                
-                )
-                );
-
+            
 
             $listplayers = self::getObjectListFromDB( "SELECT player_id id FROM player", true );
 
@@ -2675,11 +2796,7 @@ function st_MultiPlayerActivation()
             )
             );
 
-            letsgotojapan::$instance->notifyAllPlayers('affichehand','', array(
-                
-                )
-                );
-
+            
             
             $listplayers = self::getObjectListFromDB( "SELECT player_id id FROM player", true );
 
@@ -2781,11 +2898,6 @@ function st_MultiPlayerActivation()
             )
             );
 
-            letsgotojapan::$instance->notifyAllPlayers('affichehand','', array(
-                
-                )
-                );
-
 
             $listplayers = self::getObjectListFromDB( "SELECT player_id id FROM player", true );
 
@@ -2883,11 +2995,7 @@ function st_MultiPlayerActivation()
             )
             );
 
-            letsgotojapan::$instance->notifyAllPlayers('affichehand','', array(
-                
-                )
-                );
-
+            
             
             $listplayers = self::getObjectListFromDB( "SELECT player_id id FROM player", true );
 
@@ -2989,11 +3097,7 @@ function st_MultiPlayerActivation()
             )
             );
 
-            letsgotojapan::$instance->notifyAllPlayers('affichehand','', array(
-                
-                )
-                );
-
+            
             
             $listplayers = self::getObjectListFromDB( "SELECT player_id id FROM player", true );
 
@@ -3163,11 +3267,7 @@ function st_MultiPlayerActivation()
             )
             );
 
-            letsgotojapan::$instance->notifyAllPlayers('affichehand','', array(
-                
-                )
-                );
-
+            
 
             $listplayers = self::getObjectListFromDB( "SELECT player_id id FROM player", true );
 
@@ -3263,11 +3363,7 @@ function st_MultiPlayerActivation()
             )
             );
 
-            letsgotojapan::$instance->notifyAllPlayers('affichehand','', array(
-                
-                )
-                );
-
+            
             
             $listplayers = self::getObjectListFromDB( "SELECT player_id id FROM player", true );
 
@@ -3369,11 +3465,7 @@ function st_MultiPlayerActivation()
             )
             );
 
-            letsgotojapan::$instance->notifyAllPlayers('affichehand','', array(
-                
-                )
-                );
-
+            
 
             $listplayers = self::getObjectListFromDB( "SELECT player_id id FROM player", true );
 
@@ -3471,11 +3563,7 @@ function st_MultiPlayerActivation()
             )
             );
 
-            letsgotojapan::$instance->notifyAllPlayers('affichehand','', array(
-                
-                )
-                );
-
+           
             
             $listplayers = self::getObjectListFromDB( "SELECT player_id id FROM player", true );
 
@@ -3577,12 +3665,7 @@ function st_MultiPlayerActivation()
             )
             );
 
-            letsgotojapan::$instance->notifyAllPlayers('affichehand','', array(
-                
-                )
-                );
-
-            
+                        
             $listplayers = self::getObjectListFromDB( "SELECT player_id id FROM player", true );
 
             foreach ($listplayers as $player_id)

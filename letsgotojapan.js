@@ -117,11 +117,37 @@ function (dojo, declare) {
                 for( var player_id in gamedatas.players )   
                     {
                                             
-                        
+                        if((gamedatas.turn >= 14)||(gamedatas.countplayers ==1))
+                        {
                         $('nbrerecherche_'+player_id).innerHTML = gamedatas.nbrerecherche[player_id];
                         $('nbretrain_'+player_id).innerHTML = gamedatas.nbretrain[player_id];
                         $('nbrewild_'+player_id).innerHTML = gamedatas.nbrewild[player_id];
                         $('nbretrainstart_'+player_id).innerHTML = gamedatas.nbretrainstart[player_id];
+                        }
+
+                        else
+                        {
+                            if(player_id == this.getCurrentPlayerId())
+                            {
+                                $('nbrerecherche_'+player_id).innerHTML = gamedatas.nbrerecherche[player_id];
+                                $('nbretrain_'+player_id).innerHTML = gamedatas.nbretrain[player_id];
+                                $('nbrewild_'+player_id).innerHTML = gamedatas.nbrewild[player_id];
+                                $('nbretrainstart_'+player_id).innerHTML = gamedatas.nbretrainstart[player_id];
+
+                            }
+
+                            else
+                            {
+                                $('nbrerecherche_'+player_id).innerHTML = gamedatas.copynbrerecherche[player_id];
+                                $('nbretrain_'+player_id).innerHTML = gamedatas.copynbretrain[player_id];
+                                $('nbrewild_'+player_id).innerHTML = gamedatas.copynbrewild[player_id];
+                                $('nbretrainstart_'+player_id).innerHTML = gamedatas.nbretrainstart[player_id];
+
+                            }
+
+
+
+                        }
                         
                         
                     }
@@ -283,13 +309,49 @@ function (dojo, declare) {
                         {
                             this.addCardTokyoHand(tokyo.id, tokyo.type, tokyo.type_arg, tokyo.location, tokyo.location_arg);
                         }
-                        
-                        
-                        if (tokyo.location.startsWith("cardposition"))
-                        {
-                        
-                            this.addCardTokyoTrip(tokyo.id, tokyo.type, tokyo.type_arg, tokyo.location, tokyo.location_arg, tokyo.walk, tokyo.finallocation, tokyo.finalwalk);
 
+                        
+                        if(gamedatas.turn <= 13)
+                        {
+                            if(gamedatas.countplayers ==1)
+                            {
+                                if (tokyo.location.startsWith("cardposition"))
+                                {
+                                
+                                    this.addCardTokyoTrip(tokyo.id, tokyo.type, tokyo.type_arg, tokyo.location, tokyo.location_arg, tokyo.walk, tokyo.finallocation, tokyo.finalwalk);
+
+                                }
+                            }
+
+                            if(gamedatas.countplayers >=2)
+                            {
+                               
+                                if(tokyo.location_arg == this.getCurrentPlayerId())
+                                {
+                                    
+                                    if (tokyo.location.startsWith("cardposition"))
+                                    {
+                                        
+                                        this.addCardTokyoTrip(tokyo.id, tokyo.type, tokyo.type_arg, tokyo.location, tokyo.location_arg, tokyo.walk, tokyo.finallocation, tokyo.finalwalk);
+
+                                    }
+                                }
+
+
+
+                            }
+
+
+                        }
+                    
+                        if(gamedatas.turn >= 14)
+                        {
+                            if (tokyo.location.startsWith("cardposition"))
+                            {
+                            
+                                this.addCardTokyoTrip(tokyo.id, tokyo.type, tokyo.type_arg, tokyo.location, tokyo.location_arg, tokyo.walk, tokyo.finallocation, tokyo.finalwalk);
+
+                            }
                         }
 
                         if(tokyo.train != 0)
@@ -306,6 +368,7 @@ function (dojo, declare) {
                         
                     }
 
+                
                 for( var kyoto in gamedatas.kyoto)
                     {
                         var kyoto = gamedatas.kyoto[kyoto];
@@ -315,12 +378,44 @@ function (dojo, declare) {
                             this.addCardKyotoHand(kyoto.id, kyoto.type, kyoto.type_arg, kyoto.location, kyoto.location_arg);
                         }
                        
-                        
-                        if (kyoto.location.startsWith("cardposition"))
+                        if(gamedatas.turn <= 13)
+                        {
+                            if(gamedatas.countplayers ==1)
                             {
-                            
-                            this.addCardKyotoTrip(kyoto.id, kyoto.type, kyoto.type_arg, kyoto.location, kyoto.location_arg, kyoto.walk, kyoto.finallocation, kyoto.finalwalk);
+                                if (kyoto.location.startsWith("cardposition"))
+                                    {
+                                    
+                                    this.addCardKyotoTrip(kyoto.id, kyoto.type, kyoto.type_arg, kyoto.location, kyoto.location_arg, kyoto.walk, kyoto.finallocation, kyoto.finalwalk);
+                                    }
+
                             }
+
+                            if(gamedatas.countplayers >=2)
+                            {
+
+                                if(kyoto.location_arg == this.getCurrentPlayerId())
+                                    {
+                                        if (kyoto.location.startsWith("cardposition"))
+                                        {
+                                        
+                                            this.addCardKyotoTrip(kyoto.id, kyoto.type, kyoto.type_arg, kyoto.location, kyoto.location_arg, kyoto.walk, kyoto.finallocation, kyoto.finalwalk);
+    
+                                        }
+                                    }
+    
+                                    
+                            }
+
+                        }
+                        
+                        if(gamedatas.turn >= 14)
+                        {
+                            if (kyoto.location.startsWith("cardposition"))
+                                {
+                                
+                                this.addCardKyotoTrip(kyoto.id, kyoto.type, kyoto.type_arg, kyoto.location, kyoto.location_arg, kyoto.walk, kyoto.finallocation, kyoto.finalwalk);
+                                }
+                        }
 
                         if(kyoto.train != 0)
                             {
@@ -335,16 +430,48 @@ function (dojo, declare) {
                         
                     }
 
-                    for( var player_id in gamedatas.players )
+                    
+                if((gamedatas.turn <= 13)&&(gamedatas.countplayers >=2))
+                    {
+                        for( var copytokyo in gamedatas.copytokyo)
                         {
-                            for( var jour in gamedatas.tokenjour)
+                            
+                                var copytokyo = gamedatas.copytokyo[copytokyo];
+                                                
+                                if ((copytokyo.location.startsWith("cardposition"))&&(copytokyo.location_arg != this.getCurrentPlayerId()))
                                 {
-                                    var tokenjour = gamedatas.tokenjour[jour];
-
-                                    this.addTokenJour(tokenjour.name, tokenjour.level, player_id);
-                                    
+                                
+                                    this.addCardTokyoTrip(copytokyo.id, copytokyo.type, copytokyo.type_arg, copytokyo.location, copytokyo.location_arg, copytokyo.walk, copytokyo.finallocation, copytokyo.finalwalk);
+    
                                 }
+    
                         }
+
+                        for( var copykyoto in gamedatas.copykyoto)
+                            {
+                                var copykyoto = gamedatas.copykyoto[copykyoto];
+                                if ((copykyoto.location.startsWith("cardposition"))&&(copykyoto.location_arg != this.getCurrentPlayerId()))
+                                {
+                                
+                                    this.addCardKyotoTrip(copykyoto.id, copykyoto.type, copykyoto.type_arg, copykyoto.location, copykyoto.location_arg, copykyoto.walk, copykyoto.finallocation, copykyoto.finalwalk);
+
+                                }
+                            }
+    
+                    }
+
+
+                
+                for( var player_id in gamedatas.players )
+                    {
+                        for( var jour in gamedatas.tokenjour)
+                            {
+                                var tokenjour = gamedatas.tokenjour[jour];
+
+                                this.addTokenJour(tokenjour.name, tokenjour.level, player_id);
+                                
+                            }
+                    }
     
                 for( var player_id in gamedatas.players )
                     {
@@ -966,7 +1093,7 @@ function (dojo, declare) {
                         this.args = args.args;
 
                         //// OTHER PLAYER "SELECTABLEVIDE" A SUPPRIMER PLUS TARD
-                        for (var otherplayer in this.args)
+                        /*for (var otherplayer in this.args)
                             {
                                 
                                 if (otherplayer != this.getCurrentPlayerId())
@@ -983,7 +1110,7 @@ function (dojo, declare) {
                                     
                                 }
                                 
-                            }
+                            }*/
 
                         //// FIN OTHER PLAYER A SUPPRIMER PLUS TARD
                         
@@ -5564,9 +5691,7 @@ function (dojo, declare) {
                         this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
 
                 }
-                    
-                
-    
+
 
             },
 
@@ -6840,12 +6965,6 @@ function (dojo, declare) {
     
                     }
                         
-              
-        
-    
-                
-    
-    
 
             },
 
@@ -8529,6 +8648,7 @@ function (dojo, declare) {
                 dojo.subscribe( 'happy', this, "notif_happy" );
                 dojo.subscribe( 'angry', this, "notif_angry" );
                 dojo.subscribe( 'majpannel', this, "notif_majpannel" );
+                dojo.subscribe( 'majpannelall', this, "notif_majpannelall" );
                 dojo.subscribe( 'majcompteurdiscard', this, "notif_majcompteurdiscard" );
                 dojo.subscribe( 'discard', this, "notif_discard" );
                 dojo.subscribe( 'addwalk', this, "notif_addwalk" );
@@ -8545,10 +8665,15 @@ function (dojo, declare) {
                 dojo.subscribe( 'disabled', this, "notif_disabled" );
                 dojo.subscribe( 'check', this, "notif_check" );
                 dojo.subscribe( 'checkscore', this, "notif_checkscore" );
-                dojo.subscribe( 'affichehand', this, "notif_affichehand" );
                 dojo.subscribe( 'score2solo', this, "notif_score2solo" );
                 dojo.subscribe( 'score2agent', this, "notif_score2agent" );
                 dojo.subscribe( 'infolvl', this, "notif_infolvl" );
+
+                dojo.subscribe( 'destroytokyo', this, "notif_destroytokyo" );
+                dojo.subscribe( 'destroykyoto', this, "notif_destroykyoto" );
+                dojo.subscribe( 'displaytokyo', this, "notif_displaytokyo" );
+                dojo.subscribe( 'displaykyoto', this, "notif_displaykyoto" );
+                dojo.subscribe( 'majsmileall', this, "notif_majsmileall" );
 
                 dojo.subscribe( 'changesens', this, "notif_changesens" );
 
@@ -8611,66 +8736,27 @@ function (dojo, declare) {
 
             },
 
-            notif_affichehand: function( notif )  ////je ne l'utilise plus
-            {
-                if(!this.isSpectator)
-                { 
-                    const element = document.querySelector('.playerhand');
-                    
-                
-                    if (element && element.classList.contains('hidden')) 
-                    {
-                        if (this.gamedatas.countplayers[0]>1)
-                        {
-                            var playerviews = document.querySelectorAll('.playerview');
-                            var global = document.getElementById("global");
-                            var currentHeight = global.clientHeight;
-
-                        dojo.query(".playerhand").removeClass("hidden");
-                        dojo.query(".playerhandtitle").removeClass("hidden");
-                        playerviews.forEach(function(playerview) {
-                            var currentTop = playerview.offsetTop;
-                            
-                            playerview.style.top = (currentTop + 300) + "px";
-                        });
-                        global.style.height = (currentHeight + 300) + "px";
-                        }
-
-                        if (this.gamedatas.countplayers[0] == 1)
-                        {
-                            var playerviews = document.querySelectorAll('.playerview');
-                            const element4 = document.querySelector('.playerview_agent');
-                            var global = document.getElementById("global");
-                            var currentHeight = global.clientHeight;
-
-                            dojo.query(".playerhand").removeClass("hidden");
-                            dojo.query(".playerhandtitle").removeClass("hidden");
-                            playerviews.forEach(function(playerview) {
-                            var currentTop = playerview.offsetTop;
-                        
-                            playerview.style.top = (currentTop + 300) + "px";
-                            });
-                            global.style.height = (currentHeight + 300) + "px";
-
-                            var currentTopsolo = element4.offsetTop;
-                            element4.style.top = (currentTopsolo +300) + "px";
-                        
-                        }
-
-
-                    } 
-                    
-                }
-
-               
-            },
-
+            
             notif_majpannel: function( notif )
             {
+                if ((notif.args.id == this.getCurrentPlayerId())||(this.gamedatas.countplayers == 1)||(notif.args.turn >= 14)) 
+                    {
                 $('nbrerecherche_'+notif.args.id).innerHTML = notif.args.recherche;
                 $('nbretrain_'+notif.args.id).innerHTML = notif.args.train;
                 $('nbretrainstart_'+notif.args.id).innerHTML = notif.args.trainstart;
                 $('nbrewild_'+notif.args.id).innerHTML = notif.args.wild;
+                    }
+
+            },
+
+            notif_majpannelall: function( notif )
+            {
+                
+                $('nbrerecherche_'+notif.args.id).innerHTML = notif.args.recherche;
+                $('nbretrain_'+notif.args.id).innerHTML = notif.args.train;
+                $('nbretrainstart_'+notif.args.id).innerHTML = notif.args.trainstart;
+                $('nbrewild_'+notif.args.id).innerHTML = notif.args.wild;
+               
 
             },
 
@@ -8702,6 +8788,9 @@ function (dojo, declare) {
                     this.attachToNewParentNoDestroy( notif.args.mobile, notif.args.parent );
                     this.slideToObject( notif.args.mobile, notif.args.parent, 400 ).play();
 
+                    var element = document.getElementById(notif.args.location+'_'+notif.args.playerid);
+                    element.style.zIndex = "10";
+
                                         
                 }
 
@@ -8709,24 +8798,10 @@ function (dojo, declare) {
 
                 if ((notif.args.playerid != this.getCurrentPlayerId())&&(this.gamedatas.countplayers >= 2))
                 {
-                    if(notif.args.ville == 1)
-                    {
-                    this.addCardTokyoTrip( notif.args.id, notif.args.card, notif.args.ville, notif.args.location, notif.args.playerid, 0);
-                    }
-                    if(notif.args.ville == 2)
-                    {
-                    this.addCardKyotoTrip( notif.args.id, notif.args.card, notif.args.ville, notif.args.location, notif.args.playerid, 0);
-                    }
+                    // RIEN A FAIRE
                 }
 
 
-                if (agent[3] != 0)
-                { 
-                    var element = document.getElementById(notif.args.location+'_'+notif.args.playerid);
-                    element.style.zIndex = "10";
-
-                }
-                
                 if (agent[3] == 0)
                 {   
     
@@ -8808,18 +8883,20 @@ function (dojo, declare) {
             {
                 if(notif.args.ville==1)
                 {
-                    this.addCardTokyoTrip( notif.args.cardid, 0, notif.args.ville, notif.args.location, notif.args.playerid, 1, 1 );
-                    if (notif.args.playerid == this.getCurrentPlayerId()) 
+                    
+                    if ((notif.args.playerid == this.getCurrentPlayerId())||(this.gamedatas.countplayers == 1)) 
                     {
+                        this.addCardTokyoTrip( notif.args.cardid, 0, notif.args.ville, notif.args.location, notif.args.playerid, 1, 1 );
                         this.placeOnObject( 'card_'+notif.args.ville+'_'+notif.args.cardid, 'player_boards' );
                         this.slideToObject( 'card_'+notif.args.ville+'_'+notif.args.cardid, notif.args.location+'_'+notif.args.playerid).play();
                     }
                 }
                 if(notif.args.ville==2)
                 {
-                    this.addCardKyotoTrip( notif.args.cardid, 0, notif.args.ville, notif.args.location, notif.args.playerid, 1, 2 );
-                    if (notif.args.playerid == this.getCurrentPlayerId()) 
+                    
+                    if ((notif.args.playerid == this.getCurrentPlayerId())||(this.gamedatas.countplayers == 1) )
                         {
+                            this.addCardKyotoTrip( notif.args.cardid, 0, notif.args.ville, notif.args.location, notif.args.playerid, 1, 2 );
                             this.placeOnObject( 'card_'+notif.args.ville+'_'+notif.args.cardid, 'player_boards' );
                             this.slideToObject( 'card_'+notif.args.ville+'_'+notif.args.cardid, notif.args.location+'_'+notif.args.playerid).play();
                         }
@@ -8835,18 +8912,28 @@ function (dojo, declare) {
 
             notif_smile: function( notif )
             {
+                
                 if ((notif.args.player == this.getCurrentPlayerId())||(this.gamedatas.countplayers == 1)) 
                     {
                         this.notifqueue.setSynchronousDuration(500);
+                        this.attachToNewParentNoDestroy( 'smile_'+notif.args.player, 'smileposition_'+notif.args.position+'_'+notif.args.player);
+                        this.slideToObject( 'smile_'+notif.args.player, 'smileposition_'+notif.args.position+'_'+notif.args.player ).play();
                     }
     
-                if ((notif.args.player != this.getCurrentPlayerId())&&(this.gamedatas.countplayers >= 2)) 
+                if ((notif.args.player != this.getCurrentPlayerId())&&(this.gamedatas.countplayers >= 2)&&(notif.args.turn >= 14)) 
                     {
                         this.notifqueue.setSynchronousDuration(0);
+                        this.attachToNewParentNoDestroy( 'smile_'+notif.args.player, 'smileposition_'+notif.args.position+'_'+notif.args.player);
+                        this.slideToObject( 'smile_'+notif.args.player, 'smileposition_'+notif.args.position+'_'+notif.args.player ).play();
                     }
 
-                this.attachToNewParentNoDestroy( 'smile_'+notif.args.player, 'smileposition_'+notif.args.position+'_'+notif.args.player);
-                this.slideToObject( 'smile_'+notif.args.player, 'smileposition_'+notif.args.position+'_'+notif.args.player ).play();
+                if ((notif.args.player != this.getCurrentPlayerId())&&(this.gamedatas.countplayers >= 2)&&(notif.args.turn <=13)) 
+                    {
+                        this.notifqueue.setSynchronousDuration(0);
+                        
+                    }
+
+                
             },
 
             notif_happy: function( notif )
@@ -8854,14 +8941,24 @@ function (dojo, declare) {
                 if ((notif.args.player == this.getCurrentPlayerId())||(this.gamedatas.countplayers == 1)) 
                     {
                         this.notifqueue.setSynchronousDuration(500);
+                        this.attachToNewParentNoDestroy( 'happy_'+notif.args.player, 'happyposition_'+notif.args.position+'_'+notif.args.player);
+                        this.slideToObject( 'happy_'+notif.args.player, 'happyposition_'+notif.args.position+'_'+notif.args.player ).play();
                     }
     
-                if ((notif.args.player != this.getCurrentPlayerId())&&(this.gamedatas.countplayers >= 2)) 
+                if ((notif.args.player != this.getCurrentPlayerId())&&(this.gamedatas.countplayers >= 2)&&(notif.args.turn >= 14)) 
                     {
                         this.notifqueue.setSynchronousDuration(0);
+                        this.attachToNewParentNoDestroy( 'happy_'+notif.args.player, 'happyposition_'+notif.args.position+'_'+notif.args.player);
+                        this.slideToObject( 'happy_'+notif.args.player, 'happyposition_'+notif.args.position+'_'+notif.args.player ).play();
                     }
-                this.attachToNewParentNoDestroy( 'happy_'+notif.args.player, 'happyposition_'+notif.args.position+'_'+notif.args.player);
-                this.slideToObject( 'happy_'+notif.args.player, 'happyposition_'+notif.args.position+'_'+notif.args.player ).play();
+
+                    if ((notif.args.player != this.getCurrentPlayerId())&&(this.gamedatas.countplayers >= 2)&&(notif.args.turn <=13)) 
+                        {
+                            this.notifqueue.setSynchronousDuration(0);
+                            
+                        }
+    
+                
             },
 
             notif_angry: function( notif )
@@ -8869,15 +8966,48 @@ function (dojo, declare) {
                 if ((notif.args.player == this.getCurrentPlayerId())||(this.gamedatas.countplayers == 1)) 
                     {
                         this.notifqueue.setSynchronousDuration(500);
+                        this.attachToNewParentNoDestroy( 'angry_'+notif.args.player, 'angryposition_'+notif.args.position+'_'+notif.args.player);
+                        this.slideToObject( 'angry_'+notif.args.player, 'angryposition_'+notif.args.position+'_'+notif.args.player ).play();
                     }
     
-                if ((notif.args.player != this.getCurrentPlayerId())&&(this.gamedatas.countplayers >= 2)) 
+                if ((notif.args.player != this.getCurrentPlayerId())&&(this.gamedatas.countplayers >= 2)&&(notif.args.turn >= 14)) 
                     {
                         this.notifqueue.setSynchronousDuration(0);
+                        this.attachToNewParentNoDestroy( 'angry_'+notif.args.player, 'angryposition_'+notif.args.position+'_'+notif.args.player);
+                        this.slideToObject( 'angry_'+notif.args.player, 'angryposition_'+notif.args.position+'_'+notif.args.player ).play();
                     }
-                this.attachToNewParentNoDestroy( 'angry_'+notif.args.player, 'angryposition_'+notif.args.position+'_'+notif.args.player);
-                this.slideToObject( 'angry_'+notif.args.player, 'angryposition_'+notif.args.position+'_'+notif.args.player ).play();
+
+                    if ((notif.args.player != this.getCurrentPlayerId())&&(this.gamedatas.countplayers >= 2)&&(notif.args.turn <=13)) 
+                        {
+                            this.notifqueue.setSynchronousDuration(0);
+                            
+                        }
+    
+                
             },
+
+            notif_majsmileall: function( notif )
+            {
+
+                if(notif.args.id != this.getCurrentPlayerId())
+                {
+                    this.attachToNewParentNoDestroy( 'smile_'+notif.args.id, 'smileposition_'+notif.args.smile+'_'+notif.args.id);
+                    this.slideToObject( 'smile_'+notif.args.id, 'smileposition_'+notif.args.smile+'_'+notif.args.id,0 ).play();
+
+                    this.attachToNewParentNoDestroy( 'happy_'+notif.args.id, 'happyposition_'+notif.args.happy+'_'+notif.args.id);
+                    this.slideToObject( 'happy_'+notif.args.id, 'happyposition_'+notif.args.happy+'_'+notif.args.id,0 ).play();
+
+                    this.attachToNewParentNoDestroy( 'angry_'+notif.args.id, 'angryposition_'+notif.args.angry+'_'+notif.args.id);
+                    this.slideToObject( 'angry_'+notif.args.id, 'angryposition_'+notif.args.angry+'_'+notif.args.id,0 ).play();
+
+                }
+               
+    
+                
+            },
+
+
+
 
             notif_deployer: function( notif )
             {
@@ -9004,6 +9134,8 @@ function (dojo, declare) {
     
                     }
                 
+            if((notif.args.playerid == this.getCurrentPlayerId())||(this.gamedatas.countplayers == 1))
+            {
                 this.attachToNewParentNoDestroy( 'card_'+notif.args.ville1+'_'+notif.args.card1, 'cardposition_'+notif.args.jour+'_2_'+notif.args.playerid );
                 this.slideToObject( 'card_'+notif.args.ville1+'_'+notif.args.card1 , 'cardposition_'+notif.args.jour+'_2_'+notif.args.playerid ).play();
                 var element1 = document.getElementById('cardposition_'+notif.args.jour+'_2_'+notif.args.playerid);
@@ -9018,6 +9150,7 @@ function (dojo, declare) {
                 element2.style.zIndex = "10";
    
                 }
+            }
 
 
             },
@@ -9025,6 +9158,8 @@ function (dojo, declare) {
 
             notif_deployerextrawalk: function( notif )
             {
+                if((notif.args.playerid == this.getCurrentPlayerId())||(this.gamedatas.countplayers == 1))
+                {
                 this.attachToNewParentNoDestroy( 'card_'+notif.args.ville1+'_'+notif.args.card1, 'cardposition_'+notif.args.jour+'_2_'+notif.args.playerid );
                 this.slideToObject( 'card_'+notif.args.ville1+'_'+notif.args.card1 , 'cardposition_'+notif.args.jour+'_2_'+notif.args.playerid ).play();
                 var element1 = document.getElementById('cardposition_'+notif.args.jour+'_2_'+notif.args.playerid);
@@ -9039,6 +9174,7 @@ function (dojo, declare) {
                 this.slideToObject( 'card_'+notif.args.ville3+'_'+notif.args.card3 , 'cardposition_'+notif.args.jour+'_6_'+notif.args.playerid ).play();
                 var element3 = document.getElementById('cardposition_'+notif.args.jour+'_6_'+notif.args.playerid);
                 element3.style.zIndex = "10";
+                }
 
 
                 if(this.gamedatas.countplayers == 1)
@@ -9141,7 +9277,8 @@ function (dojo, declare) {
 
                 
 
-                
+                if((notif.args.playerid == this.getCurrentPlayerId())||(this.gamedatas.countplayers == 1))
+                {
 
 
                 this.attachToNewParentNoDestroy( 'card_'+notif.args.ville1+'_'+notif.args.card1, 'cardposition_'+notif.args.jour+'_1_'+notif.args.playerid );
@@ -9201,6 +9338,7 @@ function (dojo, declare) {
                         element6.style.zIndex = "0";
     
                     }
+                }
 
                     if(this.gamedatas.countplayers == 1)
                         {
@@ -9358,7 +9496,8 @@ function (dojo, declare) {
             notif_condenseravecmodif: function( notif )
             {
                 
-                
+                if((notif.args.playerid == this.getCurrentPlayerId())||(this.gamedatas.countplayers == 1))
+                {
                 if (notif.args.count == 1)
                 {
                     this.attachToNewParentNoDestroy( 'card_'+notif.args.ville1+'_'+notif.args.card1, 'cardposition_'+notif.args.jour+'_1_'+notif.args.playerid );
@@ -9427,6 +9566,7 @@ function (dojo, declare) {
                         element6.style.zIndex = "0";
     
                     }
+                }
 
                     if(this.gamedatas.countplayers == 1)
                         {
@@ -9637,7 +9777,8 @@ function (dojo, declare) {
 
             notif_condenserextrawalkavecmodif: function( notif )
             {
-                
+                if((notif.args.playerid == this.getCurrentPlayerId())||(this.gamedatas.countplayers == 1))
+                    {
                 
                 
                     this.attachToNewParentNoDestroy( 'card_'+notif.args.ville1+'_'+notif.args.card1, 'cardposition_'+notif.args.jour+'_1_'+notif.args.playerid );
@@ -9663,6 +9804,8 @@ function (dojo, declare) {
                     element6.style.zIndex = "0";
                     var element7 = document.getElementById('cardposition_'+notif.args.jour+'_7_'+notif.args.playerid);
                     element7.style.zIndex = "0";
+
+                    }
     
                     
                     if(this.gamedatas.countplayers == 1)
@@ -10118,6 +10261,65 @@ function (dojo, declare) {
                 
             },
             
+            notif_destroytokyo: function( notif )
+            {
+                for (var card in notif.args.tableau)
+                {
+                    if (notif.args.tableau[card].location_arg != this.getCurrentPlayerId())
+                    {
+                        
+                        dojo.destroy('card_1_'+notif.args.tableau[card].id);
+                    }
+                    
+                }
+                  
+                
+            },
+
+            notif_destroykyoto: function( notif )
+            {
+                for (var card in notif.args.tableau)
+                {
+                    if (notif.args.tableau[card].location_arg != this.getCurrentPlayerId())
+                    {
+                        
+                        dojo.destroy('card_2_'+notif.args.tableau[card].id);  
+                    }
+                }
+                      
+                
+            },
+
+            notif_displaytokyo: function( notif )
+            {
+                for (var card in notif.args.tableau)
+                {
+                    if (notif.args.tableau[card].location_arg != this.getCurrentPlayerId())
+                    {
+                        
+                        this.addCardTokyoTrip(notif.args.tableau[card].id, notif.args.tableau[card].type, notif.args.tableau[card].type_arg, notif.args.tableau[card].location, notif.args.tableau[card].location_arg, notif.args.tableau[card].walk, notif.args.tableau[card].finallocation, notif.args.tableau[card].finalwalk);
+                    }
+                    
+                }
+                  
+                
+            },
+
+            notif_displaykyoto: function( notif )
+            {
+                for (var card in notif.args.tableau)
+                {
+                    if (notif.args.tableau[card].location_arg != this.getCurrentPlayerId())
+                    {
+                        
+                        this.addCardKyotoTrip(notif.args.tableau[card].id, notif.args.tableau[card].type, notif.args.tableau[card].type_arg, notif.args.tableau[card].location, notif.args.tableau[card].location_arg, notif.args.tableau[card].walk, notif.args.tableau[card].finallocation, notif.args.tableau[card].finalwalk);
+                    }
+                    
+                }
+                  
+                
+            },
+
 
 
     

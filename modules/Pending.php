@@ -215,9 +215,14 @@ class Pending extends APP_GameClass
                 $name = ucwords(letsgotojapan::$instance->kyotocards[$card]['name']);
             }
 
-           
+            letsgotojapan::$instance->notifyPlayer($this->player_id, 'message',clienttranslate( 'You place <b>"${name}"</b> on <b>${day}</b>'), array(
+                'day' => letsgotojapan::$instance->days[$explode2[1]]['name'],
+                'name' => $name,
 
-            letsgotojapan::$instance->notifyAllPlayers('movecard',clienttranslate( '${player_name} places <b>"${name}"</b> on <b>${day}</b>'), array(
+                )
+                );
+
+            letsgotojapan::$instance->notifyAllPlayers('movecard','', array(
                 'mobile' =>  $parg1,
                 'parent' => $varg1,
                 'player_name' => $this->player_name,
@@ -365,7 +370,7 @@ class Pending extends APP_GameClass
                     {
                         letsgotojapan::$instance->Smile(1,$this->player_id);
                         
-                        letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} gains ${log}' ), array(
+                        letsgotojapan::$instance->notifyPlayer($this->player_id, 'message',clienttranslate( 'You gain ${log}' ), array(
                             'player_name' => $this->player_name,
                             'log' => letsgotojapan::$instance->getLogsType(1),
                             )
@@ -397,7 +402,7 @@ class Pending extends APP_GameClass
                     {
                         letsgotojapan::$instance->Smile(1,$this->player_id);
 
-                        letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} gains ${log}' ), array(
+                        letsgotojapan::$instance->notifyPlayer($this->player_id, 'message',clienttranslate( 'You gain ${log}' ), array(
                             'player_name' => $this->player_name,
                             'log' => letsgotojapan::$instance->getLogsType(1),
                             )
@@ -488,9 +493,14 @@ class Pending extends APP_GameClass
                 $name = ucwords(letsgotojapan::$instance->kyotocards[$card]['name']);
             }
 
-           
+            letsgotojapan::$instance->notifyPlayer($this->player_id, 'message',clienttranslate( 'You place <b>"${name}"</b> on <b>${day}</b>'), array(
+                'day' => letsgotojapan::$instance->days[$explode2[1]]['name'],
+                'name' => $name,
 
-            letsgotojapan::$instance->notifyAllPlayers('movecard',clienttranslate( '${player_name} places <b>"${name}"</b> on <b>${day}</b>'), array(
+                )
+                );
+
+            letsgotojapan::$instance->notifyAllPlayers('movecard','', array(
                 'mobile' =>  $parg1,
                 'parent' => $parg2,
                 'player_name' => $this->player_name,
@@ -638,7 +648,7 @@ class Pending extends APP_GameClass
                     {
                         letsgotojapan::$instance->Smile(1,$this->player_id);
                         
-                        letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} gains ${log}' ), array(
+                        letsgotojapan::$instance->notifyPlayer($this->player_id, 'message',clienttranslate( 'You gain ${log}' ), array(
                             'player_name' => $this->player_name,
                             'log' => letsgotojapan::$instance->getLogsType(1),
                             )
@@ -670,7 +680,7 @@ class Pending extends APP_GameClass
                     {
                         letsgotojapan::$instance->Smile(1,$this->player_id);
 
-                        letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} gains ${log}' ), array(
+                        letsgotojapan::$instance->notifyPlayer($this->player_id, 'message',clienttranslate( 'You gain ${log}' ), array(
                             'player_name' => $this->player_name,
                             'log' => letsgotojapan::$instance->getLogsType(1),
                             )
@@ -747,7 +757,7 @@ class Pending extends APP_GameClass
         {
             letsgotojapan::$instance->Smile(1,$this->player_id);
 
-            letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} gains ${log}' ), array(
+            letsgotojapan::$instance->notifyPlayer($this->player_id, 'message',clienttranslate( 'You gain ${log}' ), array(
                 'player_name' => $this->player_name,
                 'log' => letsgotojapan::$instance->getLogsType(1),
                 )
@@ -814,7 +824,7 @@ class Pending extends APP_GameClass
         {
             self::DbQuery( "UPDATE player set recherche = recherche + 2  WHERE player_id = {$this->player_id}" );
             letsgotojapan::$instance->MajPannel($this->player_id);
-            letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} gains ${log} ${log}' ), array(
+            letsgotojapan::$instance->notifyPlayer($this->player_id, 'message',clienttranslate( 'You gain ${log} ${log}' ), array(
                 'player_name' => $this->player_name,
                 'log' => letsgotojapan::$instance->getLogsType(2),
                 )
@@ -837,7 +847,7 @@ class Pending extends APP_GameClass
         {
             self::DbQuery( "UPDATE player set wild = wild + 1  WHERE player_id = {$this->player_id}" );
             letsgotojapan::$instance->MajPannel($this->player_id);
-            letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} gains ${log}' ), array(
+            letsgotojapan::$instance->notifyPlayer($this->player_id, 'message',clienttranslate( 'You gain ${log}' ), array(
                 'player_name' => $this->player_name,
                 'log' => letsgotojapan::$instance->getLogsType(3),
                 )
@@ -893,7 +903,7 @@ class Pending extends APP_GameClass
         {
             self::DbQuery( "UPDATE player set train = train + 1  WHERE player_id = {$this->player_id}" );
             letsgotojapan::$instance->MajPannel($this->player_id);
-            letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} gains ${log}' ), array(
+            letsgotojapan::$instance->notifyPlayer($this->player_id, 'message',clienttranslate( 'You gain ${log}' ), array(
                 'player_name' => $this->player_name,
                 'log' => letsgotojapan::$instance->getLogsType(6),
                 )
@@ -1134,7 +1144,15 @@ class Pending extends APP_GameClass
                 $newcardid= self::getUniqueValueFromDB("SELECT card_id FROM tokyo WHERE card_location_arg = {$this->player_id} AND card_location = '" . $explode2[0] . "_" . $explode2[1] . "_" . $explode2[2] . "'");
                 self::DbQuery( "UPDATE tokyo set walk = 1  WHERE card_id ={$newcardid}" );
                 self::DbQuery( "UPDATE tokyo set finallocation = 1  WHERE card_id ={$newcardid}" );
-                letsgotojapan::$instance->notifyAllPlayers('addwalk',clienttranslate( '${player_name} places ${log} on <b>${day}</b>'), array(
+
+                letsgotojapan::$instance->notifyPlayer($this->player_id, 'message',clienttranslate( 'You place ${log} on <b>${day}</b>'), array(
+                    'day' => letsgotojapan::$instance->days[$explode2[1]]['name'],
+                    'log' => letsgotojapan::$instance->getLogsType(4),
+    
+                    )
+                    );
+
+                letsgotojapan::$instance->notifyAllPlayers('addwalk','', array(
                     'parent' => $varg1,
                     'player_name' => $this->player_name,
                     'ville' => 1,
@@ -1233,7 +1251,13 @@ class Pending extends APP_GameClass
                 $newcardid= self::getUniqueValueFromDB("SELECT card_id FROM kyoto WHERE card_location_arg = {$this->player_id} AND card_location = '" . $explode2[0] . "_" . $explode2[1] . "_" . $explode2[2] . "'");
                 self::DbQuery( "UPDATE kyoto set walk = 1  WHERE card_id ={$newcardid}" );
                 self::DbQuery( "UPDATE kyoto set finallocation = 2  WHERE card_id ={$newcardid}" );
-                letsgotojapan::$instance->notifyAllPlayers('addwalk',clienttranslate( '${player_name} places ${log} on <b>${day}</b>'), array(
+                letsgotojapan::$instance->notifyPlayer($this->player_id, 'message',clienttranslate( 'You place ${log} on <b>${day}</b>'), array(
+                    'day' => letsgotojapan::$instance->days[$explode2[1]]['name'],
+                    'log' => letsgotojapan::$instance->getLogsType(4),
+    
+                    )
+                    );
+                letsgotojapan::$instance->notifyAllPlayers('addwalk','', array(
                     'parent' => $varg1,
                     'player_name' => $this->player_name,
                     'ville' => 2,
@@ -1321,7 +1345,7 @@ class Pending extends APP_GameClass
                 
                 self::DbQuery( "UPDATE player set recherche = recherche + 1  WHERE player_id = {$this->player_id}" );
                 letsgotojapan::$instance->MajPannel($this->player_id);
-                letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} gains ${log}' ), array(
+                letsgotojapan::$instance->notifyPlayer($this->player_id, 'message',clienttranslate( 'You gain ${log}' ), array(
                     'player_name' => $this->player_name,
                     'log' => letsgotojapan::$instance->getLogsType(2),
                     )
@@ -1413,7 +1437,7 @@ class Pending extends APP_GameClass
                         {
                             letsgotojapan::$instance->Smile(1,$this->player_id);
                             
-                            letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} gains ${log}' ), array(
+                            letsgotojapan::$instance->notifyPlayer($this->player_id, 'message',clienttranslate( 'You gain ${log}' ), array(
                                 'player_name' => $this->player_name,
                                 'log' => letsgotojapan::$instance->getLogsType(1),
                                 )
@@ -1463,7 +1487,7 @@ class Pending extends APP_GameClass
                         {
                             letsgotojapan::$instance->Smile(1,$this->player_id);
 
-                            letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} gains ${log}' ), array(
+                            letsgotojapan::$instance->notifyPlayer($this->player_id, 'message',clienttranslate( 'You gain ${log}' ), array(
                                 'player_name' => $this->player_name,
                                 'log' => letsgotojapan::$instance->getLogsType(1),
                                 )
@@ -1609,7 +1633,14 @@ function ExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
             $newcardid= self::getUniqueValueFromDB("SELECT card_id FROM tokyo WHERE card_location_arg = {$this->player_id} AND card_location = '" . $explode2[0] . "_" . $explode2[1] . "_" . $explode2[2] . "'");
             self::DbQuery( "UPDATE tokyo set walk = 1  WHERE card_id ={$newcardid}" );
             self::DbQuery( "UPDATE tokyo set finallocation = 1  WHERE card_id ={$newcardid}" );
-            letsgotojapan::$instance->notifyAllPlayers('addwalk',clienttranslate( '${player_name} places an Extra ${log} on <b>${day}</b>'), array(
+            letsgotojapan::$instance->notifyPlayer($this->player_id, 'message',clienttranslate( 'You place an Extra ${log} on <b>${day}</b>'), array(
+                'day' => letsgotojapan::$instance->days[$explode2[1]]['name'],
+                'log' => letsgotojapan::$instance->getLogsType(4),
+
+                )
+                );
+
+            letsgotojapan::$instance->notifyAllPlayers('addwalk','', array(
                 'parent' => $varg1,
                 'player_name' => $this->player_name,
                 'ville' => 1,
@@ -1633,7 +1664,13 @@ function ExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
             $newcardid= self::getUniqueValueFromDB("SELECT card_id FROM kyoto WHERE card_location_arg = {$this->player_id} AND card_location = '" . $explode2[0] . "_" . $explode2[1] . "_" . $explode2[2] . "'");
             self::DbQuery( "UPDATE kyoto set walk = 1  WHERE card_id ={$newcardid}" );
             self::DbQuery( "UPDATE kyoto set finallocation = 2  WHERE card_id ={$newcardid}" );
-            letsgotojapan::$instance->notifyAllPlayers('addwalk',clienttranslate( '${player_name} places an Extra ${log} on <b>${day}</b>'), array(
+            letsgotojapan::$instance->notifyPlayer($this->player_id, 'message',clienttranslate( 'You place an Extra ${log} on <b>${day}</b>'), array(
+                'day' => letsgotojapan::$instance->days[$explode2[1]]['name'],
+                'log' => letsgotojapan::$instance->getLogsType(4),
+
+                )
+                );
+            letsgotojapan::$instance->notifyAllPlayers('addwalk','', array(
                 'parent' => $varg1,
                 'player_name' => $this->player_name,
                 'ville' => 2,
@@ -2275,9 +2312,14 @@ function ExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
                 $name = ucwords(letsgotojapan::$instance->kyotocards[$card]['name']);
             }
 
-            
+            letsgotojapan::$instance->notifyPlayer($this->player_id, 'message',clienttranslate( 'You place <b>"${name}"</b> on <b>${day}</b>'), array(
+                'day' => letsgotojapan::$instance->days[$explode2[1]]['name'],
+                'name' => $name,
 
-            letsgotojapan::$instance->notifyAllPlayers('movecard',clienttranslate( '${player_name} places <b>"${name}"</b> on <b>${day}</b>'), array(
+                )
+                );
+
+            letsgotojapan::$instance->notifyAllPlayers('movecard','', array(
                 'mobile' =>  $parg1,
                 'parent' => $varg1,
                 'player_name' => $this->player_name,
@@ -2445,7 +2487,7 @@ function ExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
                     {
                         letsgotojapan::$instance->Smile(1,$this->player_id);
                         
-                        letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} gains ${log}' ), array(
+                        letsgotojapan::$instance->notifyPlayer($this->player_id,'message',clienttranslate( 'You gain ${log}' ), array(
                             'player_name' => $this->player_name,
                             'log' => letsgotojapan::$instance->getLogsType(1),
                             )
@@ -2492,7 +2534,7 @@ function ExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
                     {
                         letsgotojapan::$instance->Smile(1,$this->player_id);
 
-                        letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} gains ${log}' ), array(
+                        letsgotojapan::$instance->notifyPlayer($this->player_id,'message',clienttranslate( 'You gain ${log}' ), array(
                             'player_name' => $this->player_name,
                             'log' => letsgotojapan::$instance->getLogsType(1),
                             )
@@ -2600,9 +2642,14 @@ function ExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
                 $name = ucwords(letsgotojapan::$instance->kyotocards[$card]['name']);
             }
 
-            
+            letsgotojapan::$instance->notifyPlayer($this->player_id, 'message',clienttranslate( 'You place <b>"${name}"</b> on <b>${day}</b>'), array(
+                'day' => letsgotojapan::$instance->days[$explode2[1]]['name'],
+                'name' => $name,
 
-            letsgotojapan::$instance->notifyAllPlayers('movecard',clienttranslate( '${player_name} places <b>"${name}"</b> on <b>${day}</b>'), array(
+                )
+                );
+
+            letsgotojapan::$instance->notifyAllPlayers('movecard','', array(
                 'mobile' =>  $parg1,
                 'parent' => $parg2,
                 'player_name' => $this->player_name,
@@ -2770,7 +2817,7 @@ function ExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
                     {
                         letsgotojapan::$instance->Smile(1,$this->player_id);
                         
-                        letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} gains ${log}' ), array(
+                        letsgotojapan::$instance->notifyPlayer($this->player_id, 'message',clienttranslate( 'You gain ${log}' ), array(
                             'player_name' => $this->player_name,
                             'log' => letsgotojapan::$instance->getLogsType(1),
                             )
@@ -2817,7 +2864,7 @@ function ExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
                     {
                         letsgotojapan::$instance->Smile(1,$this->player_id);
 
-                        letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} gains ${log}' ), array(
+                        letsgotojapan::$instance->notifyPlayer($this->player_id, 'message',clienttranslate( 'You gain ${log}' ), array(
                             'player_name' => $this->player_name,
                             'log' => letsgotojapan::$instance->getLogsType(1),
                             )
@@ -10072,10 +10119,7 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
             
         }
 
-        letsgotojapan::$instance->notifyAllPlayers('affichehand','', array(
-                
-            )
-            );
+        
 
         letsgotojapan::$instance->tokyo->pickCardForLocation( 'deck', 'playerhand', $this->player_id);
         letsgotojapan::$instance->kyoto->pickCardForLocation( 'deck', 'playerhand', $this->player_id);

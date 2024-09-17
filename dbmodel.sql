@@ -56,6 +56,8 @@ CREATE TABLE IF NOT EXISTS `tokyo` (
   `finalwalk` int(2) unsigned DEFAULT 0,
   `train` int(2) unsigned DEFAULT 0,
   `checkcard` int(2) unsigned DEFAULT 0,
+  `novisible` int(2) unsigned DEFAULT 0,
+  `infocard` int(2) unsigned DEFAULT 0,
   PRIMARY KEY (`card_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
@@ -70,6 +72,8 @@ CREATE TABLE IF NOT EXISTS `kyoto` (
   `finalwalk` int(2) unsigned DEFAULT 0,
   `train` int(2) unsigned DEFAULT 0,
   `checkcard` int(2) unsigned DEFAULT 0,
+  `novisible` int(2) unsigned DEFAULT 0,
+  `infocard` int(2) unsigned DEFAULT 0,
   PRIMARY KEY (`card_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
