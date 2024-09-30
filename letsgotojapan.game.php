@@ -109,6 +109,14 @@ class letsgotojapan extends Table
 /////////////////////////////////////////////////////////////////////////////////    
 
         $gamemode = $this->gamestate->table_globals[100];
+        $countplayer = count(self::getObjectListFromDB( "SELECT player_id FROM player", true ));
+
+        //////// AI ///////
+
+        self::DbQuery( "INSERT INTO agent (name) VALUES ('agent')" );
+
+        ///////////////////
+        
 
         if($gamemode == 1)
         {
@@ -117,12 +125,19 @@ class letsgotojapan extends Table
         if($gamemode == 2)
         {
         self::DbQuery( "INSERT INTO mode (name, mode, actif) VALUES ('mode', 2, 1)" );
+            if($countplayer == 1)
+            {
+                self::DbQuery( "UPDATE agent set r = 3  WHERE name = 'agent'" );
+                self::DbQuery( "UPDATE agent set g = 3  WHERE name = 'agent'" );
+                self::DbQuery( "UPDATE agent set p = 3  WHERE name = 'agent'" );
+                self::DbQuery( "UPDATE agent set y = 3  WHERE name = 'agent'" );
+                self::DbQuery( "UPDATE agent set b = 3  WHERE name = 'agent'" );
+            }
+
         }
 
 
         
-        $countplayer = count(self::getObjectListFromDB( "SELECT player_id FROM player", true ));
-
         $tokyo = array();
         for ($i = 1; $i <= 80; $i++)
         {
@@ -250,9 +265,7 @@ class letsgotojapan extends Table
         }
 
 
-        //////// AI ///////
-
-        self::DbQuery( "INSERT INTO agent (name) VALUES ('agent')" );
+        
 
         //Pref Confirm///
 
@@ -2813,11 +2826,11 @@ function st_MultiPlayerActivation()
 
         if($countplayer ==1)
         {
-            letsgotojapan::$instance->Gain("r",0);
+            /*letsgotojapan::$instance->Gain("r",0);
             letsgotojapan::$instance->Gain("g",0);
             letsgotojapan::$instance->Gain("y",0);
             letsgotojapan::$instance->Gain("p",0);
-            letsgotojapan::$instance->Gain("b",0);
+            letsgotojapan::$instance->Gain("b",0);*/
 
 
             foreach ($listplayers as $player_id)
