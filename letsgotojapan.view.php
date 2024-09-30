@@ -61,9 +61,24 @@ class view_letsgotojapan_letsgotojapan extends game_view
             
                         
         ) );
-        
-        
+                
         }
+
+        
+
+        
+        $this->page->begin_block($template, "playerpassport");
+        $this->page->insert_block( "playerpassport", array(
+            'PLAYER_ID' => $current_player_id,
+            
+            
+                        
+        ) );
+
+        
+        
+        
+ 
 
 
 

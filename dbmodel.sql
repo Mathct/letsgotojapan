@@ -77,6 +77,23 @@ CREATE TABLE IF NOT EXISTS `kyoto` (
   PRIMARY KEY (`card_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
+CREATE TABLE IF NOT EXISTS `passport` (
+  `card_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `card_type` int(11) NOT NULL,
+  `card_type_arg` int(11) NOT NULL,
+  `card_location` varchar(50) NOT NULL,
+  `card_location_arg` int(16) NOT NULL,
+  PRIMARY KEY (`card_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+CREATE TABLE IF NOT EXISTS `mode` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL,
+  `mode` int(2) unsigned DEFAULT 1,
+  `actif` int(2) unsigned DEFAULT 0,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
 CREATE TABLE IF NOT EXISTS `copytokyo` (
   `card_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `card_type` int(11) NOT NULL,
@@ -211,4 +228,4 @@ ALTER TABLE `player` ADD `vendredicheck` int(2) unsigned DEFAULT 0;
 ALTER TABLE `player` ADD `samedicheck` int(2) unsigned DEFAULT 0;
 ALTER TABLE `player` ADD `yellowpass` int(2) unsigned DEFAULT 0;
 ALTER TABLE `player` ADD `passportcard` int(2) unsigned DEFAULT 0;
-ALTER TABLE `player` ADD `passportvueactive` int(2) unsigned DEFAULT 0;
+ALTER TABLE `player` ADD `passportscore` int(2) DEFAULT 0;

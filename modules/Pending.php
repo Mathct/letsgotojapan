@@ -4043,6 +4043,50 @@ function argFinalStep1($parg1, $parg2)
 
             }
 
+
+            //// PASSPORT 18
+
+            $passportcard = self::getUniqueValueFromDB( "SELECT passportcard FROM player WHERE  player_id = {$this->player_id}");
+            if($passportcard == 18)
+            {
+                $scorepassport18 = 0;
+                $tokyopass = self::getObjectListFromDB( "SELECT card_type type FROM tokyo WHERE  card_location_arg = {$this->player_id} AND walk =0 AND card_location LIKE 'cardposition%'", true );
+                $kyotopass = self::getObjectListFromDB( "SELECT card_type type FROM kyoto WHERE  card_location_arg = {$this->player_id} AND walk =0 AND card_location LIKE 'cardposition%'", true );
+
+                if($tokyopass != null)
+                {
+                    foreach ($tokyopass as $tokyotype)
+                    {
+                        if(($tokyotype == 45)||($tokyotype == 79)||($tokyotype == 1)||($tokyotype == 2))
+                        {
+                            $scorepassport18 = $scorepassport18 +1;
+                        }
+
+                    }
+
+                }
+
+                if($kyotopass != null)
+                {
+                    foreach ($kyotopass as $kyototype)
+                    {
+
+                        if(($kyototype == 69)||($kyototype == 34)||($kyototype == 35)||($kyototype == 22)||($kyototype == 23)||($kyototype == 79)||($kyototype == 70)||($kyototype == 71)||($kyototype == 26)||($kyototype == 27))
+                        {
+                            $scorepassport18 = $scorepassport18 +1;
+                        }
+                        
+                    }
+
+                    
+                }
+
+                $newscore = $scorepassport18 * 4;
+                self::DbQuery( "UPDATE player set passportscore = $newscore  WHERE player_id = {$this->player_id}" );
+                letsgotojapan::$instance->MajScorePassport(18,$this->player_id);
+
+            }
+
             letsgotojapan::$instance->addPending($this->player_id, "FinalStepLundiWalk");   ///changer jour
 
         }
@@ -4123,6 +4167,8 @@ function argFinalStep1($parg1, $parg2)
             if(($parg1 != 1)&&($parg1 !=2))
             {
 
+                $tableaupassport14 = [0,0,0,0,0];
+
             for ($i=1; $i<=$countday; $i++)
             {
                 $type = self::getUniqueValueFromDB( "SELECT card_type type FROM tokyo WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$i}'");
@@ -4195,6 +4241,7 @@ function argFinalStep1($parg1, $parg2)
 
                 self::DbQuery( "UPDATE player set lundi = lundi + {$pvcard}   WHERE player_id = {$this->player_id}" );   //// CHANGER LE JOUR
 
+                
 
                 if($bonuscard[0]>=1)
                 {
@@ -4202,6 +4249,8 @@ function argFinalStep1($parg1, $parg2)
                     {
                         letsgotojapan::$instance->Gain('r',$this->player_id);
                     }
+
+                    $tableaupassport14[0]=1;
 
                 }
 
@@ -4212,6 +4261,8 @@ function argFinalStep1($parg1, $parg2)
                         letsgotojapan::$instance->Gain('g',$this->player_id);
                     }
 
+                    $tableaupassport14[1]=1;
+
                 }
 
                 if($bonuscard[2]>=1)
@@ -4220,6 +4271,8 @@ function argFinalStep1($parg1, $parg2)
                     {
                         letsgotojapan::$instance->Gain('p',$this->player_id);
                     }
+
+                    $tableaupassport14[2]=1;
 
                 }
 
@@ -4230,6 +4283,8 @@ function argFinalStep1($parg1, $parg2)
                         letsgotojapan::$instance->Gain('y',$this->player_id);
                     }
 
+                    $tableaupassport14[3]=1;
+
                 }
 
                 if($bonuscard[4]>=1)
@@ -4238,6 +4293,8 @@ function argFinalStep1($parg1, $parg2)
                     {
                         letsgotojapan::$instance->Gain('b',$this->player_id);
                     }
+
+                    $tableaupassport14[4]=1;
 
                 }
 
@@ -4283,6 +4340,25 @@ function argFinalStep1($parg1, $parg2)
 
             }
 
+            $passportcard = self::getUniqueValueFromDB( "SELECT passportcard FROM player WHERE  player_id = {$this->player_id}");
+            if($passportcard == 14)
+            {
+                
+                // Compter les occurrences de chaque valeur
+                $comptage = array_count_values($tableaupassport14);
+
+                // Vérifier combien de fois la valeur 0 apparaît
+                $nombreDeZeros = isset($comptage[0]) ? $comptage[0] : 0;
+
+                if($nombreDeZeros <=1)
+                {
+                    self::DbQuery( "UPDATE player set passportscore = passportscore + 6  WHERE player_id = {$this->player_id}" );
+                    letsgotojapan::$instance->MajScorePassport(14,$this->player_id);
+
+                }
+
+            }
+
             if($testwild == 0)
             {
             $wild = self::getUniqueValueFromDB( "SELECT wild FROM player WHERE player_id = {$this->player_id}");
@@ -4312,6 +4388,11 @@ function argFinalStep1($parg1, $parg2)
                 $ville = 2;
             }
 
+            $savescore = self::getUniqueValueFromDB( "SELECT lundi FROM player WHERE  player_id = {$this->player_id}"); //passport3
+            $passportcard = self::getUniqueValueFromDB( "SELECT passportcard FROM player WHERE  player_id = {$this->player_id}");
+            $savetoken = self::getObjectListFromDB( "SELECT r r, g g, p p, y y, b b, happy1 happy1, happy2 happy2, angry1 angry1, angry2 angry2, wild wild FROM player WHERE player_id = {$this->player_id}" ); //passport12
+            
+
             if($ville == 1)
                 {
                     $lastday = self::getUniqueValueFromDB( "SELECT card_type type FROM tokyo WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$countday}'");
@@ -4325,6 +4406,71 @@ function argFinalStep1($parg1, $parg2)
 
                     if($check == 1)
                     {
+                        if($passportcard == 3)
+                        {
+                        $newscore = self::getUniqueValueFromDB( "SELECT lundi FROM player WHERE  player_id = {$this->player_id}");
+                        $scorepassport = $newscore - $savescore;
+                        self::DbQuery( "UPDATE player set passportscore = passportscore +$scorepassport   WHERE player_id = {$this->player_id}" );
+                        letsgotojapan::$instance->MajScorePassport(3,$this->player_id);
+                        }
+
+                        if($passportcard == 12)
+                        {
+                            $newtoken = self::getObjectListFromDB( "SELECT r r, g g, p p, y y, b b, happy1 happy1, happy2 happy2, angry1 angry1, angry2 angry2, wild wild FROM player WHERE player_id = {$this->player_id}" );
+                            $bonusr = $newtoken[0]['r']-$savetoken[0]['r'];
+                            for ($i =1; $i <= $bonusr; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('r',$this->player_id);
+                            }
+                            $bonusg = $newtoken[0]['g']-$savetoken[0]['g'];
+                            for ($i =1; $i <= $bonusg; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('g',$this->player_id);
+                            }
+                            $bonusp = $newtoken[0]['p']-$savetoken[0]['p'];
+                            for ($i =1; $i <= $bonusp; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('p',$this->player_id);
+                            }
+                            $bonusy= $newtoken[0]['y']-$savetoken[0]['y'];
+                            for ($i =1; $i <= $bonusy; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('y',$this->player_id);
+                            }
+                            $bonusb = $newtoken[0]['b']-$savetoken[0]['b'];
+                            for ($i =1; $i <= $bonusb; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('b',$this->player_id);
+                            }
+                            $bonushappy1 = $newtoken[0]['happy1']-$savetoken[0]['happy1'];
+                            for ($i =1; $i <= $bonushappy1; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('h1',$this->player_id);
+                            }
+                            $bonushappy2 = $newtoken[0]['happy2']-$savetoken[0]['happy2'];
+                            for ($i =1; $i <= $bonushappy2; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('h2',$this->player_id);
+                            }
+                            $bonusangry1 = $newtoken[0]['angry1']-$savetoken[0]['angry1'];
+                            for ($i =1; $i <= $bonusangry1; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('a1',$this->player_id);
+                            }
+                            $bonusangry2 = $newtoken[0]['angry2']-$savetoken[0]['angry2'];
+                            for ($i =1; $i <= $bonusangry2; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('a2',$this->player_id);
+                            }
+                            $bonuswild = $newtoken[0]['wild']-$savetoken[0]['wild'];
+                            for ($i =1; $i <= $bonuswild; $i++)
+                            {
+                                self::DbQuery( "UPDATE player set wild = wild +1  WHERE player_id = {$this->player_id}" );
+                                letsgotojapan::$instance->MajPannel($this->player_id);
+                            }
+                            
+                        }
+
                         self::DbQuery( "UPDATE tokyo set checkcard = 1  WHERE card_id = {$cardid}" );
                         self::DbQuery( "UPDATE player set lundicheck = 1  WHERE player_id = {$this->player_id}" );
                         letsgotojapan::$instance->notifyAllPlayers('checkscore','', array(
@@ -4354,6 +4500,11 @@ function argFinalStep1($parg1, $parg2)
 
                     if($walklastday == 1)
                     {
+                        if($passportcard == 3)
+                        {
+                            self::DbQuery( "UPDATE player set passportscore = passportscore +2   WHERE player_id = {$this->player_id}" );
+                            letsgotojapan::$instance->MajScorePassport(3,$this->player_id);
+                        }
 
                         self::DbQuery( "UPDATE tokyo set checkcard = 1  WHERE card_id = {$cardid}" );  //// CHANGER LA VILLE
                         self::DbQuery( "UPDATE player set lundicheck = 1  WHERE player_id = {$this->player_id}" );  //// CHANGER LE JOUR
@@ -4396,6 +4547,71 @@ function argFinalStep1($parg1, $parg2)
 
                 if($check == 1)
                     {
+                        if($passportcard == 3)
+                        {
+                        $newscore = self::getUniqueValueFromDB( "SELECT lundi FROM player WHERE  player_id = {$this->player_id}");
+                        $scorepassport = $newscore - $savescore;
+                        self::DbQuery( "UPDATE player set passportscore = passportscore +$scorepassport   WHERE player_id = {$this->player_id}" );
+                        letsgotojapan::$instance->MajScorePassport(3,$this->player_id);
+                        }
+
+                        if($passportcard == 12)
+                        {
+                            $newtoken = self::getObjectListFromDB( "SELECT r r, g g, p p, y y, b b, happy1 happy1, happy2 happy2, angry1 angry1, angry2 angry2, wild wild FROM player WHERE player_id = {$this->player_id}" );
+                            $bonusr = $newtoken[0]['r']-$savetoken[0]['r'];
+                            for ($i =1; $i <= $bonusr; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('r',$this->player_id);
+                            }
+                            $bonusg = $newtoken[0]['g']-$savetoken[0]['g'];
+                            for ($i =1; $i <= $bonusg; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('g',$this->player_id);
+                            }
+                            $bonusp = $newtoken[0]['p']-$savetoken[0]['p'];
+                            for ($i =1; $i <= $bonusp; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('p',$this->player_id);
+                            }
+                            $bonusy= $newtoken[0]['y']-$savetoken[0]['y'];
+                            for ($i =1; $i <= $bonusy; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('y',$this->player_id);
+                            }
+                            $bonusb = $newtoken[0]['b']-$savetoken[0]['b'];
+                            for ($i =1; $i <= $bonusb; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('b',$this->player_id);
+                            }
+                            $bonushappy1 = $newtoken[0]['happy1']-$savetoken[0]['happy1'];
+                            for ($i =1; $i <= $bonushappy1; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('h1',$this->player_id);
+                            }
+                            $bonushappy2 = $newtoken[0]['happy2']-$savetoken[0]['happy2'];
+                            for ($i =1; $i <= $bonushappy2; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('h2',$this->player_id);
+                            }
+                            $bonusangry1 = $newtoken[0]['angry1']-$savetoken[0]['angry1'];
+                            for ($i =1; $i <= $bonusangry1; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('a1',$this->player_id);
+                            }
+                            $bonusangry2 = $newtoken[0]['angry2']-$savetoken[0]['angry2'];
+                            for ($i =1; $i <= $bonusangry2; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('a2',$this->player_id);
+                            }
+                            $bonuswild = $newtoken[0]['wild']-$savetoken[0]['wild'];
+                            for ($i =1; $i <= $bonuswild; $i++)
+                            {
+                                self::DbQuery( "UPDATE player set wild = wild +1  WHERE player_id = {$this->player_id}" );
+                                letsgotojapan::$instance->MajPannel($this->player_id);
+                            }
+                            
+                        }
+
                         self::DbQuery( "UPDATE kyoto set checkcard = 1  WHERE card_id = {$cardid}" );
                         self::DbQuery( "UPDATE player set lundicheck = 1  WHERE player_id = {$this->player_id}" );
                         letsgotojapan::$instance->notifyAllPlayers('checkscore','', array(
@@ -4426,6 +4642,11 @@ function argFinalStep1($parg1, $parg2)
 
                 if($walklastday == 1)
                     {
+                        if($passportcard == 3)
+                        {
+                            self::DbQuery( "UPDATE player set passportscore = passportscore +2   WHERE player_id = {$this->player_id}" );
+                            letsgotojapan::$instance->MajScorePassport(3,$this->player_id);
+                        }
 
                         self::DbQuery( "UPDATE kyoto set checkcard = 1  WHERE card_id = {$cardid}" );  //// CHANGER LA VILLE
                         self::DbQuery( "UPDATE player set lundicheck = 1  WHERE player_id = {$this->player_id}" );  //// CHANGER LE JOUR
@@ -4998,6 +5219,49 @@ function argFinalStep1($parg1, $parg2)
 
             }
 
+            //// PASSPORT 18
+
+            $passportcard = self::getUniqueValueFromDB( "SELECT passportcard FROM player WHERE  player_id = {$this->player_id}");
+            if($passportcard == 18)
+            {
+                $scorepassport18 = 0;
+                $tokyopass = self::getObjectListFromDB( "SELECT card_type type FROM tokyo WHERE  card_location_arg = {$this->player_id} AND walk =0 AND card_location LIKE 'cardposition%'", true );
+                $kyotopass = self::getObjectListFromDB( "SELECT card_type type FROM kyoto WHERE  card_location_arg = {$this->player_id} AND walk =0 AND card_location LIKE 'cardposition%'", true );
+
+                if($tokyopass != null)
+                {
+                    foreach ($tokyopass as $tokyotype)
+                    {
+                        if(($tokyotype == 45)||($tokyotype == 79)||($tokyotype == 1)||($tokyotype == 2))
+                        {
+                            $scorepassport18 = $scorepassport18 +1;
+                        }
+
+                    }
+
+                }
+
+                if($kyotopass != null)
+                {
+                    foreach ($kyotopass as $kyototype)
+                    {
+
+                        if(($kyototype == 69)||($kyototype == 34)||($kyototype == 35)||($kyototype == 22)||($kyototype == 23)||($kyototype == 79)||($kyototype == 70)||($kyototype == 71)||($kyototype == 26)||($kyototype == 27))
+                        {
+                            $scorepassport18 = $scorepassport18 +1;
+                        }
+                        
+                    }
+
+                    
+                }
+
+                $newscore = $scorepassport18 * 4;
+                self::DbQuery( "UPDATE player set passportscore = $newscore  WHERE player_id = {$this->player_id}" );
+                letsgotojapan::$instance->MajScorePassport(18,$this->player_id);
+
+            }
+
             letsgotojapan::$instance->addPending($this->player_id, "FinalStepMardiWalk");   ///changer jour
 
         }
@@ -5074,6 +5338,7 @@ function argFinalStep1($parg1, $parg2)
 
             if(($parg1 != 1)&&($parg1 !=2))
             {
+                $tableaupassport14 = [0,0,0,0,0];
 
             for ($i=1; $i<=$countday; $i++)
             {
@@ -5163,6 +5428,7 @@ function argFinalStep1($parg1, $parg2)
                     {
                         letsgotojapan::$instance->Gain('g',$this->player_id);
                     }
+                    $tableaupassport14[0]=1;
 
                 }
 
@@ -5172,6 +5438,7 @@ function argFinalStep1($parg1, $parg2)
                     {
                         letsgotojapan::$instance->Gain('p',$this->player_id);
                     }
+                    $tableaupassport14[1]=1;
 
                 }
 
@@ -5181,6 +5448,7 @@ function argFinalStep1($parg1, $parg2)
                     {
                         letsgotojapan::$instance->Gain('y',$this->player_id);
                     }
+                    $tableaupassport14[2]=1;
 
                 }
 
@@ -5190,6 +5458,7 @@ function argFinalStep1($parg1, $parg2)
                     {
                         letsgotojapan::$instance->Gain('b',$this->player_id);
                     }
+                    $tableaupassport14[3]=1;
 
                 }
 
@@ -5199,6 +5468,7 @@ function argFinalStep1($parg1, $parg2)
                     {
                         letsgotojapan::$instance->Gain('h1',$this->player_id);
                     }
+                    $tableaupassport14[4]=1;
 
                 }
 
@@ -5232,6 +5502,25 @@ function argFinalStep1($parg1, $parg2)
 
             }
 
+            $passportcard = self::getUniqueValueFromDB( "SELECT passportcard FROM player WHERE  player_id = {$this->player_id}");
+            if($passportcard == 14)
+            {
+                
+                // Compter les occurrences de chaque valeur
+                $comptage = array_count_values($tableaupassport14);
+
+                // Vérifier combien de fois la valeur 0 apparaît
+                $nombreDeZeros = isset($comptage[0]) ? $comptage[0] : 0;
+
+                if($nombreDeZeros <=1)
+                {
+                    self::DbQuery( "UPDATE player set passportscore = passportscore + 6  WHERE player_id = {$this->player_id}" );
+                    letsgotojapan::$instance->MajScorePassport(14,$this->player_id);
+
+                }
+
+            }
+
             if($testwild == 0)
             {
             $wild = self::getUniqueValueFromDB( "SELECT wild FROM player WHERE player_id = {$this->player_id}");
@@ -5261,6 +5550,10 @@ function argFinalStep1($parg1, $parg2)
                 $ville = 2;
             }
 
+            $savescore = self::getUniqueValueFromDB( "SELECT mardi FROM player WHERE  player_id = {$this->player_id}");
+            $passportcard = self::getUniqueValueFromDB( "SELECT passportcard FROM player WHERE  player_id = {$this->player_id}");
+            $savetoken = self::getObjectListFromDB( "SELECT r r, g g, p p, y y, b b, happy1 happy1, happy2 happy2, angry1 angry1, angry2 angry2, wild wild FROM player WHERE player_id = {$this->player_id}" ); //passport12
+            
             if($ville == 1)
             {
                 $lastday = self::getUniqueValueFromDB( "SELECT card_type type FROM tokyo WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$countday}'");
@@ -5274,6 +5567,71 @@ function argFinalStep1($parg1, $parg2)
 
                 if($check == 1)
                 {
+                    if($passportcard == 3)
+                        {
+                        $newscore = self::getUniqueValueFromDB( "SELECT mardi FROM player WHERE  player_id = {$this->player_id}");
+                        $scorepassport = $newscore - $savescore;
+                        self::DbQuery( "UPDATE player set passportscore = passportscore +$scorepassport   WHERE player_id = {$this->player_id}" );
+                        letsgotojapan::$instance->MajScorePassport(3,$this->player_id);
+                        }
+
+                        if($passportcard == 12)
+                        {
+                            $newtoken = self::getObjectListFromDB( "SELECT r r, g g, p p, y y, b b, happy1 happy1, happy2 happy2, angry1 angry1, angry2 angry2, wild wild FROM player WHERE player_id = {$this->player_id}" );
+                            $bonusr = $newtoken[0]['r']-$savetoken[0]['r'];
+                            for ($i =1; $i <= $bonusr; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('r',$this->player_id);
+                            }
+                            $bonusg = $newtoken[0]['g']-$savetoken[0]['g'];
+                            for ($i =1; $i <= $bonusg; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('g',$this->player_id);
+                            }
+                            $bonusp = $newtoken[0]['p']-$savetoken[0]['p'];
+                            for ($i =1; $i <= $bonusp; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('p',$this->player_id);
+                            }
+                            $bonusy= $newtoken[0]['y']-$savetoken[0]['y'];
+                            for ($i =1; $i <= $bonusy; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('y',$this->player_id);
+                            }
+                            $bonusb = $newtoken[0]['b']-$savetoken[0]['b'];
+                            for ($i =1; $i <= $bonusb; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('b',$this->player_id);
+                            }
+                            $bonushappy1 = $newtoken[0]['happy1']-$savetoken[0]['happy1'];
+                            for ($i =1; $i <= $bonushappy1; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('h1',$this->player_id);
+                            }
+                            $bonushappy2 = $newtoken[0]['happy2']-$savetoken[0]['happy2'];
+                            for ($i =1; $i <= $bonushappy2; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('h2',$this->player_id);
+                            }
+                            $bonusangry1 = $newtoken[0]['angry1']-$savetoken[0]['angry1'];
+                            for ($i =1; $i <= $bonusangry1; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('a1',$this->player_id);
+                            }
+                            $bonusangry2 = $newtoken[0]['angry2']-$savetoken[0]['angry2'];
+                            for ($i =1; $i <= $bonusangry2; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('a2',$this->player_id);
+                            }
+                            $bonuswild = $newtoken[0]['wild']-$savetoken[0]['wild'];
+                            for ($i =1; $i <= $bonuswild; $i++)
+                            {
+                                self::DbQuery( "UPDATE player set wild = wild +1  WHERE player_id = {$this->player_id}" );
+                                letsgotojapan::$instance->MajPannel($this->player_id);
+                            }
+                            
+                        }
+
                     self::DbQuery( "UPDATE tokyo set checkcard = 1  WHERE card_id = {$cardid}" );
                     self::DbQuery( "UPDATE player set mardicheck = 1  WHERE player_id = {$this->player_id}" );
                         letsgotojapan::$instance->notifyAllPlayers('checkscore','', array(
@@ -5303,6 +5661,11 @@ function argFinalStep1($parg1, $parg2)
 
             if($walklastday == 1)
                     {
+                        if($passportcard == 3)
+                        {
+                            self::DbQuery( "UPDATE player set passportscore = passportscore +2   WHERE player_id = {$this->player_id}" );
+                            letsgotojapan::$instance->MajScorePassport(3,$this->player_id);
+                        }
 
                         self::DbQuery( "UPDATE tokyo set checkcard = 1  WHERE card_id = {$cardid}" );  //// CHANGER LA VILLE
                         self::DbQuery( "UPDATE player set mardicheck = 1  WHERE player_id = {$this->player_id}" );  //// CHANGER LE JOUR
@@ -5346,6 +5709,71 @@ function argFinalStep1($parg1, $parg2)
 
             if($check == 1)
                 {
+                    if($passportcard == 3)
+                        {
+                        $newscore = self::getUniqueValueFromDB( "SELECT mardi FROM player WHERE  player_id = {$this->player_id}");
+                        $scorepassport = $newscore - $savescore;
+                        self::DbQuery( "UPDATE player set passportscore = passportscore +$scorepassport   WHERE player_id = {$this->player_id}" );
+                        letsgotojapan::$instance->MajScorePassport(3,$this->player_id);
+                        }
+
+                        if($passportcard == 12)
+                        {
+                            $newtoken = self::getObjectListFromDB( "SELECT r r, g g, p p, y y, b b, happy1 happy1, happy2 happy2, angry1 angry1, angry2 angry2, wild wild FROM player WHERE player_id = {$this->player_id}" );
+                            $bonusr = $newtoken[0]['r']-$savetoken[0]['r'];
+                            for ($i =1; $i <= $bonusr; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('r',$this->player_id);
+                            }
+                            $bonusg = $newtoken[0]['g']-$savetoken[0]['g'];
+                            for ($i =1; $i <= $bonusg; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('g',$this->player_id);
+                            }
+                            $bonusp = $newtoken[0]['p']-$savetoken[0]['p'];
+                            for ($i =1; $i <= $bonusp; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('p',$this->player_id);
+                            }
+                            $bonusy= $newtoken[0]['y']-$savetoken[0]['y'];
+                            for ($i =1; $i <= $bonusy; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('y',$this->player_id);
+                            }
+                            $bonusb = $newtoken[0]['b']-$savetoken[0]['b'];
+                            for ($i =1; $i <= $bonusb; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('b',$this->player_id);
+                            }
+                            $bonushappy1 = $newtoken[0]['happy1']-$savetoken[0]['happy1'];
+                            for ($i =1; $i <= $bonushappy1; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('h1',$this->player_id);
+                            }
+                            $bonushappy2 = $newtoken[0]['happy2']-$savetoken[0]['happy2'];
+                            for ($i =1; $i <= $bonushappy2; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('h2',$this->player_id);
+                            }
+                            $bonusangry1 = $newtoken[0]['angry1']-$savetoken[0]['angry1'];
+                            for ($i =1; $i <= $bonusangry1; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('a1',$this->player_id);
+                            }
+                            $bonusangry2 = $newtoken[0]['angry2']-$savetoken[0]['angry2'];
+                            for ($i =1; $i <= $bonusangry2; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('a2',$this->player_id);
+                            }
+                            $bonuswild = $newtoken[0]['wild']-$savetoken[0]['wild'];
+                            for ($i =1; $i <= $bonuswild; $i++)
+                            {
+                                self::DbQuery( "UPDATE player set wild = wild +1  WHERE player_id = {$this->player_id}" );
+                                letsgotojapan::$instance->MajPannel($this->player_id);
+                            }
+                            
+                        }
+
                     self::DbQuery( "UPDATE kyoto set checkcard = 1  WHERE card_id = {$cardid}" );
                     self::DbQuery( "UPDATE player set mardicheck = 1  WHERE player_id = {$this->player_id}" );
                         letsgotojapan::$instance->notifyAllPlayers('checkscore','', array(
@@ -5375,6 +5803,12 @@ function argFinalStep1($parg1, $parg2)
 
             if($walklastday == 1)
                     {
+
+                        if($passportcard == 3)
+                        {
+                            self::DbQuery( "UPDATE player set passportscore = passportscore +2   WHERE player_id = {$this->player_id}" );
+                            letsgotojapan::$instance->MajScorePassport(3,$this->player_id);
+                        }
 
                         self::DbQuery( "UPDATE kyoto set checkcard = 1  WHERE card_id = {$cardid}" );  //// CHANGER LA VILLE
                         self::DbQuery( "UPDATE player set mardicheck = 1  WHERE player_id = {$this->player_id}" );  //// CHANGER LE JOUR
@@ -5946,6 +6380,49 @@ function argFinalStep1($parg1, $parg2)
 
             }
 
+            //// PASSPORT 18
+
+            $passportcard = self::getUniqueValueFromDB( "SELECT passportcard FROM player WHERE  player_id = {$this->player_id}");
+            if($passportcard == 18)
+            {
+                $scorepassport18 = 0;
+                $tokyopass = self::getObjectListFromDB( "SELECT card_type type FROM tokyo WHERE  card_location_arg = {$this->player_id} AND walk =0 AND card_location LIKE 'cardposition%'", true );
+                $kyotopass = self::getObjectListFromDB( "SELECT card_type type FROM kyoto WHERE  card_location_arg = {$this->player_id} AND walk =0 AND card_location LIKE 'cardposition%'", true );
+
+                if($tokyopass != null)
+                {
+                    foreach ($tokyopass as $tokyotype)
+                    {
+                        if(($tokyotype == 45)||($tokyotype == 79)||($tokyotype == 1)||($tokyotype == 2))
+                        {
+                            $scorepassport18 = $scorepassport18 +1;
+                        }
+
+                    }
+
+                }
+
+                if($kyotopass != null)
+                {
+                    foreach ($kyotopass as $kyototype)
+                    {
+
+                        if(($kyototype == 69)||($kyototype == 34)||($kyototype == 35)||($kyototype == 22)||($kyototype == 23)||($kyototype == 79)||($kyototype == 70)||($kyototype == 71)||($kyototype == 26)||($kyototype == 27))
+                        {
+                            $scorepassport18 = $scorepassport18 +1;
+                        }
+                        
+                    }
+
+                    
+                }
+
+                $newscore = $scorepassport18 * 4;
+                self::DbQuery( "UPDATE player set passportscore = $newscore  WHERE player_id = {$this->player_id}" );
+                letsgotojapan::$instance->MajScorePassport(18,$this->player_id);
+
+            }
+
             letsgotojapan::$instance->addPending($this->player_id, "FinalStepMercrediWalk");   ///changer jour
 
         }
@@ -6023,6 +6500,8 @@ function argFinalStep1($parg1, $parg2)
 
             if(($parg1 != 1)&&($parg1 !=2))
             {
+
+                $tableaupassport14 = [0,0,0,0,0];
 
             for ($i=1; $i<=$countday; $i++)
             {
@@ -6103,6 +6582,7 @@ function argFinalStep1($parg1, $parg2)
                     {
                         letsgotojapan::$instance->Gain('r',$this->player_id);
                     }
+                    $tableaupassport14[0]=1;
 
                 }
 
@@ -6112,6 +6592,7 @@ function argFinalStep1($parg1, $parg2)
                     {
                         letsgotojapan::$instance->Gain('g',$this->player_id);
                     }
+                    $tableaupassport14[1]=1;
 
                 }
 
@@ -6121,6 +6602,7 @@ function argFinalStep1($parg1, $parg2)
                     {
                         letsgotojapan::$instance->Gain('p',$this->player_id);
                     }
+                    $tableaupassport14[2]=1;
 
                 }
 
@@ -6130,6 +6612,7 @@ function argFinalStep1($parg1, $parg2)
                     {
                         letsgotojapan::$instance->Gain('y',$this->player_id);
                     }
+                    $tableaupassport14[3]=1;
 
                 }
 
@@ -6139,6 +6622,7 @@ function argFinalStep1($parg1, $parg2)
                     {
                         letsgotojapan::$instance->Gain('b',$this->player_id);
                     }
+                    $tableaupassport14[4]=1;
 
                 }
 
@@ -6181,6 +6665,25 @@ function argFinalStep1($parg1, $parg2)
 
             }
 
+            $passportcard = self::getUniqueValueFromDB( "SELECT passportcard FROM player WHERE  player_id = {$this->player_id}");
+            if($passportcard == 14)
+            {
+                
+                // Compter les occurrences de chaque valeur
+                $comptage = array_count_values($tableaupassport14);
+
+                // Vérifier combien de fois la valeur 0 apparaît
+                $nombreDeZeros = isset($comptage[0]) ? $comptage[0] : 0;
+
+                if($nombreDeZeros <=1)
+                {
+                    self::DbQuery( "UPDATE player set passportscore = passportscore + 6  WHERE player_id = {$this->player_id}" );
+                    letsgotojapan::$instance->MajScorePassport(14,$this->player_id);
+
+                }
+
+            }
+
             if($testwild == 0)
             {
             $wild = self::getUniqueValueFromDB( "SELECT wild FROM player WHERE player_id = {$this->player_id}");
@@ -6210,6 +6713,10 @@ function argFinalStep1($parg1, $parg2)
                 $ville = 2;
             }
 
+            $passportcard = self::getUniqueValueFromDB( "SELECT passportcard FROM player WHERE  player_id = {$this->player_id}");
+            $savetoken = self::getObjectListFromDB( "SELECT r r, g g, p p, y y, b b, happy1 happy1, happy2 happy2, angry1 angry1, angry2 angry2, wild wild FROM player WHERE player_id = {$this->player_id}" ); //passport12
+            
+
             if($ville == 1)
             {
                 $lastday = self::getUniqueValueFromDB( "SELECT card_type type FROM tokyo WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$countday}'");
@@ -6223,6 +6730,62 @@ function argFinalStep1($parg1, $parg2)
 
                 if($check == 1)
                 {
+                    if($passportcard == 12)
+                        {
+                            $newtoken = self::getObjectListFromDB( "SELECT r r, g g, p p, y y, b b, happy1 happy1, happy2 happy2, angry1 angry1, angry2 angry2, wild wild FROM player WHERE player_id = {$this->player_id}" );
+                            $bonusr = $newtoken[0]['r']-$savetoken[0]['r'];
+                            for ($i =1; $i <= $bonusr; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('r',$this->player_id);
+                            }
+                            $bonusg = $newtoken[0]['g']-$savetoken[0]['g'];
+                            for ($i =1; $i <= $bonusg; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('g',$this->player_id);
+                            }
+                            $bonusp = $newtoken[0]['p']-$savetoken[0]['p'];
+                            for ($i =1; $i <= $bonusp; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('p',$this->player_id);
+                            }
+                            $bonusy= $newtoken[0]['y']-$savetoken[0]['y'];
+                            for ($i =1; $i <= $bonusy; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('y',$this->player_id);
+                            }
+                            $bonusb = $newtoken[0]['b']-$savetoken[0]['b'];
+                            for ($i =1; $i <= $bonusb; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('b',$this->player_id);
+                            }
+                            $bonushappy1 = $newtoken[0]['happy1']-$savetoken[0]['happy1'];
+                            for ($i =1; $i <= $bonushappy1; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('h1',$this->player_id);
+                            }
+                            $bonushappy2 = $newtoken[0]['happy2']-$savetoken[0]['happy2'];
+                            for ($i =1; $i <= $bonushappy2; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('h2',$this->player_id);
+                            }
+                            $bonusangry1 = $newtoken[0]['angry1']-$savetoken[0]['angry1'];
+                            for ($i =1; $i <= $bonusangry1; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('a1',$this->player_id);
+                            }
+                            $bonusangry2 = $newtoken[0]['angry2']-$savetoken[0]['angry2'];
+                            for ($i =1; $i <= $bonusangry2; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('a2',$this->player_id);
+                            }
+                            $bonuswild = $newtoken[0]['wild']-$savetoken[0]['wild'];
+                            for ($i =1; $i <= $bonuswild; $i++)
+                            {
+                                self::DbQuery( "UPDATE player set wild = wild +1  WHERE player_id = {$this->player_id}" );
+                                letsgotojapan::$instance->MajPannel($this->player_id);
+                            }
+                            
+                        }
                     self::DbQuery( "UPDATE tokyo set checkcard = 1  WHERE card_id = {$cardid}" );
                     self::DbQuery( "UPDATE player set mercredicheck = 1  WHERE player_id = {$this->player_id}" );
                         letsgotojapan::$instance->notifyAllPlayers('checkscore','', array(
@@ -6294,6 +6857,63 @@ function argFinalStep1($parg1, $parg2)
 
             if($check == 1)
                 {
+                    if($passportcard == 12)
+                        {
+                            $newtoken = self::getObjectListFromDB( "SELECT r r, g g, p p, y y, b b, happy1 happy1, happy2 happy2, angry1 angry1, angry2 angry2, wild wild FROM player WHERE player_id = {$this->player_id}" );
+                            $bonusr = $newtoken[0]['r']-$savetoken[0]['r'];
+                            for ($i =1; $i <= $bonusr; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('r',$this->player_id);
+                            }
+                            $bonusg = $newtoken[0]['g']-$savetoken[0]['g'];
+                            for ($i =1; $i <= $bonusg; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('g',$this->player_id);
+                            }
+                            $bonusp = $newtoken[0]['p']-$savetoken[0]['p'];
+                            for ($i =1; $i <= $bonusp; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('p',$this->player_id);
+                            }
+                            $bonusy= $newtoken[0]['y']-$savetoken[0]['y'];
+                            for ($i =1; $i <= $bonusy; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('y',$this->player_id);
+                            }
+                            $bonusb = $newtoken[0]['b']-$savetoken[0]['b'];
+                            for ($i =1; $i <= $bonusb; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('b',$this->player_id);
+                            }
+                            $bonushappy1 = $newtoken[0]['happy1']-$savetoken[0]['happy1'];
+                            for ($i =1; $i <= $bonushappy1; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('h1',$this->player_id);
+                            }
+                            $bonushappy2 = $newtoken[0]['happy2']-$savetoken[0]['happy2'];
+                            for ($i =1; $i <= $bonushappy2; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('h2',$this->player_id);
+                            }
+                            $bonusangry1 = $newtoken[0]['angry1']-$savetoken[0]['angry1'];
+                            for ($i =1; $i <= $bonusangry1; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('a1',$this->player_id);
+                            }
+                            $bonusangry2 = $newtoken[0]['angry2']-$savetoken[0]['angry2'];
+                            for ($i =1; $i <= $bonusangry2; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('a2',$this->player_id);
+                            }
+                            $bonuswild = $newtoken[0]['wild']-$savetoken[0]['wild'];
+                            for ($i =1; $i <= $bonuswild; $i++)
+                            {
+                                self::DbQuery( "UPDATE player set wild = wild +1  WHERE player_id = {$this->player_id}" );
+                                letsgotojapan::$instance->MajPannel($this->player_id);
+                            }
+                            
+                        }
+
                     self::DbQuery( "UPDATE kyoto set checkcard = 1  WHERE card_id = {$cardid}" );
                     self::DbQuery( "UPDATE player set mercredicheck = 1  WHERE player_id = {$this->player_id}" );
                         letsgotojapan::$instance->notifyAllPlayers('checkscore','', array(
@@ -6897,6 +7517,49 @@ function argFinalStepJeudiWalk($parg1, $parg2)      //changer jour
 
             }
 
+            //// PASSPORT 18
+
+            $passportcard = self::getUniqueValueFromDB( "SELECT passportcard FROM player WHERE  player_id = {$this->player_id}");
+            if($passportcard == 18)
+            {
+                $scorepassport18 = 0;
+                $tokyopass = self::getObjectListFromDB( "SELECT card_type type FROM tokyo WHERE  card_location_arg = {$this->player_id} AND walk =0 AND card_location LIKE 'cardposition%'", true );
+                $kyotopass = self::getObjectListFromDB( "SELECT card_type type FROM kyoto WHERE  card_location_arg = {$this->player_id} AND walk =0 AND card_location LIKE 'cardposition%'", true );
+
+                if($tokyopass != null)
+                {
+                    foreach ($tokyopass as $tokyotype)
+                    {
+                        if(($tokyotype == 45)||($tokyotype == 79)||($tokyotype == 1)||($tokyotype == 2))
+                        {
+                            $scorepassport18 = $scorepassport18 +1;
+                        }
+
+                    }
+
+                }
+
+                if($kyotopass != null)
+                {
+                    foreach ($kyotopass as $kyototype)
+                    {
+
+                        if(($kyototype == 69)||($kyototype == 34)||($kyototype == 35)||($kyototype == 22)||($kyototype == 23)||($kyototype == 79)||($kyototype == 70)||($kyototype == 71)||($kyototype == 26)||($kyototype == 27))
+                        {
+                            $scorepassport18 = $scorepassport18 +1;
+                        }
+                        
+                    }
+
+                    
+                }
+
+                $newscore = $scorepassport18 * 4;
+                self::DbQuery( "UPDATE player set passportscore = $newscore  WHERE player_id = {$this->player_id}" );
+                letsgotojapan::$instance->MajScorePassport(18,$this->player_id);
+
+            }
+
             letsgotojapan::$instance->addPending($this->player_id, "FinalStepJeudiWalk");   ///changer jour
 
         }
@@ -6974,6 +7637,7 @@ function FinalStepJeudi($parg1, $parg2, $varg1, $varg2)
 
         if(($parg1 != 1)&&($parg1 !=2))
         {
+            $tableaupassport14 = [0,0,0,0,0];
 
         for ($i=1; $i<=$countday; $i++)
         {
@@ -7054,6 +7718,7 @@ function FinalStepJeudi($parg1, $parg2, $varg1, $varg2)
                 {
                     letsgotojapan::$instance->Gain('r',$this->player_id);
                 }
+                $tableaupassport14[0]=1;
 
             }
 
@@ -7063,6 +7728,7 @@ function FinalStepJeudi($parg1, $parg2, $varg1, $varg2)
                 {
                     letsgotojapan::$instance->Gain('g',$this->player_id);
                 }
+                $tableaupassport14[1]=1;
 
             }
 
@@ -7072,6 +7738,7 @@ function FinalStepJeudi($parg1, $parg2, $varg1, $varg2)
                 {
                     letsgotojapan::$instance->Gain('p',$this->player_id);
                 }
+                $tableaupassport14[2]=1;
 
             }
 
@@ -7081,6 +7748,7 @@ function FinalStepJeudi($parg1, $parg2, $varg1, $varg2)
                 {
                     letsgotojapan::$instance->Gain('y',$this->player_id);
                 }
+                $tableaupassport14[3]=1;
 
             }
 
@@ -7090,6 +7758,7 @@ function FinalStepJeudi($parg1, $parg2, $varg1, $varg2)
                 {
                     letsgotojapan::$instance->Gain('b',$this->player_id);
                 }
+                $tableaupassport14[4]=1;
 
             }
 
@@ -7131,6 +7800,26 @@ function FinalStepJeudi($parg1, $parg2, $varg1, $varg2)
 
 
         }
+
+        $passportcard = self::getUniqueValueFromDB( "SELECT passportcard FROM player WHERE  player_id = {$this->player_id}");
+            if($passportcard == 14)
+            {
+                
+                // Compter les occurrences de chaque valeur
+                $comptage = array_count_values($tableaupassport14);
+
+                // Vérifier combien de fois la valeur 0 apparaît
+                $nombreDeZeros = isset($comptage[0]) ? $comptage[0] : 0;
+
+                if($nombreDeZeros <=1)
+                {
+                    self::DbQuery( "UPDATE player set passportscore = passportscore + 6  WHERE player_id = {$this->player_id}" );
+                    letsgotojapan::$instance->MajScorePassport(14,$this->player_id);
+
+                }
+
+            }
+
         if($testwild == 0)
         {
         $wild = self::getUniqueValueFromDB( "SELECT wild FROM player WHERE player_id = {$this->player_id}");
@@ -7160,6 +7849,10 @@ function FinalStepJeudi($parg1, $parg2, $varg1, $varg2)
             $ville = 2;
         }
 
+        $passportcard = self::getUniqueValueFromDB( "SELECT passportcard FROM player WHERE  player_id = {$this->player_id}");
+        $savetoken = self::getObjectListFromDB( "SELECT r r, g g, p p, y y, b b, happy1 happy1, happy2 happy2, angry1 angry1, angry2 angry2, wild wild FROM player WHERE player_id = {$this->player_id}" ); //passport12
+            
+
         if($ville == 1)
         {
             $lastday = self::getUniqueValueFromDB( "SELECT card_type type FROM tokyo WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$countday}'");
@@ -7173,6 +7866,62 @@ function FinalStepJeudi($parg1, $parg2, $varg1, $varg2)
 
             if($check == 1)
             {
+                if($passportcard == 12)
+                        {
+                            $newtoken = self::getObjectListFromDB( "SELECT r r, g g, p p, y y, b b, happy1 happy1, happy2 happy2, angry1 angry1, angry2 angry2, wild wild FROM player WHERE player_id = {$this->player_id}" );
+                            $bonusr = $newtoken[0]['r']-$savetoken[0]['r'];
+                            for ($i =1; $i <= $bonusr; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('r',$this->player_id);
+                            }
+                            $bonusg = $newtoken[0]['g']-$savetoken[0]['g'];
+                            for ($i =1; $i <= $bonusg; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('g',$this->player_id);
+                            }
+                            $bonusp = $newtoken[0]['p']-$savetoken[0]['p'];
+                            for ($i =1; $i <= $bonusp; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('p',$this->player_id);
+                            }
+                            $bonusy= $newtoken[0]['y']-$savetoken[0]['y'];
+                            for ($i =1; $i <= $bonusy; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('y',$this->player_id);
+                            }
+                            $bonusb = $newtoken[0]['b']-$savetoken[0]['b'];
+                            for ($i =1; $i <= $bonusb; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('b',$this->player_id);
+                            }
+                            $bonushappy1 = $newtoken[0]['happy1']-$savetoken[0]['happy1'];
+                            for ($i =1; $i <= $bonushappy1; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('h1',$this->player_id);
+                            }
+                            $bonushappy2 = $newtoken[0]['happy2']-$savetoken[0]['happy2'];
+                            for ($i =1; $i <= $bonushappy2; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('h2',$this->player_id);
+                            }
+                            $bonusangry1 = $newtoken[0]['angry1']-$savetoken[0]['angry1'];
+                            for ($i =1; $i <= $bonusangry1; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('a1',$this->player_id);
+                            }
+                            $bonusangry2 = $newtoken[0]['angry2']-$savetoken[0]['angry2'];
+                            for ($i =1; $i <= $bonusangry2; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('a2',$this->player_id);
+                            }
+                            $bonuswild = $newtoken[0]['wild']-$savetoken[0]['wild'];
+                            for ($i =1; $i <= $bonuswild; $i++)
+                            {
+                                self::DbQuery( "UPDATE player set wild = wild +1  WHERE player_id = {$this->player_id}" );
+                                letsgotojapan::$instance->MajPannel($this->player_id);
+                            }
+                            
+                        }
                 self::DbQuery( "UPDATE tokyo set checkcard = 1  WHERE card_id = {$cardid}" );
                 self::DbQuery( "UPDATE player set jeudicheck = 1  WHERE player_id = {$this->player_id}" );
                         letsgotojapan::$instance->notifyAllPlayers('checkscore','', array(
@@ -7245,6 +7994,62 @@ function FinalStepJeudi($parg1, $parg2, $varg1, $varg2)
 
         if($check == 1)
             {
+                if($passportcard == 12)
+                        {
+                            $newtoken = self::getObjectListFromDB( "SELECT r r, g g, p p, y y, b b, happy1 happy1, happy2 happy2, angry1 angry1, angry2 angry2, wild wild FROM player WHERE player_id = {$this->player_id}" );
+                            $bonusr = $newtoken[0]['r']-$savetoken[0]['r'];
+                            for ($i =1; $i <= $bonusr; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('r',$this->player_id);
+                            }
+                            $bonusg = $newtoken[0]['g']-$savetoken[0]['g'];
+                            for ($i =1; $i <= $bonusg; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('g',$this->player_id);
+                            }
+                            $bonusp = $newtoken[0]['p']-$savetoken[0]['p'];
+                            for ($i =1; $i <= $bonusp; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('p',$this->player_id);
+                            }
+                            $bonusy= $newtoken[0]['y']-$savetoken[0]['y'];
+                            for ($i =1; $i <= $bonusy; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('y',$this->player_id);
+                            }
+                            $bonusb = $newtoken[0]['b']-$savetoken[0]['b'];
+                            for ($i =1; $i <= $bonusb; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('b',$this->player_id);
+                            }
+                            $bonushappy1 = $newtoken[0]['happy1']-$savetoken[0]['happy1'];
+                            for ($i =1; $i <= $bonushappy1; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('h1',$this->player_id);
+                            }
+                            $bonushappy2 = $newtoken[0]['happy2']-$savetoken[0]['happy2'];
+                            for ($i =1; $i <= $bonushappy2; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('h2',$this->player_id);
+                            }
+                            $bonusangry1 = $newtoken[0]['angry1']-$savetoken[0]['angry1'];
+                            for ($i =1; $i <= $bonusangry1; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('a1',$this->player_id);
+                            }
+                            $bonusangry2 = $newtoken[0]['angry2']-$savetoken[0]['angry2'];
+                            for ($i =1; $i <= $bonusangry2; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('a2',$this->player_id);
+                            }
+                            $bonuswild = $newtoken[0]['wild']-$savetoken[0]['wild'];
+                            for ($i =1; $i <= $bonuswild; $i++)
+                            {
+                                self::DbQuery( "UPDATE player set wild = wild +1  WHERE player_id = {$this->player_id}" );
+                                letsgotojapan::$instance->MajPannel($this->player_id);
+                            }
+                            
+                        }
                 self::DbQuery( "UPDATE kyoto set checkcard = 1  WHERE card_id = {$cardid}" );
                 self::DbQuery( "UPDATE player set jeudicheck = 1  WHERE player_id = {$this->player_id}" );
                 letsgotojapan::$instance->notifyAllPlayers('checkscore','', array(
@@ -7846,6 +8651,49 @@ function argFinalStepVendrediWalk($parg1, $parg2)      //changer jour
 
             }
 
+            //// PASSPORT 18
+
+            $passportcard = self::getUniqueValueFromDB( "SELECT passportcard FROM player WHERE  player_id = {$this->player_id}");
+            if($passportcard == 18)
+            {
+                $scorepassport18 = 0;
+                $tokyopass = self::getObjectListFromDB( "SELECT card_type type FROM tokyo WHERE  card_location_arg = {$this->player_id} AND walk =0 AND card_location LIKE 'cardposition%'", true );
+                $kyotopass = self::getObjectListFromDB( "SELECT card_type type FROM kyoto WHERE  card_location_arg = {$this->player_id} AND walk =0 AND card_location LIKE 'cardposition%'", true );
+
+                if($tokyopass != null)
+                {
+                    foreach ($tokyopass as $tokyotype)
+                    {
+                        if(($tokyotype == 45)||($tokyotype == 79)||($tokyotype == 1)||($tokyotype == 2))
+                        {
+                            $scorepassport18 = $scorepassport18 +1;
+                        }
+
+                    }
+
+                }
+
+                if($kyotopass != null)
+                {
+                    foreach ($kyotopass as $kyototype)
+                    {
+
+                        if(($kyototype == 69)||($kyototype == 34)||($kyototype == 35)||($kyototype == 22)||($kyototype == 23)||($kyototype == 79)||($kyototype == 70)||($kyototype == 71)||($kyototype == 26)||($kyototype == 27))
+                        {
+                            $scorepassport18 = $scorepassport18 +1;
+                        }
+                        
+                    }
+
+                    
+                }
+
+                $newscore = $scorepassport18 * 4;
+                self::DbQuery( "UPDATE player set passportscore = $newscore  WHERE player_id = {$this->player_id}" );
+                letsgotojapan::$instance->MajScorePassport(18,$this->player_id);
+
+            }
+
             letsgotojapan::$instance->addPending($this->player_id, "FinalStepVendrediWalk");   ///changer jour
 
         }
@@ -7922,7 +8770,8 @@ function FinalStepVendredi($parg1, $parg2, $varg1, $varg2)
         $ville = 0;
 
         if(($parg1 != 1)&&($parg1 !=2))
-            {
+        {
+            $tableaupassport14 = [0,0,0,0,0];
 
         for ($i=1; $i<=$countday; $i++)
         {
@@ -8003,6 +8852,7 @@ function FinalStepVendredi($parg1, $parg2, $varg1, $varg2)
                 {
                     letsgotojapan::$instance->Gain('r',$this->player_id);
                 }
+                $tableaupassport14[0]=1;
 
             }
 
@@ -8012,6 +8862,7 @@ function FinalStepVendredi($parg1, $parg2, $varg1, $varg2)
                 {
                     letsgotojapan::$instance->Gain('g',$this->player_id);
                 }
+                $tableaupassport14[1]=1;
 
             }
 
@@ -8021,6 +8872,7 @@ function FinalStepVendredi($parg1, $parg2, $varg1, $varg2)
                 {
                     letsgotojapan::$instance->Gain('p',$this->player_id);
                 }
+                $tableaupassport14[2]=1;
 
             }
 
@@ -8030,6 +8882,7 @@ function FinalStepVendredi($parg1, $parg2, $varg1, $varg2)
                 {
                     letsgotojapan::$instance->Gain('y',$this->player_id);
                 }
+                $tableaupassport14[3]=1;
 
             }
 
@@ -8039,6 +8892,7 @@ function FinalStepVendredi($parg1, $parg2, $varg1, $varg2)
                 {
                     letsgotojapan::$instance->Gain('b',$this->player_id);
                 }
+                $tableaupassport14[4]=1;
 
             }
 
@@ -8081,6 +8935,25 @@ function FinalStepVendredi($parg1, $parg2, $varg1, $varg2)
 
         }
 
+        $passportcard = self::getUniqueValueFromDB( "SELECT passportcard FROM player WHERE  player_id = {$this->player_id}");
+            if($passportcard == 14)
+            {
+                
+                // Compter les occurrences de chaque valeur
+                $comptage = array_count_values($tableaupassport14);
+
+                // Vérifier combien de fois la valeur 0 apparaît
+                $nombreDeZeros = isset($comptage[0]) ? $comptage[0] : 0;
+
+                if($nombreDeZeros <=1)
+                {
+                    self::DbQuery( "UPDATE player set passportscore = passportscore + 6  WHERE player_id = {$this->player_id}" );
+                    letsgotojapan::$instance->MajScorePassport(14,$this->player_id);
+
+                }
+
+            }
+
         if($testwild == 0)
         {
         $wild = self::getUniqueValueFromDB( "SELECT wild FROM player WHERE player_id = {$this->player_id}");
@@ -8110,6 +8983,10 @@ function FinalStepVendredi($parg1, $parg2, $varg1, $varg2)
             $ville = 2;
         }
 
+        $passportcard = self::getUniqueValueFromDB( "SELECT passportcard FROM player WHERE  player_id = {$this->player_id}");
+        $savetoken = self::getObjectListFromDB( "SELECT r r, g g, p p, y y, b b, happy1 happy1, happy2 happy2, angry1 angry1, angry2 angry2, wild wild FROM player WHERE player_id = {$this->player_id}" ); //passport12
+            
+
         if($ville == 1)
         {
             $lastday = self::getUniqueValueFromDB( "SELECT card_type type FROM tokyo WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$countday}'");
@@ -8123,6 +9000,62 @@ function FinalStepVendredi($parg1, $parg2, $varg1, $varg2)
 
             if($check == 1)
             {
+                if($passportcard == 12)
+                        {
+                            $newtoken = self::getObjectListFromDB( "SELECT r r, g g, p p, y y, b b, happy1 happy1, happy2 happy2, angry1 angry1, angry2 angry2, wild wild FROM player WHERE player_id = {$this->player_id}" );
+                            $bonusr = $newtoken[0]['r']-$savetoken[0]['r'];
+                            for ($i =1; $i <= $bonusr; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('r',$this->player_id);
+                            }
+                            $bonusg = $newtoken[0]['g']-$savetoken[0]['g'];
+                            for ($i =1; $i <= $bonusg; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('g',$this->player_id);
+                            }
+                            $bonusp = $newtoken[0]['p']-$savetoken[0]['p'];
+                            for ($i =1; $i <= $bonusp; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('p',$this->player_id);
+                            }
+                            $bonusy= $newtoken[0]['y']-$savetoken[0]['y'];
+                            for ($i =1; $i <= $bonusy; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('y',$this->player_id);
+                            }
+                            $bonusb = $newtoken[0]['b']-$savetoken[0]['b'];
+                            for ($i =1; $i <= $bonusb; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('b',$this->player_id);
+                            }
+                            $bonushappy1 = $newtoken[0]['happy1']-$savetoken[0]['happy1'];
+                            for ($i =1; $i <= $bonushappy1; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('h1',$this->player_id);
+                            }
+                            $bonushappy2 = $newtoken[0]['happy2']-$savetoken[0]['happy2'];
+                            for ($i =1; $i <= $bonushappy2; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('h2',$this->player_id);
+                            }
+                            $bonusangry1 = $newtoken[0]['angry1']-$savetoken[0]['angry1'];
+                            for ($i =1; $i <= $bonusangry1; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('a1',$this->player_id);
+                            }
+                            $bonusangry2 = $newtoken[0]['angry2']-$savetoken[0]['angry2'];
+                            for ($i =1; $i <= $bonusangry2; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('a2',$this->player_id);
+                            }
+                            $bonuswild = $newtoken[0]['wild']-$savetoken[0]['wild'];
+                            for ($i =1; $i <= $bonuswild; $i++)
+                            {
+                                self::DbQuery( "UPDATE player set wild = wild +1  WHERE player_id = {$this->player_id}" );
+                                letsgotojapan::$instance->MajPannel($this->player_id);
+                            }
+                            
+                        }
                 self::DbQuery( "UPDATE tokyo set checkcard = 1  WHERE card_id = {$cardid}" );
                 self::DbQuery( "UPDATE player set vendredicheck = 1  WHERE player_id = {$this->player_id}" );
                         letsgotojapan::$instance->notifyAllPlayers('checkscore','', array(
@@ -8195,6 +9128,62 @@ function FinalStepVendredi($parg1, $parg2, $varg1, $varg2)
 
         if($check == 1)
             {
+                if($passportcard == 12)
+                        {
+                            $newtoken = self::getObjectListFromDB( "SELECT r r, g g, p p, y y, b b, happy1 happy1, happy2 happy2, angry1 angry1, angry2 angry2, wild wild FROM player WHERE player_id = {$this->player_id}" );
+                            $bonusr = $newtoken[0]['r']-$savetoken[0]['r'];
+                            for ($i =1; $i <= $bonusr; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('r',$this->player_id);
+                            }
+                            $bonusg = $newtoken[0]['g']-$savetoken[0]['g'];
+                            for ($i =1; $i <= $bonusg; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('g',$this->player_id);
+                            }
+                            $bonusp = $newtoken[0]['p']-$savetoken[0]['p'];
+                            for ($i =1; $i <= $bonusp; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('p',$this->player_id);
+                            }
+                            $bonusy= $newtoken[0]['y']-$savetoken[0]['y'];
+                            for ($i =1; $i <= $bonusy; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('y',$this->player_id);
+                            }
+                            $bonusb = $newtoken[0]['b']-$savetoken[0]['b'];
+                            for ($i =1; $i <= $bonusb; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('b',$this->player_id);
+                            }
+                            $bonushappy1 = $newtoken[0]['happy1']-$savetoken[0]['happy1'];
+                            for ($i =1; $i <= $bonushappy1; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('h1',$this->player_id);
+                            }
+                            $bonushappy2 = $newtoken[0]['happy2']-$savetoken[0]['happy2'];
+                            for ($i =1; $i <= $bonushappy2; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('h2',$this->player_id);
+                            }
+                            $bonusangry1 = $newtoken[0]['angry1']-$savetoken[0]['angry1'];
+                            for ($i =1; $i <= $bonusangry1; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('a1',$this->player_id);
+                            }
+                            $bonusangry2 = $newtoken[0]['angry2']-$savetoken[0]['angry2'];
+                            for ($i =1; $i <= $bonusangry2; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('a2',$this->player_id);
+                            }
+                            $bonuswild = $newtoken[0]['wild']-$savetoken[0]['wild'];
+                            for ($i =1; $i <= $bonuswild; $i++)
+                            {
+                                self::DbQuery( "UPDATE player set wild = wild +1  WHERE player_id = {$this->player_id}" );
+                                letsgotojapan::$instance->MajPannel($this->player_id);
+                            }
+                            
+                        }
                 self::DbQuery( "UPDATE kyoto set checkcard = 1  WHERE card_id = {$cardid}" );
                 self::DbQuery( "UPDATE player set vendredicheck = 1  WHERE player_id = {$this->player_id}" );
                         letsgotojapan::$instance->notifyAllPlayers('checkscore','', array(
@@ -8796,6 +9785,49 @@ function argFinalStepSamediWalk($parg1, $parg2)      //changer jour
 
             }
 
+            //// PASSPORT 18
+
+            $passportcard = self::getUniqueValueFromDB( "SELECT passportcard FROM player WHERE  player_id = {$this->player_id}");
+            if($passportcard == 18)
+            {
+                $scorepassport18 = 0;
+                $tokyopass = self::getObjectListFromDB( "SELECT card_type type FROM tokyo WHERE  card_location_arg = {$this->player_id} AND walk =0 AND card_location LIKE 'cardposition%'", true );
+                $kyotopass = self::getObjectListFromDB( "SELECT card_type type FROM kyoto WHERE  card_location_arg = {$this->player_id} AND walk =0 AND card_location LIKE 'cardposition%'", true );
+
+                if($tokyopass != null)
+                {
+                    foreach ($tokyopass as $tokyotype)
+                    {
+                        if(($tokyotype == 45)||($tokyotype == 79)||($tokyotype == 1)||($tokyotype == 2))
+                        {
+                            $scorepassport18 = $scorepassport18 +1;
+                        }
+
+                    }
+
+                }
+
+                if($kyotopass != null)
+                {
+                    foreach ($kyotopass as $kyototype)
+                    {
+
+                        if(($kyototype == 69)||($kyototype == 34)||($kyototype == 35)||($kyototype == 22)||($kyototype == 23)||($kyototype == 79)||($kyototype == 70)||($kyototype == 71)||($kyototype == 26)||($kyototype == 27))
+                        {
+                            $scorepassport18 = $scorepassport18 +1;
+                        }
+                        
+                    }
+
+                    
+                }
+
+                $newscore = $scorepassport18 * 4;
+                self::DbQuery( "UPDATE player set passportscore = $newscore  WHERE player_id = {$this->player_id}" );
+                letsgotojapan::$instance->MajScorePassport(18,$this->player_id);
+
+            }
+
             letsgotojapan::$instance->addPending($this->player_id, "FinalStepSamediWalk");   ///changer jour
 
         }
@@ -8871,7 +9903,8 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
         $ville = 0;
 
         if(($parg1 != 1)&&($parg1 !=2))
-            {
+        {
+            $tableaupassport14 = [0,0,0,0,0];
 
         for ($i=1; $i<=$countday; $i++)
         {
@@ -8952,6 +9985,7 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
                 {
                     letsgotojapan::$instance->Gain('r',$this->player_id);
                 }
+                $tableaupassport14[0]=1;
 
             }
 
@@ -8961,6 +9995,7 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
                 {
                     letsgotojapan::$instance->Gain('g',$this->player_id);
                 }
+                $tableaupassport14[1]=1;
 
             }
 
@@ -8970,6 +10005,7 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
                 {
                     letsgotojapan::$instance->Gain('p',$this->player_id);
                 }
+                $tableaupassport14[2]=1;
 
             }
 
@@ -8979,6 +10015,7 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
                 {
                     letsgotojapan::$instance->Gain('y',$this->player_id);
                 }
+                $tableaupassport14[3]=1;
 
             }
 
@@ -8988,6 +10025,7 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
                 {
                     letsgotojapan::$instance->Gain('b',$this->player_id);
                 }
+                $tableaupassport14[4]=1;
 
             }
 
@@ -9030,6 +10068,26 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
 
         }
 
+        $passportcard = self::getUniqueValueFromDB( "SELECT passportcard FROM player WHERE  player_id = {$this->player_id}");
+            if($passportcard == 14)
+            {
+                
+                // Compter les occurrences de chaque valeur
+                $comptage = array_count_values($tableaupassport14);
+
+                // Vérifier combien de fois la valeur 0 apparaît
+                $nombreDeZeros = isset($comptage[0]) ? $comptage[0] : 0;
+
+                if($nombreDeZeros <=1)
+                {
+                    self::DbQuery( "UPDATE player set passportscore = passportscore + 6  WHERE player_id = {$this->player_id}" );
+                    letsgotojapan::$instance->MajScorePassport(14,$this->player_id);
+
+                }
+
+            }
+
+
         if($testwild == 0)
         {
         $wild = self::getUniqueValueFromDB( "SELECT wild FROM player WHERE player_id = {$this->player_id}");
@@ -9059,6 +10117,10 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
             $ville = 2;
         }
 
+        $passportcard = self::getUniqueValueFromDB( "SELECT passportcard FROM player WHERE  player_id = {$this->player_id}");
+        $savetoken = self::getObjectListFromDB( "SELECT r r, g g, p p, y y, b b, happy1 happy1, happy2 happy2, angry1 angry1, angry2 angry2, wild wild FROM player WHERE player_id = {$this->player_id}" ); //passport12
+            
+
         if($ville == 1)
         {
             $lastday = self::getUniqueValueFromDB( "SELECT card_type type FROM tokyo WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$countday}'");
@@ -9072,6 +10134,62 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
 
             if($check == 1)
             {
+                if($passportcard == 12)
+                        {
+                            $newtoken = self::getObjectListFromDB( "SELECT r r, g g, p p, y y, b b, happy1 happy1, happy2 happy2, angry1 angry1, angry2 angry2, wild wild FROM player WHERE player_id = {$this->player_id}" );
+                            $bonusr = $newtoken[0]['r']-$savetoken[0]['r'];
+                            for ($i =1; $i <= $bonusr; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('r',$this->player_id);
+                            }
+                            $bonusg = $newtoken[0]['g']-$savetoken[0]['g'];
+                            for ($i =1; $i <= $bonusg; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('g',$this->player_id);
+                            }
+                            $bonusp = $newtoken[0]['p']-$savetoken[0]['p'];
+                            for ($i =1; $i <= $bonusp; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('p',$this->player_id);
+                            }
+                            $bonusy= $newtoken[0]['y']-$savetoken[0]['y'];
+                            for ($i =1; $i <= $bonusy; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('y',$this->player_id);
+                            }
+                            $bonusb = $newtoken[0]['b']-$savetoken[0]['b'];
+                            for ($i =1; $i <= $bonusb; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('b',$this->player_id);
+                            }
+                            $bonushappy1 = $newtoken[0]['happy1']-$savetoken[0]['happy1'];
+                            for ($i =1; $i <= $bonushappy1; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('h1',$this->player_id);
+                            }
+                            $bonushappy2 = $newtoken[0]['happy2']-$savetoken[0]['happy2'];
+                            for ($i =1; $i <= $bonushappy2; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('h2',$this->player_id);
+                            }
+                            $bonusangry1 = $newtoken[0]['angry1']-$savetoken[0]['angry1'];
+                            for ($i =1; $i <= $bonusangry1; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('a1',$this->player_id);
+                            }
+                            $bonusangry2 = $newtoken[0]['angry2']-$savetoken[0]['angry2'];
+                            for ($i =1; $i <= $bonusangry2; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('a2',$this->player_id);
+                            }
+                            $bonuswild = $newtoken[0]['wild']-$savetoken[0]['wild'];
+                            for ($i =1; $i <= $bonuswild; $i++)
+                            {
+                                self::DbQuery( "UPDATE player set wild = wild +1  WHERE player_id = {$this->player_id}" );
+                                letsgotojapan::$instance->MajPannel($this->player_id);
+                            }
+                            
+                        }
                 self::DbQuery( "UPDATE tokyo set checkcard = 1  WHERE card_id = {$cardid}" );
                 self::DbQuery( "UPDATE player set samedicheck = 1  WHERE player_id = {$this->player_id}" );
                         letsgotojapan::$instance->notifyAllPlayers('checkscore','', array(
@@ -9146,6 +10264,62 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
 
         if($check == 1)
             {
+                if($passportcard == 12)
+                        {
+                            $newtoken = self::getObjectListFromDB( "SELECT r r, g g, p p, y y, b b, happy1 happy1, happy2 happy2, angry1 angry1, angry2 angry2, wild wild FROM player WHERE player_id = {$this->player_id}" );
+                            $bonusr = $newtoken[0]['r']-$savetoken[0]['r'];
+                            for ($i =1; $i <= $bonusr; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('r',$this->player_id);
+                            }
+                            $bonusg = $newtoken[0]['g']-$savetoken[0]['g'];
+                            for ($i =1; $i <= $bonusg; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('g',$this->player_id);
+                            }
+                            $bonusp = $newtoken[0]['p']-$savetoken[0]['p'];
+                            for ($i =1; $i <= $bonusp; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('p',$this->player_id);
+                            }
+                            $bonusy= $newtoken[0]['y']-$savetoken[0]['y'];
+                            for ($i =1; $i <= $bonusy; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('y',$this->player_id);
+                            }
+                            $bonusb = $newtoken[0]['b']-$savetoken[0]['b'];
+                            for ($i =1; $i <= $bonusb; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('b',$this->player_id);
+                            }
+                            $bonushappy1 = $newtoken[0]['happy1']-$savetoken[0]['happy1'];
+                            for ($i =1; $i <= $bonushappy1; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('h1',$this->player_id);
+                            }
+                            $bonushappy2 = $newtoken[0]['happy2']-$savetoken[0]['happy2'];
+                            for ($i =1; $i <= $bonushappy2; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('h2',$this->player_id);
+                            }
+                            $bonusangry1 = $newtoken[0]['angry1']-$savetoken[0]['angry1'];
+                            for ($i =1; $i <= $bonusangry1; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('a1',$this->player_id);
+                            }
+                            $bonusangry2 = $newtoken[0]['angry2']-$savetoken[0]['angry2'];
+                            for ($i =1; $i <= $bonusangry2; $i++)
+                            {
+                                letsgotojapan::$instance->Gain('a2',$this->player_id);
+                            }
+                            $bonuswild = $newtoken[0]['wild']-$savetoken[0]['wild'];
+                            for ($i =1; $i <= $bonuswild; $i++)
+                            {
+                                self::DbQuery( "UPDATE player set wild = wild +1  WHERE player_id = {$this->player_id}" );
+                                letsgotojapan::$instance->MajPannel($this->player_id);
+                            }
+                            
+                        }
                 self::DbQuery( "UPDATE kyoto set checkcard = 1  WHERE card_id = {$cardid}" );
                 self::DbQuery( "UPDATE player set samedicheck = 1  WHERE player_id = {$this->player_id}" );
                         letsgotojapan::$instance->notifyAllPlayers('checkscore','', array(
@@ -9504,7 +10678,10 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
         
 
 
-        ///////////////////////// FIN DE SCORING ///////////////////    
+        ///////////////////////// FIN DE SCORING ///////////////////
+
+        $passportcard = self::getUniqueValueFromDB( "SELECT passportcard FROM player WHERE  player_id = {$this->player_id}");
+
 
         $scorehumeur =0;
         $lvlhappy = self::getUniqueValueFromDB( "SELECT happy FROM player WHERE player_id = {$this->player_id}");
@@ -9542,6 +10719,12 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
 
         self::DbQuery( "UPDATE player set scorehumeur = {$scorehumeur} WHERE player_id = {$this->player_id}" );
 
+        if($passportcard == 11)
+        {
+            self::DbQuery( "UPDATE player set passportscore = $scorehumeur   WHERE player_id = {$this->player_id}" );
+            letsgotojapan::$instance->MajScorePassport(11,$this->player_id);
+        }
+
 
         $scoretoken = 0;
         $tableau = array();
@@ -9560,21 +10743,78 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
 
             if(($index >= 7)&&($index <10))
             {
-                $scoretoken = $scoretoken + 8;  
+                $scoretoken = $scoretoken + 8;
+                if($passportcard == 13)
+                {  
+                    self::DbQuery( "UPDATE player set passportscore = passportscore +5   WHERE player_id = {$this->player_id}" );
+                }
             }
 
             if(($index >= 10)&&($index <12))
             {
-                $scoretoken = $scoretoken + 12;  
+                $scoretoken = $scoretoken + 12;
+                if($passportcard == 13)
+                {  
+                    self::DbQuery( "UPDATE player set passportscore = passportscore +10   WHERE player_id = {$this->player_id}" );
+                }  
             }
 
             if($index >= 12)
             {
-                $scoretoken = $scoretoken + 15;  
+                $scoretoken = $scoretoken + 15;
+                
+                if($passportcard == 13)
+                {  
+                    self::DbQuery( "UPDATE player set passportscore = passportscore +7  WHERE player_id = {$this->player_id}" );
+                } 
             }
         }
 
         self::DbQuery( "UPDATE player set scoretoken = {$scoretoken} WHERE player_id = {$this->player_id}" );
+
+        if($passportcard == 13)
+        {
+            
+            letsgotojapan::$instance->MajScorePassport(13,$this->player_id);
+        }
+
+        if($passportcard == 16)
+        {
+
+            // Trouver la plus grosse valeur
+            $maxValue = max($tableau);
+            
+            // Trouver le nombre de valeurs comprises entre 0 et 3 (inclus)
+            $valeursEntre0et3 = array_filter($tableau, function($tableau) {
+                return $tableau >= 0 && $tableau <= 3;
+            });
+
+            $nombreValeursEntre0et3 = count($valeursEntre0et3);
+
+            $score16 = $maxValue + 6*$nombreValeursEntre0et3;
+            self::DbQuery( "UPDATE player set passportscore = $score16  WHERE player_id = {$this->player_id}" );
+            letsgotojapan::$instance->MajScorePassport(16,$this->player_id);
+        }
+
+        if($passportcard == 17)
+        {
+        $counttokyocard1 = count(self::getObjectListFromDB( "SELECT card_type type FROM tokyo WHERE  card_location_arg = {$this->player_id} AND card_type<=71 AND card_location LIKE 'cardposition%'", true ));
+        $counttokyocard2 = count(self::getObjectListFromDB( "SELECT card_type type FROM tokyo WHERE  card_location_arg = {$this->player_id} AND card_type>=72 AND walk =1 AND card_location LIKE 'cardposition%'", true ));
+        $countkyotocard1 = count(self::getObjectListFromDB( "SELECT card_type type FROM kyoto WHERE  card_location_arg = {$this->player_id} AND card_type<=71 AND card_location LIKE 'cardposition%'", true ));
+        $countkyotocard2 = count(self::getObjectListFromDB( "SELECT card_type type FROM kyoto WHERE  card_location_arg = {$this->player_id} AND card_type>=72 AND walk =1 AND card_location LIKE 'cardposition%'", true ));
+
+        $totaltokyo = $counttokyocard1 + $counttokyocard2;
+        $totalkyoto = $countkyotocard1 + $countkyotocard2;
+
+       
+        if($totaltokyo == $totalkyoto)
+        {
+            self::DbQuery( "UPDATE player set passportscore = 14  WHERE player_id = {$this->player_id}" );
+            letsgotojapan::$instance->MajScorePassport(17,$this->player_id);
+
+            
+        }
+        }
 
         $scoretrain = 0;
         $counttrainbonustokyo = count(self::getObjectListFromDB( "SELECT card_id id FROM tokyo WHERE card_location_arg = {$this->player_id} AND train = 2", true));
@@ -9591,13 +10831,18 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
 
         self::DbQuery( "UPDATE player set scorerecherche = {$scorerecherche} WHERE player_id = {$this->player_id}" );
 
-        $scoretotal = self::getUniqueValueFromDB( "SELECT lundi FROM player WHERE player_id = {$this->player_id}") + self::getUniqueValueFromDB( "SELECT mardi FROM player WHERE player_id = {$this->player_id}") + self::getUniqueValueFromDB( "SELECT mercredi FROM player WHERE player_id = {$this->player_id}") + self::getUniqueValueFromDB( "SELECT jeudi FROM player WHERE player_id = {$this->player_id}") + self::getUniqueValueFromDB( "SELECT vendredi FROM player WHERE player_id = {$this->player_id}") + self::getUniqueValueFromDB( "SELECT samedi FROM player WHERE player_id = {$this->player_id}") + $scorehumeur + $scoretoken + $scoretrain + $scorerecherche;
+
+        $scoretotal = self::getUniqueValueFromDB( "SELECT passportscore FROM player WHERE player_id = {$this->player_id}") + self::getUniqueValueFromDB( "SELECT lundi FROM player WHERE player_id = {$this->player_id}") + self::getUniqueValueFromDB( "SELECT mardi FROM player WHERE player_id = {$this->player_id}") + self::getUniqueValueFromDB( "SELECT mercredi FROM player WHERE player_id = {$this->player_id}") + self::getUniqueValueFromDB( "SELECT jeudi FROM player WHERE player_id = {$this->player_id}") + self::getUniqueValueFromDB( "SELECT vendredi FROM player WHERE player_id = {$this->player_id}") + self::getUniqueValueFromDB( "SELECT samedi FROM player WHERE player_id = {$this->player_id}") + $scorehumeur + $scoretoken + $scoretrain + $scorerecherche;
 
         self::DbQuery( "UPDATE player set scoretotal = {$scoretotal} WHERE player_id = {$this->player_id}" );
 
 
+        
+        
 
-        ///////////////////////// FIN DE SCORING AGENT /////////////////// 
+
+
+        ///////////////////////// FIN DE SCORING POUR AGENT /////////////////// 
 
         $countplayer = count(self::getObjectListFromDB( "SELECT player_id id FROM player", true ));
 
@@ -9985,6 +11230,235 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
                     );
             }
 
+            $passportcard = self::getUniqueValueFromDB( "SELECT passportcard FROM player WHERE  player_id = {$this->player_id}");
+            if($passportcard!=15)
+            {
+
+            self::DbQuery( "UPDATE player set wild = wild -1  WHERE player_id = {$this->player_id}" );
+            letsgotojapan::$instance->MajPannel($this->player_id);
+
+            $wild = self::getUniqueValueFromDB( "SELECT wild FROM player WHERE player_id = {$this->player_id}");
+
+            if($wild >=1)
+            {
+            
+            if($parg2 == 1)
+            {
+                letsgotojapan::$instance->addPending($this->player_id, "FinalStepLundi",1);
+            }
+            if($parg2 == 2)
+            {
+                letsgotojapan::$instance->addPending($this->player_id, "FinalStepMardi",1);
+            }
+            if($parg2 == 3)
+            {
+                letsgotojapan::$instance->addPending($this->player_id, "FinalStepMercredi",1);
+            }
+            if($parg2 == 4)
+            {
+                letsgotojapan::$instance->addPending($this->player_id, "FinalStepJeudi",1);
+            }
+            if($parg2 == 5)
+            {
+                letsgotojapan::$instance->addPending($this->player_id, "FinalStepVendredi",1);
+            }
+            if($parg2 == 6)
+            {
+                letsgotojapan::$instance->addPending($this->player_id, "FinalStepSamedi",1);
+            }
+            }
+
+            if($wild == 0)
+            {
+            
+            if($parg2 == 1)
+            {
+                letsgotojapan::$instance->addPending($this->player_id, "FinalStepLundi",2);
+            }
+            if($parg2 == 2)
+            {
+                letsgotojapan::$instance->addPending($this->player_id, "FinalStepMardi",2);
+            }
+            if($parg2 == 3)
+            {
+                letsgotojapan::$instance->addPending($this->player_id, "FinalStepMercredi",2);
+            }
+            if($parg2 == 4)
+            {
+                letsgotojapan::$instance->addPending($this->player_id, "FinalStepJeudi",2);
+            }
+            if($parg2 == 5)
+            {
+                letsgotojapan::$instance->addPending($this->player_id, "FinalStepVendredi",2);
+            }
+            if($parg2 == 6)
+            {
+                letsgotojapan::$instance->addPending($this->player_id, "FinalStepSamedi",2);
+            }
+            }
+
+            }
+
+            if($passportcard==15)
+            {
+                letsgotojapan::$instance->addPending($this->player_id, "FinalWildBonus",$parg2, $parg1);
+            }
+
+
+
+        }
+       
+
+
+    }
+
+
+
+
+    //////////// WILD BONUS////////////////////
+
+    function argFinalWildBonus($parg1, $parg2)
+    {
+        $ret = array();
+        $ret["selectable"] = array();
+        $ret["selectable2"] = array();
+        $ret["selectableswitch"] = array();
+        $ret["selected"] = array();
+        $ret['buttons'] = array();
+        $ret['titleyou'] = clienttranslate('${you} must choose a second token to advance thanks to your passport card');
+
+        if($parg2 != 'red')
+        {
+            $ret['buttons'][]='red';
+        }
+        if($parg2 != 'green')
+        {
+            $ret['buttons'][]='green';
+        }
+        
+        if($parg2 != 'pink')
+        {
+            $ret['buttons'][]='pink';
+        }
+        
+        if($parg2 != 'yellow')
+        {
+            $ret['buttons'][]='yellow';
+        }
+        
+        if($parg2 != 'blue')
+        {
+            $ret['buttons'][]='blue';
+        }
+        
+        
+        
+        
+        
+        
+       
+        
+     
+        
+        return $ret;
+    }
+
+    function FinalWildBonus($parg1, $parg2, $varg1, $varg2)
+    {
+        
+            letsgotojapan::$instance->addPending($this->player_id, "ConfirmWildBonus", $varg1.'_'.$parg2, $parg1);
+        
+       
+
+
+    }
+
+    function argConfirmWildBonus($parg1, $parg2)
+    {
+        $ret = array();
+        $ret["selectable"] = array();
+        $ret["selectable2"] = array();
+        $ret["selectableswitch"] = array();
+        $ret["selected"] = array();
+        $ret['buttons'] = array();
+        
+
+        $explode = explode('_',$parg1);
+
+        $ret['titleyou'] = clienttranslate('${you} must confirm <span class="' . $explode[0] . '"></span>');
+
+        $ret['buttons'][]='confirm';
+        $ret['buttons'][]='cancel';
+        return $ret;
+    }
+
+    function ConfirmWildBonus($parg1, $parg2, $varg1, $varg2)
+    {
+        $explode = explode('_',$parg1);
+
+        if($varg1 == "cancel")
+        {
+           
+                letsgotojapan::$instance->addPending($this->player_id, "FinalWildBonus",$parg2,$explode[1]);
+            
+
+        }
+
+        
+
+        if($varg1 == "confirm")
+        {
+            if($explode[0] == 'red')
+            {
+                letsgotojapan::$instance->Gain('r',$this->player_id);
+                letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} advances ${log2} thanks to the passport card' ), array(
+                    'player_name' => $this->player_name,
+                    'log1' => letsgotojapan::$instance->getLogsType(3),
+                    'log2' => letsgotojapan::$instance->getLogsType(9),
+                    )
+                    );
+            }
+            if($explode[0] == 'green')
+            {
+                letsgotojapan::$instance->Gain('g',$this->player_id);
+                letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} advances ${log2} thanks to the passport card' ), array(
+                    'player_name' => $this->player_name,
+                    'log1' => letsgotojapan::$instance->getLogsType(3),
+                    'log2' => letsgotojapan::$instance->getLogsType(10),
+                    )
+                    );
+            }
+            if($explode[0] == 'pink')
+            {
+                letsgotojapan::$instance->Gain('p',$this->player_id);
+                letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} advances ${log2} thanks to the passport card' ), array(
+                    'player_name' => $this->player_name,
+                    'log1' => letsgotojapan::$instance->getLogsType(3),
+                    'log2' => letsgotojapan::$instance->getLogsType(11),
+                    )
+                    );
+            }
+            if($explode[0] == 'yellow')
+            {
+                letsgotojapan::$instance->Gain('y',$this->player_id);
+                letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} advances ${log2} thanks to the passport card' ), array(
+                    'player_name' => $this->player_name,
+                    'log1' => letsgotojapan::$instance->getLogsType(3),
+                    'log2' => letsgotojapan::$instance->getLogsType(12),
+                    )
+                    );
+            }
+            if($explode[0] == 'blue')
+            {
+                letsgotojapan::$instance->Gain('b',$this->player_id);
+                letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} advances ${log2} thanks to the passport card' ), array(
+                    'player_name' => $this->player_name,
+                    'log1' => letsgotojapan::$instance->getLogsType(3),
+                    'log2' => letsgotojapan::$instance->getLogsType(13),
+                    )
+                    );
+            }
+
             self::DbQuery( "UPDATE player set wild = wild -1  WHERE player_id = {$this->player_id}" );
             letsgotojapan::$instance->MajPannel($this->player_id);
 
@@ -10055,6 +11529,9 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
 
 
     }
+
+
+
 
     ///////////////////////////////////////////////////////
     //////////////////////// SOLO MODE ////////////////////
@@ -13915,6 +15392,131 @@ function SoloExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
         
         
     }
+
+
+    ////////////////  PASSPORT EXTENSION  ////////////////////
+
+
+    function argPassport1($parg1, $parg2)
+    {
+        
+        $ret = array();
+        $ret["selectable"] = array();
+        $ret["selectable2"] = array();
+        $ret["selectableswitch"] = array();
+        $ret["selected"] = array();
+        $ret["buttons"] = array();
+        
+        $ret['titleyou'] = clienttranslate('${you} must choose your Passport card');
+
+        $passport = self::getObjectListFromDB( "SELECT card_type type FROM passport WHERE  card_location_arg = {$this->player_id}", true );
+        
+        foreach ($passport as $type)
+        {
+        $ret["selectable"][] = 'passportcard_'.$type.'_'.$this->player_id;
+        }
+
+                
+        return $ret;
+    }
+
+    function Passport1($parg1, $parg2, $varg1, $varg2)
+    {
+
+        letsgotojapan::$instance->addPending($this->player_id, "Passport2", $varg1);
+
+    }
+
+
+    function argPassport2($parg1, $parg2)
+    {
+        
+        $ret = array();
+        $ret["selectable"] = array();
+        $ret["selectable2"] = array();
+        $ret["selectableswitch"] = array();
+        $ret["selected"] = array();
+        $ret["buttons"] = array();
+        
+        $ret['titleyou'] = clienttranslate('${you} must confirm');
+
+        $ret["selected"][] = $parg1;
+        
+        $ret["buttons"][] = 'yes';
+        $ret["buttons"][] = 'no';
+        
+
+                
+        return $ret;
+    }
+
+    function Passport2($parg1, $parg2, $varg1, $varg2)
+    {
+        if($varg1 == 'no')
+        {
+        letsgotojapan::$instance->addPending($this->player_id, "Passport1");
+        }
+
+        if($varg1 == 'yes')
+        {
+
+
+        
+
+        $explode = explode('_', $parg1);
+        self::DbQuery( "UPDATE player set passportcard = '$explode[1]' WHERE player_id = {$this->player_id}" );
+        
+        $noid = self::getUniqueValueFromDB("SELECT card_id FROM passport WHERE card_type !={$explode[1]} AND card_location_arg = {$this->player_id}");
+        $notype = self::getUniqueValueFromDB("SELECT card_type FROM passport WHERE card_type !={$explode[1]} AND card_location_arg = {$this->player_id}");
+        
+        letsgotojapan::$instance->passport->moveCard( $noid, 'discard' ); 
+
+         letsgotojapan::$instance->notifyAllPlayers('passportchoix','', array(
+        'player_id' => $this->player_id,
+        'type' => $notype,
+        )
+        );
+
+        letsgotojapan::$instance->giveExtraTime($this->player_id);
+        letsgotojapan::$instance->gamestate->setPlayerNonMultiactive($this->player_id, 'stop');
+
+
+        }
+
+    }
+
+
+
+
+
+
+    /*function argVide($parg1, $parg2)
+    {
+        
+        $ret = array();
+        $ret["selectable"] = array();
+        $ret["selectable2"] = array();
+        $ret["selectableswitch"] = array();
+        $ret["selected"] = array();
+        $ret["buttons"] = array();
+        
+        $ret['titleyou'] = clienttranslate('${you} step vide');
+
+        
+        
+        $ret["buttons"][] = 'yes';
+        $ret["buttons"][] = 'no';
+        
+
+                
+        return $ret;
+    }
+
+    function Vide($parg1, $parg2, $varg1, $varg2)
+    {
+        
+
+    }*/
 
 
 

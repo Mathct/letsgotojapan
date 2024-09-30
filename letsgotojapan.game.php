@@ -41,14 +41,10 @@ class letsgotojapan extends Table
         // Note: afterwards, you can get/set the global variables with getGameStateValue/setGameStateInitialValue/setGameStateValue
         parent::__construct();
         
-        $this->initGameStateLabels( array( 
-            //    "my_first_global_variable" => 10,
-            //    "my_second_global_variable" => 11,
-            //      ...
-            //    "my_first_game_variant" => 100,
-            //    "my_second_game_variant" => 101,
-            //      ...
-        ) );  
+        self::initGameStateLabels( array( 
+            "game_mode" => 100,
+
+        ) );
 
         self::$instance = $this;
 
@@ -59,6 +55,10 @@ class letsgotojapan extends Table
         $this->kyoto = self::getNew( "module.common.deck" );
         $this->kyoto->init( "kyoto" );
         $this->kyoto->autoreshuffle = true;
+
+        $this->passport = self::getNew( "module.common.deck" );
+        $this->passport->init( "passport" );
+        $this->passport->autoreshuffle = true;
 
         
 	}
@@ -108,6 +108,19 @@ class letsgotojapan extends Table
 //                                                                                               
 /////////////////////////////////////////////////////////////////////////////////    
 
+        $gamemode = $this->gamestate->table_globals[100];
+
+        if($gamemode == 1)
+        {
+        self::DbQuery( "INSERT INTO mode (name, mode, actif) VALUES ('mode', 1, 0)" );
+        }
+        if($gamemode == 2)
+        {
+        self::DbQuery( "INSERT INTO mode (name, mode, actif) VALUES ('mode', 2, 1)" );
+        }
+
+
+        
         $countplayer = count(self::getObjectListFromDB( "SELECT player_id FROM player", true ));
 
         $tokyo = array();
@@ -132,7 +145,20 @@ class letsgotojapan extends Table
         $this->kyoto->createCards( $kyoto, 'deck' );
         $this->kyoto->shuffle( 'deck' );
 
-        if($countplayer >1)
+
+        $passport = array();
+        for ($i = 1; $i <= 18; $i++)
+        {
+            
+            $passport[] = array( 'type' => $i, 'type_arg' => 1, 'nbr' => 1);
+           
+        }
+
+        $this->passport->createCards( $passport, 'deck' );
+        $this->passport->shuffle( 'deck' );
+        
+
+        if(($countplayer >1)&&($gamemode == 1))
         {
 
             foreach( $players as $player_id => $player )
@@ -145,6 +171,46 @@ class letsgotojapan extends Table
             }
 
         }
+
+        if(($countplayer >1)&&($gamemode == 2))
+        {
+            
+
+            foreach( $players as $player_id => $player )
+            {
+                
+                $this->passport->pickCardForLocation( 'deck', 'passporthand', $player_id);
+                $this->passport->pickCardForLocation( 'deck', 'passporthand', $player_id);
+
+
+                // A deporter
+                $this->tokyo->pickCardForLocation( 'deck', 'playerhand', $player_id);
+                $this->kyoto->pickCardForLocation( 'deck', 'playerhand', $player_id);
+                
+                
+
+            }
+
+        }
+
+        if(($countplayer ==1)&&($gamemode == 2))
+        {
+            
+
+            foreach( $players as $player_id => $player )
+            {
+                
+                $this->passport->pickCardForLocation( 'deck', 'passporthand', $player_id);
+                $this->passport->pickCardForLocation( 'deck', 'passporthand', $player_id);
+
+
+                
+
+            }
+
+        }
+
+
 
         //////// TOKENS ///////
 
@@ -249,7 +315,8 @@ class letsgotojapan extends Table
 
         //////// LANCEMENT DU JEU ///////
 
-
+        if($gamemode == 1)
+        {
 
         if($countplayer >1)
         {
@@ -265,6 +332,21 @@ class letsgotojapan extends Table
             {
                 $this->addPendingFirst($player_id, "SoloLevel");
             }
+        }
+
+        }
+
+        
+        if($gamemode == 2)
+        {
+
+        
+            foreach( $players as $player_id => $player )
+            {
+                $this->addPendingFirst($player_id, "Passport1");
+            }
+        
+
         }
 
         $this->gamestate->setAllPlayersMultiactive();
@@ -307,6 +389,10 @@ class letsgotojapan extends Table
         $result['turn'] = self::getUniqueValueFromDB("SELECT level FROM tokens WHERE name = 'turn'");
 
         $result['tokenjour'] = self::getObjectListFromDB( "SELECT name name, level level FROM tokens WHERE type = 'general'");
+
+        $result['mode'] = self::getUniqueValueFromDB("SELECT mode FROM mode WHERE name ='mode' ");
+        $result['modeactif'] = self::getUniqueValueFromDB("SELECT actif FROM mode WHERE name ='mode' ");
+        $result['passport'] = self::getObjectListFromDB( "SELECT card_id id, card_type type, card_location location, card_location_arg location_arg FROM passport WHERE card_location != 'deck' and card_location != 'discard'");
 
         $listplayers = self::getObjectListFromDB("SELECT player_id id FROM player", true);
         foreach($listplayers as $player)
@@ -355,6 +441,11 @@ class letsgotojapan extends Table
             $result['jeudicheck'][$player] = self::getUniqueValueFromDB("SELECT jeudicheck FROM player WHERE player_id={$player}");
             $result['vendredicheck'][$player] = self::getUniqueValueFromDB("SELECT vendredicheck FROM player WHERE player_id={$player}");
             $result['samedicheck'][$player] = self::getUniqueValueFromDB("SELECT samedicheck FROM player WHERE player_id={$player}");
+
+            $result['passportcard'][$player] = self::getUniqueValueFromDB("SELECT passportcard FROM player WHERE player_id={$player}");
+            $result['passportscore'][$player] = self::getUniqueValueFromDB("SELECT passportscore FROM player WHERE player_id={$player}");
+
+            
 
         }
 
@@ -660,7 +751,7 @@ function Condenser($id, $new)
     $counttrip = letsgotojapan::$instance->CountTrip($id);
     $jour = 0;
     
-
+        
     if ($new == 0)
     {
 
@@ -1593,6 +1684,8 @@ function Gain($type, $player)
 {
     if($player !=0 )
     {
+        $passport = self::getUniqueValueFromDB("SELECT passportcard FROM player WHERE player_id = {$player}");
+
     if($type == 'r')
     {
         self::DbQuery( "UPDATE player set r = r +1   WHERE player_id = {$player}" );
@@ -1849,12 +1942,27 @@ function Gain($type, $player)
             )
             );
         }
+
+        if($passport== 9)
+        {
+            letsgotojapan::$instance->Smile(1,$player);
+            self::DbQuery( "UPDATE player set passportscore = passportscore +1   WHERE player_id = {$player}" );
+            letsgotojapan::$instance->MajScorePassport(9,$player);
+        }
+
     }
 
     if($type == 'h1')
     {
         self::DbQuery( "UPDATE player set happy1 = happy1 +1   WHERE player_id = {$player}" );
         letsgotojapan::$instance->Smile(1,$player);
+
+        if($passport== 8)
+        {
+            
+            self::DbQuery( "UPDATE player set passportscore = passportscore +1   WHERE player_id = {$player}" );
+            letsgotojapan::$instance->MajScorePassport(8,$player);
+        }
         
     }
 
@@ -1862,18 +1970,40 @@ function Gain($type, $player)
     {
         self::DbQuery( "UPDATE player set happy2 = happy2 +1   WHERE player_id = {$player}" );
         letsgotojapan::$instance->Smile(1,$player);
+
+        if($passport== 2)
+        {
+            letsgotojapan::$instance->Smile(1,$player);
+            self::DbQuery( "UPDATE player set passportscore = passportscore +1   WHERE player_id = {$player}" );
+            letsgotojapan::$instance->MajScorePassport(2,$player);
+        }
     }
 
     if($type == 'a1')
     {
         self::DbQuery( "UPDATE player set angry1 = angry1 +1   WHERE player_id = {$player}" );
         letsgotojapan::$instance->Smile(-1,$player);
+
+        if($passport== 8)
+        {
+            
+            self::DbQuery( "UPDATE player set passportscore = passportscore +2   WHERE player_id = {$player}" );
+            letsgotojapan::$instance->MajScorePassport(8,$player);
+        }
     }
 
     if($type == 'a2')
     {
         self::DbQuery( "UPDATE player set angry2 = angry2 +1   WHERE player_id = {$player}" );
+        if($passport!= 7)
+        {
         letsgotojapan::$instance->Smile(-1,$player);
+        }
+        if($passport== 7)
+        {
+            self::DbQuery( "UPDATE player set passportscore = passportscore +1   WHERE player_id = {$player}" );
+            letsgotojapan::$instance->MajScorePassport(7,$player);
+        }
     }
     }
 
@@ -2258,6 +2388,44 @@ function tableExists($tableName) {
     return !empty($result);
 }
 
+function MajScorePassport ($card, $player)
+{
+    $newscore = self::getUniqueValueFromDB( "SELECT passportscore FROM player WHERE  player_id = {$player}");
+    letsgotojapan::$instance->notifyAllPlayers('majscorepassport','', array(
+                    
+        'card' => $card,
+        'score' => $newscore,
+        
+                                    
+        )
+        ); 
+
+    if($newscore>=0)
+    {
+    $name = self::getUniqueValueFromDB( "SELECT player_name FROM player WHERE  player_id = {$player}");
+    letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} will have a bonus of ${score} ${log} at the end of the game thanks to the passport card'), array(
+            'player_name' => $name,
+            'log' => letsgotojapan::$instance->getLogsType(8),
+            'score' => $newscore,
+
+        )
+        );
+    }
+
+    if($newscore<0)
+    {
+    $name = self::getUniqueValueFromDB( "SELECT player_name FROM player WHERE  player_id = {$player}");
+    letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} will have a penalty of ${score} ${log} at the end of the game because of the passport card'), array(
+            'player_name' => $name,
+            'log' => letsgotojapan::$instance->getLogsType(8),
+            'score' => $newscore,
+
+        )
+        );
+    }
+
+}
+
 
 
 ///////////////////////////////////////////////////////////////////////////////// 
@@ -2545,6 +2713,171 @@ function argPlayerTurn()
 
 function st_MultiPlayerActivation() 
 {
+
+
+    $actifmode = self::getUniqueValueFromDB("SELECT actif FROM mode WHERE name='mode'");
+
+
+    if($actifmode == 1)
+    {
+        self::DbQuery( "UPDATE mode set actif = 0  WHERE name='mode'" );
+
+        $countplayer = count(self::getObjectListFromDB( "SELECT player_id FROM player", true ));
+        $listplayers = self::getObjectListFromDB( "SELECT player_id id FROM player", true );
+
+        foreach ($listplayers as $player)
+        {
+            
+            $type = self::getUniqueValueFromDB("SELECT passportcard FROM player WHERE player_id = {$player}");
+            letsgotojapan::$instance->notifyAllPlayers('placepassortpannel','', array(
+                'id' => $player,
+                'type' => $type,
+                                    
+                )
+                );
+
+
+            if($type == 1)
+            {
+                self::DbQuery( "UPDATE player set train = 3  WHERE player_id = {$player}" );
+            }
+
+            if($type == 3)
+            {
+                
+                self::DbQuery( "UPDATE player set angry1 = 2  WHERE player_id = {$player}" );
+                letsgotojapan::$instance->Smile(-2,$player);
+
+
+            }
+
+            if($type == 4)
+            {
+                self::DbQuery( "UPDATE player set wild = 3  WHERE player_id = {$player}" );
+            }
+
+            if($type == 5)
+            {
+                self::DbQuery( "UPDATE player set recherche = 5  WHERE player_id = {$player}" );
+                self::DbQuery( "UPDATE player set happy2 = 1  WHERE player_id = {$player}" );
+                letsgotojapan::$instance->Smile(1,$player);
+
+
+            }
+
+            if($type == 6)
+            {
+                letsgotojapan::$instance->Gain("r",$player);
+                letsgotojapan::$instance->Gain("g",$player);
+                letsgotojapan::$instance->Gain("y",$player);
+                letsgotojapan::$instance->Gain("p",$player);
+                letsgotojapan::$instance->Gain("b",$player);
+
+            }
+
+
+
+            //MAJ PANNEL
+
+            $recherche = self::getUniqueValueFromDB("SELECT recherche FROM player WHERE player_id={$player}");
+            $train = self::getUniqueValueFromDB("SELECT train FROM player WHERE player_id={$player}");
+            $trainstart = self::getUniqueValueFromDB("SELECT trainstart FROM player WHERE player_id={$player}");
+            $wild = self::getUniqueValueFromDB("SELECT wild FROM player WHERE player_id={$player}");
+        
+            letsgotojapan::$instance->notifyAllPlayers('majpannelall','', array(
+                'id' =>  $player,
+                'recherche' => $recherche,
+                'train' => $train,
+                'trainstart' => $trainstart,
+                'wild' => $wild,
+                
+                )
+                );
+        }
+
+        if($countplayer >1)
+        {
+                       
+
+            foreach ($listplayers as $player_id)
+            {
+                                
+                $this->addPendingFirst($player_id, "Phase1Step1");
+                
+                letsgotojapan::$instance->notifyAllPlayers('startpass','', array(
+                                       
+                    )
+                    );
+            }
+        }
+
+        if($countplayer ==1)
+        {
+            letsgotojapan::$instance->Gain("r",0);
+            letsgotojapan::$instance->Gain("g",0);
+            letsgotojapan::$instance->Gain("y",0);
+            letsgotojapan::$instance->Gain("p",0);
+            letsgotojapan::$instance->Gain("b",0);
+
+
+            foreach ($listplayers as $player_id)
+            {
+                $this->addPendingFirst($player_id, "SoloLevel");
+
+                letsgotojapan::$instance->notifyAllPlayers('startpass','', array(
+                                       
+                    )
+                    );
+
+            }
+        }
+
+        if ($countplayer>=2)
+        {
+            self::DbQuery("DELETE FROM `copybonus`;");
+            $copybonus = self::getObjectListFromDB( "SELECT player_id id, smile smile, happy happy, angry angry, recherche recherche, train train, trainstart trainstart, wild wild FROM player");
+
+            $listplayers = self::getObjectListFromDB( "SELECT player_id id FROM player", true );
+
+            foreach ($listplayers as $player_id)
+            {   
+                foreach($copybonus as $bonus)
+                {
+                    if($player_id == $bonus['id'])
+                    {
+                    self::DbQuery("INSERT INTO copybonus (player_id, smile, happy, angry, recherche, train, trainstart, wild) VALUES ('{$bonus['id']}', '{$bonus['smile']}', '{$bonus['happy']}', '{$bonus['angry']}', '{$bonus['recherche']}', '{$bonus['train']}', '{$bonus['trainstart']}', '{$bonus['wild']}')");
+                    }
+                }
+
+                //MAJ SMILE
+
+            $smile = self::getUniqueValueFromDB("SELECT smile FROM copybonus WHERE player_id={$player_id}");
+            $happy = self::getUniqueValueFromDB("SELECT happy FROM copybonus WHERE player_id={$player_id}");
+            $angry = self::getUniqueValueFromDB("SELECT angry FROM copybonus WHERE player_id={$player_id}");
+
+            letsgotojapan::$instance->notifyAllPlayers('majsmileall','', array(
+                'id' =>  $player_id,
+                'smile' => $smile,
+                'happy' => $happy,
+                'angry' => $angry,
+                
+                
+                )
+                );
+
+
+            }
+
+            
+
+
+        } 
+
+    }
+
+    
+    if($actifmode == 0)
+    {
     $turn = self::getUniqueValueFromDB("SELECT level FROM tokens WHERE name = 'turn'");
     $newturn = $turn+1;
     $countplayer = count(self::getObjectListFromDB( "SELECT player_id FROM player", true ));
@@ -2652,6 +2985,50 @@ function st_MultiPlayerActivation()
                     
                     )
                     );
+
+
+                //// PASSPORT 18
+
+                $passportcard = self::getUniqueValueFromDB( "SELECT passportcard FROM player WHERE  player_id = {$player_id}");
+                if($passportcard == 18)
+                {
+                    $scorepassport18 = 0;
+                    $tokyopass = self::getObjectListFromDB( "SELECT card_type type FROM tokyo WHERE  card_location_arg = {$player_id} AND walk =0 AND card_location LIKE 'cardposition%'", true );
+                    $kyotopass = self::getObjectListFromDB( "SELECT card_type type FROM kyoto WHERE  card_location_arg = {$player_id} AND walk =0 AND card_location LIKE 'cardposition%'", true );
+
+                    if($tokyopass != null)
+                    {
+                        foreach ($tokyopass as $tokyotype)
+                        {
+                            if(($tokyotype == 45)||($tokyotype == 79)||($tokyotype == 1)||($tokyotype == 2))
+                            {
+                                $scorepassport18 = $scorepassport18 +1;
+                            }
+
+                        }
+
+                    }
+
+                    if($kyotopass != null)
+                    {
+                        foreach ($kyotopass as $kyototype)
+                        {
+
+                            if(($kyototype == 69)||($kyototype == 34)||($kyototype == 35)||($kyototype == 22)||($kyototype == 23)||($kyototype == 79)||($kyototype == 70)||($kyototype == 71)||($kyototype == 26)||($kyototype == 27))
+                            {
+                                $scorepassport18 = $scorepassport18 +1;
+                            }
+                            
+                        }
+
+                        
+                    }
+
+                    $newscore = $scorepassport18 * 4;
+                    self::DbQuery( "UPDATE player set passportscore = $newscore  WHERE player_id = {$player_id}" );
+                    letsgotojapan::$instance->MajScorePassport(18,$player_id);
+
+                }
                 
 
             }
@@ -3257,6 +3634,60 @@ function st_MultiPlayerActivation()
 
     if ($countplayer==1)
     {
+        if($newturn <= 14) //// PASSPORT 18
+        {
+            $listplayers = self::getObjectListFromDB( "SELECT player_id id FROM player", true );
+
+            foreach ($listplayers as $player_id)
+            {
+
+                
+
+                $passportcard = self::getUniqueValueFromDB( "SELECT passportcard FROM player WHERE  player_id = {$player_id}");
+                if($passportcard == 18)
+                {
+                    $scorepassport18 = 0;
+                    $tokyopass = self::getObjectListFromDB( "SELECT card_type type FROM tokyo WHERE  card_location_arg = {$player_id} AND walk =0 AND card_location LIKE 'cardposition%'", true );
+                    $kyotopass = self::getObjectListFromDB( "SELECT card_type type FROM kyoto WHERE  card_location_arg = {$player_id} AND walk =0 AND card_location LIKE 'cardposition%'", true );
+
+                    if($tokyopass != null)
+                    {
+                        foreach ($tokyopass as $tokyotype)
+                        {
+                            if(($tokyotype == 45)||($tokyotype == 79)||($tokyotype == 1)||($tokyotype == 2))
+                            {
+                                $scorepassport18 = $scorepassport18 +1;
+                            }
+
+                        }
+
+                    }
+
+                    if($kyotopass != null)
+                    {
+                        foreach ($kyotopass as $kyototype)
+                        {
+
+                            if(($kyototype == 69)||($kyototype == 34)||($kyototype == 35)||($kyototype == 22)||($kyototype == 23)||($kyototype == 79)||($kyototype == 70)||($kyototype == 71)||($kyototype == 26)||($kyototype == 27))
+                            {
+                                $scorepassport18 = $scorepassport18 +1;
+                            }
+                            
+                        }
+
+                        
+                    }
+
+                    $newscore = $scorepassport18 * 4;
+                    self::DbQuery( "UPDATE player set passportscore = $newscore  WHERE player_id = {$player_id}" );
+                    letsgotojapan::$instance->MajScorePassport(18,$player_id);
+
+                }
+
+
+            }
+
+        }
 
         if (($newturn < 5)||($newturn == 11))  
         {
@@ -3806,10 +4237,20 @@ function st_MultiPlayerActivation()
         {
             
             $this->gamestate->nextState('end');
+            
+            /*$listplayers = self::getObjectListFromDB( "SELECT player_id id FROM player", true );
+
+            foreach ($listplayers as $player_id)
+            {
+                
+                $this->addPending($player_id, "Vide");
+            }*/
         }
 
 
     }
+
+}
     
 
 

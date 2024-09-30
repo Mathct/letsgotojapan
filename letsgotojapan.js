@@ -81,38 +81,157 @@ function (dojo, declare) {
 
                 for( var player_id in gamedatas.players )   
                     {
+                        
+                        if((gamedatas.modeactif == 1)&&(player_id == this.getCurrentPlayerId()))
+                        {
+                            dojo.query("#global").addClass("hidden");
+                            dojo.query("#globalpassport").removeClass("hidden");
+
+                            for(var passport in gamedatas.passport)
+                            {
+                                if(gamedatas.passport[passport].location_arg == this.getCurrentPlayerId())
+                                {
+                                    this.addCardPassportHand(gamedatas.passport[passport].type, gamedatas.passport[passport].location_arg);
+                                }
+
+                            }
+                        
+                        }
+
+                        
+                    }
+
+                if(gamedatas.mode == 1)
+                {
+                    dojo.query("#scorepad").addClass("scorepadnopass");
+                }
+
+                if(gamedatas.mode == 2)
+                {
+                    dojo.query("#scorepad").addClass("scorepadpass");
+                }
+    
+
+                
+
+                for( var player_id in gamedatas.players )   
+                    {
                                          
                         var player_board_div = $('player_board_'+player_id);
                         dojo.place( this.format_block('jstpl_player_compteurs', {id: player_id} ), player_board_div );
-                        if (gamedatas.countplayers == 1)
-                        {
-                            if(gamedatas.lvl == 1)
-                            {
-                                dojo.place( this.format_block('jstpl_infolvl', {id: player_id} ), player_board_div );
-                                var info = _("Easy level: Your opponent must meet the requirements of their “Highlight of the Day” bonuses in order to score them. It does not use Train tokens.");
-                                $('infolvl_'+player_id).innerHTML = info;
-
-                            }
-
-                            if(gamedatas.lvl == 2)
-                            {
-                                dojo.place( this.format_block('jstpl_infolvl', {id: player_id} ), player_board_div );
-                                var info = _("Normal level: Your opponent always scores all his “Highlights of the Day”. It does not use Train tokens.");
-                                $('infolvl_'+player_id).innerHTML = info;
-
-                            }
-
-                            if(gamedatas.lvl == 3)
-                            {
-                                dojo.place( this.format_block('jstpl_infolvl', {id: player_id} ), player_board_div );
-                                var info = _("Difficult level: Your opponent always scores all his “Highlights of the Day” and places a Luxury Train token each time he travels.");
-                                $('infolvl_'+player_id).innerHTML = info;
-
-                            }
-                        }
+                        
                         
                         
                     }
+
+                if((gamedatas.modeactif == 0)&&(gamedatas.mode == 2))
+
+                    {
+                        for(var passport in gamedatas.passport)
+                            {
+                                var player_board_div = $('player_board_'+gamedatas.passport[passport].location_arg);
+
+                                if((gamedatas.passport[passport].type >=1)&&(gamedatas.passport[passport].type <=9))
+                                {
+                                    dojo.place( this.format_block('jstpl_pannelpassportcard', {
+                                        id: gamedatas.passport[passport].location_arg,
+                                        type: gamedatas.passport[passport].type,
+                                        x: (gamedatas.passport[passport].type-1)*(-100),
+                                        y: 0,
+                                    } ), player_board_div );
+
+                                    if((gamedatas.passport[passport].type!=1)&&(gamedatas.passport[passport].type!=4)&&(gamedatas.passport[passport].type!=5)&&(gamedatas.passport[passport].type!=6))
+                                    {
+                                    dojo.place( this.format_block('jstpl_pannelpassportscore', {
+                                        type: gamedatas.passport[passport].type,
+                                        
+                                    } ), 'pannelpassportcard_'+gamedatas.passport[passport].type+'_'+gamedatas.passport[passport].location_arg );
+
+                                    if(gamedatas.passportscore[gamedatas.passport[passport].location_arg]>0)
+                                    {
+                                    $('scorepassport_'+gamedatas.passport[passport].type).innerHTML = '+'+gamedatas.passportscore[gamedatas.passport[passport].location_arg];
+                                    }
+                                    if(gamedatas.passportscore[gamedatas.passport[passport].location_arg]<=0)
+                                    {
+                                    $('scorepassport_'+gamedatas.passport[passport].type).innerHTML = gamedatas.passportscore[gamedatas.passport[passport].location_arg];
+                                    }
+
+                                    }
+
+                                }
+
+                                if((gamedatas.passport[passport].type >=10)&&(gamedatas.passport[passport].type <=18))
+                                    {
+                                        dojo.place( this.format_block('jstpl_pannelpassportcard', {
+                                            id: gamedatas.passport[passport].location_arg,
+                                            type: gamedatas.passport[passport].type,
+                                            x: (gamedatas.passport[passport].type-10)*(-100),
+                                            y: -100,
+                                        } ), player_board_div );
+
+                                       
+                                        if((gamedatas.passport[passport].type!=10)&&(gamedatas.passport[passport].type!=12)&&(gamedatas.passport[passport].type!=15))
+                                        {
+                                            
+                                        dojo.place( this.format_block('jstpl_pannelpassportscore', {
+                                            type: gamedatas.passport[passport].type,
+                                            
+                                        } ), 'pannelpassportcard_'+gamedatas.passport[passport].type+'_'+gamedatas.passport[passport].location_arg );
+
+                                        if(gamedatas.passportscore[gamedatas.passport[passport].location_arg]>0)
+                                            {
+                                            $('scorepassport_'+gamedatas.passport[passport].type).innerHTML = '+'+gamedatas.passportscore[gamedatas.passport[passport].location_arg];
+                                            }
+                                            if(gamedatas.passportscore[gamedatas.passport[passport].location_arg]<=0)
+                                            {
+                                            $('scorepassport_'+gamedatas.passport[passport].type).innerHTML = gamedatas.passportscore[gamedatas.passport[passport].location_arg];
+                                            }
+                                        }
+
+
+                                    }
+                                    
+                                
+                                
+
+                            }
+
+                        
+                    }
+
+                    for( var player_id in gamedatas.players )   
+                        {
+                                             
+                            
+                            if (gamedatas.countplayers == 1)
+                            {
+                                if(gamedatas.lvl == 1)
+                                {
+                                    dojo.place( this.format_block('jstpl_infolvl', {id: player_id} ), player_board_div );
+                                    var info = _("Easy level: Your opponent must meet the requirements of their “Highlight of the Day” bonuses in order to score them. It does not use Train tokens.");
+                                    $('infolvl_'+player_id).innerHTML = info;
+    
+                                }
+    
+                                if(gamedatas.lvl == 2)
+                                {
+                                    dojo.place( this.format_block('jstpl_infolvl', {id: player_id} ), player_board_div );
+                                    var info = _("Normal level: Your opponent always scores all his “Highlights of the Day”. It does not use Train tokens.");
+                                    $('infolvl_'+player_id).innerHTML = info;
+    
+                                }
+    
+                                if(gamedatas.lvl == 3)
+                                {
+                                    dojo.place( this.format_block('jstpl_infolvl', {id: player_id} ), player_board_div );
+                                    var info = _("Difficult level: Your opponent always scores all his “Highlights of the Day” and places a Luxury Train token each time he travels.");
+                                    $('infolvl_'+player_id).innerHTML = info;
+    
+                                }
+                            }
+                            
+                            
+                        }
 
                 for( var player_id in gamedatas.players )   
                     {
@@ -199,6 +318,7 @@ function (dojo, declare) {
                     {
                         var player = gamedatas.listplayers[0];
                         dojo.query("#playerview_"+player).removeClass("masque");
+                        dojo.query(".playerpassport").addClass("masque");
                         dojo.query(".playerhandtitle").addClass("masque");
                         dojo.query(".playerhand").addClass("masque");
                         dojo.query("#mask_turn").addClass("masque");
@@ -1050,6 +1170,7 @@ function (dojo, declare) {
                 dojo.query(".bonusjournee").connect('onclick', this, 'onSelect' );
                 dojo.query(".bonusjournee2").connect('onclick', this, 'onSelect' );
                 dojo.query("#mask_score").connect('onclick', this, 'onMaskScore' );
+                dojo.query(".passportcard").connect('onclick', this, 'onSelect' );
                 
 
                 
@@ -1973,6 +2094,35 @@ function (dojo, declare) {
                     id: player, 
                                          
                  } ) , 'angryposition_'+angry+'_'+player );
+
+            },
+
+            addCardPassportHand: function(type, player)
+            {
+                if((type>=1)&&(type <=9))
+                {
+                    dojo.place( this.format_block( 'jstpl_passportcard', {
+                        id: player,
+                        type: type,
+                        x : (type-1)*(-100),
+                        y: 0,
+                         
+                                             
+                     } ) , 'playerpassport_'+player);
+                }
+
+                if((type>=10)&&(type <=18))
+                {
+                    dojo.place( this.format_block( 'jstpl_passportcard', {
+                        id: player,
+                        type: type,
+                        x : (type-10)*(-100),
+                        y: -100,
+                        
+                                             
+                     } ) , 'playerpassport_'+player );
+                    
+                }
 
             },
 
@@ -8677,12 +8827,14 @@ function (dojo, declare) {
 
                 dojo.subscribe( 'changesens', this, "notif_changesens" );
 
-                
+                dojo.subscribe( 'passportchoix', this, "notif_passportchoix" );
 
-                
+                dojo.subscribe( 'startpass', this, "notif_startpass" );
+                dojo.subscribe( 'placepassortpannel', this, "notif_placepassortpannel" );
 
+                dojo.subscribe( 'majscorepassport', this, "notif_majscorepassport" );
 
-                
+    
                 this.notifqueue.setSynchronous( 'smile');
                 this.notifqueue.setSynchronous( 'happy');
                 this.notifqueue.setSynchronous( 'angry');
@@ -8693,8 +8845,93 @@ function (dojo, declare) {
 
                 
                 
-            },  
+            }, 
+            
+            notif_passportchoix: function( notif )
+            {
+                dojo.destroy('passportcard_'+notif.args.type+'_'+notif.args.player_id)
+                
+            },
 
+            notif_majscorepassport: function( notif )
+            {
+                if (notif.args.score<=0)
+                {
+                $('scorepassport_'+notif.args.card).innerHTML = notif.args.score;
+                }
+                else
+                {
+                    $('scorepassport_'+notif.args.card).innerHTML = '+'+notif.args.score;
+                }
+                
+            },
+
+
+
+            notif_startpass: function( notif )
+            {
+                
+                 
+
+                    dojo.query("#global").removeClass("hidden");
+                    dojo.query("#globalpassport").addClass("hidden");
+                
+
+            },
+
+
+            notif_placepassortpannel: function( notif )
+            {
+                var player_board_div = $('player_board_'+notif.args.id);
+
+                if((notif.args.type >=1)&&(notif.args.type <=9))
+                    {
+                        dojo.place( this.format_block('jstpl_pannelpassportcard', {
+                            id: notif.args.id,
+                            type: notif.args.type,
+                            x: (notif.args.type-1)*(-100),
+                            y: 0,
+                        } ), player_board_div );
+
+                        if((notif.args.type!=1)&&(notif.args.type!=4)&&(notif.args.type!=5)&&(notif.args.type!=6))
+                            {
+                            dojo.place( this.format_block('jstpl_pannelpassportscore', {
+                                type: notif.args.type,
+                                
+                            } ), 'pannelpassportcard_'+notif.args.type+'_'+notif.args.id );
+
+                            $('scorepassport_'+notif.args.type).innerHTML = 0;
+
+                        }
+                    }
+
+                    if((notif.args.type >=10)&&(notif.args.type <=18))
+                        {
+                            dojo.place( this.format_block('jstpl_pannelpassportcard', {
+                                id: notif.args.id,
+                                type: notif.args.type,
+                                x: (notif.args.type-10)*(-100),
+                                y: -100,
+                            } ), player_board_div );
+
+                            if((notif.args.type!=10)&&(notif.args.type!=12)&&(notif.args.type!=15))
+                                {
+                                dojo.place( this.format_block('jstpl_pannelpassportscore', {
+                                    type: notif.args.type,
+                                    
+                                } ), 'pannelpassportcard_'+notif.args.type+'_'+notif.args.id );
+    
+                                $('scorepassport_'+notif.args.type).innerHTML = 0;
+    
+                            }
+
+                        }
+                
+                 
+
+            },
+
+            
             notif_masque: function( notif )
             {
                 if(!this.isSpectator)
@@ -8788,8 +9025,13 @@ function (dojo, declare) {
                     this.attachToNewParentNoDestroy( notif.args.mobile, notif.args.parent );
                     this.slideToObject( notif.args.mobile, notif.args.parent, 400 ).play();
 
+                    if (agent[3] != 0)
+                    {   
                     var element = document.getElementById(notif.args.location+'_'+notif.args.playerid);
                     element.style.zIndex = "10";
+                    }
+
+                    
 
                                         
                 }
@@ -9498,6 +9740,7 @@ function (dojo, declare) {
                 
                 if((notif.args.playerid == this.getCurrentPlayerId())||(this.gamedatas.countplayers == 1))
                 {
+                    
                 if (notif.args.count == 1)
                 {
                     this.attachToNewParentNoDestroy( 'card_'+notif.args.ville1+'_'+notif.args.card1, 'cardposition_'+notif.args.jour+'_1_'+notif.args.playerid );
@@ -10319,7 +10562,6 @@ function (dojo, declare) {
                   
                 
             },
-
 
 
     

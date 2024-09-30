@@ -1,1 +1,26 @@
-{}
+{
+
+    "100": {
+        "name": "Game options",
+        "values": {
+            "1": {
+                "name": "Base Game", 
+                "tmdisplay": "Base Game"
+                
+            },
+
+            "2": {
+                "name": "Passport Extension", 
+                "tmdisplay": "Passport Extension"
+                
+            }   
+           
+    
+        },
+        
+        
+        "default": 1
+              
+            }
+
+}

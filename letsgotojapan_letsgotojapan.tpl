@@ -25,10 +25,18 @@
     Please REMOVE this comment before publishing your game on BGA
 -->
 
+<div id="globalpassport" class="hidden">
 
+    <!-- BEGIN playerpassport -->
+        
+            <div id="playerpassport_{PLAYER_ID}" class="playerpassport"></div>
+        
+    <!-- END playerpassport -->
+
+</div>
 
 <div id="global">
-    
+
         <div id="mask_turn" class="hidden"></div>
         <div id="mask_hand"></div>
 
@@ -498,6 +506,7 @@ var jstpl_angry='<div id="angry_${id}" class="angry"></div>';
 var jstpl_card='<div id="card_${ville}_${id}" class="card" style="background-image: url(${imgfull}); background-position-x: ${x}%; background-position-y: ${y}%;"></div>';
 var jstpl_cardverso='<div id="card_${ville}_${id}" class="cardverso" style="background-image: url(${imgfull}); background-position-x: ${x}%; background-position-y: ${y}%;"></div>';
 var jstpl_turn='<div id="turn" class="turn"></div>';
+var jstpl_passportcard='<div id="passportcard_${type}_${id}" class="passportcard" style="background-position-x: ${x}%; background-position-y: ${y}%;"></div>';
 
 var jstpl_player_compteurs = '<div class="player_compteurs" id="player_compteurs_${id}" style="display: flex; align-items: center; flex-direction: column; justify-content: center; z-index: 100; position: relative;">\
 <div id="icons_player_compteurs_${id}" style="text-align: center; align-items: center; display: flex; margin-top: 10px; margin-bottom: 5px;">\
@@ -535,6 +544,8 @@ var jstpl_avataragent='<div id="avataragent" class="avataragent"></div>';
 
 var jstpl_infolvl='<div id="infolvl_${id}" class="infolvl"></div>';
 
+var jstpl_pannelpassportcard='<div id="pannelpassportcard_${type}_${id}" class="pannelpassportcard" style="background-position-x: ${x}%; background-position-y: ${y}%;"></div>'; 
+var jstpl_pannelpassportscore='<div id="scorepassport_${type}" class="scorepassport"></div>';
 
 </script>  
 
