@@ -225,3 +225,4 @@ ALTER TABLE `player` ADD `samedicheck` int(2) unsigned DEFAULT 0;
 ALTER TABLE `player` ADD `yellowpass` int(2) unsigned DEFAULT 0;
 ALTER TABLE `player` ADD `passportcard` int(2) unsigned DEFAULT 0;
 ALTER TABLE `player` ADD `passportscore` int(2) DEFAULT 0;
+ALTER TABLE `player` ADD `pass10` int(2) DEFAULT 0;

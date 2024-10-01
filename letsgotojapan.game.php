@@ -2788,6 +2788,11 @@ function st_MultiPlayerActivation()
 
             }
 
+            if($type == 10)
+            {
+                self::DbQuery( "UPDATE player set pass10 = 2  WHERE player_id = {$player}" );
+            }
+
 
 
             //MAJ PANNEL
