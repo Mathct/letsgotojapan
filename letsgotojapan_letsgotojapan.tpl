@@ -547,6 +547,8 @@ var jstpl_infolvl='<div id="infolvl_${id}" class="infolvl"></div>';
 var jstpl_pannelpassportcard='<div id="pannelpassportcard_${type}_${id}" class="pannelpassportcard" style="background-position-x: ${x}%; background-position-y: ${y}%;"></div>'; 
 var jstpl_pannelpassportscore='<div id="scorepassport_${type}" class="scorepassport"></div>';
 
+var jstpl_passporttool='<div style="font-size: 30px; font-weight: bold; text-align: center;">${text1}</div><div style="text-align: center;">${text2}</div><div style="text-align: center;">${text3}</div>';
+
 </script>  
 
 {OVERALL_GAME_FOOTER}

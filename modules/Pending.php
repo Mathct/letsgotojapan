@@ -11389,6 +11389,14 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
                     'log2' => letsgotojapan::$instance->getLogsType(13),
                     )
                     );
+                
+                $passportcard = self::getUniqueValueFromDB( "SELECT passportcard FROM player WHERE player_id = {$this->player_id}");
+                if($passportcard == 9)
+                {
+                    letsgotojapan::$instance->Smile(1,$this->player_id);
+                    self::DbQuery( "UPDATE player set passportscore = passportscore +1 WHERE player_id = {$this->player_id}" );
+                    letsgotojapan::$instance->MajScorePassport(9,$this->player_id);
+                }
             }
 
             $passportcard = self::getUniqueValueFromDB( "SELECT passportcard FROM player WHERE  player_id = {$this->player_id}");

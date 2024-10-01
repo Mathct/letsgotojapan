@@ -92,6 +92,12 @@ function (dojo, declare) {
                                 if(gamedatas.passport[passport].location_arg == this.getCurrentPlayerId())
                                 {
                                     this.addCardPassportHand(gamedatas.passport[passport].type, gamedatas.passport[passport].location_arg);
+
+                                    var text1 =_(this.gamedatas.passportcards[gamedatas.passport[passport].type].text1);
+                                    var text2 =_(this.gamedatas.passportcards[gamedatas.passport[passport].type].text2);
+                                    var text3 =_(this.gamedatas.passportcards[gamedatas.passport[passport].type].text3);
+                                    var html = '<div class="toolt"><div class="cardpasstoolt cardpass">'+this.format_block('jstpl_passporttool',{text1: text1, text2: text2, text3: text3})+'</div></div>';
+                                    this.addTooltipHtml( 'passportcard_'+gamedatas.passport[passport].type+'_'+gamedatas.passport[passport].location_arg, html,1000);
                                 }
 
                             }
@@ -140,6 +146,12 @@ function (dojo, declare) {
                                         y: 0,
                                     } ), player_board_div );
 
+                                    var text1 =_(this.gamedatas.passportcards[gamedatas.passport[passport].type].text1);
+                                    var text2 =_(this.gamedatas.passportcards[gamedatas.passport[passport].type].text2);
+                                    var text3 =_(this.gamedatas.passportcards[gamedatas.passport[passport].type].text3);
+                                    var html = '<div class="toolt"><div class="cardpasstoolt cardpass">'+this.format_block('jstpl_passporttool',{text1: text1, text2: text2, text3: text3})+'</div></div>';
+                                    this.addTooltipHtml( 'pannelpassportcard_'+gamedatas.passport[passport].type+'_'+gamedatas.passport[passport].location_arg, html,1000);
+
                                     if((gamedatas.passport[passport].type!=1)&&(gamedatas.passport[passport].type!=4)&&(gamedatas.passport[passport].type!=5)&&(gamedatas.passport[passport].type!=6))
                                     {
                                     dojo.place( this.format_block('jstpl_pannelpassportscore', {
@@ -168,6 +180,12 @@ function (dojo, declare) {
                                             x: (gamedatas.passport[passport].type-10)*(-100),
                                             y: -100,
                                         } ), player_board_div );
+
+                                    var text1 =_(this.gamedatas.passportcards[gamedatas.passport[passport].type].text1);
+                                    var text2 =_(this.gamedatas.passportcards[gamedatas.passport[passport].type].text2);
+                                    var text3 =_(this.gamedatas.passportcards[gamedatas.passport[passport].type].text3);
+                                    var html = '<div class="toolt"><div class="cardpasstoolt cardpass">'+this.format_block('jstpl_passporttool',{text1: text1, text2: text2, text3: text3})+'</div></div>';
+                                    this.addTooltipHtml( 'pannelpassportcard_'+gamedatas.passport[passport].type+'_'+gamedatas.passport[passport].location_arg, html,1000);
 
                                        
                                         if((gamedatas.passport[passport].type!=10)&&(gamedatas.passport[passport].type!=12)&&(gamedatas.passport[passport].type!=15))
@@ -8893,6 +8911,12 @@ function (dojo, declare) {
                             y: 0,
                         } ), player_board_div );
 
+                        var text1 =_(this.gamedatas.passportcards[notif.args.type].text1);
+                        var text2 =_(this.gamedatas.passportcards[notif.args.type].text2);
+                        var text3 =_(this.gamedatas.passportcards[notif.args.type].text3);
+                        var html = '<div class="toolt"><div class="cardpasstoolt cardpass">'+this.format_block('jstpl_passporttool',{text1: text1, text2: text2, text3: text3})+'</div></div>';
+                        this.addTooltipHtml( 'pannelpassportcard_'+notif.args.type+'_'+notif.args.id, html,1000);
+
                         if((notif.args.type!=1)&&(notif.args.type!=4)&&(notif.args.type!=5)&&(notif.args.type!=6))
                             {
                             dojo.place( this.format_block('jstpl_pannelpassportscore', {
@@ -8913,6 +8937,12 @@ function (dojo, declare) {
                                 x: (notif.args.type-10)*(-100),
                                 y: -100,
                             } ), player_board_div );
+
+                            var text1 =_(this.gamedatas.passportcards[notif.args.type].text1);
+                            var text2 =_(this.gamedatas.passportcards[notif.args.type].text2);
+                            var text3 =_(this.gamedatas.passportcards[notif.args.type].text3);
+                            var html = '<div class="toolt"><div class="cardpasstoolt cardpass">'+this.format_block('jstpl_passporttool',{text1: text1, text2: text2, text3: text3})+'</div></div>';
+                            this.addTooltipHtml( 'pannelpassportcard_'+notif.args.type+'_'+notif.args.id, html,1000);
 
                             if((notif.args.type!=10)&&(notif.args.type!=12)&&(notif.args.type!=15))
                                 {

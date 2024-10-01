@@ -1837,4 +1837,115 @@ $this->kyotocards = [
 
 ];
 
+$this->passportcards = [
+  '1' => [
+    'text1' => '<div class="train2tool"></div> <div class="train2tool"></div> <div class="train2tool"></div>',
+    'text2' => clienttranslate("Start the game with 3 Luxury Train tokens."),
+    'text3' => clienttranslate(""),
+  ],
+
+  '2' => [
+    'text1' => '<div class="h2tool"></div> = <div class="htool"></div><div class="htool"></div> &nbsp <div class="h2tool"></div>=1<div class="pvtool"></div>',
+    'text2' => clienttranslate('Each moves your Mood Tracker token 2 <div class="littleh2tool"></div> spaces to the right during your trip and scores 1 <div class="littlepvtool"></div> at the end of the game.'),
+    'text3' => clienttranslate(""),
+  ],
+
+  '3' => [
+    'text1' => '<div class="a1tool"></div> <div class="a1tool"></div>',
+    'text2' => clienttranslate('Start the game with 2 <div class="littlea1tool"></div>. During your trip, you will score double the for <div class="littlepvtool"></div> your first 2 "Highlight of the Day" bonuses.'),
+    'text3' => clienttranslate('<br>Only <div class="littlepvtool"></div> are doubled, not any bonus Experience Track icons, Mood Tracker icons, or Wild tokens. Your starting count <div class="littlea1tool"></div> <div class="littlea1tool"></div>toward "Highlight of the Day" bonus requirements and scoring. '),
+  ],
+
+  '4' => [
+    'text1' => '<div class="witool"></div> <div class="witool"></div> <div class="witool"></div>',
+    'text2' => clienttranslate("Start the game with 3 Wild tokens."),
+    'text3' => clienttranslate(""),
+  ],
+
+  '5' => [
+    'text1' => '<div class="retool"></div> <div class="retool"></div> <div class="retool"></div> <div class="retool"></div> <div class="retool"></div> <div class="h2tool"></div>',
+    'text2' => clienttranslate('Start the game with 5 Research tokens and a <div class="littleh2tool"></div>'),
+    'text3' => clienttranslate('Your starting <div class="littleh2tool"></div> counts toward "Highlight of the Day" bonus requirements and scoring.'),
+  ],
+
+  '6' => [
+    'text1' => '<div class="btool"></div><div class="rtool"></div><div class="ytool"></div><div class="ptool"></div><div class="gtool"></div>',
+    'text2' => clienttranslate("Start the game with 1 of each of the 5 Experience Track icons."),
+    'text3' => clienttranslate(""),
+  ],
+
+  '7' => [
+    'text1' => '<div class="noa2tool"></div> &nbsp <div class="a2tool"></div>=1<div class="pvtool"></div>',
+    'text2' => clienttranslate('Each <div class="littlea2tool"></div> does NOT move your Mood Tracker token and scores 1 <div class="littlepvtool"></div> at the end of the game.'),
+    'text3' => clienttranslate('<br>Each <div class="littlea2tool"></div> still counts toward any "Highlight of the Day" bonus requirements and scoring.'),
+  ],
+
+  '8' => [
+    'text1' => '<div class="h1tool"></div>=1<div class="pvtool"></div> &nbsp <div class="a1tool"></div>=2<div class="pvtool"></div>',
+    'text2' => clienttranslate('Each of your <div class="littleh1tool"></div> scores 1 <div class="littlepvtool"></div> and each of your <div class="littlea1tool"></div> scores 2 <div class="littlepvtool"></div> at the end of the game.'),
+    'text3' => clienttranslate(""),
+  ],
+
+  '9' => [
+    'text1' => '<div class="btool"></div>=1<div class="pvtool"></div> &nbsp <div class="btool"></div>=<div class="htool"></div>',
+    'text2' => clienttranslate('Each <div class="littlebtool"></div> moves your Mood Tracker token 1 space to the right during your trip and scores 1 <div class="littlepvtool"></div> at the end of the game.'),
+    'text3' => clienttranslate(""),
+  ],
+
+  '10' => [
+    'text1' => '',
+    'text2' => clienttranslate("You may score two of your “Highlight of the Day” bonuses without fulfilling the requirements."),
+    'text3' => clienttranslate(""),
+  ],
+
+  '11' => [
+    'text1' => '',
+    'text2' => clienttranslate('Score double the <div class="littlepvtool"></div> for your <div class="littlesmiletool decal2"></div> token and your <div class="littleangrytool decal2"></div> token. '),
+    'text3' => clienttranslate(""),
+  ],
+
+  '12' => [
+    'text1' => '',
+    'text2' => clienttranslate('During your trip, double all of your non-<div class="littlepvtool"></div> bonuses when scoring each “Highlight of the Day.” (This includes Experience Track icons, Mood Tracker icons, and Wild tokens.)'),
+    'text3' => clienttranslate(""),
+  ],
+
+  '13' => [
+    'text1' => '',
+    'text2' => clienttranslate('At the end of the game, your Experience Track tokens score 13<div class="littlepvtool"></div> instead of 8<div class="littlepvtool"></div>, and 22<div class="littlepvtool"></div> instead of 12 or 15<div class="littlepvtool"></div>.'),
+    'text3' => clienttranslate(""),
+  ],
+
+  '14' => [
+    'text1' => '',
+    'text2' => clienttranslate('For each day you have 4 or more different Experience Track icons, score 6<div class="littlepvtool"></div>.'),
+    'text3' => clienttranslate('<br><div class="littlea1tool"></div> <div class="littlea2tool"></div> <div class="littleh2tool"></div> <div class="littleh1tool"></div> icons don’t count.'),
+  ],
+
+  '15' => [
+    'text1' => '',
+    'text2' => clienttranslate("Each Wild token you use moves 2 different Experience Track tokens forward 1 space each."),
+    'text3' => clienttranslate(""),
+  ],
+
+  '16' => [
+    'text1' => '',
+    'text2' => clienttranslate('At the end of the game, score 1 <div class="littlepvtool"></div> for each Experience Track icon of the type you have the most of. Score 6 <div class="littlepvtool"></div> for each Experience Track icon you have 0 to 3 of.'),
+    'text3' => clienttranslate(""),
+  ],
+
+  '17' => [
+    'text1' => '',
+    'text2' => clienttranslate('Score 14 <div class="littlepvtool"></div> at the end of the game if you have an equal number of Tokyo and Kyoto cards.'),
+    'text3' => clienttranslate("<br>When scoring this card, only cards with a blue Tokyo tag or pink Kyoto tag count, including facedown Walk cards. (Do not count any face-up yellow cards without a city tag.)"),
+  ],
+
+  '18' => [
+    'text1' => '',
+    'text2' => clienttranslate('Score 4 <div class="littlepvtool"></div> for each "Museum" you visit or "Class" you take.'),
+    'text3' => clienttranslate('<br>The cards that score are: Kyoto National Museum, Kyoto Railway Museum, Manga Museum, Take a Cooking Class, Take a Drumming Class, Take an Ikebana Class, Tokyo National Museum, and Visit an Anime Museum.'),
+  ],
+
+];
+
 
