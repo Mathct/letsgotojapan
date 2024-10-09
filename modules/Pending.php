@@ -10987,7 +10987,7 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
         self::DbQuery( "UPDATE player set scoretrain = {$scoretrain} WHERE player_id = {$this->player_id}" );
 
 
-        $scorerecherche = self::getUniqueValueFromDB( "SELECT recherche FROM player WHERE player_id = {$this->player_id}");
+        $scorerecherche = self::getUniqueValueFromDB( "SELECT passportscore FROM player WHERE player_id = {$this->player_id}") + self::getUniqueValueFromDB( "SELECT recherche FROM player WHERE player_id = {$this->player_id}");
 
         self::DbQuery( "UPDATE player set scorerecherche = {$scorerecherche} WHERE player_id = {$this->player_id}" );
 
@@ -18700,7 +18700,7 @@ function SoloExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
         self::DbQuery( "UPDATE player set scoretrain = {$scoretrain} WHERE player_id = {$this->player_id}" );
 
 
-        $scorerecherche = self::getUniqueValueFromDB( "SELECT recherche FROM player WHERE player_id = {$this->player_id}");
+        $scorerecherche = self::getUniqueValueFromDB( "SELECT passportscore FROM player WHERE player_id = {$this->player_id}") + self::getUniqueValueFromDB( "SELECT recherche FROM player WHERE player_id = {$this->player_id}");
 
         self::DbQuery( "UPDATE player set scorerecherche = {$scorerecherche} WHERE player_id = {$this->player_id}" );
 
