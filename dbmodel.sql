@@ -211,7 +211,7 @@ ALTER TABLE `player` ADD `samedi` int(2) unsigned DEFAULT 0;
 ALTER TABLE `player` ADD `scorehumeur` int(2) DEFAULT 0;
 ALTER TABLE `player` ADD `scoretoken` int(2) unsigned DEFAULT 0;
 ALTER TABLE `player` ADD `scoretrain` int(2) DEFAULT 0;
-ALTER TABLE `player` ADD `scorerecherche` int(2) unsigned DEFAULT 0;
+ALTER TABLE `player` ADD `scorerecherche` int(2) DEFAULT 0;
 ALTER TABLE `player` ADD `scoretotal` int(2) unsigned DEFAULT 0;
 ALTER TABLE `player` ADD `select1` varchar(50) DEFAULT 0;
 ALTER TABLE `player` ADD `select2` varchar(50) DEFAULT 0;
