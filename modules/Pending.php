@@ -4194,8 +4194,9 @@ function argFinalStep1($parg1, $parg2)
                     }
                     if ($train == 2)
                     {
-                        self::DbQuery( "UPDATE player set happy1 = happy1 +1   WHERE player_id = {$this->player_id}" );
-                        letsgotojapan::$instance->Smile(1,$this->player_id);
+                        letsgotojapan::$instance->Gain("h1",$this->player_id);
+
+                        
                     }
 
                     $finalwalk = self::getUniqueValueFromDB( "SELECT finalwalk finalwalk FROM tokyo WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$i}'");
@@ -4227,8 +4228,7 @@ function argFinalStep1($parg1, $parg2)
                     }
                     if ($train == 2)
                     {
-                        self::DbQuery( "UPDATE player set happy1 = happy1 +1   WHERE player_id = {$this->player_id}" );
-                        letsgotojapan::$instance->Smile(1,$this->player_id);
+                        letsgotojapan::$instance->Gain("h1",$this->player_id);
                     }
 
                     $finalwalk = self::getUniqueValueFromDB( "SELECT finalwalk finalwalk FROM kyoto WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$i}'");
@@ -5395,8 +5395,7 @@ function argFinalStep1($parg1, $parg2)
                     }
                     if ($train == 2)
                     {
-                        self::DbQuery( "UPDATE player set happy1 = happy1 +1   WHERE player_id = {$this->player_id}" );
-                        letsgotojapan::$instance->Smile(1,$this->player_id);
+                        letsgotojapan::$instance->Gain("h1",$this->player_id);
                     }
 
                     $finalwalk = self::getUniqueValueFromDB( "SELECT finalwalk finalwalk FROM tokyo WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$i}'");
@@ -5428,8 +5427,7 @@ function argFinalStep1($parg1, $parg2)
                     }
                     if ($train == 2)
                     {
-                        self::DbQuery( "UPDATE player set happy1 = happy1 +1   WHERE player_id = {$this->player_id}" );
-                        letsgotojapan::$instance->Smile(1,$this->player_id);
+                        letsgotojapan::$instance->Gain("h1",$this->player_id);
                     }
 
                     $finalwalk = self::getUniqueValueFromDB( "SELECT finalwalk finalwalk FROM kyoto WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$i}'");
@@ -6586,8 +6584,7 @@ function argFinalStep1($parg1, $parg2)
                     }
                     if ($train == 2)
                     {
-                        self::DbQuery( "UPDATE player set happy1 = happy1 +1   WHERE player_id = {$this->player_id}" );
-                        letsgotojapan::$instance->Smile(1,$this->player_id);
+                        letsgotojapan::$instance->Gain("h1",$this->player_id);
                     }
 
                     $finalwalk = self::getUniqueValueFromDB( "SELECT finalwalk finalwalk FROM tokyo WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$i}'");
@@ -6619,8 +6616,7 @@ function argFinalStep1($parg1, $parg2)
                     }
                     if ($train == 2)
                     {
-                        self::DbQuery( "UPDATE player set happy1 = happy1 +1   WHERE player_id = {$this->player_id}" );
-                        letsgotojapan::$instance->Smile(1,$this->player_id);
+                        letsgotojapan::$instance->Gain("h1",$this->player_id);
                     }
 
                     $finalwalk = self::getUniqueValueFromDB( "SELECT finalwalk finalwalk FROM kyoto WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$i}'");
@@ -7748,8 +7744,7 @@ function FinalStepJeudi($parg1, $parg2, $varg1, $varg2)
                 }
                 if ($train == 2)
                 {
-                    self::DbQuery( "UPDATE player set happy1 = happy1 +1   WHERE player_id = {$this->player_id}" );
-                    letsgotojapan::$instance->Smile(1,$this->player_id);
+                    letsgotojapan::$instance->Gain("h1",$this->player_id);
                 }
 
                 $finalwalk = self::getUniqueValueFromDB( "SELECT finalwalk finalwalk FROM tokyo WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$i}'");
@@ -7781,8 +7776,7 @@ function FinalStepJeudi($parg1, $parg2, $varg1, $varg2)
                 }
                 if ($train == 2)
                 {
-                    self::DbQuery( "UPDATE player set happy1 = happy1 +1   WHERE player_id = {$this->player_id}" );
-                    letsgotojapan::$instance->Smile(1,$this->player_id);
+                    letsgotojapan::$instance->Gain("h1",$this->player_id);
                 }
 
                 $finalwalk = self::getUniqueValueFromDB( "SELECT finalwalk finalwalk FROM kyoto WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$i}'");
@@ -8908,8 +8902,7 @@ function FinalStepVendredi($parg1, $parg2, $varg1, $varg2)
                 }
                 if ($train == 2)
                 {
-                    self::DbQuery( "UPDATE player set happy1 = happy1 +1   WHERE player_id = {$this->player_id}" );
-                    letsgotojapan::$instance->Smile(1,$this->player_id);
+                    letsgotojapan::$instance->Gain("h1",$this->player_id);
                 }
 
                 $finalwalk = self::getUniqueValueFromDB( "SELECT finalwalk finalwalk FROM tokyo WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$i}'");
@@ -8941,8 +8934,7 @@ function FinalStepVendredi($parg1, $parg2, $varg1, $varg2)
                 }
                 if ($train == 2)
                 {
-                    self::DbQuery( "UPDATE player set happy1 = happy1 +1   WHERE player_id = {$this->player_id}" );
-                    letsgotojapan::$instance->Smile(1,$this->player_id);
+                    letsgotojapan::$instance->Gain("h1",$this->player_id);
                 }
 
                 $finalwalk = self::getUniqueValueFromDB( "SELECT finalwalk finalwalk FROM kyoto WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$i}'");
@@ -10066,8 +10058,7 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
                 }
                 if ($train == 2)
                 {
-                    self::DbQuery( "UPDATE player set happy1 = happy1 +1   WHERE player_id = {$this->player_id}" );
-                    letsgotojapan::$instance->Smile(1,$this->player_id);
+                    letsgotojapan::$instance->Gain("h1",$this->player_id);
                 }
 
                 $finalwalk = self::getUniqueValueFromDB( "SELECT finalwalk finalwalk FROM tokyo WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$i}'");
@@ -10099,8 +10090,7 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
                 }
                 if ($train == 2)
                 {
-                    self::DbQuery( "UPDATE player set happy1 = happy1 +1   WHERE player_id = {$this->player_id}" );
-                    letsgotojapan::$instance->Smile(1,$this->player_id);
+                    letsgotojapan::$instance->Gain("h1",$this->player_id);
                 }
 
                 $finalwalk = self::getUniqueValueFromDB( "SELECT finalwalk finalwalk FROM kyoto WHERE  card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$i}'");
