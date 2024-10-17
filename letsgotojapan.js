@@ -226,7 +226,7 @@ function (dojo, declare) {
                                 if(gamedatas.lvl == 1)
                                 {
                                     dojo.place( this.format_block('jstpl_infolvl', {id: player_id} ), player_board_div );
-                                    var info = _("Easy level: Your opponent must meet the requirements of their “Highlight of the Day” bonuses in order to score them. It does not use Train tokens.");
+                                    var info = _('Easy level: Your opponent must meet the requirements of their "Highlight of the Day" bonuses in order to score them. They do not use Train tokens.');
                                     $('infolvl_'+player_id).innerHTML = info;
     
                                 }
@@ -234,7 +234,7 @@ function (dojo, declare) {
                                 if(gamedatas.lvl == 2)
                                 {
                                     dojo.place( this.format_block('jstpl_infolvl', {id: player_id} ), player_board_div );
-                                    var info = _("Normal level: Your opponent always scores all his “Highlights of the Day”. It does not use Train tokens.");
+                                    var info = _('Normal level: Your opponent always scores their "Highlights of the Day". They do not use train tokens.');
                                     $('infolvl_'+player_id).innerHTML = info;
     
                                 }
@@ -242,7 +242,7 @@ function (dojo, declare) {
                                 if(gamedatas.lvl == 3)
                                 {
                                     dojo.place( this.format_block('jstpl_infolvl', {id: player_id} ), player_board_div );
-                                    var info = _("Difficult level: Your opponent always scores all his “Highlights of the Day” and places a Luxury Train token each time he travels.");
+                                    var info = _('Difficult level: Your opponent always scores their "Highlights of the Day" and places a Luxury Train token each time they travel.');
                                     $('infolvl_'+player_id).innerHTML = info;
     
                                 }
@@ -1970,14 +1970,14 @@ function (dojo, declare) {
                                         if(args[this.getCurrentPlayerId()][0].buttons[nb] == "easy")
                                             {
                                                 this.addActionButton( 'easy', _("Easy") ,'onOpButton', null, null, 'blue' );
-                                                var texteasy = _("Your opponent must meet the requirements of their “Highlight of the Day” bonuses in order to score them. It does not use Train tokens.");
+                                                var texteasy = _('Your opponent must meet the requirements of their "Highlight of the Day" bonuses in order to score them. They do not use Train tokens.');
                                                 var htmleasy = '<div class="toolt"><div class="infotoolt">'+this.format_block('jstpl_infotool',{text: texteasy})+'</div></div>';
                                                 this.addTooltipHtml( 'easy', htmleasy,500);
                                             }
                                         if(args[this.getCurrentPlayerId()][0].buttons[nb] == "normal")
                                             {
                                                 this.addActionButton( 'normal', _("Normal") ,'onOpButton', null, null, 'gray' );
-                                                var textnormal = _("Your opponent always scores all his “Highlights of the Day”. It does not use Train tokens.");
+                                                var textnormal = _('Your opponent always scores their "Highlights of the Day". They do not use train tokens.');
                                                 var htmlnormal = '<div class="toolt"><div class="infotoolt">'+this.format_block('jstpl_infotool',{text: textnormal})+'</div></div>';
                                                 this.addTooltipHtml( 'normal', htmlnormal,500);
                                             }
@@ -1985,7 +1985,7 @@ function (dojo, declare) {
                                         if(args[this.getCurrentPlayerId()][0].buttons[nb] == "difficult")
                                             {
                                                 this.addActionButton( 'difficult', _("Difficult") ,'onOpButton', null, null, 'red' );
-                                                var textdifficult = _("Your opponent always scores all his “Highlights of the Day” and places a Luxury Train token each time he travels.");
+                                                var textdifficult = _('Your opponent always scores their "Highlights of the Day" and places a Luxury Train token each time they travel.');
                                                 var htmldifficult = '<div class="toolt"><div class="infotoolt">'+this.format_block('jstpl_infotool',{text: textdifficult})+'</div></div>';
                                                 this.addTooltipHtml( 'difficult', htmldifficult,500);
                                             }
@@ -10502,7 +10502,7 @@ function (dojo, declare) {
                 if(notif.args.lvl == 1)
                     {
                         dojo.place( this.format_block('jstpl_infolvl', {id: notif.args.playerid} ), player_pannel );
-                        var info = _("Easy level: Your opponent must meet the requirements of their “Highlight of the Day” bonuses in order to score them. It does not use Train tokens.");
+                        var info = _('Easy level: Your opponent must meet the requirements of their "Highlight of the Day" bonuses in order to score them. They do not use Train tokens.');
                         $('infolvl_'+notif.args.playerid).innerHTML = info;
 
                     }
@@ -10510,7 +10510,7 @@ function (dojo, declare) {
                     if(notif.args.lvl == 2)
                     {
                         dojo.place( this.format_block('jstpl_infolvl', {id: notif.args.playerid} ), player_pannel );
-                        var info = _("Normal level: Your opponent always scores all his “Highlights of the Day”. It does not use Train tokens.");
+                        var info = _('Normal level: Your opponent always scores their "Highlights of the Day". They do not use train tokens.');
                         $('infolvl_'+notif.args.playerid).innerHTML = info;
 
                     }
@@ -10518,7 +10518,7 @@ function (dojo, declare) {
                     if(notif.args.lvl == 3)
                     {
                         dojo.place( this.format_block('jstpl_infolvl', {id: notif.args.playerid} ), player_pannel );
-                        var info = _("Difficult level: Your opponent always scores all his “Highlights of the Day” and places a Luxury Train token each time he travels.");
+                        var info = _('Difficult level: Your opponent always scores their "Highlights of the Day" and places a Luxury Train token each time they travel.');
                         $('infolvl_'+notif.args.playerid).innerHTML = info;
 
                     }

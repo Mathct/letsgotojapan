@@ -3047,7 +3047,7 @@ function argFinalStep1($parg1, $parg2)
 
         else{
 
-            $ret['titleyou'] = clienttranslate('${you} do not have generic activity');
+            $ret['titleyou'] = clienttranslate('${you} do not have a generic activity');
             $ret['buttons'][]='continue';
         }
 
@@ -3208,7 +3208,7 @@ function argFinalStep1($parg1, $parg2)
         if ($ret["selected3"] != null)
         {
 
-            $ret['titleyou'] = clienttranslate('${you} must choose the side of the card for this walk <br>');
+            $ret['titleyou'] = clienttranslate('${you} must choose a side of the card for this walk <br>');
 
             $explode = explode('_',$ret["selected3"][0]);
             
@@ -3233,7 +3233,7 @@ function argFinalStep1($parg1, $parg2)
 
         else{
 
-            $ret['titleyou'] = clienttranslate('${you} have no walk');
+            $ret['titleyou'] = clienttranslate('${you} do not have a walk');
             $ret['buttons'][]='continue';
         }
 
@@ -3490,7 +3490,7 @@ function argFinalStep1($parg1, $parg2)
 
         else{
 
-            $ret['titleyou'] = clienttranslate('${you} have no train to place');
+            $ret['titleyou'] = clienttranslate('${you} do not need to place trains anymore');
             $ret['buttons'][]='continue';
         }
 
@@ -3858,7 +3858,7 @@ function argFinalStep1($parg1, $parg2)
         if ($ret["selected3"] != null)
         {
 
-            $ret['titleyou'] = clienttranslate('Monday: ${you} must choose the side of the card for this walk <br>');  //changer jour
+            $ret['titleyou'] = clienttranslate('Monday: ${you} must choose a side of the card for this walk <br>');  //changer jour
 
             $explode = explode('_',$ret["selected3"][0]);
             
@@ -3883,7 +3883,7 @@ function argFinalStep1($parg1, $parg2)
 
         else{
 
-            $ret['titleyou'] = clienttranslate('Monday: ${you} have no walk');   ///changer jour
+            $ret['titleyou'] = clienttranslate('Monday: ${you} do not have a walk');   ///changer jour
             $ret['buttons'][]='continue';
         }
 
@@ -5067,7 +5067,7 @@ function argFinalStep1($parg1, $parg2)
         if ($ret["selected3"] != null)
         {
 
-            $ret['titleyou'] = clienttranslate('Tuesday: ${you} must choose the side of the card for this walk <br>');  //changer jour
+            $ret['titleyou'] = clienttranslate('Tuesday: ${you} must choose a side of the card for this walk <br>');  //changer jour
 
             $explode = explode('_',$ret["selected3"][0]);
             
@@ -5092,7 +5092,7 @@ function argFinalStep1($parg1, $parg2)
 
         else{
 
-            $ret['titleyou'] = clienttranslate('Tuesday: ${you} have no walk');   ///changer jour
+            $ret['titleyou'] = clienttranslate('Tuesday: ${you} do not have a walk');   ///changer jour
             $ret['buttons'][]='continue';
         }
 
@@ -6255,7 +6255,7 @@ function argFinalStep1($parg1, $parg2)
         if ($ret["selected3"] != null)
         {
 
-            $ret['titleyou'] = clienttranslate('Wednesday: ${you} must choose the side of the card for this walk <br>');  //changer jour
+            $ret['titleyou'] = clienttranslate('Wednesday: ${you} must choose a side of the card for this walk <br>');  //changer jour
 
             $explode = explode('_',$ret["selected3"][0]);
             
@@ -6280,7 +6280,7 @@ function argFinalStep1($parg1, $parg2)
 
         else{
 
-            $ret['titleyou'] = clienttranslate('Wednesday: ${you} have no walk');   ///changer jour
+            $ret['titleyou'] = clienttranslate('Wednesday: ${you} do not have a walk');   ///changer jour
             $ret['buttons'][]='continue';
         }
 
@@ -7419,7 +7419,7 @@ function argFinalStepJeudiWalk($parg1, $parg2)      //changer jour
         if ($ret["selected3"] != null)
         {
 
-            $ret['titleyou'] = clienttranslate('Thursday: ${you} must choose the side of the card for this walk <br>');  //changer jour
+            $ret['titleyou'] = clienttranslate('Thursday: ${you} must choose a side of the card for this walk <br>');  //changer jour
 
             $explode = explode('_',$ret["selected3"][0]);
             
@@ -7444,7 +7444,7 @@ function argFinalStepJeudiWalk($parg1, $parg2)      //changer jour
 
         else{
 
-            $ret['titleyou'] = clienttranslate('Thursday: ${you} have no walk');   ///changer jour
+            $ret['titleyou'] = clienttranslate('Thursday: ${you} do not have a walk');   ///changer jour
             $ret['buttons'][]='continue';
         }
 
@@ -8579,7 +8579,7 @@ function argFinalStepVendrediWalk($parg1, $parg2)      //changer jour
         if ($ret["selected3"] != null)
         {
 
-            $ret['titleyou'] = clienttranslate('Friday: ${you} must choose the side of the card for this walk <br>');  //changer jour
+            $ret['titleyou'] = clienttranslate('Friday: ${you} must choose a side of the card for this walk <br>');  //changer jour
 
             $explode = explode('_',$ret["selected3"][0]);
             
@@ -8604,7 +8604,7 @@ function argFinalStepVendrediWalk($parg1, $parg2)      //changer jour
 
         else{
 
-            $ret['titleyou'] = clienttranslate('Friday: ${you} have no walk');   ///changer jour
+            $ret['titleyou'] = clienttranslate('Friday: ${you} do not have a walk');   ///changer jour
             $ret['buttons'][]='continue';
         }
 
@@ -9738,7 +9738,7 @@ function argFinalStepSamediWalk($parg1, $parg2)      //changer jour
         if ($ret["selected3"] != null)
         {
 
-            $ret['titleyou'] = clienttranslate('Saturday: ${you} must choose the side of the card for this walk <br>');  //changer jour
+            $ret['titleyou'] = clienttranslate('Saturday: ${you} must choose a side of the card for this walk <br>');  //changer jour
 
             $explode = explode('_',$ret["selected3"][0]);
             
@@ -9763,7 +9763,7 @@ function argFinalStepSamediWalk($parg1, $parg2)      //changer jour
 
         else{
 
-            $ret['titleyou'] = clienttranslate('Saturday: ${you} have no walk');   ///changer jour
+            $ret['titleyou'] = clienttranslate('Saturday: ${you} do not have a walk');   ///changer jour
             $ret['buttons'][]='continue';
         }
 
