@@ -9977,7 +9977,7 @@ function argFinalStepSamedi($parg1, $parg2)
 
     if(($wild >=1)&&($parg1 == 1))
     {
-        $ret['titleyou'] = clienttranslate('Saturday! Let\'s go! ${you} can use one (or more) <span class="wild"></span>');
+        $ret['titleyou'] = clienttranslate('Saturday! Let\'s go! ${you} can use, <span style="color: red; text-decoration: underline;">for the last time in the game</span>, one (or more) <span class="wild"></span>');
         $ret['buttons'][]='yes';
         $ret['buttons'][]='no';
     }
