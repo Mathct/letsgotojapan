@@ -1340,7 +1340,7 @@ function (dojo, declare) {
 
                             if (this.prefs[100].value == 2)
                                 {
-                                    var flash = document.querySelectorAll('.card.selected3');
+                                    var flash = document.querySelectorAll('.card.selected3, .cardverso.selected3');
                                     
                 
                                     flash.forEach(function(element) {
