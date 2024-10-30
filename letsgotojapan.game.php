@@ -2466,7 +2466,38 @@ $id = self::getCurrentPlayerId();
 $pending =  self::getObjectFromDB( "SELECT* FROM pending WHERE player_id = {$id} order by id desc limit 1");
 $this->callPending($pending, true, $arg1);
 self::DbQuery("delete from pending where id=".$pending['id']);
-$this->gamestate->nextState( 'next');
+
+$test = 0;
+while ($test==0)
+{
+    $pending2 =  self::getObjectFromDB( "SELECT* FROM pending WHERE player_id = {$id} order by id desc limit 1");
+    if ($pending2 != null)
+    {
+        $action = $this->callPending($pending2, false);
+
+
+        if (($action['selectable']==null)&&($action['buttons']==null))
+        {
+            $this->callPending($pending2, true);
+            self::DbQuery("delete from pending where id=".$pending2['id']);
+        }
+
+        else
+        {
+            $test =1;
+        }
+
+    }
+
+    else
+    {
+        $test =1;
+    }
+
+
+
+    $this->gamestate->nextState( 'next');
+}
 
 }
 
@@ -2480,7 +2511,36 @@ $id = self::getCurrentPlayerId();
 $pending =  self::getObjectFromDB( "SELECT* FROM pending WHERE player_id = {$id} order by id desc limit 1");
 $this->callPending($pending, true, $arg1);
 self::DbQuery("delete from pending where id=".$pending['id']);
-$this->gamestate->nextState( 'next');
+
+$test = 0;
+while ($test==0)
+{
+    $pending2 =  self::getObjectFromDB( "SELECT* FROM pending WHERE player_id = {$id} order by id desc limit 1");
+
+    if ($pending2 != null)
+    {
+        $action = $this->callPending($pending2, false);
+
+        if (($action['selectable']==null)&&($action['buttons']==null))
+        {
+            $this->callPending($pending2, true);
+            self::DbQuery("delete from pending where id=".$pending2['id']);
+        }
+
+        else
+        {
+            $test =1;
+        }
+
+    }
+
+    else
+    {
+        $test =1;
+    }
+
+    $this->gamestate->nextState( 'next');
+}
 
 }
 
@@ -3628,7 +3688,8 @@ function st_MultiPlayerActivation()
             foreach ($listplayers as $player_id)
             {
                 
-                $this->addPending($player_id, "FinalStepLundiWalk");
+                //$this->addPending($player_id, "FinalStepLundiWalk");
+                $this->addPending($player_id, "Gototrip");
             }
             
         }
@@ -4249,7 +4310,8 @@ function st_MultiPlayerActivation()
             foreach ($listplayers as $player_id)
             {
                 
-                $this->addPending($player_id, "FinalStepLundiWalk");
+                //$this->addPending($player_id, "FinalStepLundiWalk");
+                $this->addPending($player_id, "Gototrip");
             }
             
         }
