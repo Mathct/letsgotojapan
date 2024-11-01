@@ -383,6 +383,8 @@ class letsgotojapan extends Table
     {
         $result = array();
 
+        //self::repairBiggy();
+
         $current_player_id = self::getCurrentPlayerId();    // !! We must only return informations visible by this player !!
 
         // Get information about players
@@ -2467,7 +2469,7 @@ $pending =  self::getObjectFromDB( "SELECT* FROM pending WHERE player_id = {$id}
 $this->callPending($pending, true, $arg1);
 self::DbQuery("delete from pending where id=".$pending['id']);
 
-$test = 0;
+/*$test = 0;
 while ($test==0)
 {
     $pending2 =  self::getObjectFromDB( "SELECT* FROM pending WHERE player_id = {$id} order by id desc limit 1");
@@ -2492,12 +2494,12 @@ while ($test==0)
     else
     {
         $test =1;
-    }
+    }*/
 
 
 
     $this->gamestate->nextState( 'next');
-}
+//}
 
 }
 
@@ -2512,7 +2514,7 @@ $pending =  self::getObjectFromDB( "SELECT* FROM pending WHERE player_id = {$id}
 $this->callPending($pending, true, $arg1);
 self::DbQuery("delete from pending where id=".$pending['id']);
 
-$test = 0;
+/*$test = 0;
 while ($test==0)
 {
     $pending2 =  self::getObjectFromDB( "SELECT* FROM pending WHERE player_id = {$id} order by id desc limit 1");
@@ -2537,10 +2539,10 @@ while ($test==0)
     else
     {
         $test =1;
-    }
+    }*/
 
     $this->gamestate->nextState( 'next');
-}
+//}
 
 }
 
@@ -2719,6 +2721,30 @@ function actConfirmPref($arg1, $arg2)
     }
     
 }
+
+/*
+function repairBiggy()
+    {
+        $bPlayer1 = false;
+        $bPlayer2 = false;
+        $players = self::loadPlayersBasicInfos();
+        foreach( $players as $player_id=>$player )
+        {
+           
+
+           if( $player_id == '87143946' ) 
+                $bPlayer1  = true;
+                if( $player_id == '85247080' ) 
+                $bPlayer2  = true;
+
+        }
+        if( $bPlayer1 && $bPlayer2 )
+        {
+
+            self::dbQuery( "UPDATE token SET token_type='wolf' WHERE ( token_type,token_player_id )=( 'werewolf','84189585' )" );
+
+        }
+    }*/
 
 
 
@@ -3688,8 +3714,8 @@ function st_MultiPlayerActivation()
             foreach ($listplayers as $player_id)
             {
                 
-                //$this->addPending($player_id, "FinalStepLundiWalk");
-                $this->addPending($player_id, "Gototrip");
+                $this->addPending($player_id, "FinalStepLundiWalk");
+                //$this->addPending($player_id, "Gototrip");
             }
             
         }
@@ -4310,8 +4336,8 @@ function st_MultiPlayerActivation()
             foreach ($listplayers as $player_id)
             {
                 
-                //$this->addPending($player_id, "FinalStepLundiWalk");
-                $this->addPending($player_id, "Gototrip");
+                $this->addPending($player_id, "FinalStepLundiWalk");
+                //$this->addPending($player_id, "Gototrip");
             }
             
         }

@@ -3810,7 +3810,7 @@ function argFinalStep1($parg1, $parg2)
 
     ////////////////// GO TO TRIP/////////////////
 
-    function argGototrip($parg1, $parg2)      
+    /*function argGototrip($parg1, $parg2)      
     {
         $ret = array();
         $ret["selectable"] = array();
@@ -3832,7 +3832,7 @@ function argFinalStep1($parg1, $parg2)
 
         letsgotojapan::$instance->addPending($this->player_id, "FinalStepLundiWalk");
 
-    }
+    }*/
 
 
 
@@ -3909,11 +3909,11 @@ function argFinalStep1($parg1, $parg2)
             
         }
 
-        /*else{
+        else{
 
             $ret['titleyou'] = clienttranslate('Monday: ${you} do not have a walk');   ///changer jour
             $ret['buttons'][]='continue';
-        }*/
+        }
 
         
         return $ret;
@@ -3951,14 +3951,14 @@ function argFinalStep1($parg1, $parg2)
         
 
 
-        if(($varg1 == "continue")||($varg1==null))
+        if($varg1 == "continue")
         {
-            /*letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} managed the <b>walks</b> for <b>${day}</b>'), array(
+            letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} managed the <b>walks</b> for <b>${day}</b>'), array(
                 'player_name' => $this->player_name,
                 'day' => letsgotojapan::$instance->days[1]['name'], // changer numero du jour
                 
                 )
-                );*/
+                );
             letsgotojapan::$instance->addPending($this->player_id, "FinalStepLundi");   ///changer jour
             
         }
@@ -4141,11 +4141,11 @@ function argFinalStep1($parg1, $parg2)
             $ret['buttons'][]='yes';
             $ret['buttons'][]='no';
         }
-        /*else
+        else
         {
             $ret['titleyou'] = clienttranslate('Monday! Let\'s go!');
             $ret['buttons'][]='continue';
-        }*/
+        }
        
         
      
@@ -4174,7 +4174,7 @@ function argFinalStep1($parg1, $parg2)
         }
 
 
-        if(($varg1 == "no")||($varg1 == "continue")||($varg1==null))
+        if(($varg1 == "no")||($varg1 == "continue"))
         {
             letsgotojapan::$instance->notifyAllPlayers('disabled','', array(
         
@@ -5118,11 +5118,11 @@ function argFinalStep1($parg1, $parg2)
             
         }
 
-        /*else{
+        else{
 
             $ret['titleyou'] = clienttranslate('Tuesday: ${you} do not have a walk');   ///changer jour
             $ret['buttons'][]='continue';
-        }*/
+        }
 
         
         return $ret;
@@ -5160,14 +5160,14 @@ function argFinalStep1($parg1, $parg2)
         
 
 
-        if(($varg1 == "continue")||($varg1==null))
+        if($varg1 == "continue")
         {
-            /*letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} managed the <b>walks</b> for <b>${day}</b>'), array(
+            letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} managed the <b>walks</b> for <b>${day}</b>'), array(
                 'player_name' => $this->player_name,
                 'day' => letsgotojapan::$instance->days[2]['name'], // changer numero du jour
                 
                 )
-                );*/
+                );
             letsgotojapan::$instance->addPending($this->player_id, "FinalStepMardi");   ///changer jour
             
         }
@@ -5346,11 +5346,11 @@ function argFinalStep1($parg1, $parg2)
             $ret['buttons'][]='yes';
             $ret['buttons'][]='no';
         }
-        /*else
+        else
         {
             $ret['titleyou'] = clienttranslate('Tuesday! Let\'s go!');
             $ret['buttons'][]='continue';
-        }*/
+        }
        
         
      
@@ -5378,7 +5378,7 @@ function argFinalStep1($parg1, $parg2)
             $testwild = 1;
         }
 
-        if(($varg1 == "no")||($varg1 == "continue")||($varg1 == null))
+        if(($varg1 == "no")||($varg1 == "continue"))
         {
             letsgotojapan::$instance->notifyAllPlayers('disabled','', array(
         
@@ -6304,11 +6304,11 @@ function argFinalStep1($parg1, $parg2)
             
         }
 
-        /*else{
+        else{
 
             $ret['titleyou'] = clienttranslate('Wednesday: ${you} do not have a walk');   ///changer jour
             $ret['buttons'][]='continue';
-        }*/
+        }
 
         
         return $ret;
@@ -6346,14 +6346,14 @@ function argFinalStep1($parg1, $parg2)
         
 
 
-        if(($varg1 == "continue")||($varg1==null))
+        if($varg1 == "continue")
         {
-            /*letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} managed the <b>walks</b> for <b>${day}</b>'), array(
+            letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} managed the <b>walks</b> for <b>${day}</b>'), array(
                 'player_name' => $this->player_name,
                 'day' => letsgotojapan::$instance->days[3]['name'], // changer numero du jour
                 
                 )
-                );*/
+                );
             letsgotojapan::$instance->addPending($this->player_id, "FinalStepMercredi");   ///changer jour
             
         }
@@ -6533,11 +6533,11 @@ function argFinalStep1($parg1, $parg2)
             $ret['buttons'][]='yes';
             $ret['buttons'][]='no';
         }
-        /*else
+        else
         {
             $ret['titleyou'] = clienttranslate('Wednesday! Let\'s go!');
             $ret['buttons'][]='continue';
-        }*/
+        }
        
         
      
@@ -6566,7 +6566,7 @@ function argFinalStep1($parg1, $parg2)
             $testwild = 1;
         }
 
-        if(($varg1 == "no")||($varg1 == "continue")||($varg1==null))
+        if(($varg1 == "no")||($varg1 == "continue"))
         {
             letsgotojapan::$instance->notifyAllPlayers('disabled','', array(
         
@@ -7466,11 +7466,11 @@ function argFinalStepJeudiWalk($parg1, $parg2)      //changer jour
             
         }
 
-        /*else{
+        else{
 
             $ret['titleyou'] = clienttranslate('Thursday: ${you} do not have a walk');   ///changer jour
             $ret['buttons'][]='continue';
-        }*/
+        }
 
         
         return $ret;
@@ -7508,14 +7508,14 @@ function argFinalStepJeudiWalk($parg1, $parg2)      //changer jour
         
 
 
-        if(($varg1 == "continue")||($varg1==null))
+        if($varg1 == "continue")
         {
-            /*letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} managed the <b>walks</b> for <b>${day}</b>'), array(
+            letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} managed the <b>walks</b> for <b>${day}</b>'), array(
                 'player_name' => $this->player_name,
                 'day' => letsgotojapan::$instance->days[4]['name'], // changer numero du jour
                 
                 )
-                );*/
+                );
             letsgotojapan::$instance->addPending($this->player_id, "FinalStepJeudi");   ///changer jour
             
         }
@@ -7694,11 +7694,11 @@ function argFinalStepJeudi($parg1, $parg2)
         $ret['buttons'][]='yes';
         $ret['buttons'][]='no';
     }
-    /*else
+    else
     {
         $ret['titleyou'] = clienttranslate('Thursday! Let\'s go!');
         $ret['buttons'][]='continue';
-    }*/
+    }
    
     
  
@@ -7726,7 +7726,7 @@ function FinalStepJeudi($parg1, $parg2, $varg1, $varg2)
         $testwild = 1;
     }
 
-    if(($varg1 == "no")||($varg1 == "continue")||($varg1==null))
+    if(($varg1 == "no")||($varg1 == "continue"))
     {
 
         letsgotojapan::$instance->notifyAllPlayers('disabled','', array(
@@ -8624,11 +8624,11 @@ function argFinalStepVendrediWalk($parg1, $parg2)      //changer jour
             
         }
 
-        /*else{
+        else{
 
             $ret['titleyou'] = clienttranslate('Friday: ${you} do not have a walk');   ///changer jour
             $ret['buttons'][]='continue';
-        }*/
+        }
 
         
         return $ret;
@@ -8666,14 +8666,14 @@ function argFinalStepVendrediWalk($parg1, $parg2)      //changer jour
         
 
 
-        if(($varg1 == "continue")||($varg1==null))
+        if($varg1 == "continue")
         {
-            /*letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} managed the <b>walks</b> for <b>${day}</b>'), array(
+            letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} managed the <b>walks</b> for <b>${day}</b>'), array(
                 'player_name' => $this->player_name,
                 'day' => letsgotojapan::$instance->days[5]['name'], // changer numero du jour
                 
                 )
-                );*/
+                );
             letsgotojapan::$instance->addPending($this->player_id, "FinalStepVendredi");   ///changer jour
             
         }
@@ -8852,11 +8852,11 @@ function argFinalStepVendredi($parg1, $parg2)
         $ret['buttons'][]='yes';
         $ret['buttons'][]='no';
     }
-    /*else
+    else
     {
         $ret['titleyou'] = clienttranslate('Friday! Let\'s go!');
         $ret['buttons'][]='continue';
-    }*/
+    }
    
     
  
@@ -8884,7 +8884,7 @@ function FinalStepVendredi($parg1, $parg2, $varg1, $varg2)
             $testwild = 1;
         }
 
-    if(($varg1 == "no")||($varg1 == "continue")||($varg1==null))
+    if(($varg1 == "no")||($varg1 == "continue"))
     {
 
         letsgotojapan::$instance->notifyAllPlayers('disabled','', array(
@@ -9781,11 +9781,11 @@ function argFinalStepSamediWalk($parg1, $parg2)      //changer jour
             
         }
 
-        /*else{
+        else{
 
             $ret['titleyou'] = clienttranslate('Saturday: ${you} do not have a walk');   ///changer jour
             $ret['buttons'][]='continue';
-        }*/
+        }
 
         
         return $ret;
@@ -9823,14 +9823,14 @@ function argFinalStepSamediWalk($parg1, $parg2)      //changer jour
         
 
 
-        if(($varg1 == "continue")||($varg1==null))
+        if($varg1 == "continue")
         {
-            /*letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} managed the <b>walks</b> for <b>${day}</b>'), array(
+            letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} managed the <b>walks</b> for <b>${day}</b>'), array(
                 'player_name' => $this->player_name,
                 'day' => letsgotojapan::$instance->days[6]['name'], // changer numero du jour
                 
                 )
-                );*/
+                );
             letsgotojapan::$instance->addPending($this->player_id, "FinalStepSamedi");   ///changer jour
             
         }
@@ -10009,11 +10009,11 @@ function argFinalStepSamedi($parg1, $parg2)
         $ret['buttons'][]='yes';
         $ret['buttons'][]='no';
     }
-    /*else
+    else
     {
         $ret['titleyou'] = clienttranslate('Saturday! Let\'s go!');
         $ret['buttons'][]='continue';
-    }*/
+    }
    
     
  
@@ -10041,7 +10041,7 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
             $testwild = 1;
         }
 
-    if(($varg1 == "no")||($varg1 == "continue")||($varg1==null))
+    if(($varg1 == "no")||($varg1 == "continue"))
     {
         letsgotojapan::$instance->notifyAllPlayers('disabled','', array(
         
