@@ -3722,7 +3722,19 @@ function st_MultiPlayerActivation()
 
         if ($newturn == 16) 
         {
-            
+            // tie breaker
+            $listplayers = self::getObjectListFromDB( "SELECT player_id id FROM player", true );
+            foreach ($listplayers as $player_id)
+            {
+                $r = self::getUniqueValueFromDB( "SELECT r FROM player WHERE player_id = {$player_id}");
+                $g = self::getUniqueValueFromDB( "SELECT g FROM player WHERE player_id = {$player_id}");
+                $p = self::getUniqueValueFromDB( "SELECT p FROM player WHERE player_id = {$player_id}");
+                $y = self::getUniqueValueFromDB( "SELECT y FROM player WHERE player_id = {$player_id}");
+                $b = self::getUniqueValueFromDB( "SELECT b FROM player WHERE player_id = {$player_id}");
+                $scoreaux = $r + $g + $p + $y + $b;
+                self::DbQuery( "UPDATE player set player_score_aux = {$scoreaux} WHERE player_id = {$player_id}" );
+
+            }
             $this->gamestate->nextState('end');
         }
 
