@@ -1926,16 +1926,22 @@ function (dojo, declare) {
                                         if(args[this.getCurrentPlayerId()][0].buttons[nb] == "trainstart")
                                             {
                                                 this.addActionButton( 'trainstart', `<div class="boutontrain_1"></div>` ,'onOpButton', null, null, 'none' );
+                                                var htmltrain = '<div class="toolt"><div class="traintoolt">'+this.format_block('jstpl_traintool',{id: 1})+'</div></div>';
+                                                this.addTooltipHtml('trainstart', htmltrain,1000);
                                             }
 
                                         if(args[this.getCurrentPlayerId()][0].buttons[nb] == "train")
                                             {
                                                 this.addActionButton( 'train', `<div class="boutontrain_2"></div>` ,'onOpButton', null, null, 'none' );
+                                                var htmltrain = '<div class="toolt"><div class="traintoolt">'+this.format_block('jstpl_traintool',{id: 2})+'</div></div>';
+                                                this.addTooltipHtml('train', htmltrain,1000);
                                             }
 
                                         if(args[this.getCurrentPlayerId()][0].buttons[nb] == "normaltrain")
                                             {
                                                 this.addActionButton( 'normaltrain', `<div class="boutontrain_3"></div>` ,'onOpButton', null, null, 'none' );
+                                                var htmltrain = '<div class="toolt"><div class="traintoolt">'+this.format_block('jstpl_traintool',{id: 3})+'</div></div>';
+                                                this.addTooltipHtml('normaltrain', htmltrain,1000);
                                             }
 
                                         if(args[this.getCurrentPlayerId()][0].buttons[nb] == "yes")
@@ -7141,6 +7147,8 @@ function (dojo, declare) {
                 
                 dojo.place( this.format_block( 'jstpl_train', {
                     id: train,
+                    ville: ville,
+                    card: id,
                                                             
                 } ) , 'card_'+ville+'_'+id);
                 

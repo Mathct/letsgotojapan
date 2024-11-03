@@ -1472,6 +1472,58 @@ display: none;
   
 }
 
+.traintoolt {
+    
+  width: 80px;
+  height: auto;
+  outline: 2px solid #000000;	
+  border-radius: 8px;
+  padding-right: 10px;
+  padding-left: 10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  
+}
+
+.traintoolt_1
+{
+  background-image: url('img/traintool.png');
+  background-size: 300% 100%;
+  background-position-x: 0%;
+  width: 80px;
+  height: 50px;
+  position: relative;
+  
+
+
+}
+
+.traintoolt_2
+{
+  background-image: url('img/traintool.png');
+  background-size: 300% 100%;
+  background-position-x: -100%;
+  width: 80px;
+  height: 50px;
+  position: relative;
+  
+
+}
+
+.traintoolt_3
+{
+  background-image: url('img/traintool.png');
+  background-size: 300% 100%;
+  background-position-x: -200%;
+  width: 80px;
+  height: 50px;
+  position: relative;
+  
+
+}
+
+
+
 .tokyo1tool {
   /*width: 200px;
   height: 343px;*/
@@ -1905,7 +1957,6 @@ display: none;
   height: 30px;
   background-image: url('img/logtrain.png');
   background-size: 300% 100%;
-  background-position-x: -100%;
   background-position-x: -100%;
   display: inline-block;
   
