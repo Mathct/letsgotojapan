@@ -407,6 +407,8 @@
     box-sizing: border-box; 
     filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.9));
     -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.5));  
+    transition: transform 1s ease;
+    cursor: pointer;
     
 }
 
@@ -423,6 +425,8 @@
     box-sizing: border-box;   
     filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.9));
     -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.5));
+    transition: transform 1s ease;
+    cursor: pointer;
     
 }
 

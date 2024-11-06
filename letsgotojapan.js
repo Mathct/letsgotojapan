@@ -1189,6 +1189,9 @@ function (dojo, declare) {
                 dojo.query(".bonusjournee2").connect('onclick', this, 'onSelect' );
                 dojo.query("#mask_score").connect('onclick', this, 'onMaskScore' );
                 dojo.query(".passportcard").connect('onclick', this, 'onSelect' );
+                dojo.query(".angry").connect('onclick', this, 'onHumeur' );
+                dojo.query(".happy").connect('onclick', this, 'onHumeur' );
+
                 
 
                 
@@ -8784,6 +8787,22 @@ function (dojo, declare) {
             isReadOnly: function () { 
                 return this.isSpectator || typeof g_replayFrom != 'undefined' || g_archive_mode; 
               },
+
+            onHumeur: function(evt)
+            {        	 
+                // Preventing default browser reaction
+                dojo.stopEvent( evt ); 
+
+                const element = document.getElementById(evt.currentTarget.id);
+                //element.style.top = 50+'px';
+                element.style.transform = 'translateY(38px)';
+
+                setTimeout(() => {
+                    element.style.transform = 'translateY(0px)';
+                }, 1000);
+
+                
+            },
     
             
 ///////////////////////////////////////////////////////////////////////////////// 
