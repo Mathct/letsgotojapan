@@ -1795,6 +1795,11 @@ function ExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
         $ret['titleyou'] = clienttranslate('${you} must choose your 2nd card to draw (Tokyo 0 - Kyoto 1):');
         }
 
+        if ($parg1==null)
+        {
+        $ret['titleyou'] = clienttranslate('${you} must choose your 2nd card to draw:');
+        }
+
 
         $ret['buttons'][]='tokyo';
         $ret['buttons'][]='kyoto';
@@ -1891,6 +1896,10 @@ function ExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
         if(($parg1 == 2)&&($parg2==2))
         {
         $ret['titleyou'] = clienttranslate('${you} must choose your 3rd card to draw (Tokyo 0 - Kyoto 2):');
+        }
+        if(($parg1 == null)||($parg2==null))
+        {
+        $ret['titleyou'] = clienttranslate('${you} must choose your 3rd card to draw:');
         }
 
 
@@ -14285,6 +14294,11 @@ function SoloExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
         $ret['titleyou'] = clienttranslate('${you} must choose your 2nd card to draw (Tokyo 0 - Kyoto 1):');
         }
 
+        if ($parg1==null)
+        {
+        $ret['titleyou'] = clienttranslate('${you} must choose your 2nd card to draw:');
+        }
+
 
 
         $ret['buttons'][]='tokyo';
@@ -14382,6 +14396,10 @@ function SoloExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
         if(($parg1 == 2)&&($parg2==2))
         {
         $ret['titleyou'] = clienttranslate('${you} must choose your 3rd card to draw (Tokyo 0 - Kyoto 2):');
+        }
+        if(($parg1 == null)||($parg2==null))
+        {
+        $ret['titleyou'] = clienttranslate('${you} must choose your 3rd card to draw:');
         }
 
 
