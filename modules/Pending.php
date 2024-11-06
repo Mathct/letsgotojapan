@@ -733,7 +733,7 @@ class Pending extends APP_GameClass
         $ret["selectableswitch"] = array();
         $ret["selected"] = array();
         $ret['buttons'] = array();
-        $ret['titleyou'] = clienttranslate('${you} must choose a bonus of the day');
+        
 
         $ret["selectable"][] = 'bonusjournee_1_'.$this->player_id;
         $ret["selectable"][] = 'bonusjournee_2_'.$this->player_id;
@@ -741,6 +741,12 @@ class Pending extends APP_GameClass
         if($parg1 >= 3)
         {
             $ret["selectable"][] = 'bonusjournee_3_'.$this->player_id;
+            $ret['titleyou'] = clienttranslate('${you} must choose a bonus level on your board (1, 2 or 3+)');
+        }
+
+        else
+        {
+            $ret['titleyou'] = clienttranslate('${you} must choose a bonus level on your board (1 or 2)');
         }
 
         
@@ -12956,7 +12962,7 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
         $ret["selectableswitch"] = array();
         $ret["selected"] = array();
         $ret['buttons'] = array();
-        $ret['titleyou'] = clienttranslate('${you} must choose a bonus of the day');
+        
 
         $ret["selectable"][] = 'bonusjournee_1_'.$this->player_id;
         $ret["selectable"][] = 'bonusjournee_2_'.$this->player_id;
@@ -12964,6 +12970,12 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
         if($parg1 >= 3)
         {
             $ret["selectable"][] = 'bonusjournee_3_'.$this->player_id;
+            $ret['titleyou'] = clienttranslate('${you} must choose a bonus level on your board (1, 2 or 3+)');
+        }
+
+        else
+        {
+            $ret['titleyou'] = clienttranslate('${you} must choose a bonus level on your board (1 or 2)');
         }
 
         
