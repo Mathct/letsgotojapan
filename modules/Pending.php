@@ -1725,7 +1725,7 @@ function ExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
         $ret["selectableswitch"] = array();
         $ret["selected"] = array();
         $ret['buttons'] = array();
-        $ret['titleyou'] = clienttranslate('${you} must choose your 1st card to draw:');
+        $ret['titleyou'] = clienttranslate('${you} must choose your 1st card to draw (Tokyo 0 - Kyoto 0):');
 
 
         $ret['buttons'][]='tokyo';
@@ -1761,13 +1761,13 @@ function ExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
             letsgotojapan::$instance->tokyo->pickCardForLocation( 'deck', 'playernewhand', $this->player_id);
 
             
-            letsgotojapan::$instance->addPending($this->player_id, "RechercheStep2");
+            letsgotojapan::$instance->addPending($this->player_id, "RechercheStep2",1);
         } 
 
         if($varg1 == "kyoto")
         {
             letsgotojapan::$instance->kyoto->pickCardForLocation( 'deck', 'playernewhand', $this->player_id);
-            letsgotojapan::$instance->addPending($this->player_id, "RechercheStep2");
+            letsgotojapan::$instance->addPending($this->player_id, "RechercheStep2",2);
         } 
 
 
@@ -1784,7 +1784,16 @@ function ExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
         $ret["selectableswitch"] = array();
         $ret["selected"] = array();
         $ret['buttons'] = array();
-        $ret['titleyou'] = clienttranslate('${you} must choose your 2nd card to draw:');
+        
+        if ($parg1==1)
+        {
+        $ret['titleyou'] = clienttranslate('${you} must choose your 2nd card to draw (Tokyo 1 - Kyoto 0):');
+        }
+
+        if ($parg1==2)
+        {
+        $ret['titleyou'] = clienttranslate('${you} must choose your 2nd card to draw (Tokyo 0 - Kyoto 1):');
+        }
 
 
         $ret['buttons'][]='tokyo';
@@ -1843,13 +1852,13 @@ function ExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
         if($varg1 == "tokyo")
         {
             letsgotojapan::$instance->tokyo->pickCardForLocation( 'deck', 'playernewhand', $this->player_id);
-            letsgotojapan::$instance->addPending($this->player_id, "RechercheStep3");
+            letsgotojapan::$instance->addPending($this->player_id, "RechercheStep3", $parg1, 1);
         } 
 
         if($varg1 == "kyoto")
         {
             letsgotojapan::$instance->kyoto->pickCardForLocation( 'deck', 'playernewhand', $this->player_id);
-            letsgotojapan::$instance->addPending($this->player_id, "RechercheStep3");
+            letsgotojapan::$instance->addPending($this->player_id, "RechercheStep3", $parg1, 2);
         } 
 
 
@@ -1866,7 +1875,23 @@ function ExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
         $ret["selectableswitch"] = array();
         $ret["selected"] = array();
         $ret['buttons'] = array();
-        $ret['titleyou'] = clienttranslate('${you} must choose your 3rd card to draw:');
+        
+        if(($parg1 == 1)&&($parg2==1))
+        {
+        $ret['titleyou'] = clienttranslate('${you} must choose your 3rd card to draw (Tokyo 2 - Kyoto 0):');
+        }
+        if(($parg1 == 1)&&($parg2==2))
+        {
+        $ret['titleyou'] = clienttranslate('${you} must choose your 3rd card to draw (Tokyo 1 - Kyoto 1):');
+        }
+        if(($parg1 == 2)&&($parg2==1))
+        {
+        $ret['titleyou'] = clienttranslate('${you} must choose your 3rd card to draw (Tokyo 1 - Kyoto 1):');
+        }
+        if(($parg1 == 2)&&($parg2==2))
+        {
+        $ret['titleyou'] = clienttranslate('${you} must choose your 3rd card to draw (Tokyo 0 - Kyoto 2):');
+        }
 
 
         $ret['buttons'][]='tokyo';
@@ -14190,7 +14215,7 @@ function SoloExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
         $ret["selectableswitch"] = array();
         $ret["selected"] = array();
         $ret['buttons'] = array();
-        $ret['titleyou'] = clienttranslate('${you} must choose your 1st card to draw:');
+        $ret['titleyou'] = clienttranslate('${you} must choose your 1st card to draw (Tokyo 0 - Kyoto 0):');
 
 
         $ret['buttons'][]='tokyo';
@@ -14226,13 +14251,13 @@ function SoloExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
             letsgotojapan::$instance->tokyo->pickCardForLocation( 'deck', 'playernewhand', $this->player_id);
 
             
-            letsgotojapan::$instance->addPending($this->player_id, "SoloRechercheStep2");
+            letsgotojapan::$instance->addPending($this->player_id, "SoloRechercheStep2",1);
         } 
 
         if($varg1 == "kyoto")
         {
             letsgotojapan::$instance->kyoto->pickCardForLocation( 'deck', 'playernewhand', $this->player_id);
-            letsgotojapan::$instance->addPending($this->player_id, "SoloRechercheStep2");
+            letsgotojapan::$instance->addPending($this->player_id, "SoloRechercheStep2",2);
         } 
 
 
@@ -14249,7 +14274,17 @@ function SoloExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
         $ret["selectableswitch"] = array();
         $ret["selected"] = array();
         $ret['buttons'] = array();
-        $ret['titleyou'] = clienttranslate('${you} must choose your 2nd card to draw:');
+
+        if ($parg1==1)
+        {
+        $ret['titleyou'] = clienttranslate('${you} must choose your 2nd card to draw (Tokyo 1 - Kyoto 0):');
+        }
+
+        if ($parg1==2)
+        {
+        $ret['titleyou'] = clienttranslate('${you} must choose your 2nd card to draw (Tokyo 0 - Kyoto 1):');
+        }
+
 
 
         $ret['buttons'][]='tokyo';
@@ -14308,13 +14343,13 @@ function SoloExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
         if($varg1 == "tokyo")
         {
             letsgotojapan::$instance->tokyo->pickCardForLocation( 'deck', 'playernewhand', $this->player_id);
-            letsgotojapan::$instance->addPending($this->player_id, "SoloRechercheStep3");
+            letsgotojapan::$instance->addPending($this->player_id, "SoloRechercheStep3", $parg1, 1);
         } 
 
         if($varg1 == "kyoto")
         {
             letsgotojapan::$instance->kyoto->pickCardForLocation( 'deck', 'playernewhand', $this->player_id);
-            letsgotojapan::$instance->addPending($this->player_id, "SoloRechercheStep3");
+            letsgotojapan::$instance->addPending($this->player_id, "SoloRechercheStep3", $parg1, 2);
         } 
 
 
@@ -14331,7 +14366,26 @@ function SoloExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
         $ret["selectableswitch"] = array();
         $ret["selected"] = array();
         $ret['buttons'] = array();
-        $ret['titleyou'] = clienttranslate('${you} must choose your 3rd card to draw:');
+
+        if(($parg1 == 1)&&($parg2==1))
+        {
+        $ret['titleyou'] = clienttranslate('${you} must choose your 3rd card to draw (Tokyo 2 - Kyoto 0):');
+        }
+        if(($parg1 == 1)&&($parg2==2))
+        {
+        $ret['titleyou'] = clienttranslate('${you} must choose your 3rd card to draw (Tokyo 1 - Kyoto 1):');
+        }
+        if(($parg1 == 2)&&($parg2==1))
+        {
+        $ret['titleyou'] = clienttranslate('${you} must choose your 3rd card to draw (Tokyo 1 - Kyoto 1):');
+        }
+        if(($parg1 == 2)&&($parg2==2))
+        {
+        $ret['titleyou'] = clienttranslate('${you} must choose your 3rd card to draw (Tokyo 0 - Kyoto 2):');
+        }
+
+
+
 
 
         $ret['buttons'][]='tokyo';
