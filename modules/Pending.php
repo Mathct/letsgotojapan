@@ -3141,8 +3141,149 @@ function argFinalStep1($parg1, $parg2)
             
         }
 
+        $prefconfirm = self::getUniqueValueFromDB("SELECT valeur FROM prefconfirm WHERE player_id={$this->player_id}");
+            
         if($varg1 == "tokyo")
         {
+            if($prefconfirm ==2)
+            {
+            $explode = explode('_',$result[0]);
+            if($explode[1] == 1)
+            {
+            self::DbQuery( "UPDATE tokyo set finallocation = 1  WHERE card_id = {$explode[2]}" );
+            }
+
+            if($explode[1] == 2)
+            {
+            self::DbQuery( "UPDATE kyoto set finallocation = 1  WHERE card_id = {$explode[2]}" );
+            }
+
+            letsgotojapan::$instance->notifyAllPlayers('finallocation','', array(
+                
+                'card' => $result[0],
+                'ville' => 1,
+                )
+                );
+
+            
+            letsgotojapan::$instance->addPending($this->player_id, "FinalStep1");
+            }
+
+            if($prefconfirm ==1)
+            {
+                letsgotojapan::$instance->addPending($this->player_id, "ConfirmFinalStep1", "tokyo");
+            }
+            
+            
+            
+            
+        }
+        if($varg1 == "kyoto")
+        {
+            if($prefconfirm ==2)
+            {
+            $explode = explode('_',$result[0]);
+            if($explode[1] == 1)
+            {
+            self::DbQuery( "UPDATE tokyo set finallocation = 2 WHERE card_id = {$explode[2]}" );
+            }
+
+            if($explode[1] == 2)
+            {
+            self::DbQuery( "UPDATE kyoto set finallocation = 2  WHERE card_id = {$explode[2]}" );
+            }
+
+            letsgotojapan::$instance->notifyAllPlayers('finallocation','', array(
+                
+                'card' => $result[0],
+                'ville' => 2,
+                )
+                );
+            
+            letsgotojapan::$instance->addPending($this->player_id, "FinalStep1");
+            }
+
+            if($prefconfirm ==1)
+            {
+                letsgotojapan::$instance->addPending($this->player_id, "ConfirmFinalStep1", "kyoto");
+            }
+            
+        }
+       
+
+    }
+
+
+    function argConfirmFinalStep1($parg1, $parg2)
+    {
+        $ret = array();
+        $ret["selectable"] = array();
+        $ret["selectable2"] = array();
+        $ret["selectableswitch"] = array();
+        $ret["selected"] = array();
+        $ret['buttons'] = array();
+
+        
+        if($parg1 == "tokyo")
+        {
+        $ret['titleyou'] = clienttranslate('${you} must confirm (Tokyo)');
+        }
+
+        if($parg1 == "kyoto")
+        {
+        $ret['titleyou'] = clienttranslate('${you} must confirm (Kyoto)');
+        }
+
+              
+        $ret['buttons'][]='confirm';
+        $ret['buttons'][]='cancel';
+        return $ret;
+    }
+
+    function ConfirmFinalStep1($parg1, $parg2, $varg1, $varg2)
+    {
+        $found = 0;
+        $result = array();
+        
+            for ($day=1; $day <=6 && $found == 0; $day++)
+
+            {
+                for ($position= 1; $position <=4; $position++)
+                {
+                    $tokyocardjaune = self::getUniqueValueFromDB( "SELECT card_id id FROM tokyo WHERE card_location_arg = {$this->player_id} AND walk=0 AND finallocation =0 AND card_location = 'cardposition_{$day}_{$position}'");
+                    if ($tokyocardjaune!=null)
+                    {
+                        $result[] = "card_1_".$tokyocardjaune;
+                        $found = 1;
+                        break;
+                    }
+
+                    else
+                    {
+                        $kyotocardjaune = self::getUniqueValueFromDB( "SELECT card_id id FROM kyoto WHERE card_location_arg = {$this->player_id} AND walk=0 AND finallocation =0 AND card_location = 'cardposition_{$day}_{$position}'");
+                        if ($kyotocardjaune!=null)
+                        {
+                            $result[] = "card_2_".$kyotocardjaune;
+                            $found = 1;
+                            break;
+                        }
+
+                    }
+
+                }
+            }
+
+        if($varg1 == "cancel")
+        {
+            letsgotojapan::$instance->addPending($this->player_id, "FinalStep1");
+        }
+
+        if($varg1 == "confirm")
+        {
+
+        if($parg1 == "tokyo")
+        {
+           
             $explode = explode('_',$result[0]);
             if($explode[1] == 1)
             {
@@ -3168,8 +3309,9 @@ function argFinalStep1($parg1, $parg2)
             
             
         }
-        if($varg1 == "kyoto")
+        if($parg1 == "kyoto")
         {
+            
             $explode = explode('_',$result[0]);
             if($explode[1] == 1)
             {
@@ -3193,10 +3335,7 @@ function argFinalStep1($parg1, $parg2)
             
         }
 
-              
-
-              
-        
+    }
 
     }
 
@@ -3668,6 +3807,11 @@ function argFinalStep1($parg1, $parg2)
 
         else
         {
+            $prefconfirm = self::getUniqueValueFromDB("SELECT valeur FROM prefconfirm WHERE player_id={$this->player_id}");
+
+            if($prefconfirm ==2)
+            {
+
             $card = array();
             $result = array();
         
@@ -3840,11 +3984,237 @@ function argFinalStep1($parg1, $parg2)
             
             letsgotojapan::$instance->addPending($this->player_id, "FinalStep3");
             
-            
+        }
+
+        if($prefconfirm ==1)
+        {
+            letsgotojapan::$instance->addPending($this->player_id, "ConfirmFinalStep3", $varg1);
+        }
             
             
         }
        
+
+    }
+
+
+    function argConfirmFinalStep3($parg1, $parg2)
+    {
+        $ret = array();
+        $ret["selectable"] = array();
+        $ret["selectable2"] = array();
+        $ret["selectableswitch"] = array();
+        $ret["selected"] = array();
+        $ret['buttons'] = array();
+
+                
+        if($parg1 == "trainstart")
+        {
+        $ret['titleyou'] = clienttranslate('${you} must confirm (Starting train)');
+        }
+
+        if($parg1 == "train")
+        {
+        $ret['titleyou'] = clienttranslate('${you} must confirm (Luxury train)');
+        }
+
+        if($parg1 == "normaltrain")
+        {
+        $ret['titleyou'] = clienttranslate('${you} must confirm (Normal train)');
+        }
+
+
+              
+        $ret['buttons'][]='confirm';
+        $ret['buttons'][]='cancel';
+        return $ret;
+    }
+
+    function ConfirmFinalStep3($parg1, $parg2, $varg1, $varg2)
+    {
+        
+        if($varg1 == "cancel")
+        {
+            letsgotojapan::$instance->addPending($this->player_id, "FinalStep3");
+        }
+
+        if($varg1 == "confirm")
+        {
+
+            $card = array();
+            $result = array();
+        
+            for ($day=1; $day <=6; $day++)
+
+            {
+                for ($position= 1; $position <=4; $position++)
+                {
+                    $tokyocardid = self::getUniqueValueFromDB( "SELECT card_id id FROM tokyo WHERE card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$position}'");
+                    $villefinal = self::getUniqueValueFromDB( "SELECT finallocation finallocation FROM tokyo WHERE card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$position}'");
+                    $train = self::getUniqueValueFromDB( "SELECT train train FROM tokyo WHERE card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$position}'");
+                    if ($tokyocardid!=null)
+                    {
+                        $card[]= [$villefinal,$tokyocardid,1,$train];
+                        
+                    }
+
+                    else
+                    {
+                        $kyotocardid = self::getUniqueValueFromDB( "SELECT card_id id FROM kyoto WHERE card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$position}'");
+                        $villefinal = self::getUniqueValueFromDB( "SELECT finallocation finallocation FROM kyoto WHERE card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$position}'");
+                        $train = self::getUniqueValueFromDB( "SELECT train train FROM kyoto WHERE card_location_arg = {$this->player_id} AND card_location = 'cardposition_{$day}_{$position}'");
+                        if ($kyotocardid!=null)
+                        {
+                            $card[]= [$villefinal,$kyotocardid,2,$train];
+                        }
+
+                    }
+
+                }
+            }
+
+        
+
+            $nombre = count ($card);
+            
+            for($index=0; $index<$nombre-1 ;$index++)
+            {
+                if(($card[$index][0] != $card[$index+1][0])&&($card[$index+1][3]==0))
+                {
+                    $result[] = 'card_'.$card[$index+1][2].'_'.$card[$index+1][1];
+                }
+                
+
+            }
+
+            $cardselect=$result[0];
+            $explode = explode('_', $cardselect);
+
+
+            if($parg1 == "trainstart")
+            {
+                self::DbQuery( "UPDATE player set trainstart = 0  WHERE player_id = {$this->player_id}" );
+                letsgotojapan::$instance->MajPannel($this->player_id);
+
+
+                if($explode[1]==1)
+                {
+                    self::DbQuery( "UPDATE tokyo set train = 1  WHERE card_id = {$explode[2]}" );
+                    
+
+                }
+
+                if($explode[1]==2)
+                {
+                    self::DbQuery( "UPDATE kyoto set train = 1  WHERE card_id = {$explode[2]}" );
+                }
+
+                letsgotojapan::$instance->notifyAllPlayers('train','', array(
+        
+                    'id' => $explode[2],
+                    'ville' => $explode[1],
+                    'train' => 1,
+                    
+                    )
+                    );
+
+
+                
+
+            }
+
+            if($parg1 == "train")
+            {
+                self::DbQuery( "UPDATE player set train = train -1  WHERE player_id = {$this->player_id}" );
+                letsgotojapan::$instance->MajPannel($this->player_id);
+
+                if($explode[1]==1)
+                {
+                    self::DbQuery( "UPDATE tokyo set train = 2  WHERE card_id = {$explode[2]}" );
+                    
+
+                }
+
+                if($explode[1]==2)
+                {
+                    self::DbQuery( "UPDATE kyoto set train = 2  WHERE card_id = {$explode[2]}" );
+                }
+
+                letsgotojapan::$instance->notifyAllPlayers('train','', array(
+        
+                    'id' => $explode[2],
+                    'ville' => $explode[1],
+                    'train' => 2,
+                    
+                    )
+                    );
+                
+            }
+
+            if($parg1 == "normaltrain")
+            {
+                if($explode[1]==1)
+                {
+                    self::DbQuery( "UPDATE tokyo set train = 3  WHERE card_id = {$explode[2]}" );
+                    
+
+                }
+
+                if($explode[1]==2)
+                {
+                    self::DbQuery( "UPDATE kyoto set train = 3  WHERE card_id = {$explode[2]}" );
+                }
+
+                letsgotojapan::$instance->notifyAllPlayers('train','', array(
+        
+                    'id' => $explode[2],
+                    'ville' => $explode[1],
+                    'train' => 3,
+                    
+                    )
+                    );
+                
+            }
+
+            $countcard = count($result);
+            $newtrainstart = self::getUniqueValueFromDB( "SELECT trainstart FROM player WHERE player_id = {$this->player_id}");
+            $newtrain = self::getUniqueValueFromDB( "SELECT train FROM player WHERE player_id = {$this->player_id}");
+            
+            if(($newtrainstart==0)&&($newtrain==0))
+            {
+                for($j=1; $j<=$countcard-1; $j++)
+                {
+                    $explode2 = explode('_', $result[$j]);
+
+                    if($explode2[1]==1)
+                    {
+                        self::DbQuery( "UPDATE tokyo set train = 3  WHERE card_id = {$explode2[2]}" );
+                        
+
+                    }
+
+                    if($explode2[1]==2)
+                    {
+                        self::DbQuery( "UPDATE kyoto set train = 3  WHERE card_id = {$explode2[2]}" );
+                    }
+
+                    letsgotojapan::$instance->notifyAllPlayers('train','', array(
+        
+                        'id' => $explode2[2],
+                        'ville' => $explode2[1],
+                        'train' => 3,
+                        
+                        )
+                        );
+
+                }
+
+            }
+            
+            letsgotojapan::$instance->addPending($this->player_id, "FinalStep3");
+
+        
+        }
 
     }
 
