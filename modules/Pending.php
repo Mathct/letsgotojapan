@@ -5154,7 +5154,9 @@ function argFinalStep1($parg1, $parg2)
                 'day' => letsgotojapan::$instance->days[1]['name'],   // changer jour
                 
                 )
-                );     
+                );
+                
+            letsgotojapan::$instance->setStat($finalscore, 'monday', $this->player_id);
                 
             //////////////////////////////////////////////////////////////////////////////   
             ////////////////////////////////// DEBUT SCORE AGENT /////////////////////////
@@ -6345,7 +6347,7 @@ function argFinalStep1($parg1, $parg2)
                 )
                 ); 
 
-
+            letsgotojapan::$instance->setStat($finalscore, 'tuesday', $this->player_id);
 
             //////////////////////////////////////////////////////////////////////////////   
             ////////////////////////////////// DEBUT SCORE AGENT /////////////////////////
@@ -7506,6 +7508,8 @@ function argFinalStep1($parg1, $parg2)
                 )
                 );
 
+            letsgotojapan::$instance->setStat($finalscore, 'wednesday', $this->player_id);
+
             //////////////////////////////////////////////////////////////////////////////   
             ////////////////////////////////// DEBUT SCORE AGENT /////////////////////////
             ////////////////////////////////////////////////////////////////////////////// 
@@ -8663,6 +8667,8 @@ function FinalStepJeudi($parg1, $parg2, $varg1, $varg2)
             
             )
             );
+
+            letsgotojapan::$instance->setStat($finalscore, 'thursday', $this->player_id);
 
 
         //////////////////////////////////////////////////////////////////////////////   
@@ -9824,6 +9830,7 @@ function FinalStepVendredi($parg1, $parg2, $varg1, $varg2)
             )
             );
 
+            letsgotojapan::$instance->setStat($finalscore, 'friday', $this->player_id);
 
         //////////////////////////////////////////////////////////////////////////////   
         ////////////////////////////////// DEBUT SCORE AGENT /////////////////////////
@@ -10980,7 +10987,7 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
             
             )
             );
-
+            letsgotojapan::$instance->setStat($finalscore, 'saturday', $this->player_id);
 
         //////////////////////////////////////////////////////////////////////////////   
         ////////////////////////////////// DEBUT SCORE AGENT /////////////////////////
@@ -11307,6 +11314,8 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
 
         self::DbQuery( "UPDATE player set scorehumeur = {$scorehumeur} WHERE player_id = {$this->player_id}" );
 
+        letsgotojapan::$instance->setStat($scorehumeur, 'mood', $this->player_id);
+
         if($passportcard == 11)
         {
             self::DbQuery( "UPDATE player set passportscore = $scorehumeur   WHERE player_id = {$this->player_id}" );
@@ -11359,6 +11368,8 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
         }
 
         self::DbQuery( "UPDATE player set scoretoken = {$scoretoken} WHERE player_id = {$this->player_id}" );
+
+        letsgotojapan::$instance->setStat($scoretoken, 'experience', $this->player_id);
 
         if($passportcard == 13)
         {
@@ -11413,11 +11424,13 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
         $scoretrain = $counttrainbonustokyo*2 + $counttrainbonuskyoto*2 - $counttrainmalustokyo*2 - $counttrainmaluskyoto*2;
 
         self::DbQuery( "UPDATE player set scoretrain = {$scoretrain} WHERE player_id = {$this->player_id}" );
+        letsgotojapan::$instance->setStat($scoretrain, 'train', $this->player_id);
 
 
         $scorerecherche = self::getUniqueValueFromDB( "SELECT passportscore FROM player WHERE player_id = {$this->player_id}") + self::getUniqueValueFromDB( "SELECT recherche FROM player WHERE player_id = {$this->player_id}");
 
         self::DbQuery( "UPDATE player set scorerecherche = {$scorerecherche} WHERE player_id = {$this->player_id}" );
+        letsgotojapan::$instance->setStat($scorerecherche, 'research', $this->player_id);
 
 
         $scoretotal = self::getUniqueValueFromDB( "SELECT lundi FROM player WHERE player_id = {$this->player_id}") + self::getUniqueValueFromDB( "SELECT mardi FROM player WHERE player_id = {$this->player_id}") + self::getUniqueValueFromDB( "SELECT mercredi FROM player WHERE player_id = {$this->player_id}") + self::getUniqueValueFromDB( "SELECT jeudi FROM player WHERE player_id = {$this->player_id}") + self::getUniqueValueFromDB( "SELECT vendredi FROM player WHERE player_id = {$this->player_id}") + self::getUniqueValueFromDB( "SELECT samedi FROM player WHERE player_id = {$this->player_id}") + $scorehumeur + $scoretoken + $scoretrain + $scorerecherche;
@@ -16317,7 +16330,9 @@ function SoloExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
                 'day' => letsgotojapan::$instance->days[1]['name'],   // changer jour
                 
                 )
-                );     
+                );   
+                
+                letsgotojapan::$instance->setStat($finalscore, 'monday', $this->player_id);
                 
             //////////////////////////////////////////////////////////////////////////////   
             ////////////////////////////////// DEBUT SCORE AGENT /////////////////////////
@@ -16803,7 +16818,7 @@ function SoloExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
                 )
                 ); 
 
-
+                letsgotojapan::$instance->setStat($finalscore, 'tuesday', $this->player_id);
 
             //////////////////////////////////////////////////////////////////////////////   
             ////////////////////////////////// DEBUT SCORE AGENT /////////////////////////
@@ -17287,6 +17302,8 @@ function SoloExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
                 )
                 );
 
+                letsgotojapan::$instance->setStat($finalscore, 'wednesday', $this->player_id);
+
             //////////////////////////////////////////////////////////////////////////////   
             ////////////////////////////////// DEBUT SCORE AGENT /////////////////////////
             ////////////////////////////////////////////////////////////////////////////// 
@@ -17767,6 +17784,8 @@ function SoloExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
             
             )
             );
+
+            letsgotojapan::$instance->setStat($finalscore, 'thursday', $this->player_id);
 
 
         //////////////////////////////////////////////////////////////////////////////   
@@ -18250,6 +18269,8 @@ function SoloExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
             )
             );
 
+            letsgotojapan::$instance->setStat($finalscore, 'friday', $this->player_id);
+
 
         //////////////////////////////////////////////////////////////////////////////   
         ////////////////////////////////// DEBUT SCORE AGENT /////////////////////////
@@ -18732,6 +18753,8 @@ function SoloExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
             )
             );
 
+            letsgotojapan::$instance->setStat($finalscore, 'saturday', $this->player_id);
+
 
         //////////////////////////////////////////////////////////////////////////////   
         ////////////////////////////////// DEBUT SCORE AGENT /////////////////////////
@@ -19057,6 +19080,8 @@ function SoloExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
         }
 
         self::DbQuery( "UPDATE player set scorehumeur = {$scorehumeur} WHERE player_id = {$this->player_id}" );
+        
+        letsgotojapan::$instance->setStat($scorehumeur, 'mood', $this->player_id);
 
         if($passportcard == 11)
         {
@@ -19111,6 +19136,8 @@ function SoloExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
 
         self::DbQuery( "UPDATE player set scoretoken = {$scoretoken} WHERE player_id = {$this->player_id}" );
 
+        letsgotojapan::$instance->setStat($scoretoken, 'experience', $this->player_id);
+
         if($passportcard == 13)
         {
             
@@ -19164,12 +19191,12 @@ function SoloExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
         $scoretrain = $counttrainbonustokyo*2 + $counttrainbonuskyoto*2 - $counttrainmalustokyo*2 - $counttrainmaluskyoto*2;
 
         self::DbQuery( "UPDATE player set scoretrain = {$scoretrain} WHERE player_id = {$this->player_id}" );
-
+        letsgotojapan::$instance->setStat($scoretrain, 'train', $this->player_id);
 
         $scorerecherche = self::getUniqueValueFromDB( "SELECT passportscore FROM player WHERE player_id = {$this->player_id}") + self::getUniqueValueFromDB( "SELECT recherche FROM player WHERE player_id = {$this->player_id}");
 
         self::DbQuery( "UPDATE player set scorerecherche = {$scorerecherche} WHERE player_id = {$this->player_id}" );
-
+        letsgotojapan::$instance->setStat($scorerecherche, 'research', $this->player_id);
 
         $scoretotal = self::getUniqueValueFromDB( "SELECT lundi FROM player WHERE player_id = {$this->player_id}") + self::getUniqueValueFromDB( "SELECT mardi FROM player WHERE player_id = {$this->player_id}") + self::getUniqueValueFromDB( "SELECT mercredi FROM player WHERE player_id = {$this->player_id}") + self::getUniqueValueFromDB( "SELECT jeudi FROM player WHERE player_id = {$this->player_id}") + self::getUniqueValueFromDB( "SELECT vendredi FROM player WHERE player_id = {$this->player_id}") + self::getUniqueValueFromDB( "SELECT samedi FROM player WHERE player_id = {$this->player_id}") + $scorehumeur + $scoretoken + $scoretrain + $scorerecherche;
 

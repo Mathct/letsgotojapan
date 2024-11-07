@@ -91,7 +91,7 @@
         <div id="score_3_5" class="score" style="left: 55.3%; top: 42.2%;"></div>
         <div id="checkscore_3_5" class="checkscore" style="left: 64.5%; top: 45.8%;"></div>
         <div id="score_3_6" class="score" style="left: 55.3%; top: 50.3%;"></div>
-        <div id="checkscore_2_6" class="checkscore" style="left: 64.5%; top: 54.2%;"></div>
+        <div id="checkscore_3_6" class="checkscore" style="left: 64.5%; top: 54.2%;"></div>
         <div id="score_3_7" class="score" style="left: 55.3%; top: 59.1%;"></div>
         <div id="score_3_8" class="score" style="left: 55.3%; top: 67.2%;"></div>
         <div id="score_3_9" class="score" style="left: 55.3%; top: 75.2%;"></div>

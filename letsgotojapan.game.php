@@ -106,7 +106,19 @@ class letsgotojapan extends Table
 //     | |__| | (_| | | | | | |  __/  _| |_| | | | | |_| | (_| | | |/ / (_| | |_| | (_) | | | |
 //      \_____|\__,_|_| |_| |_|\___| |_____|_| |_|_|\__|_|\__,_|_|_/___\__,_|\__|_|\___/|_| |_|
 //                                                                                               
-/////////////////////////////////////////////////////////////////////////////////    
+/////////////////////////////////////////////////////////////////////////////////  
+
+        self::initStat( 'player', 'monday', 0 ); 
+        self::initStat( 'player', 'tuesday', 0 ); 
+        self::initStat( 'player', 'wednesday', 0 ); 
+        self::initStat( 'player', 'thursday', 0 );
+        self::initStat( 'player', 'friday', 0 ); 
+        self::initStat( 'player', 'saturday', 0 ); 
+        self::initStat( 'player', 'mood', 0 ); 
+        self::initStat( 'player', 'experience', 0 ); 
+        self::initStat( 'player', 'train', 0 ); 
+        self::initStat( 'player', 'research', 0 ); 
+
 
         $gamemode = $this->gamestate->table_globals[100];
         $countplayer = count(self::getObjectListFromDB( "SELECT player_id FROM player", true ));

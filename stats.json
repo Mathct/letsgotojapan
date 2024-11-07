@@ -1,1 +1,54 @@
-{}
+{
+    "player": {
+      "monday": {
+        "id": 10,
+        "name": "Monday",
+        "type": "int"
+      },
+      "tuesday": {
+        "id": 11,
+        "name": "Tuesday",
+        "type": "int"
+      },
+      "wednesday": {
+        "id": 12,
+        "name": "Wednesday",
+        "type": "int"
+      },
+      "thursday": {
+        "id": 13,
+        "name": "Thrusday",
+        "type": "int"
+      },
+      "friday": {
+        "id": 14,
+        "name": "Friday",
+        "type": "int"
+      },
+      "saturday": {
+        "id": 15,
+        "name": "Saturday",
+        "type": "int"
+      },
+      "mood": {
+        "id": 16,
+        "name": "Mood",
+        "type": "int"
+      },
+      "experience": {
+        "id": 17,
+        "name": "Experience",
+        "type": "int"
+      },
+      "train": {
+        "id": 18,
+        "name": "Trains",
+        "type": "int"
+      },
+      "research": {
+        "id": 19,
+        "name": "Research tokens and Passport card",
+        "type": "int"
+      }
+    }
+  }
