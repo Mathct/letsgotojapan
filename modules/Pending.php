@@ -4547,7 +4547,7 @@ function argFinalStep1($parg1, $parg2)
 
         if(($wild >=1)&&($parg1 == 1))
         {
-            $ret['titleyou'] = clienttranslate('Monday! Let\'s go! ${you} can use one (or more) <span class="wild"></span>');
+            $ret['titleyou'] = clienttranslate('Monday! Let\'s go! ${you} can use one (or more) <span class="wild"></span> to move an experience token one additional space forward<br>');
             $ret['buttons'][]='yes';
             $ret['buttons'][]='no';
         }
@@ -5754,7 +5754,7 @@ function argFinalStep1($parg1, $parg2)
 
         if(($wild >=1)&&($parg1 == 1))
         {
-            $ret['titleyou'] = clienttranslate('Tuesday! Let\'s go! ${you} can use one (or more) <span class="wild"></span>');
+            $ret['titleyou'] = clienttranslate('Tuesday! Let\'s go! ${you} can use one (or more) <span class="wild"></span> to move an experience token one additional space forward<br>');
             $ret['buttons'][]='yes';
             $ret['buttons'][]='no';
         }
@@ -6941,7 +6941,7 @@ function argFinalStep1($parg1, $parg2)
 
         if(($wild >=1)&&($parg1 == 1))
         {
-            $ret['titleyou'] = clienttranslate('Wednesday! Let\'s go! ${you} can use one (or more) <span class="wild"></span>');
+            $ret['titleyou'] = clienttranslate('Wednesday! Let\'s go! ${you} can use one (or more) <span class="wild"></span> to move an experience token one additional space forward<br>');
             $ret['buttons'][]='yes';
             $ret['buttons'][]='no';
         }
@@ -8104,7 +8104,7 @@ function argFinalStepJeudi($parg1, $parg2)
 
     if(($wild >=1)&&($parg1 == 1))
     {
-        $ret['titleyou'] = clienttranslate('Thursday! Let\'s go! ${you} can use one (or more) <span class="wild"></span>');
+        $ret['titleyou'] = clienttranslate('Thursday! Let\'s go! ${you} can use one (or more) <span class="wild"></span> to move an experience token one additional space forward<br>');
         $ret['buttons'][]='yes';
         $ret['buttons'][]='no';
     }
@@ -9264,7 +9264,7 @@ function argFinalStepVendredi($parg1, $parg2)
 
     if(($wild >=1)&&($parg1 == 1))
     {
-        $ret['titleyou'] = clienttranslate('Friday! Let\'s go! ${you} can use one (or more) <span class="wild"></span>');
+        $ret['titleyou'] = clienttranslate('Friday! Let\'s go! ${you} can use one (or more) <span class="wild"></span> to move an experience token one additional space forward<br>');
         $ret['buttons'][]='yes';
         $ret['buttons'][]='no';
     }
@@ -10422,7 +10422,7 @@ function argFinalStepSamedi($parg1, $parg2)
 
     if(($wild >=1)&&($parg1 == 1))
     {
-        $ret['titleyou'] = clienttranslate('Saturday! Let\'s go! ${you} can use, <span style="color: red; text-decoration: underline;">for the last time in the game</span>, one (or more) <span class="wild"></span>');
+        $ret['titleyou'] = clienttranslate('Saturday! Let\'s go! ${you} can use, <span style="color: red; text-decoration: underline;">for the last time in the game</span>, one (or more) <span class="wild"></span> to move an experience token one additional space forward<br>');
         $ret['buttons'][]='yes';
         $ret['buttons'][]='no';
     }
