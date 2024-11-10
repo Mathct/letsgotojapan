@@ -1846,7 +1846,7 @@ $this->passportcards = [
 
   '2' => [
     'text1' => '<div class="h2tool"></div> = <div class="htool"></div><div class="htool"></div> &nbsp <div class="h2tool"></div>=1<div class="pvtool"></div>',
-    'text2' => clienttranslate('Each moves your Mood Tracker token 2 <div class="littleh2tool"></div> spaces to the right during your trip and scores 1 <div class="littlepvtool"></div> at the end of the game.'),
+    'text2' => clienttranslate('Each <div class="littleh2tool"></div> moves your Mood Tracker token 2 spaces to the right during your trip and scores 1 <div class="littlepvtool"></div> at the end of the game.'),
     'text3' => '',
   ],
 
