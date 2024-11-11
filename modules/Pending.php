@@ -3087,7 +3087,7 @@ function argFinalStep1($parg1, $parg2)
 
         else{
 
-            $ret['titleyou'] = clienttranslate('${you} do not have a generic activity');
+            $ret['titleyou'] = clienttranslate('${you} do not have any unassigned generic activities');
             $ret['buttons'][]='continue';
         }
 
