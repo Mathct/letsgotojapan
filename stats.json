@@ -17,7 +17,7 @@
       },
       "thursday": {
         "id": 13,
-        "name": "Thrusday",
+        "name": "Thursday",
         "type": "int"
       },
       "friday": {
