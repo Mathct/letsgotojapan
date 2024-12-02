@@ -11708,7 +11708,10 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
         $ret["selectableswitch"] = array();
         $ret["selected"] = array();
         $ret['buttons'] = array();
-        $ret['titleyou'] = clienttranslate('${you} must confirm <span class="' . $parg1 . '"></span>');
+        
+        $ret['icon'] = '<span class="' . $parg1 . '"></span>';
+        
+        $ret['titleyou'] = clienttranslate('${you} must confirm #icon#');
 
               
         $ret['buttons'][]='confirm';
@@ -12635,8 +12638,11 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
 
         $explode = explode('_',$parg1);
 
-        $ret['titleyou'] = clienttranslate('${you} must confirm <span class="' . $explode[0] . '"></span>');
+        $ret['icon'] = '<span class="' . $explode[0] . '"></span>';
+        
+        $ret['titleyou'] = clienttranslate('${you} must confirm #icon#');
 
+        
         $ret['buttons'][]='confirm';
         $ret['buttons'][]='cancel';
         return $ret;
@@ -13192,7 +13198,11 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
         $ret["selectableswitch"] = array();
         $ret["selected"] = array();
         $ret['buttons'] = array();
-        $ret['titleyou'] = clienttranslate('${you} must confirm <span class="' . $parg1 . '"></span>');
+
+       
+        $ret['icon'] = '<span class="' . $parg1 . '"></span>';
+        
+        $ret['titleyou'] = clienttranslate('${you} must confirm #icon#');
 
               
         $ret['buttons'][]='confirm';
@@ -13443,7 +13453,9 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
 
         $explode = explode('_',$parg1);
 
-        $ret['titleyou'] = clienttranslate('${you} must confirm <span class="' . $explode[0] . '"></span>');
+        $ret['icon'] = '<span class="' . $explode[0] . '"></span>';
+        
+        $ret['titleyou'] = clienttranslate('${you} must confirm #icon#');
 
         $ret['buttons'][]='confirm';
         $ret['buttons'][]='cancel';

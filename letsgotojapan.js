@@ -1337,7 +1337,8 @@ function (dojo, declare) {
                             
                             if(this.args[this.getCurrentPlayerId()][0].titleyou != null)
                             {
-                                $('pagemaintitletext').innerHTML = 	this.format_string_recursive(_(this.args[this.getCurrentPlayerId()][0].titleyou).replace('${you}', this.divYou()).replace('#nb#',args.args.nb).replace('#nb2#',args.args.nb2).replace('#icon#',args.args.icon), args.args);
+                                $('pagemaintitletext').innerHTML = 	this.format_string_recursive(_(this.args[this.getCurrentPlayerId()][0].titleyou).replace('${you}', this.divYou()).replace('#nb#',args.args.nb).replace('#nb2#',args.args.nb2).replace('#icon#',args.args[this.getCurrentPlayerId()][0].icon), args.args);
+                                
                             }
 
 
@@ -1446,11 +1447,13 @@ function (dojo, declare) {
                                     }
                                     if(args[this.getCurrentPlayerId()][0].buttons[nb] == "tokyo")
                                     {
-                                        this.addActionButton( 'tokyo', `<div class="boutontokyo">Tokyo</div>` ,'onOpButton', null, null, 'none' );
+                                        this.addActionButton( 'tokyo', _("Tokyo") ,'onOpButton', null, null, 'none' );
+                                        dojo.query("#tokyo").addClass("boutontokyo"); 
                                     }
                                     if(args[this.getCurrentPlayerId()][0].buttons[nb] == "kyoto")
                                     {
-                                        this.addActionButton( 'kyoto', `<div class="boutonkyoto">Kyoto</div>` ,'onOpButton', null, null, 'none' );
+                                        this.addActionButton( 'kyoto', _("Kyoto") ,'onOpButton', null, null, 'none' );
+                                        dojo.query("#kyoto").addClass("boutonkyoto"); 
                                     }
                                     if(args[this.getCurrentPlayerId()][0].buttons[nb] == "validate3discard")
                                     {
