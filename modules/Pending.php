@@ -2996,7 +2996,7 @@ function ExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
   
             
             
-            //letsgotojapan::$instance->addPending($this->player_id, "Phase1Step1");
+            letsgotojapan::$instance->addPending($this->player_id, "Phase1Step1");
             
         }
         if($varg1 == "kyoto")
@@ -3017,11 +3017,11 @@ function ExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
             
 
 
-            //letsgotojapan::$instance->addPending($this->player_id, "Phase1Step1");
+            letsgotojapan::$instance->addPending($this->player_id, "Phase1Step1");
             
         }
 
-                $tokyocarddiscard = self::getObjectListFromDB( "SELECT card_id id FROM tokyo WHERE card_location ='discardboardhidden' AND card_location_arg = {$this->player_id}", true);
+                /*$tokyocarddiscard = self::getObjectListFromDB( "SELECT card_id id FROM tokyo WHERE card_location ='discardboardhidden' AND card_location_arg = {$this->player_id}", true);
                 $kyotocarddiscard = self::getObjectListFromDB( "SELECT card_id id FROM kyoto WHERE card_location ='discardboardhidden' AND card_location_arg = {$this->player_id}", true);
                 $tokyocarddiscardcount = count($tokyocarddiscard);
                 $kyotocarddiscardcount = count($kyotocarddiscard);
@@ -3103,7 +3103,7 @@ function ExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
                     );
                     
 
-        letsgotojapan::$instance->addPending($this->player_id, "Phase1Step1");
+        letsgotojapan::$instance->addPending($this->player_id, "Phase1Step1");*/
         
 
               
@@ -17306,7 +17306,7 @@ function SoloExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
   
             
             
-            // letsgotojapan::$instance->addPending($this->player_id, "SoloPhase1Step1");
+            letsgotojapan::$instance->addPending($this->player_id, "SoloPhase1Step1");
             
         }
         if($varg1 == "kyoto")
@@ -17327,11 +17327,11 @@ function SoloExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
             
 
 
-            // letsgotojapan::$instance->addPending($this->player_id, "SoloPhase1Step1");
+            letsgotojapan::$instance->addPending($this->player_id, "SoloPhase1Step1");
             
         }
 
-                $tokyocarddiscard = self::getObjectListFromDB( "SELECT card_id id FROM tokyo WHERE card_location ='discardboardhidden' AND card_location_arg = {$this->player_id}", true);
+                /*$tokyocarddiscard = self::getObjectListFromDB( "SELECT card_id id FROM tokyo WHERE card_location ='discardboardhidden' AND card_location_arg = {$this->player_id}", true);
                 $kyotocarddiscard = self::getObjectListFromDB( "SELECT card_id id FROM kyoto WHERE card_location ='discardboardhidden' AND card_location_arg = {$this->player_id}", true);
                 $tokyocarddiscardcount = count($tokyocarddiscard);
                 $kyotocarddiscardcount = count($kyotocarddiscard);
@@ -17413,7 +17413,7 @@ function SoloExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
                     );
         
 
-        letsgotojapan::$instance->addPending($this->player_id, "SoloPhase1Step1"); 
+        letsgotojapan::$instance->addPending($this->player_id, "SoloPhase1Step1"); */
         
 
     }

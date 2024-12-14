@@ -3599,7 +3599,7 @@ function st_MultiPlayerActivation()
 
             foreach ($listplayers as $player_id)
             {
-                /*
+                
                 $tokyocarddiscard = self::getObjectListFromDB( "SELECT card_id id FROM tokyo WHERE card_location ='discardboardhidden' AND card_location_arg = {$player_id}", true);
                 $kyotocarddiscard = self::getObjectListFromDB( "SELECT card_id id FROM kyoto WHERE card_location ='discardboardhidden' AND card_location_arg = {$player_id}", true);
                 $tokyocarddiscardcount = count($tokyocarddiscard);
@@ -3679,7 +3679,7 @@ function st_MultiPlayerActivation()
                     'playerid' => $player_id,
                     
                     )
-                    );*/
+                    );
                     
                 
 
@@ -4234,7 +4234,7 @@ function st_MultiPlayerActivation()
 
             foreach ($listplayers as $player_id)
             {
-                /*$tokyocarddiscard = self::getObjectListFromDB( "SELECT card_id id FROM tokyo WHERE card_location ='discardboardhidden' AND card_location_arg = {$player_id}", true);
+                $tokyocarddiscard = self::getObjectListFromDB( "SELECT card_id id FROM tokyo WHERE card_location ='discardboardhidden' AND card_location_arg = {$player_id}", true);
                 $kyotocarddiscard = self::getObjectListFromDB( "SELECT card_id id FROM kyoto WHERE card_location ='discardboardhidden' AND card_location_arg = {$player_id}", true);
                 $tokyocarddiscardcount = count($tokyocarddiscard);
                 $kyotocarddiscardcount = count($kyotocarddiscard);
@@ -4313,7 +4313,7 @@ function st_MultiPlayerActivation()
                     'playerid' => $player_id,
                     
                     )
-                    );*/
+                    );
                     
                 
 
