@@ -5971,6 +5971,7 @@ function argFinalStep1($parg1, $parg2)
                     {
                         letsgotojapan::$instance->Gain('r',$this->player_id);
                     }
+                    $tableaupassport14[0]=1;
 
                 }
 
@@ -5980,7 +5981,7 @@ function argFinalStep1($parg1, $parg2)
                     {
                         letsgotojapan::$instance->Gain('g',$this->player_id);
                     }
-                    $tableaupassport14[0]=1;
+                    $tableaupassport14[1]=1;
 
                 }
 
@@ -5990,7 +5991,7 @@ function argFinalStep1($parg1, $parg2)
                     {
                         letsgotojapan::$instance->Gain('p',$this->player_id);
                     }
-                    $tableaupassport14[1]=1;
+                    $tableaupassport14[2]=1;
 
                 }
 
@@ -6000,7 +6001,7 @@ function argFinalStep1($parg1, $parg2)
                     {
                         letsgotojapan::$instance->Gain('y',$this->player_id);
                     }
-                    $tableaupassport14[2]=1;
+                    $tableaupassport14[3]=1;
 
                 }
 
@@ -6010,7 +6011,7 @@ function argFinalStep1($parg1, $parg2)
                     {
                         letsgotojapan::$instance->Gain('b',$this->player_id);
                     }
-                    $tableaupassport14[3]=1;
+                    $tableaupassport14[4]=1;
 
                 }
 
@@ -6020,7 +6021,7 @@ function argFinalStep1($parg1, $parg2)
                     {
                         letsgotojapan::$instance->Gain('h1',$this->player_id);
                     }
-                    $tableaupassport14[4]=1;
+                    
 
                 }
 
