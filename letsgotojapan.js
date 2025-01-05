@@ -390,12 +390,12 @@ function (dojo, declare) {
 
 
                 /// affichage change sens en multi
-                if ((gamedatas.turn < 8)&&(!this.isSpectator)&&(gamedatas.countplayers >= 2))
+                if ((gamedatas.turn < 8)&&(!this.isSpectator)&&(gamedatas.countplayers > 2))
                     {
                         dojo.query(".passingr").removeClass("hidden");
                     }
                     
-                if ((gamedatas.turn >= 8)&&(gamedatas.turn <=13)&&(!this.isSpectator)&&(gamedatas.countplayers >= 2))
+                if ((gamedatas.turn >= 8)&&(gamedatas.turn <=13)&&(!this.isSpectator)&&(gamedatas.countplayers > 2))
                     {
                         dojo.query(".passingl").removeClass("hidden");
                     }
