@@ -204,7 +204,14 @@ class Pending extends APP_GameClass
                 $card = self::getUniqueValueFromDB("SELECT card_type FROM tokyo WHERE card_id={$explode[2]}");
                 letsgotojapan::$instance->tokyo->moveCard( $explode[2], $explode2[0].'_'.$explode2[1].'_'.$explode2[2], $this->player_id );
 
-                $name = ucwords(letsgotojapan::$instance->tokyocards[$card]['name']);
+                
+                letsgotojapan::$instance->notifyPlayer($this->player_id, 'message',clienttranslate( 'You place <b>"${name}"</b> on <b>${day}</b>'), array(
+                    'i18n' => array( 'name', 'day' ),
+                    'day' => letsgotojapan::$instance->days[$explode2[1]]['name'],
+                    'name' => letsgotojapan::$instance->tokyocards[$card]['name'],
+    
+                    )
+                    );
             }
 
             if($explode[1] == 2)
@@ -212,15 +219,17 @@ class Pending extends APP_GameClass
                 $card = self::getUniqueValueFromDB("SELECT card_type FROM kyoto WHERE card_id={$explode[2]}");
                 letsgotojapan::$instance->kyoto->moveCard( $explode[2], $explode2[0].'_'.$explode2[1].'_'.$explode2[2], $this->player_id );
 
-                $name = ucwords(letsgotojapan::$instance->kyotocards[$card]['name']);
+                
+                letsgotojapan::$instance->notifyPlayer($this->player_id, 'message',clienttranslate( 'You place <b>"${name}"</b> on <b>${day}</b>'), array(
+                    'i18n' => array( 'name', 'day' ),
+                    'day' => letsgotojapan::$instance->days[$explode2[1]]['name'],
+                    'name' => letsgotojapan::$instance->kyotocards[$card]['name'],
+    
+                    )
+                    );
             }
 
-            letsgotojapan::$instance->notifyPlayer($this->player_id, 'message',clienttranslate( 'You place <b>"${name}"</b> on <b>${day}</b>'), array(
-                'day' => letsgotojapan::$instance->days[$explode2[1]]['name'],
-                'name' => $name,
-
-                )
-                );
+            
 
             letsgotojapan::$instance->notifyAllPlayers('movecard','', array(
                 'mobile' =>  $parg1,
@@ -232,8 +241,7 @@ class Pending extends APP_GameClass
                 'card' => $card,
                 'playerid' => $this->player_id,
                 'location' => $explode2[0].'_'.$explode2[1].'_'.$explode2[2],
-                'day' => letsgotojapan::$instance->days[$explode2[1]]['name'],
-                'name' => $name,
+                
 
                 )
                 );
@@ -482,7 +490,14 @@ class Pending extends APP_GameClass
                 $card = self::getUniqueValueFromDB("SELECT card_type FROM tokyo WHERE card_id={$explode[2]}");
                 letsgotojapan::$instance->tokyo->moveCard( $explode[2], $explode2[0].'_'.$explode2[1].'_'.$explode2[2], $this->player_id );
 
-                $name = ucwords(letsgotojapan::$instance->tokyocards[$card]['name']);
+                
+                letsgotojapan::$instance->notifyPlayer($this->player_id, 'message',clienttranslate( 'You place <b>"${name}"</b> on <b>${day}</b>'), array(
+                    'i18n' => array( 'name', 'day' ),
+                    'day' => letsgotojapan::$instance->days[$explode2[1]]['name'],
+                    'name' => letsgotojapan::$instance->tokyocards[$card]['name'],
+    
+                    )
+                    );
             }
 
             if($explode[1] == 2)
@@ -490,15 +505,17 @@ class Pending extends APP_GameClass
                 $card = self::getUniqueValueFromDB("SELECT card_type FROM kyoto WHERE card_id={$explode[2]}");
                 letsgotojapan::$instance->kyoto->moveCard( $explode[2], $explode2[0].'_'.$explode2[1].'_'.$explode2[2], $this->player_id );
 
-                $name = ucwords(letsgotojapan::$instance->kyotocards[$card]['name']);
+                
+                letsgotojapan::$instance->notifyPlayer($this->player_id, 'message',clienttranslate( 'You place <b>"${name}"</b> on <b>${day}</b>'), array(
+                    'i18n' => array( 'name', 'day' ),
+                    'day' => letsgotojapan::$instance->days[$explode2[1]]['name'],
+                    'name' => letsgotojapan::$instance->kyotocards[$card]['name'],
+    
+                    )
+                    );
             }
 
-            letsgotojapan::$instance->notifyPlayer($this->player_id, 'message',clienttranslate( 'You place <b>"${name}"</b> on <b>${day}</b>'), array(
-                'day' => letsgotojapan::$instance->days[$explode2[1]]['name'],
-                'name' => $name,
-
-                )
-                );
+            
 
             letsgotojapan::$instance->notifyAllPlayers('movecard','', array(
                 'mobile' =>  $parg1,
@@ -510,8 +527,7 @@ class Pending extends APP_GameClass
                 'card' => $card,
                 'playerid' => $this->player_id,
                 'location' => $explode2[0].'_'.$explode2[1].'_'.$explode2[2],
-                'day' => letsgotojapan::$instance->days[$explode2[1]]['name'],
-                'name' => $name,
+                
 
                 )
                 );
@@ -1152,6 +1168,7 @@ class Pending extends APP_GameClass
                 self::DbQuery( "UPDATE tokyo set finallocation = 1  WHERE card_id ={$newcardid}" );
 
                 letsgotojapan::$instance->notifyPlayer($this->player_id, 'message',clienttranslate( 'You place ${log} on <b>${day}</b>'), array(
+                    'i18n' => array( 'day' ),
                     'day' => letsgotojapan::$instance->days[$explode2[1]]['name'],
                     'log' => letsgotojapan::$instance->getLogsType(4),
     
@@ -1258,6 +1275,7 @@ class Pending extends APP_GameClass
                 self::DbQuery( "UPDATE kyoto set walk = 1  WHERE card_id ={$newcardid}" );
                 self::DbQuery( "UPDATE kyoto set finallocation = 2  WHERE card_id ={$newcardid}" );
                 letsgotojapan::$instance->notifyPlayer($this->player_id, 'message',clienttranslate( 'You place ${log} on <b>${day}</b>'), array(
+                    'i18n' => array( 'day' ),
                     'day' => letsgotojapan::$instance->days[$explode2[1]]['name'],
                     'log' => letsgotojapan::$instance->getLogsType(4),
     
@@ -1640,6 +1658,7 @@ function ExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
             self::DbQuery( "UPDATE tokyo set walk = 1  WHERE card_id ={$newcardid}" );
             self::DbQuery( "UPDATE tokyo set finallocation = 1  WHERE card_id ={$newcardid}" );
             letsgotojapan::$instance->notifyPlayer($this->player_id, 'message',clienttranslate( 'You place an Extra ${log} on <b>${day}</b>'), array(
+                'i18n' => array( 'day' ),
                 'day' => letsgotojapan::$instance->days[$explode2[1]]['name'],
                 'log' => letsgotojapan::$instance->getLogsType(4),
 
@@ -1671,6 +1690,7 @@ function ExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
             self::DbQuery( "UPDATE kyoto set walk = 1  WHERE card_id ={$newcardid}" );
             self::DbQuery( "UPDATE kyoto set finallocation = 2  WHERE card_id ={$newcardid}" );
             letsgotojapan::$instance->notifyPlayer($this->player_id, 'message',clienttranslate( 'You place an Extra ${log} on <b>${day}</b>'), array(
+                'i18n' => array( 'day' ),
                 'day' => letsgotojapan::$instance->days[$explode2[1]]['name'],
                 'log' => letsgotojapan::$instance->getLogsType(4),
 
@@ -2341,7 +2361,14 @@ function ExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
                 $card = self::getUniqueValueFromDB("SELECT card_type FROM tokyo WHERE card_id={$explode[2]}");
                 letsgotojapan::$instance->tokyo->moveCard( $explode[2], $explode2[0].'_'.$explode2[1].'_'.$explode2[2], $this->player_id );
 
-                $name = ucwords(letsgotojapan::$instance->tokyocards[$card]['name']);
+                
+                letsgotojapan::$instance->notifyPlayer($this->player_id, 'message',clienttranslate( 'You place <b>"${name}"</b> on <b>${day}</b>'), array(
+                    'i18n' => array( 'name', 'day' ),
+                    'day' => letsgotojapan::$instance->days[$explode2[1]]['name'],
+                    'name' => letsgotojapan::$instance->tokyocards[$card]['name'],
+    
+                    )
+                    );
             }
 
             if($explode[1] == 2)
@@ -2349,15 +2376,17 @@ function ExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
                 $card = self::getUniqueValueFromDB("SELECT card_type FROM kyoto WHERE card_id={$explode[2]}");
                 letsgotojapan::$instance->kyoto->moveCard( $explode[2], $explode2[0].'_'.$explode2[1].'_'.$explode2[2], $this->player_id );
 
-                $name = ucwords(letsgotojapan::$instance->kyotocards[$card]['name']);
+                
+                letsgotojapan::$instance->notifyPlayer($this->player_id, 'message',clienttranslate( 'You place <b>"${name}"</b> on <b>${day}</b>'), array(
+                    'i18n' => array( 'name', 'day' ),
+                    'day' => letsgotojapan::$instance->days[$explode2[1]]['name'],
+                    'name' => letsgotojapan::$instance->kyotocards[$card]['name'],
+    
+                    )
+                    );
             }
 
-            letsgotojapan::$instance->notifyPlayer($this->player_id, 'message',clienttranslate( 'You place <b>"${name}"</b> on <b>${day}</b>'), array(
-                'day' => letsgotojapan::$instance->days[$explode2[1]]['name'],
-                'name' => $name,
-
-                )
-                );
+            
 
             letsgotojapan::$instance->notifyAllPlayers('movecard','', array(
                 'mobile' =>  $parg1,
@@ -2369,8 +2398,7 @@ function ExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
                 'card' => $card,
                 'playerid' => $this->player_id,
                 'location' => $explode2[0].'_'.$explode2[1].'_'.$explode2[2],
-                'day' => letsgotojapan::$instance->days[$explode2[1]]['name'],
-                'name' => $name,
+                
 
                 )
                 );
@@ -2671,7 +2699,14 @@ function ExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
                 $card = self::getUniqueValueFromDB("SELECT card_type FROM tokyo WHERE card_id={$explode[2]}");
                 letsgotojapan::$instance->tokyo->moveCard( $explode[2], $explode2[0].'_'.$explode2[1].'_'.$explode2[2], $this->player_id );
 
-                $name = ucwords(letsgotojapan::$instance->tokyocards[$card]['name']);
+                
+                letsgotojapan::$instance->notifyPlayer($this->player_id, 'message',clienttranslate( 'You place <b>"${name}"</b> on <b>${day}</b>'), array(
+                    'i18n' => array( 'name', 'day' ),
+                    'day' => letsgotojapan::$instance->days[$explode2[1]]['name'],
+                    'name' => letsgotojapan::$instance->tokyocards[$card]['name'],
+    
+                    )
+                    );
             }
 
             if($explode[1] == 2)
@@ -2679,15 +2714,17 @@ function ExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
                 $card = self::getUniqueValueFromDB("SELECT card_type FROM kyoto WHERE card_id={$explode[2]}");
                 letsgotojapan::$instance->kyoto->moveCard( $explode[2], $explode2[0].'_'.$explode2[1].'_'.$explode2[2], $this->player_id );
 
-                $name = ucwords(letsgotojapan::$instance->kyotocards[$card]['name']);
+                
+                letsgotojapan::$instance->notifyPlayer($this->player_id, 'message',clienttranslate( 'You place <b>"${name}"</b> on <b>${day}</b>'), array(
+                    'i18n' => array( 'name', 'day' ),
+                    'day' => letsgotojapan::$instance->days[$explode2[1]]['name'],
+                    'name' => letsgotojapan::$instance->kyotocards[$card]['name'],
+    
+                    )
+                    );
             }
 
-            letsgotojapan::$instance->notifyPlayer($this->player_id, 'message',clienttranslate( 'You place <b>"${name}"</b> on <b>${day}</b>'), array(
-                'day' => letsgotojapan::$instance->days[$explode2[1]]['name'],
-                'name' => $name,
-
-                )
-                );
+            
 
             letsgotojapan::$instance->notifyAllPlayers('movecard','', array(
                 'mobile' =>  $parg1,
@@ -2699,8 +2736,7 @@ function ExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
                 'card' => $card,
                 'playerid' => $this->player_id,
                 'location' => $explode2[0].'_'.$explode2[1].'_'.$explode2[2],
-                'day' => letsgotojapan::$instance->days[$explode2[1]]['name'],
-                'name' => $name,
+                
 
                 )
                 );
@@ -4448,6 +4484,7 @@ function argFinalStep1($parg1, $parg2)
         if($varg1 == "continue")
         {
             letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} managed the <b>walks</b> for <b>${day}</b>'), array(
+                'i18n' => array( 'day' ),
                 'player_name' => $this->player_name,
                 'day' => letsgotojapan::$instance->days[1]['name'], // changer numero du jour
                 
@@ -5229,7 +5266,7 @@ function argFinalStep1($parg1, $parg2)
 
             $finalscore = self::getUniqueValueFromDB( "SELECT lundi FROM player WHERE player_id = {$this->player_id}");   /// CHANGER JOUR
             letsgotojapan::$instance->notifyAllPlayers('score',clienttranslate( '${player_name} gains ${score} ${log} for <b>${day}</b>'), array(
-                    
+                'i18n' => array( 'day' ),
                 'numero' => $this->player_no,
                 'score' => $finalscore,
                 'position' => $day,
@@ -5505,7 +5542,7 @@ function argFinalStep1($parg1, $parg2)
 
             $finalscore = self::getUniqueValueFromDB( "SELECT lundi FROM agent WHERE name='agent'");   /// CHANGER JOUR
             letsgotojapan::$instance->notifyAllPlayers('score',clienttranslate( '<b>The Travel Agent</b> gains ${score} ${log} for <b>${day}</b>'), array(
-                    
+                'i18n' => array( 'day' ),
                 'numero' => 2,
                 'score' => $finalscore,
                 'position' => $day,
@@ -5659,6 +5696,7 @@ function argFinalStep1($parg1, $parg2)
         if($varg1 == "continue")
         {
             letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} managed the <b>walks</b> for <b>${day}</b>'), array(
+                'i18n' => array( 'day' ),
                 'player_name' => $this->player_name,
                 'day' => letsgotojapan::$instance->days[2]['name'], // changer numero du jour
                 
@@ -6421,7 +6459,7 @@ function argFinalStep1($parg1, $parg2)
 
             $finalscore = self::getUniqueValueFromDB( "SELECT mardi FROM player WHERE player_id = {$this->player_id}");   /// CHANGER JOUR
             letsgotojapan::$instance->notifyAllPlayers('score',clienttranslate( '${player_name} gains ${score} ${log} for <b>${day}</b>'), array(
-                    
+                'i18n' => array( 'day' ),
                 'numero' => $this->player_no,
                 'score' => $finalscore,
                 'position' => $day,
@@ -6696,7 +6734,7 @@ function argFinalStep1($parg1, $parg2)
 
             $finalscore = self::getUniqueValueFromDB( "SELECT mardi FROM agent WHERE name='agent'");   /// CHANGER JOUR
             letsgotojapan::$instance->notifyAllPlayers('score',clienttranslate( '<b>The Travel Agent</b> gains ${score} ${log} for <b>${day}</b>'), array(
-                    
+                'i18n' => array( 'day' ),  
                 'numero' => 2,
                 'score' => $finalscore,
                 'position' => $day,
@@ -6846,6 +6884,7 @@ function argFinalStep1($parg1, $parg2)
         if($varg1 == "continue")
         {
             letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} managed the <b>walks</b> for <b>${day}</b>'), array(
+                'i18n' => array( 'day' ),
                 'player_name' => $this->player_name,
                 'day' => letsgotojapan::$instance->days[3]['name'], // changer numero du jour
                 
@@ -7582,7 +7621,7 @@ function argFinalStep1($parg1, $parg2)
         {
             $finalscore = self::getUniqueValueFromDB( "SELECT mercredi FROM player WHERE player_id = {$this->player_id}");   /// CHANGER JOUR
             letsgotojapan::$instance->notifyAllPlayers('score',clienttranslate( '${player_name} gains ${score} ${log} for <b>${day}</b>'), array(
-                    
+                'i18n' => array( 'day' ),
                 'numero' => $this->player_no,
                 'score' => $finalscore,
                 'position' => $day,
@@ -7857,7 +7896,7 @@ function argFinalStep1($parg1, $parg2)
 
             $finalscore = self::getUniqueValueFromDB( "SELECT mercredi FROM agent WHERE name='agent'");   /// CHANGER JOUR
             letsgotojapan::$instance->notifyAllPlayers('score',clienttranslate( '<b>The Travel Agent</b> gains ${score} ${log} for <b>${day}</b>'), array(
-                    
+                'i18n' => array( 'day' ), 
                 'numero' => 2,
                 'score' => $finalscore,
                 'position' => $day,
@@ -8010,6 +8049,7 @@ function argFinalStepJeudiWalk($parg1, $parg2)      //changer jour
         if($varg1 == "continue")
         {
             letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} managed the <b>walks</b> for <b>${day}</b>'), array(
+                'i18n' => array( 'day' ),
                 'player_name' => $this->player_name,
                 'day' => letsgotojapan::$instance->days[4]['name'], // changer numero du jour
                 
@@ -8742,7 +8782,7 @@ function FinalStepJeudi($parg1, $parg2, $varg1, $varg2)
 
         $finalscore = self::getUniqueValueFromDB( "SELECT jeudi FROM player WHERE player_id = {$this->player_id}");   /// CHANGER JOUR
         letsgotojapan::$instance->notifyAllPlayers('score',clienttranslate( '${player_name} gains ${score} ${log} for <b>${day}</b>'), array(
-                    
+            'i18n' => array( 'day' ),
             'numero' => $this->player_no,
             'score' => $finalscore,
             'position' => $day,
@@ -9018,7 +9058,7 @@ function FinalStepJeudi($parg1, $parg2, $varg1, $varg2)
 
             $finalscore = self::getUniqueValueFromDB( "SELECT jeudi FROM agent WHERE name='agent'");   /// CHANGER JOUR
             letsgotojapan::$instance->notifyAllPlayers('score',clienttranslate( '<b>The Travel Agent</b> gains ${score} ${log} for <b>${day}</b>'), array(
-                    
+                'i18n' => array( 'day' ),  
                 'numero' => 2,
                 'score' => $finalscore,
                 'position' => $day,
@@ -9170,6 +9210,7 @@ function argFinalStepVendrediWalk($parg1, $parg2)      //changer jour
         if($varg1 == "continue")
         {
             letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} managed the <b>walks</b> for <b>${day}</b>'), array(
+                'i18n' => array( 'day' ),
                 'player_name' => $this->player_name,
                 'day' => letsgotojapan::$instance->days[5]['name'], // changer numero du jour
                 
@@ -9904,7 +9945,7 @@ function FinalStepVendredi($parg1, $parg2, $varg1, $varg2)
     {
         $finalscore = self::getUniqueValueFromDB( "SELECT vendredi FROM player WHERE player_id = {$this->player_id}");   /// CHANGER JOUR
         letsgotojapan::$instance->notifyAllPlayers('score',clienttranslate( '${player_name} gains ${score} ${log} for <b>${day}</b>'), array(
-                    
+            'i18n' => array( 'day' ),       
             'numero' => $this->player_no,
             'score' => $finalscore,
             'position' => $day,
@@ -10179,7 +10220,7 @@ function FinalStepVendredi($parg1, $parg2, $varg1, $varg2)
 
         $finalscore = self::getUniqueValueFromDB( "SELECT vendredi FROM agent WHERE name='agent'");   /// CHANGER JOUR
         letsgotojapan::$instance->notifyAllPlayers('score',clienttranslate( '<b>The Travel Agent</b> gains ${score} ${log} for <b>${day}</b>'), array(
-                
+            'i18n' => array( 'day' ), 
             'numero' => 2,
             'score' => $finalscore,
             'position' => $day,
@@ -10328,6 +10369,7 @@ function argFinalStepSamediWalk($parg1, $parg2)      //changer jour
         if($varg1 == "continue")
         {
             letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} managed the <b>walks</b> for <b>${day}</b>'), array(
+                'i18n' => array( 'day' ),
                 'player_name' => $this->player_name,
                 'day' => letsgotojapan::$instance->days[6]['name'], // changer numero du jour
                 
@@ -11062,7 +11104,7 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
     {
         $finalscore = self::getUniqueValueFromDB( "SELECT samedi FROM player WHERE player_id = {$this->player_id}");   /// CHANGER JOUR
         letsgotojapan::$instance->notifyAllPlayers('score',clienttranslate( '${player_name} gains ${score} ${log} for <b>${day}</b>'), array(
-                    
+            'i18n' => array( 'day' ),
             'numero' => $this->player_no,
             'score' => $finalscore,
             'position' => $day,
@@ -11336,7 +11378,7 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
 
         $finalscore = self::getUniqueValueFromDB( "SELECT samedi FROM agent WHERE name='agent'");   /// CHANGER JOUR
         letsgotojapan::$instance->notifyAllPlayers('score',clienttranslate( '<b>The Travel Agent</b> gains ${score} ${log} for <b>${day}</b>'), array(
-                
+            'i18n' => array( 'day' ), 
             'numero' => 2,
             'score' => $finalscore,
             'position' => $day,
@@ -13967,7 +14009,23 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
                 $card = self::getUniqueValueFromDB("SELECT card_type FROM tokyo WHERE card_id={$explode[2]}");
                 letsgotojapan::$instance->tokyo->moveCard( $explode[2], $explode2[0].'_'.$explode2[1].'_'.$explode2[2], $this->player_id );
 
-                $name = ucwords(letsgotojapan::$instance->tokyocards[$card]['name']);
+                
+                letsgotojapan::$instance->notifyAllPlayers('movecard',clienttranslate( '${player_name} places <b>"${name}"</b> on <b>${day}</b>'), array(
+                    'i18n' => array( 'name', 'day' ),
+                    'mobile' =>  $parg1,
+                    'parent' => $varg1,
+                    'player_name' => $this->player_name,
+                    'color' => $this->player_color,
+                    'id' => $explode[2],
+                    'ville' => $explode[1],
+                    'card' => $card,
+                    'playerid' => $this->player_id,
+                    'location' => $explode2[0].'_'.$explode2[1].'_'.$explode2[2],
+                    'day' => letsgotojapan::$instance->days[$explode2[1]]['name'],
+                    'name' => letsgotojapan::$instance->tokyocards[$card]['name'],
+    
+                    )
+                    );
             }
 
             if($explode[1] == 2)
@@ -13975,26 +14033,29 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
                 $card = self::getUniqueValueFromDB("SELECT card_type FROM kyoto WHERE card_id={$explode[2]}");
                 letsgotojapan::$instance->kyoto->moveCard( $explode[2], $explode2[0].'_'.$explode2[1].'_'.$explode2[2], $this->player_id );
 
-                $name = ucwords(letsgotojapan::$instance->kyotocards[$card]['name']);
+                
+
+                letsgotojapan::$instance->notifyAllPlayers('movecard',clienttranslate( '${player_name} places <b>"${name}"</b> on <b>${day}</b>'), array(
+                    'i18n' => array( 'name', 'day' ),
+                    'mobile' =>  $parg1,
+                    'parent' => $varg1,
+                    'player_name' => $this->player_name,
+                    'color' => $this->player_color,
+                    'id' => $explode[2],
+                    'ville' => $explode[1],
+                    'card' => $card,
+                    'playerid' => $this->player_id,
+                    'location' => $explode2[0].'_'.$explode2[1].'_'.$explode2[2],
+                    'day' => letsgotojapan::$instance->days[$explode2[1]]['name'],
+                    'name' => letsgotojapan::$instance->kyotocards[$card]['name'],
+    
+                    )
+                    );
             }
 
            
 
-            letsgotojapan::$instance->notifyAllPlayers('movecard',clienttranslate( '${player_name} places <b>"${name}"</b> on <b>${day}</b>'), array(
-                'mobile' =>  $parg1,
-                'parent' => $varg1,
-                'player_name' => $this->player_name,
-                'color' => $this->player_color,
-                'id' => $explode[2],
-                'ville' => $explode[1],
-                'card' => $card,
-                'playerid' => $this->player_id,
-                'location' => $explode2[0].'_'.$explode2[1].'_'.$explode2[2],
-                'day' => letsgotojapan::$instance->days[$explode2[1]]['name'],
-                'name' => $name,
-
-                )
-                );
+            
 
             $tokyocard = self::getObjectListFromDB( "SELECT card_id id FROM tokyo WHERE card_location ='playerhand' AND card_location_arg = {$this->player_id}", true );
             $kyotocard = self::getObjectListFromDB( "SELECT card_id id FROM kyoto WHERE card_location ='playerhand' AND card_location_arg = {$this->player_id}", true );
@@ -14340,7 +14401,23 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
                 $card = self::getUniqueValueFromDB("SELECT card_type FROM tokyo WHERE card_id={$explode[2]}");
                 letsgotojapan::$instance->tokyo->moveCard( $explode[2], $explode2[0].'_'.$explode2[1].'_'.$explode2[2], $this->player_id );
 
-                $name = ucwords(letsgotojapan::$instance->tokyocards[$card]['name']);
+                
+                letsgotojapan::$instance->notifyAllPlayers('movecard',clienttranslate( '${player_name} places <b>"${name}"</b> on <b>${day}</b>'), array(
+                    'i18n' => array( 'name', 'day' ),
+                    'mobile' =>  $parg1,
+                    'parent' => $parg2,
+                    'player_name' => $this->player_name,
+                    'color' => $this->player_color,
+                    'id' => $explode[2],
+                    'ville' => $explode[1],
+                    'card' => $card,
+                    'playerid' => $this->player_id,
+                    'location' => $explode2[0].'_'.$explode2[1].'_'.$explode2[2],
+                    'day' => letsgotojapan::$instance->days[$explode2[1]]['name'],
+                    'name' => letsgotojapan::$instance->tokyocards[$card]['name'],
+    
+                    )
+                    );
             }
 
             if($explode[1] == 2)
@@ -14348,26 +14425,28 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
                 $card = self::getUniqueValueFromDB("SELECT card_type FROM kyoto WHERE card_id={$explode[2]}");
                 letsgotojapan::$instance->kyoto->moveCard( $explode[2], $explode2[0].'_'.$explode2[1].'_'.$explode2[2], $this->player_id );
 
-                $name = ucwords(letsgotojapan::$instance->kyotocards[$card]['name']);
+                
+                letsgotojapan::$instance->notifyAllPlayers('movecard',clienttranslate( '${player_name} places <b>"${name}"</b> on <b>${day}</b>'), array(
+                    'i18n' => array( 'name', 'day' ),
+                    'mobile' =>  $parg1,
+                    'parent' => $parg2,
+                    'player_name' => $this->player_name,
+                    'color' => $this->player_color,
+                    'id' => $explode[2],
+                    'ville' => $explode[1],
+                    'card' => $card,
+                    'playerid' => $this->player_id,
+                    'location' => $explode2[0].'_'.$explode2[1].'_'.$explode2[2],
+                    'day' => letsgotojapan::$instance->days[$explode2[1]]['name'],
+                    'name' => letsgotojapan::$instance->kyotocards[$card]['name'],
+    
+                    )
+                    );
             }
 
            
 
-            letsgotojapan::$instance->notifyAllPlayers('movecard',clienttranslate( '${player_name} places <b>"${name}"</b> on <b>${day}</b>'), array(
-                'mobile' =>  $parg1,
-                'parent' => $parg2,
-                'player_name' => $this->player_name,
-                'color' => $this->player_color,
-                'id' => $explode[2],
-                'ville' => $explode[1],
-                'card' => $card,
-                'playerid' => $this->player_id,
-                'location' => $explode2[0].'_'.$explode2[1].'_'.$explode2[2],
-                'day' => letsgotojapan::$instance->days[$explode2[1]]['name'],
-                'name' => $name,
-
-                )
-                );
+            
 
             $tokyocard = self::getObjectListFromDB( "SELECT card_id id FROM tokyo WHERE card_location ='playerhand' AND card_location_arg = {$this->player_id}", true );
             $kyotocard = self::getObjectListFromDB( "SELECT card_id id FROM kyoto WHERE card_location ='playerhand' AND card_location_arg = {$this->player_id}", true );
@@ -15438,6 +15517,7 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
                 self::DbQuery( "UPDATE tokyo set walk = 1  WHERE card_id ={$newcardid}" );
                 self::DbQuery( "UPDATE tokyo set finallocation = 1  WHERE card_id ={$newcardid}" );
                 letsgotojapan::$instance->notifyAllPlayers('addwalk',clienttranslate( '${player_name} places ${log} on <b>${day}</b>'), array(
+                    'i18n' => array( 'day' ),
                     'parent' => $varg1,
                     'player_name' => $this->player_name,
                     'ville' => 1,
@@ -15583,6 +15663,7 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
                 self::DbQuery( "UPDATE kyoto set walk = 1  WHERE card_id ={$newcardid}" );
                 self::DbQuery( "UPDATE kyoto set finallocation = 2  WHERE card_id ={$newcardid}" );
                 letsgotojapan::$instance->notifyAllPlayers('addwalk',clienttranslate( '${player_name} places ${log} on <b>${day}</b>'), array(
+                    'i18n' => array( 'day' ),
                     'parent' => $varg1,
                     'player_name' => $this->player_name,
                     'ville' => 2,
@@ -16061,6 +16142,7 @@ function SoloExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
             self::DbQuery( "UPDATE tokyo set walk = 1  WHERE card_id ={$newcardid}" );
             self::DbQuery( "UPDATE tokyo set finallocation = 1  WHERE card_id ={$newcardid}" );
             letsgotojapan::$instance->notifyAllPlayers('addwalk',clienttranslate( '${player_name} places an Extra ${log} on <b>${day}</b>'), array(
+                'i18n' => array( 'day' ),
                 'parent' => $varg1,
                 'player_name' => $this->player_name,
                 'ville' => 1,
@@ -16085,6 +16167,7 @@ function SoloExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
             self::DbQuery( "UPDATE kyoto set walk = 1  WHERE card_id ={$newcardid}" );
             self::DbQuery( "UPDATE kyoto set finallocation = 2  WHERE card_id ={$newcardid}" );
             letsgotojapan::$instance->notifyAllPlayers('addwalk',clienttranslate( '${player_name} places an Extra ${log} on <b>${day}</b>'), array(
+                'i18n' => array( 'day' ),
                 'parent' => $varg1,
                 'player_name' => $this->player_name,
                 'ville' => 2,
@@ -16776,7 +16859,23 @@ function SoloExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
                 $card = self::getUniqueValueFromDB("SELECT card_type FROM tokyo WHERE card_id={$explode[2]}");
                 letsgotojapan::$instance->tokyo->moveCard( $explode[2], $explode2[0].'_'.$explode2[1].'_'.$explode2[2], $this->player_id );
 
-                $name = ucwords(letsgotojapan::$instance->tokyocards[$card]['name']);
+                
+                letsgotojapan::$instance->notifyAllPlayers('movecard',clienttranslate( '${player_name} places <b>"${name}"</b> on <b>${day}</b>'), array(
+                    'i18n' => array( 'name', 'day' ),
+                    'mobile' =>  $parg1,
+                    'parent' => $varg1,
+                    'player_name' => $this->player_name,
+                    'color' => $this->player_color,
+                    'id' => $explode[2],
+                    'ville' => $explode[1],
+                    'card' => $card,
+                    'playerid' => $this->player_id,
+                    'location' => $explode2[0].'_'.$explode2[1].'_'.$explode2[2],
+                    'day' => letsgotojapan::$instance->days[$explode2[1]]['name'],
+                    'name' => letsgotojapan::$instance->tokyocards[$card]['name'],
+    
+                    )
+                    );
             }
 
             if($explode[1] == 2)
@@ -16784,26 +16883,28 @@ function SoloExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
                 $card = self::getUniqueValueFromDB("SELECT card_type FROM kyoto WHERE card_id={$explode[2]}");
                 letsgotojapan::$instance->kyoto->moveCard( $explode[2], $explode2[0].'_'.$explode2[1].'_'.$explode2[2], $this->player_id );
 
-                $name = ucwords(letsgotojapan::$instance->kyotocards[$card]['name']);
+                
+                letsgotojapan::$instance->notifyAllPlayers('movecard',clienttranslate( '${player_name} places <b>"${name}"</b> on <b>${day}</b>'), array(
+                    'i18n' => array( 'name', 'day' ),
+                    'mobile' =>  $parg1,
+                    'parent' => $varg1,
+                    'player_name' => $this->player_name,
+                    'color' => $this->player_color,
+                    'id' => $explode[2],
+                    'ville' => $explode[1],
+                    'card' => $card,
+                    'playerid' => $this->player_id,
+                    'location' => $explode2[0].'_'.$explode2[1].'_'.$explode2[2],
+                    'day' => letsgotojapan::$instance->days[$explode2[1]]['name'],
+                    'name' => letsgotojapan::$instance->kyotocards[$card]['name'],
+    
+                    )
+                    );
             }
 
             
 
-            letsgotojapan::$instance->notifyAllPlayers('movecard',clienttranslate( '${player_name} places <b>"${name}"</b> on <b>${day}</b>'), array(
-                'mobile' =>  $parg1,
-                'parent' => $varg1,
-                'player_name' => $this->player_name,
-                'color' => $this->player_color,
-                'id' => $explode[2],
-                'ville' => $explode[1],
-                'card' => $card,
-                'playerid' => $this->player_id,
-                'location' => $explode2[0].'_'.$explode2[1].'_'.$explode2[2],
-                'day' => letsgotojapan::$instance->days[$explode2[1]]['name'],
-                'name' => $name,
-
-                )
-                );
+            
 
             $counthandtokyocard2 = count(self::getObjectListFromDB( "SELECT card_id id FROM tokyo WHERE card_location ='playerhand' AND card_location_arg = {$this->player_id}", true ));
             $counthandkyotocard2 = count(self::getObjectListFromDB( "SELECT card_id id FROM kyoto WHERE card_location ='playerhand' AND card_location_arg = {$this->player_id}", true ));
@@ -17461,7 +17562,23 @@ function SoloExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
                 $card = self::getUniqueValueFromDB("SELECT card_type FROM tokyo WHERE card_id={$explode[2]}");
                 letsgotojapan::$instance->tokyo->moveCard( $explode[2], $explode2[0].'_'.$explode2[1].'_'.$explode2[2], $this->player_id );
 
-                $name = ucwords(letsgotojapan::$instance->tokyocards[$card]['name']);
+                
+                letsgotojapan::$instance->notifyAllPlayers('movecard',clienttranslate( '${player_name} places <b>"${name}"</b> on <b>${day}</b>'), array(
+                    'i18n' => array( 'name', 'day' ),
+                    'mobile' =>  $parg1,
+                    'parent' => $parg2,
+                    'player_name' => $this->player_name,
+                    'color' => $this->player_color,
+                    'id' => $explode[2],
+                    'ville' => $explode[1],
+                    'card' => $card,
+                    'playerid' => $this->player_id,
+                    'location' => $explode2[0].'_'.$explode2[1].'_'.$explode2[2],
+                    'day' => letsgotojapan::$instance->days[$explode2[1]]['name'],
+                    'name' => letsgotojapan::$instance->tokyocards[$card]['name'],
+    
+                    )
+                    );
             }
 
             if($explode[1] == 2)
@@ -17469,26 +17586,28 @@ function SoloExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
                 $card = self::getUniqueValueFromDB("SELECT card_type FROM kyoto WHERE card_id={$explode[2]}");
                 letsgotojapan::$instance->kyoto->moveCard( $explode[2], $explode2[0].'_'.$explode2[1].'_'.$explode2[2], $this->player_id );
 
-                $name = ucwords(letsgotojapan::$instance->kyotocards[$card]['name']);
+                
+                letsgotojapan::$instance->notifyAllPlayers('movecard',clienttranslate( '${player_name} places <b>"${name}"</b> on <b>${day}</b>'), array(
+                    'i18n' => array( 'name', 'day' ),
+                    'mobile' =>  $parg1,
+                    'parent' => $parg2,
+                    'player_name' => $this->player_name,
+                    'color' => $this->player_color,
+                    'id' => $explode[2],
+                    'ville' => $explode[1],
+                    'card' => $card,
+                    'playerid' => $this->player_id,
+                    'location' => $explode2[0].'_'.$explode2[1].'_'.$explode2[2],
+                    'day' => letsgotojapan::$instance->days[$explode2[1]]['name'],
+                    'name' => letsgotojapan::$instance->kyotocards[$card]['name'],
+    
+                    )
+                    );
             }
 
             
 
-            letsgotojapan::$instance->notifyAllPlayers('movecard',clienttranslate( '${player_name} places <b>"${name}"</b> on <b>${day}</b>'), array(
-                'mobile' =>  $parg1,
-                'parent' => $parg2,
-                'player_name' => $this->player_name,
-                'color' => $this->player_color,
-                'id' => $explode[2],
-                'ville' => $explode[1],
-                'card' => $card,
-                'playerid' => $this->player_id,
-                'location' => $explode2[0].'_'.$explode2[1].'_'.$explode2[2],
-                'day' => letsgotojapan::$instance->days[$explode2[1]]['name'],
-                'name' => $name,
-
-                )
-                );
+            
 
             $counthandtokyocard2 = count(self::getObjectListFromDB( "SELECT card_id id FROM tokyo WHERE card_location ='playerhand' AND card_location_arg = {$this->player_id}", true ));
             $counthandkyotocard2 = count(self::getObjectListFromDB( "SELECT card_id id FROM kyoto WHERE card_location ='playerhand' AND card_location_arg = {$this->player_id}", true ));
@@ -17935,7 +18054,7 @@ function SoloExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
 
             letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} uses the passport card to force the <b>${day}</b> bonus'), array(
                 
-                
+                'i18n' => array( 'day' ),
                 'player_name' => $this->player_name,
                 'day' => letsgotojapan::$instance->days[1]['name'],   // A MODIFIER JOUR
                 
@@ -17953,7 +18072,7 @@ function SoloExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
 
         $finalscore = self::getUniqueValueFromDB( "SELECT lundi FROM player WHERE player_id = {$this->player_id}");   /// CHANGER JOUR
             letsgotojapan::$instance->notifyAllPlayers('score',clienttranslate( '${player_name} gains ${score} ${log} for <b>${day}</b>'), array(
-                    
+                'i18n' => array( 'day' ),
                 'numero' => $this->player_no,
                 'score' => $finalscore,
                 'position' => $day,
@@ -18229,7 +18348,7 @@ function SoloExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
 
             $finalscore = self::getUniqueValueFromDB( "SELECT lundi FROM agent WHERE name='agent'");   /// CHANGER JOUR
             letsgotojapan::$instance->notifyAllPlayers('score',clienttranslate( '<b>The Travel Agent</b> gains ${score} ${log} for <b>${day}</b>'), array(
-                    
+                'i18n' => array( 'day' ),  
                 'numero' => 2,
                 'score' => $finalscore,
                 'position' => $day,
@@ -18421,7 +18540,7 @@ function SoloExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
 
             letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} uses the passport card to force the <b>${day}</b> bonus'), array(
                 
-                
+                'i18n' => array( 'day' ),
                 'player_name' => $this->player_name,
                 'day' => letsgotojapan::$instance->days[2]['name'],   // A MODIFIER JOUR
                 
@@ -18439,7 +18558,7 @@ function SoloExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
 
         $finalscore = self::getUniqueValueFromDB( "SELECT mardi FROM player WHERE player_id = {$this->player_id}");   /// CHANGER JOUR
             letsgotojapan::$instance->notifyAllPlayers('score',clienttranslate( '${player_name} gains ${score} ${log} for <b>${day}</b>'), array(
-                    
+                'i18n' => array( 'day' ), 
                 'numero' => $this->player_no,
                 'score' => $finalscore,
                 'position' => $day,
@@ -18714,7 +18833,7 @@ function SoloExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
 
             $finalscore = self::getUniqueValueFromDB( "SELECT mardi FROM agent WHERE name='agent'");   /// CHANGER JOUR
             letsgotojapan::$instance->notifyAllPlayers('score',clienttranslate( '<b>The Travel Agent</b> gains ${score} ${log} for <b>${day}</b>'), array(
-                    
+                'i18n' => array( 'day' ),
                 'numero' => 2,
                 'score' => $finalscore,
                 'position' => $day,
@@ -18905,7 +19024,7 @@ function SoloExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
 
             letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} uses the passport card to force the <b>${day}</b> bonus'), array(
                 
-                
+                'i18n' => array( 'day' ),
                 'player_name' => $this->player_name,
                 'day' => letsgotojapan::$instance->days[3]['name'],   // A MODIFIER JOUR
                 
@@ -18923,7 +19042,7 @@ function SoloExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
 
         $finalscore = self::getUniqueValueFromDB( "SELECT mercredi FROM player WHERE player_id = {$this->player_id}");   /// CHANGER JOUR
             letsgotojapan::$instance->notifyAllPlayers('score',clienttranslate( '${player_name} gains ${score} ${log} for <b>${day}</b>'), array(
-                    
+                'i18n' => array( 'day' ),
                 'numero' => $this->player_no,
                 'score' => $finalscore,
                 'position' => $day,
@@ -19198,7 +19317,7 @@ function SoloExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
 
             $finalscore = self::getUniqueValueFromDB( "SELECT mercredi FROM agent WHERE name='agent'");   /// CHANGER JOUR
             letsgotojapan::$instance->notifyAllPlayers('score',clienttranslate( '<b>The Travel Agent</b> gains ${score} ${log} for <b>${day}</b>'), array(
-                    
+                'i18n' => array( 'day' ),
                 'numero' => 2,
                 'score' => $finalscore,
                 'position' => $day,
@@ -19388,7 +19507,7 @@ function SoloExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
 
             letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} uses the passport card to force the <b>${day}</b> bonus'), array(
                 
-                
+                'i18n' => array( 'day' ),
                 'player_name' => $this->player_name,
                 'day' => letsgotojapan::$instance->days[4]['name'],   // A MODIFIER JOUR
                 
@@ -19406,7 +19525,7 @@ function SoloExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
 
         $finalscore = self::getUniqueValueFromDB( "SELECT jeudi FROM player WHERE player_id = {$this->player_id}");   /// CHANGER JOUR
         letsgotojapan::$instance->notifyAllPlayers('score',clienttranslate( '${player_name} gains ${score} ${log} for <b>${day}</b>'), array(
-                    
+            'i18n' => array( 'day' ),
             'numero' => $this->player_no,
             'score' => $finalscore,
             'position' => $day,
@@ -19682,7 +19801,7 @@ function SoloExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
 
             $finalscore = self::getUniqueValueFromDB( "SELECT jeudi FROM agent WHERE name='agent'");   /// CHANGER JOUR
             letsgotojapan::$instance->notifyAllPlayers('score',clienttranslate( '<b>The Travel Agent</b> gains ${score} ${log} for <b>${day}</b>'), array(
-                    
+                'i18n' => array( 'day' ),
                 'numero' => 2,
                 'score' => $finalscore,
                 'position' => $day,
@@ -19872,7 +19991,7 @@ function SoloExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
 
             letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} uses the passport card to force the <b>${day}</b> bonus'), array(
                 
-                
+                'i18n' => array( 'day' ),
                 'player_name' => $this->player_name,
                 'day' => letsgotojapan::$instance->days[5]['name'],   // A MODIFIER JOUR
                 
@@ -19890,7 +20009,7 @@ function SoloExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
 
         $finalscore = self::getUniqueValueFromDB( "SELECT vendredi FROM player WHERE player_id = {$this->player_id}");   /// CHANGER JOUR
         letsgotojapan::$instance->notifyAllPlayers('score',clienttranslate( '${player_name} gains ${score} ${log} for <b>${day}</b>'), array(
-                    
+            'i18n' => array( 'day' ),       
             'numero' => $this->player_no,
             'score' => $finalscore,
             'position' => $day,
@@ -20166,7 +20285,7 @@ function SoloExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
 
         $finalscore = self::getUniqueValueFromDB( "SELECT vendredi FROM agent WHERE name='agent'");   /// CHANGER JOUR
         letsgotojapan::$instance->notifyAllPlayers('score',clienttranslate( '<b>The Travel Agent</b> gains ${score} ${log} for <b>${day}</b>'), array(
-                
+            'i18n' => array( 'day' ),   
             'numero' => 2,
             'score' => $finalscore,
             'position' => $day,
@@ -20356,7 +20475,7 @@ function SoloExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
 
             letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} uses the passport card to force the <b>${day}</b> bonus'), array(
                 
-                
+                'i18n' => array( 'day' ),
                 'player_name' => $this->player_name,
                 'day' => letsgotojapan::$instance->days[6]['name'],   // A MODIFIER JOUR
                 
@@ -20374,7 +20493,7 @@ function SoloExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
 
         $finalscore = self::getUniqueValueFromDB( "SELECT samedi FROM player WHERE player_id = {$this->player_id}");   /// CHANGER JOUR
         letsgotojapan::$instance->notifyAllPlayers('score',clienttranslate( '${player_name} gains ${score} ${log} for <b>${day}</b>'), array(
-                    
+            'i18n' => array( 'day' ),
             'numero' => $this->player_no,
             'score' => $finalscore,
             'position' => $day,
@@ -20650,7 +20769,7 @@ function SoloExtraWalkStep2($parg1, $parg2, $varg1, $varg2)
 
         $finalscore = self::getUniqueValueFromDB( "SELECT samedi FROM agent WHERE name='agent'");   /// CHANGER JOUR
         letsgotojapan::$instance->notifyAllPlayers('score',clienttranslate( '<b>The Travel Agent</b> gains ${score} ${log} for <b>${day}</b>'), array(
-                
+            'i18n' => array( 'day' ),
             'numero' => 2,
             'score' => $finalscore,
             'position' => $day,
