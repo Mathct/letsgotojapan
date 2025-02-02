@@ -40,6 +40,9 @@ class letsgotojapan extends Table
         //  the corresponding ID in gameoptions.inc.php.
         // Note: afterwards, you can get/set the global variables with getGameStateValue/setGameStateInitialValue/setGameStateValue
         parent::__construct();
+
+         // EXPERIMENTAL to avoid deadlocks.  This locks the global table early in the game constructor.
+         $this->bSelectGlobalsForUpdate = true;
         
         self::initGameStateLabels( array( 
             "game_mode" => 100,
