@@ -15823,6 +15823,8 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
                 $counttrip = letsgotojapan::$instance->CountTrip($this->player_id);
                 $day = $explode2[1];
 
+                $yellowpass = self::getUniqueValueFromDB("SELECT yellowpass FROM player WHERE player_id={$this->player_id}");
+
                 if ($counttrip[$day-1] == 3)
                 {
                     $colorday = intval(self::getUniqueValueFromDB("SELECT level FROM tokens WHERE name={$day}"));
@@ -15882,6 +15884,8 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
                     {
                         if($result[$colorday-1]==0)
                         {
+                            if ($yellowpass == 0)
+                            {
                             if ($playerhandcount2 == 0)
                             {
                             letsgotojapan::$instance->giveExtraTime($this->player_id);
@@ -15900,6 +15904,12 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
                                 letsgotojapan::$instance->addPending($this->player_id, "SoloPhase2Step3");
 
                             }
+                            }
+
+                            else
+                            {
+                                letsgotojapan::$instance->addPending($this->player_id, "SoloPassYellow");
+                            }
                         }
 
                         if($result[$colorday-1]==1)
@@ -15912,23 +15922,31 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
                                 )
                                 );
                             
+                                if ($yellowpass == 0)
+                            {
                                 if ($playerhandcount2 == 0)
-                            {
-                            letsgotojapan::$instance->giveExtraTime($this->player_id);
-                            letsgotojapan::$instance->gamestate->setPlayerNonMultiactive($this->player_id, 'stop');
-                            }
-                            if ($playerhandcount2 == 3)
-                            {
+                                {
                                 letsgotojapan::$instance->giveExtraTime($this->player_id);
-                                letsgotojapan::$instance->addPending($this->player_id, "SoloPhase2Step1");
+                                letsgotojapan::$instance->gamestate->setPlayerNonMultiactive($this->player_id, 'stop');
+                                }
+                                if ($playerhandcount2 == 3)
+                                {
+                                    letsgotojapan::$instance->giveExtraTime($this->player_id);
+                                    letsgotojapan::$instance->addPending($this->player_id, "SoloPhase2Step1");
 
+                                }
+
+                                if ($playerhandcount2 == 2)
+                                {
+                                    letsgotojapan::$instance->giveExtraTime($this->player_id);
+                                    letsgotojapan::$instance->addPending($this->player_id, "SoloPhase2Step3");
+
+                                }
                             }
 
-                            if ($playerhandcount2 == 2)
+                            else
                             {
-                                letsgotojapan::$instance->giveExtraTime($this->player_id);
-                                letsgotojapan::$instance->addPending($this->player_id, "SoloPhase2Step3");
-
+                                letsgotojapan::$instance->addPending($this->player_id, "SoloPassYellow");
                             }
                         }
 
@@ -15946,6 +15964,8 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
 
                         if($calculhappy==0)
                         {
+                            if ($yellowpass == 0)
+                            {
                             if ($playerhandcount2 == 0)
                             {
                             letsgotojapan::$instance->giveExtraTime($this->player_id);
@@ -15964,6 +15984,12 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
                                 letsgotojapan::$instance->addPending($this->player_id, "SoloPhase2Step3");
 
                             }
+                            }
+
+                            else
+                            {
+                                letsgotojapan::$instance->addPending($this->player_id, "SoloPassYellow");
+                            }
                         }
 
                         if($calculhappy==1)
@@ -15975,6 +16001,9 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
                                 'log' => letsgotojapan::$instance->getLogsType(1),
                                 )
                                 );
+
+                                if ($yellowpass == 0)
+                                {
 
                                 if ($playerhandcount2 == 0)
                                 {
@@ -15994,6 +16023,13 @@ function FinalStepSamedi($parg1, $parg2, $varg1, $varg2)
                                     letsgotojapan::$instance->addPending($this->player_id, "SoloPhase2Step3");
     
                                 }
+                            }
+
+                            else
+                            {
+                                letsgotojapan::$instance->addPending($this->player_id, "SoloPassYellow");
+                            }
+                                
                         }
 
                         if($calculhappy>=2)
