@@ -1920,7 +1920,7 @@ $this->passportcards = [
   '14' => [
     'text1' => '',
     'text2' => clienttranslate('For each day you have 4 or more different Experience Track icons, score 6<div class="littlepvtool"></div>.'),
-    'text3' => clienttranslate('<br><div class="littlea1tool"></div> <div class="littlea2tool"></div> <div class="littleh2tool"></div> <div class="littleh1tool"></div> icons don’t count.'),
+    'text3' => clienttranslate('<br><div class="littlea1tool"></div> <div class="littlea2tool"></div> <div class="littleh2tool"></div> <div class="littleh1tool"></div> icons don’t count. The highlight of the day bonus and the wild token action don’t count.'),
   ],
 
   '15' => [
