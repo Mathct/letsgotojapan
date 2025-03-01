@@ -1644,12 +1644,15 @@ function (dojo, declare) {
                                             var text2 = _(this.gamedatas.tokyocards[card].text2);
                                             var text3 = _(this.gamedatas.tokyocards[card].text3);
 
+                                            var texteif = _('If:');
+                                            var textethen = _('Then:');
+
 
                                             if((card>=1)&&(card <= 10))
                                                 {
                                                     var img = g_gamethemeurl+"img/tokyo1.jpg";
                                                     this.addActionButton(args[this.getCurrentPlayerId()][0].buttons[nb], `<div class="cardbouton" style="background-image: url(${img}); background-position-y: 0%; background-position-x: ${((card-1)*(-100))}%;"></div>`, 'onOpButton', null, null, 'none');
-                                                    var html = '<div class="toolt"><div class="cardtoolt cardbleu">'+this.format_block('jstpl_tokyo1tool',{name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
+                                                    var html = '<div class="toolt"><div class="cardtoolt cardbleu">'+this.format_block('jstpl_tokyo1tool',{texteif: texteif, textethen: textethen, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
                                                     this.addTooltipHtml(args[this.getCurrentPlayerId()][0].buttons[nb], html,1000);
                                                 }
 
@@ -1657,7 +1660,7 @@ function (dojo, declare) {
                                                 {
                                                     var img = g_gamethemeurl+"img/tokyo1.jpg";
                                                     this.addActionButton(args[this.getCurrentPlayerId()][0].buttons[nb], `<div class="cardbouton" style="background-image: url(${img}); background-position-y: -100%; background-position-x: ${((card-11)*(-100))}%;"></div>`, 'onOpButton', null, null, 'none');
-                                                    var html = '<div class="toolt"><div class="cardtoolt cardbleu">'+this.format_block('jstpl_tokyo1tool',{name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
+                                                    var html = '<div class="toolt"><div class="cardtoolt cardbleu">'+this.format_block('jstpl_tokyo1tool',{texteif: texteif, textethen: textethen, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
                                                     this.addTooltipHtml(args[this.getCurrentPlayerId()][0].buttons[nb], html,1000);
                                                 }
 
@@ -1665,7 +1668,7 @@ function (dojo, declare) {
                                                 {
                                                     var img = g_gamethemeurl+"img/tokyo1.jpg";
                                                     this.addActionButton(args[this.getCurrentPlayerId()][0].buttons[nb], `<div class="cardbouton" style="background-image: url(${img}); background-position-y: -200%; background-position-x: ${((card-21)*(-100))}%;"></div>`, 'onOpButton', null, null, 'none');
-                                                    var html = '<div class="toolt"><div class="cardtoolt cardbleu">'+this.format_block('jstpl_tokyo1tool',{name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
+                                                    var html = '<div class="toolt"><div class="cardtoolt cardbleu">'+this.format_block('jstpl_tokyo1tool',{texteif: texteif, textethen: textethen, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
                                                     this.addTooltipHtml(args[this.getCurrentPlayerId()][0].buttons[nb], html,1000);
                                                 }
     
@@ -1674,7 +1677,7 @@ function (dojo, declare) {
                                                 {
                                                     var img = g_gamethemeurl+"img/tokyo1.jpg";
                                                     this.addActionButton(args[this.getCurrentPlayerId()][0].buttons[nb], `<div class="cardbouton" style="background-image: url(${img}); background-position-y: -300%; background-position-x: ${((card-31)*(-100))}%;"></div>`, 'onOpButton', null, null, 'none');
-                                                    var html = '<div class="toolt"><div class="cardtoolt cardbleu">'+this.format_block('jstpl_tokyo1tool',{name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
+                                                    var html = '<div class="toolt"><div class="cardtoolt cardbleu">'+this.format_block('jstpl_tokyo1tool',{texteif: texteif, textethen: textethen, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
                                                     this.addTooltipHtml(args[this.getCurrentPlayerId()][0].buttons[nb], html,1000);
                                                 }
 
@@ -1682,7 +1685,7 @@ function (dojo, declare) {
                                                 {
                                                     var img = g_gamethemeurl+"img/tokyo2.jpg";
                                                     this.addActionButton(args[this.getCurrentPlayerId()][0].buttons[nb], `<div class="cardbouton" style="background-image: url(${img}); background-position-y: 0%; background-position-x: ${((card-41)*(-100))}%;"></div>`, 'onOpButton', null, null, 'none');
-                                                    var html = '<div class="toolt"><div class="cardtoolt cardbleu">'+this.format_block('jstpl_tokyo2tool',{name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
+                                                    var html = '<div class="toolt"><div class="cardtoolt cardbleu">'+this.format_block('jstpl_tokyo2tool',{texteif: texteif, textethen: textethen, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
                                                     this.addTooltipHtml(args[this.getCurrentPlayerId()][0].buttons[nb], html,1000);
                                                 }
     
@@ -1690,7 +1693,7 @@ function (dojo, declare) {
                                                 {
                                                     var img = g_gamethemeurl+"img/tokyo2.jpg";
                                                     this.addActionButton(args[this.getCurrentPlayerId()][0].buttons[nb], `<div class="cardbouton" style="background-image: url(${img}); background-position-y: -100%; background-position-x: ${((card-51)*(-100))}%;"></div>`, 'onOpButton', null, null, 'none');
-                                                    var html = '<div class="toolt"><div class="cardtoolt cardbleu">'+this.format_block('jstpl_tokyo2tool',{name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
+                                                    var html = '<div class="toolt"><div class="cardtoolt cardbleu">'+this.format_block('jstpl_tokyo2tool',{texteif: texteif, textethen: textethen, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
                                                     this.addTooltipHtml(args[this.getCurrentPlayerId()][0].buttons[nb], html,1000);
                                                 }
 
@@ -1698,7 +1701,7 @@ function (dojo, declare) {
                                                 {
                                                     var img = g_gamethemeurl+"img/tokyo2.jpg";
                                                     this.addActionButton(args[this.getCurrentPlayerId()][0].buttons[nb], `<div class="cardbouton" style="background-image: url(${img}); background-position-y: -200%; background-position-x: ${((card-61)*(-100))}%;"></div>`, 'onOpButton', null, null, 'none');
-                                                    var html = '<div class="toolt"><div class="cardtoolt cardbleu">'+this.format_block('jstpl_tokyo2tool',{name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
+                                                    var html = '<div class="toolt"><div class="cardtoolt cardbleu">'+this.format_block('jstpl_tokyo2tool',{texteif: texteif, textethen: textethen, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
                                                     this.addTooltipHtml(args[this.getCurrentPlayerId()][0].buttons[nb], html,1000);
                                                 }
     
@@ -1709,11 +1712,11 @@ function (dojo, declare) {
                                                     this.addActionButton(args[this.getCurrentPlayerId()][0].buttons[nb], `<div class="cardbouton" style="background-image: url(${img}); background-position-y: -300%; background-position-x: ${((card-71)*(-100))}%;"></div>`, 'onOpButton', null, null, 'none');
                                                     if(card==71)
                                                     {
-                                                    var html = '<div class="toolt"><div class="cardtoolt cardbleu">'+this.format_block('jstpl_tokyo2tool',{name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
+                                                    var html = '<div class="toolt"><div class="cardtoolt cardbleu">'+this.format_block('jstpl_tokyo2tool',{texteif: texteif, textethen: textethen, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
                                                     }
                                                     else
                                                     {
-                                                    var html = '<div class="toolt"><div class="cardtoolt cardjaune">'+this.format_block('jstpl_tokyo2tool',{name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
+                                                    var html = '<div class="toolt"><div class="cardtoolt cardjaune">'+this.format_block('jstpl_tokyo2tool',{texteif: texteif, textethen: textethen, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
                                                     }
                                                     this.addTooltipHtml(args[this.getCurrentPlayerId()][0].buttons[nb], html,1000);
                                                 }
@@ -1860,12 +1863,15 @@ function (dojo, declare) {
                                             var text2 = _(this.gamedatas.kyotocards[card].text2);
                                             var text3 = _(this.gamedatas.kyotocards[card].text3);
 
+                                            var texteif = _('If:');
+                                            var textethen = _('Then:');
+
 
                                             if((card>=1)&&(card <= 10))
                                                 {
                                                     var img = g_gamethemeurl+"img/kyoto1.jpg";
                                                     this.addActionButton(args[this.getCurrentPlayerId()][0].buttons[nb], `<div class="cardbouton" style="background-image: url(${img}); background-position-y: 0%; background-position-x: ${((card-1)*(-100))}%;"></div>`, 'onOpButton', null, null, 'none');
-                                                    var html = '<div class="toolt"><div class="cardtoolt cardrose">'+this.format_block('jstpl_kyoto1tool',{name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
+                                                    var html = '<div class="toolt"><div class="cardtoolt cardrose">'+this.format_block('jstpl_kyoto1tool',{texteif: texteif, textethen: textethen, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
                                                     this.addTooltipHtml(args[this.getCurrentPlayerId()][0].buttons[nb], html,1000);
                                                 }
 
@@ -1873,7 +1879,7 @@ function (dojo, declare) {
                                                 {
                                                     var img = g_gamethemeurl+"img/kyoto1.jpg";
                                                     this.addActionButton(args[this.getCurrentPlayerId()][0].buttons[nb], `<div class="cardbouton" style="background-image: url(${img}); background-position-y: -100%; background-position-x: ${((card-11)*(-100))}%;"></div>`, 'onOpButton', null, null, 'none');
-                                                    var html = '<div class="toolt"><div class="cardtoolt cardrose">'+this.format_block('jstpl_kyoto1tool',{name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
+                                                    var html = '<div class="toolt"><div class="cardtoolt cardrose">'+this.format_block('jstpl_kyoto1tool',{texteif: texteif, textethen: textethen, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
                                                     this.addTooltipHtml(args[this.getCurrentPlayerId()][0].buttons[nb], html,1000);
                                                 }
 
@@ -1881,7 +1887,7 @@ function (dojo, declare) {
                                                 {
                                                     var img = g_gamethemeurl+"img/kyoto1.jpg";
                                                     this.addActionButton(args[this.getCurrentPlayerId()][0].buttons[nb], `<div class="cardbouton" style="background-image: url(${img}); background-position-y: -200%; background-position-x: ${((card-21)*(-100))}%;"></div>`, 'onOpButton', null, null, 'none');
-                                                    var html = '<div class="toolt"><div class="cardtoolt cardrose">'+this.format_block('jstpl_kyoto1tool',{name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
+                                                    var html = '<div class="toolt"><div class="cardtoolt cardrose">'+this.format_block('jstpl_kyoto1tool',{texteif: texteif, textethen: textethen, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
                                                     this.addTooltipHtml(args[this.getCurrentPlayerId()][0].buttons[nb], html,1000);
                                                 }
     
@@ -1890,7 +1896,7 @@ function (dojo, declare) {
                                                 {
                                                     var img = g_gamethemeurl+"img/kyoto1.jpg";
                                                     this.addActionButton(args[this.getCurrentPlayerId()][0].buttons[nb], `<div class="cardbouton" style="background-image: url(${img}); background-position-y: -300%; background-position-x: ${((card-31)*(-100))}%;"></div>`, 'onOpButton', null, null, 'none');
-                                                    var html = '<div class="toolt"><div class="cardtoolt cardrose">'+this.format_block('jstpl_kyoto1tool',{name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
+                                                    var html = '<div class="toolt"><div class="cardtoolt cardrose">'+this.format_block('jstpl_kyoto1tool',{texteif: texteif, textethen: textethen, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
                                                     this.addTooltipHtml(args[this.getCurrentPlayerId()][0].buttons[nb], html,1000);
                                                 }
 
@@ -1898,7 +1904,7 @@ function (dojo, declare) {
                                                 {
                                                     var img = g_gamethemeurl+"img/kyoto2.jpg";
                                                     this.addActionButton(args[this.getCurrentPlayerId()][0].buttons[nb], `<div class="cardbouton" style="background-image: url(${img}); background-position-y: 0%; background-position-x: ${((card-41)*(-100))}%;"></div>`, 'onOpButton', null, null, 'none');
-                                                    var html = '<div class="toolt"><div class="cardtoolt cardrose">'+this.format_block('jstpl_kyoto2tool',{name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
+                                                    var html = '<div class="toolt"><div class="cardtoolt cardrose">'+this.format_block('jstpl_kyoto2tool',{texteif: texteif, textethen: textethen, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
                                                     this.addTooltipHtml(args[this.getCurrentPlayerId()][0].buttons[nb], html,1000);
                                                 }
     
@@ -1906,14 +1912,14 @@ function (dojo, declare) {
                                                 {
                                                     var img = g_gamethemeurl+"img/kyoto2.jpg";
                                                     this.addActionButton(args[this.getCurrentPlayerId()][0].buttons[nb], `<div class="cardbouton" style="background-image: url(${img}); background-position-y: -100%; background-position-x: ${((card-51)*(-100))}%;"></div>`, 'onOpButton', null, null, 'none');
-                                                    var html = '<div class="toolt"><div class="cardtoolt cardrose">'+this.format_block('jstpl_kyoto2tool',{name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
+                                                    var html = '<div class="toolt"><div class="cardtoolt cardrose">'+this.format_block('jstpl_kyoto2tool',{texteif: texteif, textethen: textethen, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
                                                 }
 
                                             if((card>=61)&&(card <= 70))
                                                 {
                                                     var img = g_gamethemeurl+"img/kyoto2.jpg";
                                                     this.addActionButton(args[this.getCurrentPlayerId()][0].buttons[nb], `<div class="cardbouton" style="background-image: url(${img}); background-position-y: -200%; background-position-x: ${((card-61)*(-100))}%;"></div>`, 'onOpButton', null, null, 'none');
-                                                    var html = '<div class="toolt"><div class="cardtoolt cardrose">'+this.format_block('jstpl_kyoto2tool',{name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
+                                                    var html = '<div class="toolt"><div class="cardtoolt cardrose">'+this.format_block('jstpl_kyoto2tool',{texteif: texteif, textethen: textethen, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
                                                     this.addTooltipHtml(args[this.getCurrentPlayerId()][0].buttons[nb], html,1000);
                                                 }
     
@@ -1924,11 +1930,11 @@ function (dojo, declare) {
                                                     this.addActionButton(args[this.getCurrentPlayerId()][0].buttons[nb], `<div class="cardbouton" style="background-image: url(${img}); background-position-y: -300%; background-position-x: ${((card-71)*(-100))}%;"></div>`, 'onOpButton', null, null, 'none');
                                                     if(card == 71)
                                                     {
-                                                    var html = '<div class="toolt"><div class="cardtoolt cardrose">'+this.format_block('jstpl_kyoto2tool',{name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
+                                                    var html = '<div class="toolt"><div class="cardtoolt cardrose">'+this.format_block('jstpl_kyoto2tool',{texteif: texteif, textethen: textethen, texteif: texteif, textethen: textethen, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
                                                     }
                                                     else
                                                     {
-                                                    var html = '<div class="toolt"><div class="cardtoolt cardjaune">'+this.format_block('jstpl_kyoto2tool',{name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
+                                                    var html = '<div class="toolt"><div class="cardtoolt cardjaune">'+this.format_block('jstpl_kyoto2tool',{texteif: texteif, textethen: textethen, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
                                                     }
                                                     this.addTooltipHtml(args[this.getCurrentPlayerId()][0].buttons[nb], html,1000);
                                                 }
@@ -2317,7 +2323,9 @@ function (dojo, declare) {
                         var text1 = _(this.gamedatas.tokyocards[card].text1);
                         var text2 = _(this.gamedatas.tokyocards[card].text2);
                         var text3 = _(this.gamedatas.tokyocards[card].text3);
-                        var html = '<div class="toolt"><div class="cardtoolt cardbleu">'+this.format_block('jstpl_tokyo1tool',{x: (card-1)*(-100), y: 0, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
+                        var texteif = _('If:');
+                        var textethen = _('Then:');
+                        var html = '<div class="toolt"><div class="cardtoolt cardbleu">'+this.format_block('jstpl_tokyo1tool',{x: (card-1)*(-100), y: 0, texteif: texteif, textethen: textethen, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
                         this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
 
                     }
@@ -2470,7 +2478,9 @@ function (dojo, declare) {
                         var text1 = _(this.gamedatas.tokyocards[card].text1);
                         var text2 = _(this.gamedatas.tokyocards[card].text2);
                         var text3 = _(this.gamedatas.tokyocards[card].text3);
-                        var html = '<div class="toolt"><div class="cardtoolt cardbleu">'+this.format_block('jstpl_tokyo1tool',{x: (card-11)*(-100), y: -100, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
+                        var texteif = _('If:');
+                        var textethen = _('Then:');
+                        var html = '<div class="toolt"><div class="cardtoolt cardbleu">'+this.format_block('jstpl_tokyo1tool',{x: (card-11)*(-100), y: -100, texteif: texteif, textethen: textethen, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
                         this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
                     }
@@ -2619,7 +2629,9 @@ function (dojo, declare) {
                         var text1 = _(this.gamedatas.tokyocards[card].text1);
                         var text2 = _(this.gamedatas.tokyocards[card].text2);
                         var text3 = _(this.gamedatas.tokyocards[card].text3);
-                        var html = '<div class="toolt"><div class="cardtoolt cardbleu">'+this.format_block('jstpl_tokyo1tool',{x: (card-21)*(-100), y: -200, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
+                        var texteif = _('If:');
+                        var textethen = _('Then:');
+                        var html = '<div class="toolt"><div class="cardtoolt cardbleu">'+this.format_block('jstpl_tokyo1tool',{x: (card-21)*(-100), y: -200, texteif: texteif, textethen: textethen, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
                         this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
                     }
@@ -2768,7 +2780,9 @@ function (dojo, declare) {
                         var text1 = _(this.gamedatas.tokyocards[card].text1);
                         var text2 = _(this.gamedatas.tokyocards[card].text2);
                         var text3 = _(this.gamedatas.tokyocards[card].text3);
-                        var html = '<div class="toolt"><div class="cardtoolt cardbleu">'+this.format_block('jstpl_tokyo1tool',{x: (card-31)*(-100), y: -300, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
+                        var texteif = _('If:');
+                        var textethen = _('Then:');
+                        var html = '<div class="toolt"><div class="cardtoolt cardbleu">'+this.format_block('jstpl_tokyo1tool',{x: (card-31)*(-100), y: -300, texteif: texteif, textethen: textethen, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
                         this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
                     }
@@ -2917,7 +2931,9 @@ function (dojo, declare) {
                         var text1 = _(this.gamedatas.tokyocards[card].text1);
                         var text2 = _(this.gamedatas.tokyocards[card].text2);
                         var text3 = _(this.gamedatas.tokyocards[card].text3);
-                        var html = '<div class="toolt"><div class="cardtoolt cardbleu">'+this.format_block('jstpl_tokyo2tool',{x: (card-41)*(-100), y: 0, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
+                        var texteif = _('If:');
+                        var textethen = _('Then:');
+                        var html = '<div class="toolt"><div class="cardtoolt cardbleu">'+this.format_block('jstpl_tokyo2tool',{x: (card-41)*(-100), y: 0, texteif: texteif, textethen: textethen, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
                         this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
                     }
@@ -3066,7 +3082,9 @@ function (dojo, declare) {
                         var text1 = _(this.gamedatas.tokyocards[card].text1);
                         var text2 = _(this.gamedatas.tokyocards[card].text2);
                         var text3 = _(this.gamedatas.tokyocards[card].text3);
-                        var html = '<div class="toolt"><div class="cardtoolt cardbleu">'+this.format_block('jstpl_tokyo2tool',{x: (card-51)*(-100), y: -100, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
+                        var texteif = _('If:');
+                        var textethen = _('Then:');
+                        var html = '<div class="toolt"><div class="cardtoolt cardbleu">'+this.format_block('jstpl_tokyo2tool',{x: (card-51)*(-100), y: -100, texteif: texteif, textethen: textethen, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
                         this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
                     }
@@ -3215,7 +3233,9 @@ function (dojo, declare) {
                         var text1 = _(this.gamedatas.tokyocards[card].text1);
                         var text2 = _(this.gamedatas.tokyocards[card].text2);
                         var text3 = _(this.gamedatas.tokyocards[card].text3);
-                        var html = '<div class="toolt"><div class="cardtoolt cardbleu">'+this.format_block('jstpl_tokyo2tool',{x: (card-61)*(-100), y: -200, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
+                        var texteif = _('If:');
+                        var textethen = _('Then:');
+                        var html = '<div class="toolt"><div class="cardtoolt cardbleu">'+this.format_block('jstpl_tokyo2tool',{x: (card-61)*(-100), y: -200, texteif: texteif, textethen: textethen, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
                         this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
                     }
@@ -3364,13 +3384,15 @@ function (dojo, declare) {
                         var text1 = _(this.gamedatas.tokyocards[card].text1);
                         var text2 = _(this.gamedatas.tokyocards[card].text2);
                         var text3 = _(this.gamedatas.tokyocards[card].text3);
+                        var texteif = _('If:');
+                        var textethen = _('Then:');
                         if(card ==71)
                         {
-                        var html = '<div class="toolt"><div class="cardtoolt cardbleu">'+this.format_block('jstpl_tokyo2tool',{x: (card-71)*(-100), y: -300, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
+                        var html = '<div class="toolt"><div class="cardtoolt cardbleu">'+this.format_block('jstpl_tokyo2tool',{x: (card-71)*(-100), y: -300, texteif: texteif, textethen: textethen, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
                         }
                         else
                         {
-                        var html = '<div class="toolt"><div class="cardtoolt cardjaune">'+this.format_block('jstpl_tokyo2tool',{x: (card-71)*(-100), y: -300, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
+                        var html = '<div class="toolt"><div class="cardtoolt cardjaune">'+this.format_block('jstpl_tokyo2tool',{x: (card-71)*(-100), y: -300, texteif: texteif, textethen: textethen, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
                         }
                         this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
@@ -3540,7 +3562,9 @@ function (dojo, declare) {
                         var text1 = _(this.gamedatas.kyotocards[card].text1);
                         var text2 = _(this.gamedatas.kyotocards[card].text2);
                         var text3 = _(this.gamedatas.kyotocards[card].text3);
-                        var html = '<div class="toolt"><div class="cardtoolt cardrose">'+this.format_block('jstpl_kyoto1tool',{x: (card-1)*(-100), y: 0, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
+                        var texteif = _('If:');
+                        var textethen = _('Then:');
+                        var html = '<div class="toolt"><div class="cardtoolt cardrose">'+this.format_block('jstpl_kyoto1tool',{x: (card-1)*(-100), y: 0, texteif: texteif, textethen: textethen, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
                         this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
     
                     }
@@ -3689,7 +3713,9 @@ function (dojo, declare) {
                         var text1 = _(this.gamedatas.kyotocards[card].text1);
                         var text2 = _(this.gamedatas.kyotocards[card].text2);
                         var text3 = _(this.gamedatas.kyotocards[card].text3);
-                        var html = '<div class="toolt"><div class="cardtoolt cardrose">'+this.format_block('jstpl_kyoto1tool',{x: (card-11)*(-100), y: -100, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
+                        var texteif = _('If:');
+                        var textethen = _('Then:');
+                        var html = '<div class="toolt"><div class="cardtoolt cardrose">'+this.format_block('jstpl_kyoto1tool',{x: (card-11)*(-100), y: -100, texteif: texteif, textethen: textethen, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
                         this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
                     }
@@ -3838,7 +3864,9 @@ function (dojo, declare) {
                         var text1 = _(this.gamedatas.kyotocards[card].text1);
                         var text2 = _(this.gamedatas.kyotocards[card].text2);
                         var text3 = _(this.gamedatas.kyotocards[card].text3);
-                        var html = '<div class="toolt"><div class="cardtoolt cardrose">'+this.format_block('jstpl_kyoto1tool',{x: (card-21)*(-100), y: -200, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
+                        var texteif = _('If:');
+                        var textethen = _('Then:');
+                        var html = '<div class="toolt"><div class="cardtoolt cardrose">'+this.format_block('jstpl_kyoto1tool',{x: (card-21)*(-100), y: -200, texteif: texteif, textethen: textethen, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
                         this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
                     }
@@ -3987,7 +4015,9 @@ function (dojo, declare) {
                         var text1 = _(this.gamedatas.kyotocards[card].text1);
                         var text2 = _(this.gamedatas.kyotocards[card].text2);
                         var text3 = _(this.gamedatas.kyotocards[card].text3);
-                        var html = '<div class="toolt"><div class="cardtoolt cardrose">'+this.format_block('jstpl_kyoto1tool',{x: (card-31)*(-100), y: -300, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
+                        var texteif = _('If:');
+                        var textethen = _('Then:');
+                        var html = '<div class="toolt"><div class="cardtoolt cardrose">'+this.format_block('jstpl_kyoto1tool',{x: (card-31)*(-100), y: -300, texteif: texteif, textethen: textethen, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
                         this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
                     }
@@ -4136,7 +4166,9 @@ function (dojo, declare) {
                         var text1 = _(this.gamedatas.kyotocards[card].text1);
                         var text2 = _(this.gamedatas.kyotocards[card].text2);
                         var text3 = _(this.gamedatas.kyotocards[card].text3);
-                        var html = '<div class="toolt"><div class="cardtoolt cardrose">'+this.format_block('jstpl_kyoto2tool',{x: (card-41)*(-100), y: 0, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
+                        var texteif = _('If:');
+                        var textethen = _('Then:');
+                        var html = '<div class="toolt"><div class="cardtoolt cardrose">'+this.format_block('jstpl_kyoto2tool',{x: (card-41)*(-100), y: 0, texteif: texteif, textethen: textethen, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
                         this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
                     }
@@ -4285,7 +4317,9 @@ function (dojo, declare) {
                         var text1 = _(this.gamedatas.kyotocards[card].text1);
                         var text2 = _(this.gamedatas.kyotocards[card].text2);
                         var text3 = _(this.gamedatas.kyotocards[card].text3);
-                        var html = '<div class="toolt"><div class="cardtoolt cardrose">'+this.format_block('jstpl_kyoto2tool',{x: (card-51)*(-100), y: -100, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
+                        var texteif = _('If:');
+                        var textethen = _('Then:');
+                        var html = '<div class="toolt"><div class="cardtoolt cardrose">'+this.format_block('jstpl_kyoto2tool',{x: (card-51)*(-100), y: -100, texteif: texteif, textethen: textethen, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
                         this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
                     }
@@ -4434,7 +4468,9 @@ function (dojo, declare) {
                         var text1 = _(this.gamedatas.kyotocards[card].text1);
                         var text2 = _(this.gamedatas.kyotocards[card].text2);
                         var text3 = _(this.gamedatas.kyotocards[card].text3);
-                        var html = '<div class="toolt"><div class="cardtoolt cardrose">'+this.format_block('jstpl_kyoto2tool',{x: (card-61)*(-100), y: -200, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
+                        var texteif = _('If:');
+                        var textethen = _('Then:');
+                        var html = '<div class="toolt"><div class="cardtoolt cardrose">'+this.format_block('jstpl_kyoto2tool',{x: (card-61)*(-100), y: -200, texteif: texteif, textethen: textethen, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
                         this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
                     }
@@ -4583,13 +4619,15 @@ function (dojo, declare) {
                         var text1 = _(this.gamedatas.kyotocards[card].text1);
                         var text2 = _(this.gamedatas.kyotocards[card].text2);
                         var text3 = _(this.gamedatas.kyotocards[card].text3);
+                        var texteif = _('If:');
+                        var textethen = _('Then:');
                         if(card ==71)
                         {
-                        var html = '<div class="toolt"><div class="cardtoolt cardrose">'+this.format_block('jstpl_kyoto2tool',{x: (card-71)*(-100), y: -300, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
+                        var html = '<div class="toolt"><div class="cardtoolt cardrose">'+this.format_block('jstpl_kyoto2tool',{x: (card-71)*(-100), y: -300, texteif: texteif, textethen: textethen, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
                         }
                         else
                         {
-                        var html = '<div class="toolt"><div class="cardtoolt cardjaune">'+this.format_block('jstpl_kyoto2tool',{x: (card-71)*(-100), y: -300, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
+                        var html = '<div class="toolt"><div class="cardtoolt cardjaune">'+this.format_block('jstpl_kyoto2tool',{x: (card-71)*(-100), y: -300, texteif: texteif, textethen: textethen, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
                         }
                         this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
@@ -4759,7 +4797,9 @@ function (dojo, declare) {
                         var text1 = _(this.gamedatas.tokyocards[card].text1);
                         var text2 = _(this.gamedatas.tokyocards[card].text2);
                         var text3 = _(this.gamedatas.tokyocards[card].text3);
-                        var html = '<div class="toolt"><div class="cardtoolt cardbleu">'+this.format_block('jstpl_tokyo1tool',{x: (card-1)*(-100), y: 0, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
+                        var texteif = _('If:');
+                        var textethen = _('Then:');
+                        var html = '<div class="toolt"><div class="cardtoolt cardbleu">'+this.format_block('jstpl_tokyo1tool',{x: (card-1)*(-100), y: 0, texteif: texteif, textethen: textethen, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
                         this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
 
 
@@ -4909,7 +4949,9 @@ function (dojo, declare) {
                         var text1 = _(this.gamedatas.tokyocards[card].text1);
                         var text2 = _(this.gamedatas.tokyocards[card].text2);
                         var text3 = _(this.gamedatas.tokyocards[card].text3);
-                        var html = '<div class="toolt"><div class="cardtoolt cardbleu">'+this.format_block('jstpl_tokyo1tool',{x: (card-11)*(-100), y: -100, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
+                        var texteif = _('If:');
+                        var textethen = _('Then:');
+                        var html = '<div class="toolt"><div class="cardtoolt cardbleu">'+this.format_block('jstpl_tokyo1tool',{x: (card-11)*(-100), y: -100, texteif: texteif, textethen: textethen, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
                         this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
                     }
@@ -5058,7 +5100,9 @@ function (dojo, declare) {
                         var text1 = _(this.gamedatas.tokyocards[card].text1);
                         var text2 = _(this.gamedatas.tokyocards[card].text2);
                         var text3 = _(this.gamedatas.tokyocards[card].text3);
-                        var html = '<div class="toolt"><div class="cardtoolt cardbleu">'+this.format_block('jstpl_tokyo1tool',{x: (card-21)*(-100), y: -200, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
+                        var texteif = _('If:');
+                        var textethen = _('Then:');
+                        var html = '<div class="toolt"><div class="cardtoolt cardbleu">'+this.format_block('jstpl_tokyo1tool',{x: (card-21)*(-100), y: -200, texteif: texteif, textethen: textethen, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
                         this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
                     }
@@ -5207,7 +5251,9 @@ function (dojo, declare) {
                         var text1 = _(this.gamedatas.tokyocards[card].text1);
                         var text2 = _(this.gamedatas.tokyocards[card].text2);
                         var text3 = _(this.gamedatas.tokyocards[card].text3);
-                        var html = '<div class="toolt"><div class="cardtoolt cardbleu">'+this.format_block('jstpl_tokyo1tool',{x: (card-31)*(-100), y: -300, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
+                        var texteif = _('If:');
+                        var textethen = _('Then:');
+                        var html = '<div class="toolt"><div class="cardtoolt cardbleu">'+this.format_block('jstpl_tokyo1tool',{x: (card-31)*(-100), y: -300, texteif: texteif, textethen: textethen, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
                         this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
                     }
@@ -5356,7 +5402,9 @@ function (dojo, declare) {
                         var text1 = _(this.gamedatas.tokyocards[card].text1);
                         var text2 = _(this.gamedatas.tokyocards[card].text2);
                         var text3 = _(this.gamedatas.tokyocards[card].text3);
-                        var html = '<div class="toolt"><div class="cardtoolt cardbleu">'+this.format_block('jstpl_tokyo2tool',{x: (card-41)*(-100), y: 0, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
+                        var texteif = _('If:');
+                        var textethen = _('Then:');
+                        var html = '<div class="toolt"><div class="cardtoolt cardbleu">'+this.format_block('jstpl_tokyo2tool',{x: (card-41)*(-100), y: 0, texteif: texteif, textethen: textethen, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
                         this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
                     }
@@ -5505,7 +5553,9 @@ function (dojo, declare) {
                         var text1 = _(this.gamedatas.tokyocards[card].text1);
                         var text2 = _(this.gamedatas.tokyocards[card].text2);
                         var text3 = _(this.gamedatas.tokyocards[card].text3);
-                        var html = '<div class="toolt"><div class="cardtoolt cardbleu">'+this.format_block('jstpl_tokyo2tool',{x: (card-51)*(-100), y: -100, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
+                        var texteif = _('If:');
+                        var textethen = _('Then:');
+                        var html = '<div class="toolt"><div class="cardtoolt cardbleu">'+this.format_block('jstpl_tokyo2tool',{x: (card-51)*(-100), y: -100, texteif: texteif, textethen: textethen, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
                         this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
                     }
@@ -5654,7 +5704,9 @@ function (dojo, declare) {
                         var text1 = _(this.gamedatas.tokyocards[card].text1);
                         var text2 = _(this.gamedatas.tokyocards[card].text2);
                         var text3 = _(this.gamedatas.tokyocards[card].text3);
-                        var html = '<div class="toolt"><div class="cardtoolt cardbleu">'+this.format_block('jstpl_tokyo2tool',{x: (card-61)*(-100), y: -200, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
+                        var texteif = _('If:');
+                        var textethen = _('Then:');
+                        var html = '<div class="toolt"><div class="cardtoolt cardbleu">'+this.format_block('jstpl_tokyo2tool',{x: (card-61)*(-100), y: -200, texteif: texteif, textethen: textethen, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
                         this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
                     }
@@ -5805,13 +5857,15 @@ function (dojo, declare) {
                         var text1 = _(this.gamedatas.tokyocards[card].text1);
                         var text2 = _(this.gamedatas.tokyocards[card].text2);
                         var text3 = _(this.gamedatas.tokyocards[card].text3);
+                        var texteif = _('If:');
+                        var textethen = _('Then:');
                         if(card ==71)
                         {
-                        var html = '<div class="toolt"><div class="cardtoolt cardbleu">'+this.format_block('jstpl_tokyo2tool',{x: (card-71)*(-100), y: -300, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
+                        var html = '<div class="toolt"><div class="cardtoolt cardbleu">'+this.format_block('jstpl_tokyo2tool',{x: (card-71)*(-100), y: -300, texteif: texteif, textethen: textethen, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
                         }
                         else
                         {
-                        var html = '<div class="toolt"><div class="cardtoolt cardjaune">'+this.format_block('jstpl_tokyo2tool',{x: (card-71)*(-100), y: -300, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
+                        var html = '<div class="toolt"><div class="cardtoolt cardjaune">'+this.format_block('jstpl_tokyo2tool',{x: (card-71)*(-100), y: -300, texteif: texteif, textethen: textethen, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
                         }
                         this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
@@ -6038,7 +6092,9 @@ function (dojo, declare) {
                         var text1 = _(this.gamedatas.kyotocards[card].text1);
                         var text2 = _(this.gamedatas.kyotocards[card].text2);
                         var text3 = _(this.gamedatas.kyotocards[card].text3);
-                        var html = '<div class="toolt"><div class="cardtoolt cardrose">'+this.format_block('jstpl_kyoto1tool',{x: (card-1)*(-100), y: 0, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
+                        var texteif = _('If:');
+                        var textethen = _('Then:');
+                        var html = '<div class="toolt"><div class="cardtoolt cardrose">'+this.format_block('jstpl_kyoto1tool',{x: (card-1)*(-100), y: 0, texteif: texteif, textethen: textethen, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
                         this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
     
                     }
@@ -6187,7 +6243,9 @@ function (dojo, declare) {
                         var text1 = _(this.gamedatas.kyotocards[card].text1);
                         var text2 = _(this.gamedatas.kyotocards[card].text2);
                         var text3 = _(this.gamedatas.kyotocards[card].text3);
-                        var html = '<div class="toolt"><div class="cardtoolt cardrose">'+this.format_block('jstpl_kyoto1tool',{x: (card-11)*(-100), y: -100, name: name,  town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
+                        var texteif = _('If:');
+                        var textethen = _('Then:');
+                        var html = '<div class="toolt"><div class="cardtoolt cardrose">'+this.format_block('jstpl_kyoto1tool',{x: (card-11)*(-100), y: -100, texteif: texteif, textethen: textethen, name: name,  town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
                         this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
                     }
@@ -6336,7 +6394,9 @@ function (dojo, declare) {
                         var text1 = _(this.gamedatas.kyotocards[card].text1);
                         var text2 = _(this.gamedatas.kyotocards[card].text2);
                         var text3 = _(this.gamedatas.kyotocards[card].text3);
-                        var html = '<div class="toolt"><div class="cardtoolt cardrose">'+this.format_block('jstpl_kyoto1tool',{x: (card-21)*(-100), y: -200, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
+                        var texteif = _('If:');
+                        var textethen = _('Then:');
+                        var html = '<div class="toolt"><div class="cardtoolt cardrose">'+this.format_block('jstpl_kyoto1tool',{x: (card-21)*(-100), y: -200, texteif: texteif, textethen: textethen, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
                         this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
                     }
@@ -6485,7 +6545,9 @@ function (dojo, declare) {
                         var text1 = _(this.gamedatas.kyotocards[card].text1);
                         var text2 = _(this.gamedatas.kyotocards[card].text2);
                         var text3 = _(this.gamedatas.kyotocards[card].text3);
-                        var html = '<div class="toolt"><div class="cardtoolt cardrose">'+this.format_block('jstpl_kyoto1tool',{x: (card-31)*(-100), y: -300, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
+                        var texteif = _('If:');
+                        var textethen = _('Then:');
+                        var html = '<div class="toolt"><div class="cardtoolt cardrose">'+this.format_block('jstpl_kyoto1tool',{x: (card-31)*(-100), y: -300, texteif: texteif, textethen: textethen, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
                         this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
                     }
@@ -6634,7 +6696,9 @@ function (dojo, declare) {
                         var text1 = _(this.gamedatas.kyotocards[card].text1);
                         var text2 = _(this.gamedatas.kyotocards[card].text2);
                         var text3 = _(this.gamedatas.kyotocards[card].text3);
-                        var html = '<div class="toolt"><div class="cardtoolt cardrose">'+this.format_block('jstpl_kyoto2tool',{x: (card-41)*(-100), y: 0, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
+                        var texteif = _('If:');
+                        var textethen = _('Then:');
+                        var html = '<div class="toolt"><div class="cardtoolt cardrose">'+this.format_block('jstpl_kyoto2tool',{x: (card-41)*(-100), y: 0, texteif: texteif, textethen: textethen, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
                         this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
                     }
@@ -6783,7 +6847,9 @@ function (dojo, declare) {
                         var text1 = _(this.gamedatas.kyotocards[card].text1);
                         var text2 = _(this.gamedatas.kyotocards[card].text2);
                         var text3 = _(this.gamedatas.kyotocards[card].text3);
-                        var html = '<div class="toolt"><div class="cardtoolt cardrose">'+this.format_block('jstpl_kyoto2tool',{x: (card-51)*(-100), y: -100, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
+                        var texteif = _('If:');
+                        var textethen = _('Then:');
+                        var html = '<div class="toolt"><div class="cardtoolt cardrose">'+this.format_block('jstpl_kyoto2tool',{x: (card-51)*(-100), y: -100, texteif: texteif, textethen: textethen, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
                         this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
                     }
@@ -6932,7 +6998,9 @@ function (dojo, declare) {
                         var text1 = _(this.gamedatas.kyotocards[card].text1);
                         var text2 = _(this.gamedatas.kyotocards[card].text2);
                         var text3 = _(this.gamedatas.kyotocards[card].text3);
-                        var html = '<div class="toolt"><div class="cardtoolt cardrose">'+this.format_block('jstpl_kyoto2tool',{x: (card-61)*(-100), y: -200, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
+                        var texteif = _('If:');
+                        var textethen = _('Then:');
+                        var html = '<div class="toolt"><div class="cardtoolt cardrose">'+this.format_block('jstpl_kyoto2tool',{x: (card-61)*(-100), y: -200, texteif: texteif, textethen: textethen, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
                         this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
                     }
@@ -7081,13 +7149,15 @@ function (dojo, declare) {
                         var text1 = _(this.gamedatas.kyotocards[card].text1);
                         var text2 = _(this.gamedatas.kyotocards[card].text2);
                         var text3 = _(this.gamedatas.kyotocards[card].text3);
+                        var texteif = _('If:');
+                        var textethen = _('Then:');
                         if(card ==71)
                         {
-                        var html = '<div class="toolt"><div class="cardtoolt cardrose">'+this.format_block('jstpl_kyoto2tool',{x: (card-71)*(-100), y: -300, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
+                        var html = '<div class="toolt"><div class="cardtoolt cardrose">'+this.format_block('jstpl_kyoto2tool',{x: (card-71)*(-100), y: -300, texteif: texteif, textethen: textethen, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
                         }
                         else
                         {
-                        var html = '<div class="toolt"><div class="cardtoolt cardjaune">'+this.format_block('jstpl_kyoto2tool',{x: (card-71)*(-100), y: -300, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
+                        var html = '<div class="toolt"><div class="cardtoolt cardjaune">'+this.format_block('jstpl_kyoto2tool',{x: (card-71)*(-100), y: -300, texteif: texteif, textethen: textethen, name: name, town: town, text1: text1, text2: text2, text3: text3, gain: gain, gainpv: gainpv, prerequis: prerequis, gaintotal: gaintotal})+'</div></div>';
                         }
                         this.addTooltipHtml( 'card_'+ville+'_'+id, html,1000);
                         
