@@ -519,6 +519,7 @@ class letsgotojapan extends Table
         $result['tokyocards'] = $this->tokyocards;
         $result['kyotocards'] = $this->kyotocards;
         $result['passportcards'] = $this->passportcards;
+        $result['textes'] = $this->textes;
 
         
 

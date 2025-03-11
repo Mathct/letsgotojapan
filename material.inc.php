@@ -60,6 +60,16 @@ $this->days = [
 
 ];
 
+$this->textes = [
+  '1' => [
+    'name' => clienttranslate("If:"),
+  ],
+ 
+  '2' => [
+    'name' => clienttranslate("Then:"),
+  ],
+];
+
 $this->walk = [
   '0' => [
     'bonus' => [0, 0, 0, 0, 0, 1, 0, 0, 0],
