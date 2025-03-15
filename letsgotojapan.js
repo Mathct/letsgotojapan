@@ -1513,9 +1513,9 @@ function (dojo, declare) {
                                             var card = cards[3];
 
                                             var name = _(this.gamedatas.tokyocards[card].name);
-                                            name = name.split(' ').map(word => {
+                                            /*name = name.split(' ').map(word => {
                                                 return word.charAt(0).toUpperCase() + word.slice(1);
-                                            }).join(' ');
+                                            }).join(' ');*/
                                             var gain='';
                                             var bonus = this.gamedatas.tokyocards[card].bonus;
                                             bonus.forEach((valeur, index) => {
@@ -1734,9 +1734,9 @@ function (dojo, declare) {
                                             var card = cards[3];
 
                                             var name = _(this.gamedatas.kyotocards[card].name);
-                                            name = name.split(' ').map(word => {
+                                            /*name = name.split(' ').map(word => {
                                                 return word.charAt(0).toUpperCase() + word.slice(1);
-                                            }).join(' ');
+                                            }).join(' ');*/
                                             var gain='';
                                             var bonus = this.gamedatas.kyotocards[card].bonus;
                                             bonus.forEach((valeur, index) => {
@@ -2194,9 +2194,9 @@ function (dojo, declare) {
 
                         
                         var name = _(this.gamedatas.tokyocards[card].name);
-                        name = name.split(' ').map(word => {
+                        /*name = name.split(' ').map(word => {
                             return word.charAt(0).toUpperCase() + word.slice(1);
-                        }).join(' ');
+                        }).join(' ');*/
 
                         
 
@@ -2350,9 +2350,9 @@ function (dojo, declare) {
                         } ) , location+'_'+player );
 
                         var name = _(this.gamedatas.tokyocards[card].name);
-                        name = name.split(' ').map(word => {
+                        /*name = name.split(' ').map(word => {
                             return word.charAt(0).toUpperCase() + word.slice(1);
-                        }).join(' ');
+                        }).join(' ');*/
 
                         var gain='';
                         var bonus = this.gamedatas.tokyocards[card].bonus;
@@ -2507,9 +2507,9 @@ function (dojo, declare) {
                         } ) , location+'_'+player );
 
                         var name = _(this.gamedatas.tokyocards[card].name);
-                        name = name.split(' ').map(word => {
+                        /*name = name.split(' ').map(word => {
                             return word.charAt(0).toUpperCase() + word.slice(1);
-                        }).join(' ');
+                        }).join(' ');*/
                         var gain='';
                         var bonus = this.gamedatas.tokyocards[card].bonus;
                         bonus.forEach((valeur, index) => {
@@ -2660,9 +2660,9 @@ function (dojo, declare) {
                         } ) , location+'_'+player );
                         
                         var name = _(this.gamedatas.tokyocards[card].name);
-                        name = name.split(' ').map(word => {
+                        /*name = name.split(' ').map(word => {
                             return word.charAt(0).toUpperCase() + word.slice(1);
-                        }).join(' ');
+                        }).join(' ');*/
                         var gain='';
                         var bonus = this.gamedatas.tokyocards[card].bonus;
                         bonus.forEach((valeur, index) => {
@@ -2813,9 +2813,9 @@ function (dojo, declare) {
                         } ) , location+'_'+player );
 
                         var name = _(this.gamedatas.tokyocards[card].name);
-                        name = name.split(' ').map(word => {
+                        /*name = name.split(' ').map(word => {
                             return word.charAt(0).toUpperCase() + word.slice(1);
-                        }).join(' ');
+                        }).join(' ');*/
                         var gain='';
                         var bonus = this.gamedatas.tokyocards[card].bonus;
                         bonus.forEach((valeur, index) => {
@@ -2966,9 +2966,9 @@ function (dojo, declare) {
                         } ) , location+'_'+player );
 
                         var name = _(this.gamedatas.tokyocards[card].name);
-                        name = name.split(' ').map(word => {
+                        /*name = name.split(' ').map(word => {
                             return word.charAt(0).toUpperCase() + word.slice(1);
-                        }).join(' ');
+                        }).join(' ');*/
                         var gain='';
                         var bonus = this.gamedatas.tokyocards[card].bonus;
                         bonus.forEach((valeur, index) => {
@@ -3119,9 +3119,9 @@ function (dojo, declare) {
                         } ) , location+'_'+player );
 
                         var name = _(this.gamedatas.tokyocards[card].name);
-                        name = name.split(' ').map(word => {
+                        /*name = name.split(' ').map(word => {
                             return word.charAt(0).toUpperCase() + word.slice(1);
-                        }).join(' ');
+                        }).join(' ');*/
                         var gain='';
                         var bonus = this.gamedatas.tokyocards[card].bonus;
                         bonus.forEach((valeur, index) => {
@@ -3272,9 +3272,9 @@ function (dojo, declare) {
                         } ) , location+'_'+player );
 
                         var name = _(this.gamedatas.tokyocards[card].name);
-                        name = name.split(' ').map(word => {
+                        /*name = name.split(' ').map(word => {
                             return word.charAt(0).toUpperCase() + word.slice(1);
-                        }).join(' ');
+                        }).join(' ');*/
                         var gain='';
                         var bonus = this.gamedatas.tokyocards[card].bonus;
                         bonus.forEach((valeur, index) => {
@@ -3452,9 +3452,9 @@ function (dojo, declare) {
                         } ) , location+'_'+player );
 
                         var name = _(this.gamedatas.kyotocards[card].name);
-                        name = name.split(' ').map(word => {
+                        /*name = name.split(' ').map(word => {
                             return word.charAt(0).toUpperCase() + word.slice(1);
-                        }).join(' ');
+                        }).join(' ');*/
                         var gain='';
                         var bonus = this.gamedatas.kyotocards[card].bonus;
                         bonus.forEach((valeur, index) => {
@@ -3605,9 +3605,9 @@ function (dojo, declare) {
                         } ) , location+'_'+player );
 
                         var name = _(this.gamedatas.kyotocards[card].name);
-                        name = name.split(' ').map(word => {
+                        /*name = name.split(' ').map(word => {
                             return word.charAt(0).toUpperCase() + word.slice(1);
-                        }).join(' ');
+                        }).join(' ');*/
                         var gain='';
                         var bonus = this.gamedatas.kyotocards[card].bonus;
                         bonus.forEach((valeur, index) => {
@@ -3758,9 +3758,9 @@ function (dojo, declare) {
                         } ) , location+'_'+player );
 
                         var name = _(this.gamedatas.kyotocards[card].name);
-                        name = name.split(' ').map(word => {
+                        /*name = name.split(' ').map(word => {
                             return word.charAt(0).toUpperCase() + word.slice(1);
-                        }).join(' ');
+                        }).join(' ');*/
                         var gain='';
                         var bonus = this.gamedatas.kyotocards[card].bonus;
                         bonus.forEach((valeur, index) => {
@@ -3911,9 +3911,9 @@ function (dojo, declare) {
                         } ) , location+'_'+player );
 
                         var name = _(this.gamedatas.kyotocards[card].name);
-                        name = name.split(' ').map(word => {
+                        /*name = name.split(' ').map(word => {
                             return word.charAt(0).toUpperCase() + word.slice(1);
-                        }).join(' ');
+                        }).join(' ');*/
                         var gain='';
                         var bonus = this.gamedatas.kyotocards[card].bonus;
                         bonus.forEach((valeur, index) => {
@@ -4064,9 +4064,9 @@ function (dojo, declare) {
                         } ) , location+'_'+player );
 
                         var name = _(this.gamedatas.kyotocards[card].name);
-                        name = name.split(' ').map(word => {
+                        /*name = name.split(' ').map(word => {
                             return word.charAt(0).toUpperCase() + word.slice(1);
-                        }).join(' ');
+                        }).join(' ');*/
                         var gain='';
                         var bonus = this.gamedatas.kyotocards[card].bonus;
                         bonus.forEach((valeur, index) => {
@@ -4217,9 +4217,9 @@ function (dojo, declare) {
                         } ) , location+'_'+player );
 
                         var name = _(this.gamedatas.kyotocards[card].name);
-                        name = name.split(' ').map(word => {
+                        /*name = name.split(' ').map(word => {
                             return word.charAt(0).toUpperCase() + word.slice(1);
-                        }).join(' ');
+                        }).join(' ');*/
                         var gain='';
                         var bonus = this.gamedatas.kyotocards[card].bonus;
                         bonus.forEach((valeur, index) => {
@@ -4370,9 +4370,9 @@ function (dojo, declare) {
                         } ) , location+'_'+player );
 
                         var name = _(this.gamedatas.kyotocards[card].name);
-                        name = name.split(' ').map(word => {
+                        /*name = name.split(' ').map(word => {
                             return word.charAt(0).toUpperCase() + word.slice(1);
-                        }).join(' ');
+                        }).join(' ');*/
                         var gain='';
                         var bonus = this.gamedatas.kyotocards[card].bonus;
                         bonus.forEach((valeur, index) => {
@@ -4523,9 +4523,9 @@ function (dojo, declare) {
                         } ) , location+'_'+player );
 
                         var name = _(this.gamedatas.kyotocards[card].name);
-                        name = name.split(' ').map(word => {
+                        /*name = name.split(' ').map(word => {
                             return word.charAt(0).toUpperCase() + word.slice(1);
-                        }).join(' ');
+                        }).join(' ');*/
                         var gain='';
                         var bonus = this.gamedatas.kyotocards[card].bonus;
                         bonus.forEach((valeur, index) => {
@@ -4703,9 +4703,9 @@ function (dojo, declare) {
                         } ) , location+'_'+player );
 
                         var name = _(this.gamedatas.tokyocards[card].name);
-                        name = name.split(' ').map(word => {
+                        /*name = name.split(' ').map(word => {
                             return word.charAt(0).toUpperCase() + word.slice(1);
-                        }).join(' ');
+                        }).join(' ');*/
                         var gain='';
                         var bonus = this.gamedatas.tokyocards[card].bonus;
                         bonus.forEach((valeur, index) => {
@@ -4857,9 +4857,9 @@ function (dojo, declare) {
                         } ) , location+'_'+player );
 
                         var name = _(this.gamedatas.tokyocards[card].name);
-                        name = name.split(' ').map(word => {
+                        /*name = name.split(' ').map(word => {
                             return word.charAt(0).toUpperCase() + word.slice(1);
-                        }).join(' ');
+                        }).join(' ');*/
                         var gain='';
                         var bonus = this.gamedatas.tokyocards[card].bonus;
                         bonus.forEach((valeur, index) => {
@@ -5010,9 +5010,9 @@ function (dojo, declare) {
                         } ) , location+'_'+player );
 
                         var name = _(this.gamedatas.tokyocards[card].name);
-                        name = name.split(' ').map(word => {
+                        /*name = name.split(' ').map(word => {
                             return word.charAt(0).toUpperCase() + word.slice(1);
-                        }).join(' ');
+                        }).join(' ');*/
                         var gain='';
                         var bonus = this.gamedatas.tokyocards[card].bonus;
                         bonus.forEach((valeur, index) => {
@@ -5163,9 +5163,9 @@ function (dojo, declare) {
                         } ) , location+'_'+player );
 
                         var name = _(this.gamedatas.tokyocards[card].name);
-                        name = name.split(' ').map(word => {
+                        /*name = name.split(' ').map(word => {
                             return word.charAt(0).toUpperCase() + word.slice(1);
-                        }).join(' ');
+                        }).join(' ');*/
                         var gain='';
                         var bonus = this.gamedatas.tokyocards[card].bonus;
                         bonus.forEach((valeur, index) => {
@@ -5316,9 +5316,9 @@ function (dojo, declare) {
                         } ) , location+'_'+player );
 
                         var name = _(this.gamedatas.tokyocards[card].name);
-                        name = name.split(' ').map(word => {
+                        /*name = name.split(' ').map(word => {
                             return word.charAt(0).toUpperCase() + word.slice(1);
-                        }).join(' ');
+                        }).join(' ');*/
                         var gain='';
                         var bonus = this.gamedatas.tokyocards[card].bonus;
                         bonus.forEach((valeur, index) => {
@@ -5469,9 +5469,9 @@ function (dojo, declare) {
                         } ) , location+'_'+player );
 
                         var name = _(this.gamedatas.tokyocards[card].name);
-                        name = name.split(' ').map(word => {
+                        /*name = name.split(' ').map(word => {
                             return word.charAt(0).toUpperCase() + word.slice(1);
-                        }).join(' ');
+                        }).join(' ');*/
                         var gain='';
                         var bonus = this.gamedatas.tokyocards[card].bonus;
                         bonus.forEach((valeur, index) => {
@@ -5622,9 +5622,9 @@ function (dojo, declare) {
                         } ) , location+'_'+player );
 
                         var name = _(this.gamedatas.tokyocards[card].name);
-                        name = name.split(' ').map(word => {
+                        /*name = name.split(' ').map(word => {
                             return word.charAt(0).toUpperCase() + word.slice(1);
-                        }).join(' ');
+                        }).join(' ');*/
                         var gain='';
                         var bonus = this.gamedatas.tokyocards[card].bonus;
                         bonus.forEach((valeur, index) => {
@@ -5777,9 +5777,9 @@ function (dojo, declare) {
                         } ) , location+'_'+player );
 
                         var name = _(this.gamedatas.tokyocards[card].name);
-                        name = name.split(' ').map(word => {
+                        /*name = name.split(' ').map(word => {
                             return word.charAt(0).toUpperCase() + word.slice(1);
-                        }).join(' ');
+                        }).join(' ');*/
                         var gain='';
                         var bonus = this.gamedatas.tokyocards[card].bonus;
                         bonus.forEach((valeur, index) => {
@@ -6014,9 +6014,9 @@ function (dojo, declare) {
                         } ) , location+'_'+player );
 
                         var name = _(this.gamedatas.kyotocards[card].name);
-                        name = name.split(' ').map(word => {
+                        /*name = name.split(' ').map(word => {
                             return word.charAt(0).toUpperCase() + word.slice(1);
-                        }).join(' ');
+                        }).join(' ');*/
                         var gain='';
                         var bonus = this.gamedatas.kyotocards[card].bonus;
                         bonus.forEach((valeur, index) => {
@@ -6167,9 +6167,9 @@ function (dojo, declare) {
                         } ) , location+'_'+player );
 
                         var name = _(this.gamedatas.kyotocards[card].name);
-                        name = name.split(' ').map(word => {
+                        /*name = name.split(' ').map(word => {
                             return word.charAt(0).toUpperCase() + word.slice(1);
-                        }).join(' ');
+                        }).join(' ');*/
                         var gain='';
                         var bonus = this.gamedatas.kyotocards[card].bonus;
                         bonus.forEach((valeur, index) => {
@@ -6320,9 +6320,9 @@ function (dojo, declare) {
                         } ) , location+'_'+player );
 
                         var name = _(this.gamedatas.kyotocards[card].name);
-                        name = name.split(' ').map(word => {
+                        /*name = name.split(' ').map(word => {
                             return word.charAt(0).toUpperCase() + word.slice(1);
-                        }).join(' ');
+                        }).join(' ');*/
                         var gain='';
                         var bonus = this.gamedatas.kyotocards[card].bonus;
                         bonus.forEach((valeur, index) => {
@@ -6473,9 +6473,9 @@ function (dojo, declare) {
                         } ) , location+'_'+player );
 
                         var name = _(this.gamedatas.kyotocards[card].name);
-                        name = name.split(' ').map(word => {
+                        /*name = name.split(' ').map(word => {
                             return word.charAt(0).toUpperCase() + word.slice(1);
-                        }).join(' ');
+                        }).join(' ');*/
                         var gain='';
                         var bonus = this.gamedatas.kyotocards[card].bonus;
                         bonus.forEach((valeur, index) => {
@@ -6626,9 +6626,9 @@ function (dojo, declare) {
                         } ) , location+'_'+player );
 
                         var name = _(this.gamedatas.kyotocards[card].name);
-                        name = name.split(' ').map(word => {
+                        /*name = name.split(' ').map(word => {
                             return word.charAt(0).toUpperCase() + word.slice(1);
-                        }).join(' ');
+                        }).join(' ');*/
                         var gain='';
                         var bonus = this.gamedatas.kyotocards[card].bonus;
                         bonus.forEach((valeur, index) => {
@@ -6779,9 +6779,9 @@ function (dojo, declare) {
                         } ) , location+'_'+player );
 
                         var name = _(this.gamedatas.kyotocards[card].name);
-                        name = name.split(' ').map(word => {
+                        /*name = name.split(' ').map(word => {
                             return word.charAt(0).toUpperCase() + word.slice(1);
-                        }).join(' ');
+                        }).join(' ');*/
                         var gain='';
                         var bonus = this.gamedatas.kyotocards[card].bonus;
                         bonus.forEach((valeur, index) => {
@@ -6932,9 +6932,9 @@ function (dojo, declare) {
                         } ) , location+'_'+player );
 
                         var name = _(this.gamedatas.kyotocards[card].name);
-                        name = name.split(' ').map(word => {
+                        /*name = name.split(' ').map(word => {
                             return word.charAt(0).toUpperCase() + word.slice(1);
-                        }).join(' ');
+                        }).join(' ');*/
                         var gain='';
                         var bonus = this.gamedatas.kyotocards[card].bonus;
                         bonus.forEach((valeur, index) => {
@@ -7085,9 +7085,9 @@ function (dojo, declare) {
                         } ) , location+'_'+player );
 
                         var name = _(this.gamedatas.kyotocards[card].name);
-                        name = name.split(' ').map(word => {
+                        /*name = name.split(' ').map(word => {
                             return word.charAt(0).toUpperCase() + word.slice(1);
-                        }).join(' ');
+                        }).join(' ');*/
                         var gain='';
                         var bonus = this.gamedatas.kyotocards[card].bonus;
                         bonus.forEach((valeur, index) => {
