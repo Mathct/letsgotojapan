@@ -37,8 +37,8 @@ class view_letsgotojapan_letsgotojapan extends game_view
   	function build_page( $viewArgs )
   	{		
   	    // Get players & players number
-          global $g_user;
-          $current_player_id = $g_user->get_id(); // id current player
+          
+          $current_player_id = $this->getCurrentPlayerId(); // id current player
           $spectator = $this->game->isSpectator();  // true ou false
           $players = $this->game->loadPlayersBasicInfos();
           
