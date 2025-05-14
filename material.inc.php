@@ -414,7 +414,7 @@ $this->tokyocards = [
     'bonus' => [0, 0, 0, 2, 0, 0, 0, 1, 1],
     'prerequis' => '<div class="ytool"></div><div class="ytool"></div><div class="ytool"></div><div class="ytool"></div>',
     'pv' => 2,
-    'name' => clienttranslate("Board game store in Akihabara"),
+    'name' => clienttranslate("Be an Otaku in Akihabara"),
     'text1' => clienttranslate("Akihabara [ah•key•ha•ba•ra] is the nexus of otaku (geek) culture in Tokyo. This bustling, colorful neighborhood is packed with stores devoted to anime, manga, and gaming."),
     'text2' => clienttranslate("Spend hours geeking out"),
     'text3' => '',
