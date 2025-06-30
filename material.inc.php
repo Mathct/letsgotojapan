@@ -1948,7 +1948,7 @@ $this->passportcards = [
   '17' => [
     'text1' => '',
     'text2' => clienttranslate('Score 14 <div class="littlepvtool"></div> at the end of the game if you have an equal number of Tokyo and Kyoto cards.'),
-    'text3' => clienttranslate("<br>When scoring this card, only cards with a blue Tokyo tag or pink Kyoto tag count, including facedown Walk cards. (Do not count any face-up yellow cards without a city tag.)"),
+    'text3' => clienttranslate("<br>When scoring this card, only cards with a blue Tokyo tag or pink Kyoto tag count, including facedown Walk cards. (Do not count any face-up yellow cards)"),
   ],
 
   '18' => [
