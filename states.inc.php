@@ -51,18 +51,6 @@
 
  
 $machinestates = array(
-
-    // The initial state. Please do not modify.
-    1 => array(
-        "name" => "gameSetup",
-        "description" => "",
-        "type" => "manager",
-        "action" => "stGameSetup",
-        "transitions" => array( "" => 3 )
-    ),
-    
-    // Note: ID=2 => your first state
-
     2 => array(
         "name" => "ActivationMulti",
         "description" => clienttranslate('The other players must perform their actions'),
@@ -95,17 +83,6 @@ $machinestates = array(
         "transitions" => array( "stop" => 2, "next" => 3, "same" => 4, "zombiePass" => 2, "end" => 99)
         
     ),*/
-   
-    // Final state.
-    // Please do not modify (and do not overload action/args methods).
-    99 => array(
-        "name" => "gameEnd",
-        "description" => clienttranslate("End of game"),
-        "type" => "manager",
-        "action" => "stGameEnd",
-        "args" => "argGameEnd"
-    )
-
 );
 
 

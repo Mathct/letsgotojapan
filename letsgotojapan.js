@@ -1342,7 +1342,7 @@ function (dojo, declare) {
                             }
 
 
-                            if (this.prefs[100].value == 2)
+                            if (this.bga.userPreferences.get(100) == 2)
                                 {
                                     var flash = document.querySelectorAll('.card.selected3, .cardverso.selected3');
                                     
@@ -10597,7 +10597,7 @@ function (dojo, declare) {
                 $('score_'+notif.args.numero+'_10').innerHTML = notif.args.recherche;
                 $('score_'+notif.args.numero+'_11').innerHTML = notif.args.total;
 
-                this.scoreCtrl[ notif.args.player ].toValue( notif.args.total );
+                this.bga.playerPanels.getScoreCounter(notif.args.player).toValue( notif.args.total );
                 
             },
 
@@ -10659,7 +10659,7 @@ function (dojo, declare) {
                 $('score_'+notif.args.numero+'_10').innerHTML = notif.args.recherche;
                 $('score_'+notif.args.numero+'_11').innerHTML = notif.args.total;
 
-                this.scoreCtrl[ notif.args.player ].toValue( notif.args.pannel);
+                this.bga.playerPanels.getScoreCounter(notif.args.player).toValue( notif.args.pannel);
                 
             },
 

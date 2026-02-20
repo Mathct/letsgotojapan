@@ -16,20 +16,31 @@
   *
   */
 
+use Bga\GameFramework\Components\Deck;
+use Bga\GameFramework\Table;
+use Bga\GameFramework\UserException;
+use Bga\GameFramework\VisibleSystemException;
 
-require_once( APP_GAMEMODULE_PATH.'module/table/table.game.php' );
 include('modules/Pending.php');
 include('modules/CardTokyo.php');
 include('modules/CardKyoto.php');
 include('modules/AgentCardTokyo.php');
 include('modules/AgentCardKyoto.php');
 
-
-
-
 class letsgotojapan extends Table
 {
     public static $instance = null;
+
+    public Deck $tokyo;
+    public Deck $kyoto;
+    public Deck $passport;
+
+    public array $days;
+    public array $textes;
+    public array $walk;
+    public array $tokyocards;
+    public array $kyotocards;
+    public array $passportcards;
 
 	function __construct( )
 	{
@@ -51,26 +62,17 @@ class letsgotojapan extends Table
 
         self::$instance = $this;
 
-        $this->tokyo = self::getNew( "module.common.deck" );
-        $this->tokyo->init( "tokyo" );
+        $this->tokyo = $this->bga->deckFactory->createDeck( "tokyo" );
         $this->tokyo->autoreshuffle = true;
 
-        $this->kyoto = self::getNew( "module.common.deck" );
-        $this->kyoto->init( "kyoto" );
+        $this->kyoto = $this->bga->deckFactory->createDeck( "kyoto" );
         $this->kyoto->autoreshuffle = true;
 
-        $this->passport = self::getNew( "module.common.deck" );
-        $this->passport->init( "passport" );
+        $this->passport = $this->bga->deckFactory->createDeck( "passport" );
         $this->passport->autoreshuffle = true;
 
         
 	}
-	
-    protected function getGameName( )
-    {
-		// Used for translations and stuff. Please do not modify.
-        return "letsgotojapan";
-    }	
 
     /*
         setupNewGame:
@@ -89,7 +91,7 @@ class letsgotojapan extends Table
  
         // Create players
         // Note: if you added some extra field on "player" table in the database (dbmodel.sql), you can initialize it there.
-        $sql = "INSERT INTO player (player_id, player_color, player_canal, player_name, player_avatar) VALUES ";
+        $sql = "INSERT INTO `player` (`player_id`, `player_color`, `player_canal`, `player_name`, `player_avatar`) VALUES ";
         $values = array();
         foreach( $players as $player_id => $player )
         {
@@ -123,30 +125,30 @@ class letsgotojapan extends Table
         self::initStat( 'player', 'research', 0 ); 
 
 
-        $gamemode = $this->gamestate->table_globals[100];
-        $countplayer = count(self::getObjectListFromDB( "SELECT player_id FROM player", true ));
+        $gamemode = $this->bga->tableOptions->get(100);
+        $countplayer = count(self::getObjectListFromDB( "SELECT `player_id` FROM `player`", true ));
 
         //////// AI ///////
 
-        self::DbQuery( "INSERT INTO agent (name) VALUES ('agent')" );
+        self::DbQuery( "INSERT INTO `agent` (`name`) VALUES ('agent')" );
 
         ///////////////////
         
 
         if($gamemode == 1)
         {
-        self::DbQuery( "INSERT INTO mode (name, mode, actif) VALUES ('mode', 1, 0)" );
+        self::DbQuery( "INSERT INTO `mode` (`name`, `mode`, `actif`) VALUES ('mode', 1, 0)" );
         }
         if($gamemode == 2)
         {
-        self::DbQuery( "INSERT INTO mode (name, mode, actif) VALUES ('mode', 2, 1)" );
+        self::DbQuery( "INSERT INTO `mode` (`name`, `mode`, `actif`) VALUES ('mode', 2, 1)" );
             if($countplayer == 1)
             {
-                self::DbQuery( "UPDATE agent set r = 3  WHERE name = 'agent'" );
-                self::DbQuery( "UPDATE agent set g = 3  WHERE name = 'agent'" );
-                self::DbQuery( "UPDATE agent set p = 3  WHERE name = 'agent'" );
-                self::DbQuery( "UPDATE agent set y = 3  WHERE name = 'agent'" );
-                self::DbQuery( "UPDATE agent set b = 3  WHERE name = 'agent'" );
+                self::DbQuery( "UPDATE `agent` set `r` = 3  WHERE `name` = 'agent'" );
+                self::DbQuery( "UPDATE `agent` set `g` = 3  WHERE `name` = 'agent'" );
+                self::DbQuery( "UPDATE `agent` set `p` = 3  WHERE `name` = 'agent'" );
+                self::DbQuery( "UPDATE `agent` set `y` = 3  WHERE `name` = 'agent'" );
+                self::DbQuery( "UPDATE `agent` set `b` = 3  WHERE `name` = 'agent'" );
             }
 
         }
@@ -244,7 +246,7 @@ class letsgotojapan extends Table
 
         //////// TOKENS ///////
 
-        self::DbQuery( "INSERT INTO tokens (type, name, level) VALUES ('turn', 'turn', 1)" );
+        self::DbQuery( "INSERT INTO `tokens` (`type`, `name`, `level`) VALUES ('turn', 'turn', 1)" );
 
         $valeurs = [1, 2, 3, 4, 5, 6];
         function tirerEtRetirerValeur(&$tableau) {
@@ -266,17 +268,17 @@ class letsgotojapan extends Table
         $valeur5 = tirerEtRetirerValeur($valeurs);
         $valeur6 = tirerEtRetirerValeur($valeurs);
 
-        self::DbQuery( "INSERT INTO tokens (type, name, level) VALUES ('general', '1', $valeur1)" );
-        self::DbQuery( "INSERT INTO tokens (type, name, level) VALUES ('general', '2', $valeur2)" );
-        self::DbQuery( "INSERT INTO tokens (type, name, level) VALUES ('general', '3', $valeur3)" );
-        self::DbQuery( "INSERT INTO tokens (type, name, level) VALUES ('general', '4', $valeur4)" );
-        self::DbQuery( "INSERT INTO tokens (type, name, level) VALUES ('general', '5', $valeur5)" );
-        self::DbQuery( "INSERT INTO tokens (type, name, level) VALUES ('general', '6', $valeur6)" );
+        self::DbQuery( "INSERT INTO `tokens` (`type`, `name`, `level`) VALUES ('general', '1', $valeur1)" );
+        self::DbQuery( "INSERT INTO `tokens` (`type`, `name`, `level`) VALUES ('general', '2', $valeur2)" );
+        self::DbQuery( "INSERT INTO `tokens` (`type`, `name`, `level`) VALUES ('general', '3', $valeur3)" );
+        self::DbQuery( "INSERT INTO `tokens` (`type`, `name`, `level`) VALUES ('general', '4', $valeur4)" );
+        self::DbQuery( "INSERT INTO `tokens` (`type`, `name`, `level`) VALUES ('general', '5', $valeur5)" );
+        self::DbQuery( "INSERT INTO `tokens` (`type`, `name`, `level`) VALUES ('general', '6', $valeur6)" );
 
         for ($i=72; $i<=80; $i++)
         {
-            self::DbQuery( "UPDATE tokyo set finallocation = 0  WHERE card_type = {$i}" );
-            self::DbQuery( "UPDATE kyoto set finallocation = 0  WHERE card_type = {$i}" );
+            self::DbQuery( "UPDATE `tokyo` set `finallocation` = 0  WHERE `card_type` = {$i}" );
+            self::DbQuery( "UPDATE `kyoto` set `finallocation` = 0  WHERE `card_type` = {$i}" );
         }
 
 
@@ -287,7 +289,7 @@ class letsgotojapan extends Table
         foreach( $players as $player_id => $player )
             {
                 
-                self::DbQuery( "INSERT INTO prefconfirm (player_id, valeur) VALUES ($player_id, 1)" );
+                self::DbQuery( "INSERT INTO `prefconfirm` (`player_id`, `valeur`) VALUES ($player_id, 1)" );
                 
 
             }
@@ -298,11 +300,11 @@ class letsgotojapan extends Table
 
         if($countplayer >1)
         {
-            $copydecktokyo = self::getObjectListFromDB( "SELECT card_id id, card_type type, card_type_arg type_arg, card_location location, card_location_arg location_arg, walk walk, finallocation finallocation, finalwalk finalwalk FROM tokyo WHERE card_location != 'deck' and card_location != 'discard' and card_location != 'discardboardhidden' and card_location != 'discardboard' and card_location != 'playerhand'");
-            $copydeckkyoto = self::getObjectListFromDB( "SELECT card_id id, card_type type, card_type_arg type_arg, card_location location, card_location_arg location_arg, walk walk, finallocation finallocation, finalwalk finalwalk FROM kyoto WHERE card_location != 'deck' and card_location != 'discard' and card_location != 'discardboardhidden' and card_location != 'discardboard' and card_location != 'playerhand'");
-            $copybonus = self::getObjectListFromDB( "SELECT player_id id, smile smile, happy happy, angry angry, recherche recherche, train train, trainstart trainstart, wild wild FROM player");
+            $copydecktokyo = self::getObjectListFromDB( "SELECT `card_id` id, `card_type` type, `card_type_arg` type_arg, `card_location` location, `card_location_arg` location_arg, `walk` walk, `finallocation` finallocation, `finalwalk` finalwalk FROM `tokyo` WHERE `card_location` != 'deck' and `card_location` != 'discard' and `card_location` != 'discardboardhidden' and `card_location` != 'discardboard' and `card_location` != 'playerhand'");
+            $copydeckkyoto = self::getObjectListFromDB( "SELECT `card_id` id, `card_type` type, `card_type_arg` type_arg, `card_location` location, `card_location_arg` location_arg, `walk` walk, `finallocation` finallocation, `finalwalk` finalwalk FROM `kyoto` WHERE `card_location` != 'deck' and `card_location` != 'discard' and `card_location` != 'discardboardhidden' and `card_location` != 'discardboard' and `card_location` != 'playerhand'");
+            $copybonus = self::getObjectListFromDB( "SELECT `player_id` id, `smile` smile, `happy` happy, `angry` angry, `recherche` recherche, `train` train, `trainstart` trainstart, `wild` wild FROM `player`");
 
-            $listplayers = self::getObjectListFromDB( "SELECT player_id id FROM player", true );
+            $listplayers = self::getObjectListFromDB( "SELECT `player_id` id FROM `player`", true );
 
             foreach ($listplayers as $player_id)
             {
@@ -312,7 +314,7 @@ class letsgotojapan extends Table
                     {
                         if($player_id == $tokyo['location_arg'])
                         {
-                            self::DbQuery("INSERT INTO copytokyo (card_id, card_type, card_type_arg, card_location, card_location_arg, walk, finallocation, finalwalk) VALUES ('{$tokyo['id']}', '{$tokyo['type']}', '{$tokyo['type_arg']}', '{$tokyo['location']}', '{$tokyo['location_arg']}', '{$tokyo['walk']}', '{$tokyo['finallocation']}', '{$tokyo['finalwalk']}')");
+                            self::DbQuery("INSERT INTO `copytokyo` (`card_id`, `card_type`, `card_type_arg`, `card_location`, `card_location_arg`, `walk`, `finallocation`, `finalwalk`) VALUES ('{$tokyo['id']}', '{$tokyo['type']}', '{$tokyo['type_arg']}', '{$tokyo['location']}', '{$tokyo['location_arg']}', '{$tokyo['walk']}', '{$tokyo['finallocation']}', '{$tokyo['finalwalk']}')");
                         }
                     }
                 }
@@ -323,7 +325,7 @@ class letsgotojapan extends Table
                     {
                         if($player_id == $kyoto['location_arg'])
                         {
-                            self::DbQuery("INSERT INTO copykyoto (card_id, card_type, card_type_arg, card_location, card_location_arg, walk, finallocation, finalwalk) VALUES ('{$kyoto['id']}', '{$kyoto['type']}', '{$kyoto['type_arg']}', '{$kyoto['location']}', '{$kyoto['location_arg']}', '{$kyoto['walk']}', '{$kyoto['finallocation']}', '{$kyoto['finalwalk']}')");
+                            self::DbQuery("INSERT INTO `copykyoto` (`card_id`, `card_type`, `card_type_arg`, `card_location`, `card_location_arg`, `walk`, `finallocation`, `finalwalk`) VALUES ('{$kyoto['id']}', '{$kyoto['type']}', '{$kyoto['type_arg']}', '{$kyoto['location']}', '{$kyoto['location_arg']}', '{$kyoto['walk']}', '{$kyoto['finallocation']}', '{$kyoto['finalwalk']}')");
                         }
                     }
                 }
@@ -332,7 +334,7 @@ class letsgotojapan extends Table
                 {
                     if($player_id == $bonus['id'])
                     {
-                    self::DbQuery("INSERT INTO copybonus (player_id, smile, happy, angry, recherche, train, trainstart, wild) VALUES ('{$bonus['id']}', '{$bonus['smile']}', '{$bonus['happy']}', '{$bonus['angry']}', '{$bonus['recherche']}', '{$bonus['train']}', '{$bonus['trainstart']}', '{$bonus['wild']}')");
+                    self::DbQuery("INSERT INTO `copybonus` (`player_id`, `smile`, `happy`, `angry`, `recherche`, `train`, `trainstart`, `wild`) VALUES ('{$bonus['id']}', '{$bonus['smile']}', '{$bonus['happy']}', '{$bonus['angry']}', '{$bonus['recherche']}', '{$bonus['train']}', '{$bonus['trainstart']}', '{$bonus['wild']}')");
                     }
                 }
 
@@ -380,6 +382,7 @@ class letsgotojapan extends Table
         $this->gamestate->setAllPlayersMultiactive();
 
         /************ End of the game initialization *****/
+        return 3;
     }
 
 /////////////////////////////////////////////////////////////////////////////////  
@@ -400,120 +403,118 @@ class letsgotojapan extends Table
 
         //self::repairBiggy();
 
-        $current_player_id = self::getCurrentPlayerId();    // !! We must only return informations visible by this player !!
-
         // Get information about players
         // Note: you can retrieve some extra field you added for "player" table in "dbmodel.sql" if you need it.
-        $sql = "SELECT player_id id, player_score score FROM player ";
+        $sql = "SELECT `player_id` id, `player_score` score FROM `player` ";
         $result['players'] = self::getCollectionFromDb( $sql );
 
-        $result['listplayers'] = self::getObjectListFromDB( "SELECT player_id id FROM player", true );
-        $result['countplayers'][] = count(self::getObjectListFromDB( "SELECT player_id id FROM player", true ));
+        $result['listplayers'] = self::getObjectListFromDB( "SELECT `player_id` id FROM `player`", true );
+        $result['countplayers'][] = count(self::getObjectListFromDB( "SELECT `player_id` id FROM `player`", true ));
 
-        $result['tokyo'] = self::getObjectListFromDB( "SELECT card_id id, card_type type, card_type_arg type_arg, card_location location, card_location_arg location_arg, walk walk, finallocation finallocation, finalwalk finalwalk, train train, checkcard checkcard FROM tokyo WHERE card_location != 'deck' and card_location != 'discard'");
-        $result['kyoto'] = self::getObjectListFromDB( "SELECT card_id id, card_type type, card_type_arg type_arg, card_location location, card_location_arg location_arg, walk walk, finallocation finallocation, finalwalk finalwalk, train train, checkcard checkcard FROM kyoto WHERE card_location != 'deck' and card_location != 'discard'");
+        $result['tokyo'] = self::getObjectListFromDB( "SELECT `card_id` id, `card_type` type, `card_type_arg` type_arg, `card_location` location, `card_location_arg` location_arg, `walk` walk, `finallocation` finallocation, `finalwalk` finalwalk, `train` train, `checkcard` checkcard FROM `tokyo` WHERE `card_location` != 'deck' and `card_location` != 'discard'");
+        $result['kyoto'] = self::getObjectListFromDB( "SELECT `card_id` id, `card_type` type, `card_type_arg` type_arg, `card_location` location, `card_location_arg` location_arg, `walk` walk, `finallocation` finallocation, `finalwalk` finalwalk, `train` train, `checkcard` checkcard FROM `kyoto` WHERE `card_location` != 'deck' and `card_location` != 'discard'");
 
-        $result['copytokyo'] = self::getObjectListFromDB( "SELECT card_id id, card_type type, card_type_arg type_arg, card_location location, card_location_arg location_arg, walk walk, finallocation finallocation, finalwalk finalwalk FROM copytokyo WHERE card_location != 'deck' and card_location != 'discard'");
-        $result['copykyoto'] = self::getObjectListFromDB( "SELECT card_id id, card_type type, card_type_arg type_arg, card_location location, card_location_arg location_arg, walk walk, finallocation finallocation, finalwalk finalwalk FROM copykyoto WHERE card_location != 'deck' and card_location != 'discard'");
+        $result['copytokyo'] = self::getObjectListFromDB( "SELECT `card_id` id, `card_type` type, `card_type_arg` type_arg, `card_location` location, `card_location_arg` location_arg, `walk` walk, `finallocation` finallocation, `finalwalk` finalwalk FROM `copytokyo` WHERE `card_location` != 'deck' and `card_location` != 'discard'");
+        $result['copykyoto'] = self::getObjectListFromDB( "SELECT `card_id` id, `card_type` type, `card_type_arg` type_arg, `card_location` location, `card_location_arg` location_arg, `walk` walk, `finallocation` finallocation, `finalwalk` finalwalk FROM `copykyoto` WHERE `card_location` != 'deck' and `card_location` != 'discard'");
 
-        $result['turn'] = self::getUniqueValueFromDB("SELECT level FROM tokens WHERE name = 'turn'");
+        $result['turn'] = self::getUniqueValueFromDB("SELECT `level` FROM `tokens` WHERE `name` = 'turn'");
 
-        $result['tokenjour'] = self::getObjectListFromDB( "SELECT name name, level level FROM tokens WHERE type = 'general'");
+        $result['tokenjour'] = self::getObjectListFromDB( "SELECT `name` name, `level` level FROM `tokens` WHERE `type` = 'general'");
 
-        $result['mode'] = self::getUniqueValueFromDB("SELECT mode FROM mode WHERE name ='mode' ");
-        $result['modeactif'] = self::getUniqueValueFromDB("SELECT actif FROM mode WHERE name ='mode' ");
-        $result['passport'] = self::getObjectListFromDB( "SELECT card_id id, card_type type, card_location location, card_location_arg location_arg FROM passport WHERE card_location != 'deck' and card_location != 'discard'");
+        $result['mode'] = self::getUniqueValueFromDB("SELECT `mode` FROM `mode` WHERE `name` ='mode' ");
+        $result['modeactif'] = self::getUniqueValueFromDB("SELECT `actif` FROM `mode` WHERE `name` ='mode' ");
+        $result['passport'] = self::getObjectListFromDB( "SELECT `card_id` id, `card_type` type, `card_location` location, `card_location_arg` location_arg FROM `passport` WHERE `card_location` != 'deck' and `card_location` != 'discard'");
 
-        $listplayers = self::getObjectListFromDB("SELECT player_id id FROM player", true);
+        $listplayers = self::getObjectListFromDB("SELECT `player_id` id FROM `player`", true);
         foreach($listplayers as $player)
         {
-            $result['smile'][$player] = self::getUniqueValueFromDB("SELECT smile FROM player WHERE player_id={$player}");
-            $result['copysmile'][$player] = self::getUniqueValueFromDB("SELECT smile FROM copybonus WHERE player_id={$player}");
-            $result['happy'][$player] = self::getUniqueValueFromDB("SELECT happy FROM player WHERE player_id={$player}");
-            $result['copyhappy'][$player] = self::getUniqueValueFromDB("SELECT happy FROM copybonus WHERE player_id={$player}");
-            $result['angry'][$player] = self::getUniqueValueFromDB("SELECT angry FROM player WHERE player_id={$player}");
-            $result['copyangry'][$player] = self::getUniqueValueFromDB("SELECT angry FROM copybonus WHERE player_id={$player}");
-            $result['color'][$player] = self::getUniqueValueFromDB("SELECT player_color FROM player WHERE player_id={$player}");
-            $result['nbrerecherche'][$player] = self::getUniqueValueFromDB("SELECT recherche FROM player WHERE player_id={$player}");
-            $result['copynbrerecherche'][$player] = self::getUniqueValueFromDB("SELECT recherche FROM copybonus WHERE player_id={$player}");
-            $result['nbretrain'][$player] = self::getUniqueValueFromDB("SELECT train FROM player WHERE player_id={$player}");
-            $result['copynbretrain'][$player] = self::getUniqueValueFromDB("SELECT train FROM copybonus WHERE player_id={$player}");
-            $result['nbrewild'][$player] = self::getUniqueValueFromDB("SELECT wild FROM player WHERE player_id={$player}");
-            $result['copynbrewild'][$player] = self::getUniqueValueFromDB("SELECT wild FROM copybonus WHERE player_id={$player}");
-            $result['nbretrainstart'][$player] = self::getUniqueValueFromDB("SELECT trainstart FROM player WHERE player_id={$player}");
-            $result['compteurcardtokyodiscard'][$player] = count(self::getObjectListFromDB( "SELECT card_id id FROM tokyo WHERE card_location = 'discardboard' and card_location_arg = {$player}", true));
-            $result['compteurcardkyotodiscard'][$player] = count(self::getObjectListFromDB( "SELECT card_id id FROM kyoto WHERE card_location = 'discardboard' and card_location_arg = {$player}", true));
-            $result['r'][$player] = self::getUniqueValueFromDB("SELECT r FROM player WHERE player_id={$player}");
-            $result['g'][$player] = self::getUniqueValueFromDB("SELECT g FROM player WHERE player_id={$player}");
-            $result['p'][$player] = self::getUniqueValueFromDB("SELECT p FROM player WHERE player_id={$player}");
-            $result['y'][$player] = self::getUniqueValueFromDB("SELECT y FROM player WHERE player_id={$player}");
-            $result['b'][$player] = self::getUniqueValueFromDB("SELECT b FROM player WHERE player_id={$player}");
-            $result['happy1'][$player] = self::getUniqueValueFromDB("SELECT happy1 FROM player WHERE player_id={$player}");
-            $result['happy2'][$player] = self::getUniqueValueFromDB("SELECT happy2 FROM player WHERE player_id={$player}");
-            $result['angry1'][$player] = self::getUniqueValueFromDB("SELECT angry1 FROM player WHERE player_id={$player}");
-            $result['angry2'][$player] = self::getUniqueValueFromDB("SELECT angry2 FROM player WHERE player_id={$player}");
-            $result['numero'][$player] = self::getUniqueValueFromDB("SELECT player_no FROM player WHERE player_id={$player}");
-            $result['name'][$player] = self::getUniqueValueFromDB("SELECT player_name FROM player WHERE player_id={$player}");
-            $result['lundi'][$player] = self::getUniqueValueFromDB("SELECT lundi FROM player WHERE player_id={$player}");
-            $result['mardi'][$player] = self::getUniqueValueFromDB("SELECT mardi FROM player WHERE player_id={$player}");
-            $result['mercredi'][$player] = self::getUniqueValueFromDB("SELECT mercredi FROM player WHERE player_id={$player}");
-            $result['jeudi'][$player] = self::getUniqueValueFromDB("SELECT jeudi FROM player WHERE player_id={$player}");
-            $result['vendredi'][$player] = self::getUniqueValueFromDB("SELECT vendredi FROM player WHERE player_id={$player}");
-            $result['samedi'][$player] = self::getUniqueValueFromDB("SELECT samedi FROM player WHERE player_id={$player}");
-            $result['scorehumeur'][$player] = self::getUniqueValueFromDB("SELECT scorehumeur FROM player WHERE player_id={$player}");
-            $result['scoretoken'][$player] = self::getUniqueValueFromDB("SELECT scoretoken FROM player WHERE player_id={$player}");
-            $result['scoretrain'][$player] = self::getUniqueValueFromDB("SELECT scoretrain FROM player WHERE player_id={$player}");
-            $result['scorerecherche'][$player] = self::getUniqueValueFromDB("SELECT scorerecherche FROM player WHERE player_id={$player}");
-            $result['scoretotal'][$player] = self::getUniqueValueFromDB("SELECT scoretotal FROM player WHERE player_id={$player}");
-            $result['lundicheck'][$player] = self::getUniqueValueFromDB("SELECT lundicheck FROM player WHERE player_id={$player}");
-            $result['mardicheck'][$player] = self::getUniqueValueFromDB("SELECT mardicheck FROM player WHERE player_id={$player}");
-            $result['mercredicheck'][$player] = self::getUniqueValueFromDB("SELECT mercredicheck FROM player WHERE player_id={$player}");
-            $result['jeudicheck'][$player] = self::getUniqueValueFromDB("SELECT jeudicheck FROM player WHERE player_id={$player}");
-            $result['vendredicheck'][$player] = self::getUniqueValueFromDB("SELECT vendredicheck FROM player WHERE player_id={$player}");
-            $result['samedicheck'][$player] = self::getUniqueValueFromDB("SELECT samedicheck FROM player WHERE player_id={$player}");
+            $result['smile'][$player] = self::getUniqueValueFromDB("SELECT `smile` FROM `player` WHERE `player_id`={$player}");
+            $result['copysmile'][$player] = self::getUniqueValueFromDB("SELECT `smile` FROM `copybonus` WHERE `player_id`={$player}");
+            $result['happy'][$player] = self::getUniqueValueFromDB("SELECT `happy` FROM `player` WHERE `player_id`={$player}");
+            $result['copyhappy'][$player] = self::getUniqueValueFromDB("SELECT `happy` FROM `copybonus` WHERE `player_id`={$player}");
+            $result['angry'][$player] = self::getUniqueValueFromDB("SELECT `angry` FROM `player` WHERE `player_id`={$player}");
+            $result['copyangry'][$player] = self::getUniqueValueFromDB("SELECT `angry` FROM `copybonus` WHERE `player_id`={$player}");
+            $result['color'][$player] = self::getUniqueValueFromDB("SELECT `player_color` FROM `player` WHERE `player_id`={$player}");
+            $result['nbrerecherche'][$player] = self::getUniqueValueFromDB("SELECT `recherche` FROM `player` WHERE `player_id`={$player}");
+            $result['copynbrerecherche'][$player] = self::getUniqueValueFromDB("SELECT `recherche` FROM `copybonus` WHERE `player_id`={$player}");
+            $result['nbretrain'][$player] = self::getUniqueValueFromDB("SELECT `train` FROM `player` WHERE `player_id`={$player}");
+            $result['copynbretrain'][$player] = self::getUniqueValueFromDB("SELECT `train` FROM `copybonus` WHERE `player_id`={$player}");
+            $result['nbrewild'][$player] = self::getUniqueValueFromDB("SELECT `wild` FROM `player` WHERE `player_id`={$player}");
+            $result['copynbrewild'][$player] = self::getUniqueValueFromDB("SELECT `wild` FROM `copybonus` WHERE `player_id`={$player}");
+            $result['nbretrainstart'][$player] = self::getUniqueValueFromDB("SELECT `trainstart` FROM `player` WHERE `player_id`={$player}");
+            $result['compteurcardtokyodiscard'][$player] = count(self::getObjectListFromDB( "SELECT `card_id` id FROM `tokyo` WHERE `card_location` = 'discardboard' and `card_location_arg` = {$player}", true));
+            $result['compteurcardkyotodiscard'][$player] = count(self::getObjectListFromDB( "SELECT `card_id` id FROM `kyoto` WHERE `card_location` = 'discardboard' and `card_location_arg` = {$player}", true));
+            $result['r'][$player] = self::getUniqueValueFromDB("SELECT `r` FROM `player` WHERE `player_id`={$player}");
+            $result['g'][$player] = self::getUniqueValueFromDB("SELECT `g` FROM `player` WHERE `player_id`={$player}");
+            $result['p'][$player] = self::getUniqueValueFromDB("SELECT `p` FROM `player` WHERE `player_id`={$player}");
+            $result['y'][$player] = self::getUniqueValueFromDB("SELECT `y` FROM `player` WHERE `player_id`={$player}");
+            $result['b'][$player] = self::getUniqueValueFromDB("SELECT `b` FROM `player` WHERE `player_id`={$player}");
+            $result['happy1'][$player] = self::getUniqueValueFromDB("SELECT `happy1` FROM `player` WHERE `player_id`={$player}");
+            $result['happy2'][$player] = self::getUniqueValueFromDB("SELECT `happy2` FROM `player` WHERE `player_id`={$player}");
+            $result['angry1'][$player] = self::getUniqueValueFromDB("SELECT `angry1` FROM `player` WHERE `player_id`={$player}");
+            $result['angry2'][$player] = self::getUniqueValueFromDB("SELECT `angry2` FROM `player` WHERE `player_id`={$player}");
+            $result['numero'][$player] = self::getUniqueValueFromDB("SELECT `player_no` FROM `player` WHERE `player_id`={$player}");
+            $result['name'][$player] = self::getUniqueValueFromDB("SELECT `player_name` FROM `player` WHERE `player_id`={$player}");
+            $result['lundi'][$player] = self::getUniqueValueFromDB("SELECT `lundi` FROM `player` WHERE `player_id`={$player}");
+            $result['mardi'][$player] = self::getUniqueValueFromDB("SELECT `mardi` FROM `player` WHERE `player_id`={$player}");
+            $result['mercredi'][$player] = self::getUniqueValueFromDB("SELECT `mercredi` FROM `player` WHERE `player_id`={$player}");
+            $result['jeudi'][$player] = self::getUniqueValueFromDB("SELECT `jeudi` FROM `player` WHERE `player_id`={$player}");
+            $result['vendredi'][$player] = self::getUniqueValueFromDB("SELECT `vendredi` FROM `player` WHERE `player_id`={$player}");
+            $result['samedi'][$player] = self::getUniqueValueFromDB("SELECT `samedi` FROM `player` WHERE `player_id`={$player}");
+            $result['scorehumeur'][$player] = self::getUniqueValueFromDB("SELECT `scorehumeur` FROM `player` WHERE `player_id`={$player}");
+            $result['scoretoken'][$player] = self::getUniqueValueFromDB("SELECT `scoretoken` FROM `player` WHERE `player_id`={$player}");
+            $result['scoretrain'][$player] = self::getUniqueValueFromDB("SELECT `scoretrain` FROM `player` WHERE `player_id`={$player}");
+            $result['scorerecherche'][$player] = self::getUniqueValueFromDB("SELECT `scorerecherche` FROM `player` WHERE `player_id`={$player}");
+            $result['scoretotal'][$player] = self::getUniqueValueFromDB("SELECT `scoretotal` FROM `player` WHERE `player_id`={$player}");
+            $result['lundicheck'][$player] = self::getUniqueValueFromDB("SELECT `lundicheck` FROM `player` WHERE `player_id`={$player}");
+            $result['mardicheck'][$player] = self::getUniqueValueFromDB("SELECT `mardicheck` FROM `player` WHERE `player_id`={$player}");
+            $result['mercredicheck'][$player] = self::getUniqueValueFromDB("SELECT `mercredicheck` FROM `player` WHERE `player_id`={$player}");
+            $result['jeudicheck'][$player] = self::getUniqueValueFromDB("SELECT `jeudicheck` FROM `player` WHERE `player_id`={$player}");
+            $result['vendredicheck'][$player] = self::getUniqueValueFromDB("SELECT `vendredicheck` FROM `player` WHERE `player_id`={$player}");
+            $result['samedicheck'][$player] = self::getUniqueValueFromDB("SELECT `samedicheck` FROM `player` WHERE `player_id`={$player}");
 
-            $result['passportcard'][$player] = self::getUniqueValueFromDB("SELECT passportcard FROM player WHERE player_id={$player}");
-            $result['passportscore'][$player] = self::getUniqueValueFromDB("SELECT passportscore FROM player WHERE player_id={$player}");
+            $result['passportcard'][$player] = self::getUniqueValueFromDB("SELECT `passportcard` FROM `player` WHERE `player_id`={$player}");
+            $result['passportscore'][$player] = self::getUniqueValueFromDB("SELECT `passportscore` FROM `player` WHERE `player_id`={$player}");
 
             
 
         }
 
-        $count= count(self::getObjectListFromDB( "SELECT player_id id FROM player", true ));
+        $count= count(self::getObjectListFromDB( "SELECT `player_id` id FROM `player`", true ));
 
         if($count == 1)
         {
-        $result['r'][0] = self::getUniqueValueFromDB("SELECT r FROM agent WHERE name='agent'");
-        $result['g'][0] = self::getUniqueValueFromDB("SELECT g FROM agent WHERE name='agent'");
-        $result['p'][0] = self::getUniqueValueFromDB("SELECT p FROM agent WHERE name='agent'");
-        $result['y'][0] = self::getUniqueValueFromDB("SELECT y FROM agent WHERE name='agent'");
-        $result['b'][0] = self::getUniqueValueFromDB("SELECT b FROM agent WHERE name='agent'");
-        $result['smile'][0] = self::getUniqueValueFromDB("SELECT smile FROM agent WHERE name='agent'");
-        $result['happy'][0] = self::getUniqueValueFromDB("SELECT happy FROM agent WHERE name='agent'");
-        $result['angry'][0] = self::getUniqueValueFromDB("SELECT angry FROM agent WHERE name='agent'");
-        $result['lundi'][0] = self::getUniqueValueFromDB("SELECT lundi FROM agent WHERE name='agent'");
-        $result['mardi'][0] = self::getUniqueValueFromDB("SELECT mardi FROM agent WHERE name='agent'");
-        $result['mercredi'][0] = self::getUniqueValueFromDB("SELECT mercredi FROM agent WHERE name='agent'");
-        $result['jeudi'][0] = self::getUniqueValueFromDB("SELECT jeudi FROM agent WHERE name='agent'");
-        $result['vendredi'][0] = self::getUniqueValueFromDB("SELECT vendredi FROM agent WHERE name='agent'");
-        $result['samedi'][0] = self::getUniqueValueFromDB("SELECT samedi FROM agent WHERE name='agent'");
-        $result['scorehumeur'][0] = self::getUniqueValueFromDB("SELECT scorehumeur FROM agent WHERE name='agent'");
-        $result['scoretoken'][0] = self::getUniqueValueFromDB("SELECT scoretoken FROM agent WHERE name='agent'");
-        $result['scoretrain'][0] = self::getUniqueValueFromDB("SELECT scoretrain FROM agent WHERE name='agent'");
-        $result['scorerecherche'][0] = self::getUniqueValueFromDB("SELECT scorerecherche FROM agent WHERE name='agent'");
-        $result['scoretotal'][0] = self::getUniqueValueFromDB("SELECT scoretotal FROM agent WHERE name='agent'");
-        $result['lundicheck'][0] = self::getUniqueValueFromDB("SELECT lundicheck FROM agent WHERE name='agent'");
-        $result['mardicheck'][0] = self::getUniqueValueFromDB("SELECT mardicheck FROM agent WHERE name='agent'");
-        $result['mercredicheck'][0] = self::getUniqueValueFromDB("SELECT mercredicheck FROM agent WHERE name='agent'");
-        $result['jeudicheck'][0] = self::getUniqueValueFromDB("SELECT jeudicheck FROM agent WHERE name='agent'");
-        $result['vendredicheck'][0] = self::getUniqueValueFromDB("SELECT vendredicheck FROM agent WHERE name='agent'");
-        $result['samedicheck'][0] = self::getUniqueValueFromDB("SELECT samedicheck FROM agent WHERE name='agent'");
+        $result['r'][0] = self::getUniqueValueFromDB("SELECT `r` FROM `agent` WHERE `name`='agent'");
+        $result['g'][0] = self::getUniqueValueFromDB("SELECT `g` FROM `agent` WHERE `name`='agent'");
+        $result['p'][0] = self::getUniqueValueFromDB("SELECT `p` FROM `agent` WHERE `name`='agent'");
+        $result['y'][0] = self::getUniqueValueFromDB("SELECT `y` FROM `agent` WHERE `name`='agent'");
+        $result['b'][0] = self::getUniqueValueFromDB("SELECT `b` FROM `agent` WHERE `name`='agent'");
+        $result['smile'][0] = self::getUniqueValueFromDB("SELECT `smile` FROM `agent` WHERE `name`='agent'");
+        $result['happy'][0] = self::getUniqueValueFromDB("SELECT `happy` FROM `agent` WHERE `name`='agent'");
+        $result['angry'][0] = self::getUniqueValueFromDB("SELECT `angry` FROM `agent` WHERE `name`='agent'");
+        $result['lundi'][0] = self::getUniqueValueFromDB("SELECT `lundi` FROM `agent` WHERE `name`='agent'");
+        $result['mardi'][0] = self::getUniqueValueFromDB("SELECT `mardi` FROM `agent` WHERE `name`='agent'");
+        $result['mercredi'][0] = self::getUniqueValueFromDB("SELECT `mercredi` FROM `agent` WHERE `name`='agent'");
+        $result['jeudi'][0] = self::getUniqueValueFromDB("SELECT `jeudi` FROM `agent` WHERE `name`='agent'");
+        $result['vendredi'][0] = self::getUniqueValueFromDB("SELECT `vendredi` FROM `agent` WHERE `name`='agent'");
+        $result['samedi'][0] = self::getUniqueValueFromDB("SELECT `samedi` FROM `agent` WHERE `name`='agent'");
+        $result['scorehumeur'][0] = self::getUniqueValueFromDB("SELECT `scorehumeur` FROM `agent` WHERE `name`='agent'");
+        $result['scoretoken'][0] = self::getUniqueValueFromDB("SELECT `scoretoken` FROM `agent` WHERE `name`='agent'");
+        $result['scoretrain'][0] = self::getUniqueValueFromDB("SELECT `scoretrain` FROM `agent` WHERE `name`='agent'");
+        $result['scorerecherche'][0] = self::getUniqueValueFromDB("SELECT `scorerecherche` FROM `agent` WHERE `name`='agent'");
+        $result['scoretotal'][0] = self::getUniqueValueFromDB("SELECT `scoretotal` FROM `agent` WHERE `name`='agent'");
+        $result['lundicheck'][0] = self::getUniqueValueFromDB("SELECT `lundicheck` FROM `agent` WHERE `name`='agent'");
+        $result['mardicheck'][0] = self::getUniqueValueFromDB("SELECT `mardicheck` FROM `agent` WHERE `name`='agent'");
+        $result['mercredicheck'][0] = self::getUniqueValueFromDB("SELECT `mercredicheck` FROM `agent` WHERE `name`='agent'");
+        $result['jeudicheck'][0] = self::getUniqueValueFromDB("SELECT `jeudicheck` FROM `agent` WHERE `name`='agent'");
+        $result['vendredicheck'][0] = self::getUniqueValueFromDB("SELECT `vendredicheck` FROM `agent` WHERE `name`='agent'");
+        $result['samedicheck'][0] = self::getUniqueValueFromDB("SELECT `samedicheck` FROM `agent` WHERE `name`='agent'");
 
-        $result['lvl'][] = self::getUniqueValueFromDB("SELECT sololvl FROM agent WHERE name='agent'");
+        $result['lvl'][] = self::getUniqueValueFromDB("SELECT `sololvl` FROM `agent` WHERE `name`='agent'");
 
-        $playersolo = self::getUniqueValueFromDB("SELECT player_id FROM player WHERE player_no=1");
+        $playersolo = self::getUniqueValueFromDB("SELECT `player_id` FROM `player` WHERE `player_no`=1");
         $result['maxtrip'][0] = max(self::CountTrip($playersolo));
-        $result['phase'][0] = self::getUniqueValueFromDB("SELECT function FROM pending WHERE player_id={$playersolo}");
+        $result['phase'][0] = self::getUniqueValueFromDB("SELECT `function` FROM `pending` WHERE `player_id`={$playersolo}");
         }
 
         $result['tokyocards'] = $this->tokyocards;
@@ -542,7 +543,7 @@ class letsgotojapan extends Table
 
 function getGameProgression()
 {
-    $turn = self::getUniqueValueFromDB("SELECT level FROM tokens WHERE name = 'turn'");
+    $turn = self::getUniqueValueFromDB("SELECT `level` FROM `tokens` WHERE `name` = 'turn'");
     $progession = floor(($turn*100)/15);
 
     return $progession;
@@ -563,18 +564,18 @@ function getGameProgression()
 
    
 function addPending($player_id, $function, $arg = NULL, $arg2 = NULL, $arg3 = NULL, $arg4 = NULL) {
-    $sql = "INSERT INTO pending (player_id, function, arg, arg2, arg3, arg4) VALUES (".$player_id.", '".$function."', '".$arg."', '".$arg2."', '".$arg3."', '".$arg4."')";
+    $sql = "INSERT INTO `pending` (`player_id`, `function`, `arg`, `arg2`, `arg3`, `arg4`) VALUES (".$player_id.", '".$function."', '".$arg."', '".$arg2."', '".$arg3."', '".$arg4."')";
     self::DbQuery( $sql );
 }
 
 function addPendingTarget($player_id, $function, $target, $arg = NULL, $arg2 = NULL, $arg3 = NULL, $arg4 = NULL) {
-    $sql = "INSERT INTO pending (player_id, function, target, arg, arg2, arg3, arg4) VALUES (".$player_id.", '".$function."', '".$target."', '".$arg."', '".$arg2."', '".$arg3."', '".$arg4."')";
+    $sql = "INSERT INTO `pending` (`player_id`, `function`, `target`, `arg`, `arg2`, `arg3`, `arg4`) VALUES (".$player_id.", '".$function."', '".$target."', '".$arg."', '".$arg2."', '".$arg3."', '".$arg4."')";
     self::DbQuery( $sql );
 }
 
 function addPendingFirst($player_id, $function, $arg = NULL, $arg2 = NULL, $arg3 = NULL, $arg4 = NULL) {
-    $minid = self::getUniqueValueFromDB( "select min(id) from pending")-1;
-    $sql = "INSERT INTO pending (id, player_id, function, arg, arg2) VALUES (".$minid.",".$player_id.", '".$function."', '".$arg."', '".$arg2."')";
+    $minid = self::getUniqueValueFromDB( "select min(id) from `pending`")-1;
+    $sql = "INSERT INTO `pending` (`id`, `player_id`, `function`, `arg`, `arg2`) VALUES (".$minid.",".$player_id.", '".$function."', '".$arg."', '".$arg2."')";
     self::DbQuery( $sql );
 }
 
@@ -587,7 +588,7 @@ function checkArgs($arg1)
             
         if(!in_array($arg1,$ret[$id][0]['selectable']) && !in_array($arg1,$ret[$id][0]['selectable2']) && !in_array($arg1,$ret[$id][0]['selectableswitch']) && !in_array($arg1,$ret[$id][0]['buttons']))
         {
-            throw new feException( "Not a valid selection");
+            throw new UserException( "Not a valid selection");
         }
         
     }
@@ -622,22 +623,22 @@ function CountTrip($id)
 {
     if($id != 0)
     {
-    $count1 = count(array_merge(self::getObjectListFromDB( "SELECT card_location FROM tokyo WHERE card_location_arg = {$id} AND card_location LIKE 'cardposition_1%'", true ),self::getObjectListFromDB( "SELECT card_location FROM kyoto WHERE card_location_arg = {$id} AND card_location LIKE 'cardposition_1%'", true )));
-    $count2 = count(array_merge(self::getObjectListFromDB( "SELECT card_location FROM tokyo WHERE card_location_arg = {$id} AND card_location LIKE 'cardposition_2%'", true ),self::getObjectListFromDB( "SELECT card_location FROM kyoto WHERE card_location_arg = {$id} AND card_location LIKE 'cardposition_2%'", true )));
-    $count3 = count(array_merge(self::getObjectListFromDB( "SELECT card_location FROM tokyo WHERE card_location_arg = {$id} AND card_location LIKE 'cardposition_3%'", true ),self::getObjectListFromDB( "SELECT card_location FROM kyoto WHERE card_location_arg = {$id} AND card_location LIKE 'cardposition_3%'", true )));
-    $count4 = count(array_merge(self::getObjectListFromDB( "SELECT card_location FROM tokyo WHERE card_location_arg = {$id} AND card_location LIKE 'cardposition_4%'", true ),self::getObjectListFromDB( "SELECT card_location FROM kyoto WHERE card_location_arg = {$id} AND card_location LIKE 'cardposition_4%'", true )));
-    $count5 = count(array_merge(self::getObjectListFromDB( "SELECT card_location FROM tokyo WHERE card_location_arg = {$id} AND card_location LIKE 'cardposition_5%'", true ),self::getObjectListFromDB( "SELECT card_location FROM kyoto WHERE card_location_arg = {$id} AND card_location LIKE 'cardposition_5%'", true )));
-    $count6 = count(array_merge(self::getObjectListFromDB( "SELECT card_location FROM tokyo WHERE card_location_arg = {$id} AND card_location LIKE 'cardposition_6%'", true ),self::getObjectListFromDB( "SELECT card_location FROM kyoto WHERE card_location_arg = {$id} AND card_location LIKE 'cardposition_6%'", true )));
+    $count1 = count(array_merge(self::getObjectListFromDB( "SELECT `card_location` FROM `tokyo` WHERE `card_location_arg` = {$id} AND `card_location` LIKE 'cardposition_1%'", true ),self::getObjectListFromDB( "SELECT `card_location` FROM `kyoto` WHERE `card_location_arg` = {$id} AND `card_location` LIKE 'cardposition_1%'", true )));
+    $count2 = count(array_merge(self::getObjectListFromDB( "SELECT `card_location` FROM `tokyo` WHERE `card_location_arg` = {$id} AND `card_location` LIKE 'cardposition_2%'", true ),self::getObjectListFromDB( "SELECT `card_location` FROM `kyoto` WHERE `card_location_arg` = {$id} AND `card_location` LIKE 'cardposition_2%'", true )));
+    $count3 = count(array_merge(self::getObjectListFromDB( "SELECT `card_location` FROM `tokyo` WHERE `card_location_arg` = {$id} AND `card_location` LIKE 'cardposition_3%'", true ),self::getObjectListFromDB( "SELECT `card_location` FROM `kyoto` WHERE `card_location_arg` = {$id} AND `card_location` LIKE 'cardposition_3%'", true )));
+    $count4 = count(array_merge(self::getObjectListFromDB( "SELECT `card_location` FROM `tokyo` WHERE `card_location_arg` = {$id} AND `card_location` LIKE 'cardposition_4%'", true ),self::getObjectListFromDB( "SELECT `card_location` FROM `kyoto` WHERE `card_location_arg` = {$id} AND `card_location` LIKE 'cardposition_4%'", true )));
+    $count5 = count(array_merge(self::getObjectListFromDB( "SELECT `card_location` FROM `tokyo` WHERE `card_location_arg` = {$id} AND `card_location` LIKE 'cardposition_5%'", true ),self::getObjectListFromDB( "SELECT `card_location` FROM `kyoto` WHERE `card_location_arg` = {$id} AND `card_location` LIKE 'cardposition_5%'", true )));
+    $count6 = count(array_merge(self::getObjectListFromDB( "SELECT `card_location` FROM `tokyo` WHERE `card_location_arg` = {$id} AND `card_location` LIKE 'cardposition_6%'", true ),self::getObjectListFromDB( "SELECT `card_location` FROM `kyoto` WHERE `card_location_arg` = {$id} AND `card_location` LIKE 'cardposition_6%'", true )));
     }
 
     if($id == 0)
     {
-    $count1 = count(array_merge(self::getObjectListFromDB( "SELECT card_location FROM tokyo WHERE card_location_arg = 0 AND card_location LIKE 'cardposition_1%'", true ),self::getObjectListFromDB( "SELECT card_location FROM kyoto WHERE card_location_arg = 0 AND card_location LIKE 'cardposition_1%'", true )));
-    $count2 = count(array_merge(self::getObjectListFromDB( "SELECT card_location FROM tokyo WHERE card_location_arg = 0 AND card_location LIKE 'cardposition_2%'", true ),self::getObjectListFromDB( "SELECT card_location FROM kyoto WHERE card_location_arg = 0 AND card_location LIKE 'cardposition_2%'", true )));
-    $count3 = count(array_merge(self::getObjectListFromDB( "SELECT card_location FROM tokyo WHERE card_location_arg = 0 AND card_location LIKE 'cardposition_3%'", true ),self::getObjectListFromDB( "SELECT card_location FROM kyoto WHERE card_location_arg = 0 AND card_location LIKE 'cardposition_3%'", true )));
-    $count4 = count(array_merge(self::getObjectListFromDB( "SELECT card_location FROM tokyo WHERE card_location_arg = 0 AND card_location LIKE 'cardposition_4%'", true ),self::getObjectListFromDB( "SELECT card_location FROM kyoto WHERE card_location_arg = 0 AND card_location LIKE 'cardposition_4%'", true )));
-    $count5 = count(array_merge(self::getObjectListFromDB( "SELECT card_location FROM tokyo WHERE card_location_arg = 0 AND card_location LIKE 'cardposition_5%'", true ),self::getObjectListFromDB( "SELECT card_location FROM kyoto WHERE card_location_arg = 0 AND card_location LIKE 'cardposition_5%'", true )));
-    $count6 = count(array_merge(self::getObjectListFromDB( "SELECT card_location FROM tokyo WHERE card_location_arg = 0 AND card_location LIKE 'cardposition_6%'", true ),self::getObjectListFromDB( "SELECT card_location FROM kyoto WHERE card_location_arg = 0 AND card_location LIKE 'cardposition_6%'", true )));
+    $count1 = count(array_merge(self::getObjectListFromDB( "SELECT `card_location` FROM `tokyo` WHERE `card_location_arg` = 0 AND `card_location` LIKE 'cardposition_1%'", true ),self::getObjectListFromDB( "SELECT `card_location` FROM `kyoto` WHERE `card_location_arg` = 0 AND `card_location` LIKE 'cardposition_1%'", true )));
+    $count2 = count(array_merge(self::getObjectListFromDB( "SELECT `card_location` FROM `tokyo` WHERE `card_location_arg` = 0 AND `card_location` LIKE 'cardposition_2%'", true ),self::getObjectListFromDB( "SELECT `card_location` FROM `kyoto` WHERE `card_location_arg` = 0 AND `card_location` LIKE 'cardposition_2%'", true )));
+    $count3 = count(array_merge(self::getObjectListFromDB( "SELECT `card_location` FROM `tokyo` WHERE `card_location_arg` = 0 AND `card_location` LIKE 'cardposition_3%'", true ),self::getObjectListFromDB( "SELECT `card_location` FROM `kyoto` WHERE `card_location_arg` = 0 AND `card_location` LIKE 'cardposition_3%'", true )));
+    $count4 = count(array_merge(self::getObjectListFromDB( "SELECT `card_location` FROM `tokyo` WHERE `card_location_arg` = 0 AND `card_location` LIKE 'cardposition_4%'", true ),self::getObjectListFromDB( "SELECT `card_location` FROM `kyoto` WHERE `card_location_arg` = 0 AND `card_location` LIKE 'cardposition_4%'", true )));
+    $count5 = count(array_merge(self::getObjectListFromDB( "SELECT `card_location` FROM `tokyo` WHERE `card_location_arg` = 0 AND `card_location` LIKE 'cardposition_5%'", true ),self::getObjectListFromDB( "SELECT `card_location` FROM `kyoto` WHERE `card_location_arg` = 0 AND `card_location` LIKE 'cardposition_5%'", true )));
+    $count6 = count(array_merge(self::getObjectListFromDB( "SELECT `card_location` FROM `tokyo` WHERE `card_location_arg` = 0 AND `card_location` LIKE 'cardposition_6%'", true ),self::getObjectListFromDB( "SELECT `card_location` FROM `kyoto` WHERE `card_location_arg` = 0 AND `card_location` LIKE 'cardposition_6%'", true )));
     }
 
 
@@ -664,28 +665,28 @@ function Deployer($id)
 
             if ($count == 2)
             {
-                $card2 = self::getUniqueValueFromDB("SELECT card_id FROM tokyo WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_2'");
+                $card2 = self::getUniqueValueFromDB("SELECT `card_id` FROM `tokyo` WHERE `card_location_arg` = {$id} AND `card_location` ='cardposition_" . $jour . "_2'");
                 if ($card2 != null)
                 {
                 letsgotojapan::$instance->tokyo->moveCard( $card2, 'cardposition_'.$jour.'_4', $id);
                 }
                 if ($card2 == null)
                 {
-                    $card2 = self::getUniqueValueFromDB("SELECT card_id FROM kyoto WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_2'");
+                    $card2 = self::getUniqueValueFromDB("SELECT `card_id` FROM `kyoto` WHERE `card_location_arg` = {$id} AND `card_location` ='cardposition_" . $jour . "_2'");
                     $ville2 =2;
                     letsgotojapan::$instance->kyoto->moveCard( $card2, 'cardposition_'.$jour.'_4', $id);
                 }
 
             }
 
-            $card1 = self::getUniqueValueFromDB("SELECT card_id FROM tokyo WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_1'");
+            $card1 = self::getUniqueValueFromDB("SELECT `card_id` FROM `tokyo` WHERE `card_location_arg` = {$id} AND `card_location` ='cardposition_" . $jour . "_1'");
             if ($card1 != null)
             {
                 letsgotojapan::$instance->tokyo->moveCard( $card1, 'cardposition_'.$jour.'_2', $id);
             }
             if ($card1 == null)
             {
-                $card1 = self::getUniqueValueFromDB("SELECT card_id FROM kyoto WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_1'");
+                $card1 = self::getUniqueValueFromDB("SELECT `card_id` FROM `kyoto` WHERE `card_location_arg` = {$id} AND `card_location` ='cardposition_" . $jour . "_1'");
                 $ville1 =2;
                 letsgotojapan::$instance->kyoto->moveCard( $card1, 'cardposition_'.$jour.'_2', $id);
             }
@@ -723,39 +724,39 @@ function DeployerExtraWalk($id, $jour)
     $ville3 =1;
 
 
-    $card3 = self::getUniqueValueFromDB("SELECT card_id FROM tokyo WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_3'");
+    $card3 = self::getUniqueValueFromDB("SELECT `card_id` FROM `tokyo` WHERE `card_location_arg` = {$id} AND `card_location` ='cardposition_" . $jour . "_3'");
         if ($card3 != null)
         {
         letsgotojapan::$instance->tokyo->moveCard( $card3, 'cardposition_'.$jour.'_6', $id);
         }
         if ($card3 == null)
         {
-            $card3 = self::getUniqueValueFromDB("SELECT card_id FROM kyoto WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_3'");
+            $card3 = self::getUniqueValueFromDB("SELECT `card_id` FROM `kyoto` WHERE `card_location_arg` = {$id} AND `card_location` ='cardposition_" . $jour . "_3'");
             $ville3 =2;
             letsgotojapan::$instance->kyoto->moveCard( $card3, 'cardposition_'.$jour.'_6', $id);
         }
 
-    $card2 = self::getUniqueValueFromDB("SELECT card_id FROM tokyo WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_2'");
+    $card2 = self::getUniqueValueFromDB("SELECT `card_id` FROM `tokyo` WHERE `card_location_arg` = {$id} AND `card_location` ='cardposition_" . $jour . "_2'");
     if ($card2 != null)
     {
     letsgotojapan::$instance->tokyo->moveCard( $card2, 'cardposition_'.$jour.'_4', $id);
     }
     if ($card2 == null)
     {
-        $card2 = self::getUniqueValueFromDB("SELECT card_id FROM kyoto WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_2'");
+        $card2 = self::getUniqueValueFromDB("SELECT `card_id` FROM `kyoto` WHERE `card_location_arg` = {$id} AND `card_location` ='cardposition_" . $jour . "_2'");
         $ville2 =2;
         letsgotojapan::$instance->kyoto->moveCard( $card2, 'cardposition_'.$jour.'_4', $id);
     }
 
     
-    $card1 = self::getUniqueValueFromDB("SELECT card_id FROM tokyo WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_1'");
+    $card1 = self::getUniqueValueFromDB("SELECT `card_id` FROM `tokyo` WHERE `card_location_arg` = {$id} AND `card_location` ='cardposition_" . $jour . "_1'");
     if ($card1 != null)
     {
         letsgotojapan::$instance->tokyo->moveCard( $card1, 'cardposition_'.$jour.'_2', $id);
     }
     if ($card1 == null)
     {
-        $card1 = self::getUniqueValueFromDB("SELECT card_id FROM kyoto WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_1'");
+        $card1 = self::getUniqueValueFromDB("SELECT `card_id` FROM `kyoto` WHERE `card_location_arg` = {$id} AND `card_location` ='cardposition_" . $jour . "_1'");
         $ville1 =2;
         letsgotojapan::$instance->kyoto->moveCard( $card1, 'cardposition_'.$jour.'_2', $id);
     }
@@ -801,28 +802,28 @@ function Condenser($id, $new)
                 $ville2 =1;
                 $ville3 =1;
 
-                $card1 = self::getUniqueValueFromDB("SELECT card_id FROM tokyo WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_2'");
+                $card1 = self::getUniqueValueFromDB("SELECT `card_id` FROM `tokyo` WHERE `card_location_arg` = {$id} AND `card_location` ='cardposition_" . $jour . "_2'");
                 if ($card1 != null)
                 {
                     letsgotojapan::$instance->tokyo->moveCard( $card1, 'cardposition_'.$jour.'_1', $id);
                 }
                 if ($card1 == null)
                 {
-                    $card1 = self::getUniqueValueFromDB("SELECT card_id FROM kyoto WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_2'");
+                    $card1 = self::getUniqueValueFromDB("SELECT `card_id` FROM `kyoto` WHERE `card_location_arg` = {$id} AND `card_location` ='cardposition_" . $jour . "_2'");
                     $ville1 =2;
                     letsgotojapan::$instance->kyoto->moveCard( $card1, 'cardposition_'.$jour.'_1', $id);
                 }
 
                 if ($count >=2)
                 {
-                    $card2 = self::getUniqueValueFromDB("SELECT card_id FROM tokyo WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_4'");
+                    $card2 = self::getUniqueValueFromDB("SELECT `card_id` FROM `tokyo` WHERE `card_location_arg` = {$id} AND `card_location` ='cardposition_" . $jour . "_4'");
                     if ($card2 != null)
                     {
                         letsgotojapan::$instance->tokyo->moveCard( $card2, 'cardposition_'.$jour.'_2', $id);
                     }
                     if ($card2 == null)
                     {
-                        $card2 = self::getUniqueValueFromDB("SELECT card_id FROM kyoto WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_4'");
+                        $card2 = self::getUniqueValueFromDB("SELECT `card_id` FROM `kyoto` WHERE `card_location_arg` = {$id} AND `card_location` ='cardposition_" . $jour . "_4'");
                         $ville2 =2;
                         letsgotojapan::$instance->kyoto->moveCard( $card2, 'cardposition_'.$jour.'_2', $id);
                     }
@@ -870,28 +871,28 @@ function Condenser($id, $new)
                 $ville2 =1;
                 $ville3 =1;
 
-                $card1 = self::getUniqueValueFromDB("SELECT card_id FROM tokyo WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_2'");
+                $card1 = self::getUniqueValueFromDB("SELECT `card_id` FROM `tokyo` WHERE `card_location_arg` = {$id} AND `card_location` ='cardposition_" . $jour . "_2'");
                 if ($card1 != null)
                 {
                     letsgotojapan::$instance->tokyo->moveCard( $card1, 'cardposition_'.$jour.'_1', $id);
                 }
                 if ($card1 == null)
                 {
-                    $card1 = self::getUniqueValueFromDB("SELECT card_id FROM kyoto WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_2'");
+                    $card1 = self::getUniqueValueFromDB("SELECT `card_id` FROM `kyoto` WHERE `card_location_arg` = {$id} AND `card_location` ='cardposition_" . $jour . "_2'");
                     $ville1 =2;
                     letsgotojapan::$instance->kyoto->moveCard( $card1, 'cardposition_'.$jour.'_1', $id);
                 }
 
                 if ($count >=2)
                 {
-                    $card2 = self::getUniqueValueFromDB("SELECT card_id FROM tokyo WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_4'");
+                    $card2 = self::getUniqueValueFromDB("SELECT `card_id` FROM `tokyo` WHERE `card_location_arg` = {$id} AND `card_location` ='cardposition_" . $jour . "_4'");
                     if ($card2 != null)
                     {
                         letsgotojapan::$instance->tokyo->moveCard( $card2, 'cardposition_'.$jour.'_2', $id);
                     }
                     if ($card2 == null)
                     {
-                        $card2 = self::getUniqueValueFromDB("SELECT card_id FROM kyoto WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_4'");
+                        $card2 = self::getUniqueValueFromDB("SELECT `card_id` FROM `kyoto` WHERE `card_location_arg` = {$id} AND `card_location` ='cardposition_" . $jour . "_4'");
                         $ville2 =2;
                         letsgotojapan::$instance->kyoto->moveCard( $card2, 'cardposition_'.$jour.'_2', $id);
                     }
@@ -945,26 +946,26 @@ function Condenser($id, $new)
                 {
                     if($positionadd==3)
                     {
-                        $card1 = self::getUniqueValueFromDB("SELECT card_id FROM tokyo WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_2'");
+                        $card1 = self::getUniqueValueFromDB("SELECT `card_id` FROM `tokyo` WHERE `card_location_arg` = {$id} AND `card_location` ='cardposition_" . $jour . "_2'");
                         if ($card1 != null)
                         {
                             letsgotojapan::$instance->tokyo->moveCard( $card1, 'cardposition_'.$jour.'_1', $id);
                         }
                         if ($card1 == null)
                         {
-                            $card1 = self::getUniqueValueFromDB("SELECT card_id FROM kyoto WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_2'");
+                            $card1 = self::getUniqueValueFromDB("SELECT `card_id` FROM `kyoto` WHERE `card_location_arg` = {$id} AND `card_location` ='cardposition_" . $jour . "_2'");
                             $ville1 =2;
                             letsgotojapan::$instance->kyoto->moveCard( $card1, 'cardposition_'.$jour.'_1', $id);
                         }
 
-                        $card2 = self::getUniqueValueFromDB("SELECT card_id FROM tokyo WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_3'");
+                        $card2 = self::getUniqueValueFromDB("SELECT `card_id` FROM `tokyo` WHERE `card_location_arg` = {$id} AND `card_location` ='cardposition_" . $jour . "_3'");
                         if ($card2 != null)
                         {
                             letsgotojapan::$instance->tokyo->moveCard( $card2, 'cardposition_'.$jour.'_2', $id);
                         }
                         if ($card2 == null)
                         {
-                            $card2 = self::getUniqueValueFromDB("SELECT card_id FROM kyoto WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_3'");
+                            $card2 = self::getUniqueValueFromDB("SELECT `card_id` FROM `kyoto` WHERE `card_location_arg` = {$id} AND `card_location` ='cardposition_" . $jour . "_3'");
                             $ville2 =2;
                             letsgotojapan::$instance->kyoto->moveCard( $card2, 'cardposition_'.$jour.'_2', $id);
                         }
@@ -996,38 +997,38 @@ function Condenser($id, $new)
                 {
                     if($positionadd==1)
                     {
-                        $card1 = self::getUniqueValueFromDB("SELECT card_id FROM tokyo WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_1'");
+                        $card1 = self::getUniqueValueFromDB("SELECT `card_id` FROM `tokyo` WHERE `card_location_arg` = {$id} AND `card_location` ='cardposition_" . $jour . "_1'");
                         if ($card1 != null)
                         {
                             letsgotojapan::$instance->tokyo->moveCard( $card1, 'cardposition_'.$jour.'_1', $id);
                         }
                         if ($card1 == null)
                         {
-                            $card1 = self::getUniqueValueFromDB("SELECT card_id FROM kyoto WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_1'");
+                            $card1 = self::getUniqueValueFromDB("SELECT `card_id` FROM `kyoto` WHERE `card_location_arg` = {$id} AND `card_location` ='cardposition_" . $jour . "_1'");
                             $ville1 =2;
                             letsgotojapan::$instance->kyoto->moveCard( $card1, 'cardposition_'.$jour.'_1', $id);
                         }
 
-                        $card2 = self::getUniqueValueFromDB("SELECT card_id FROM tokyo WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_2'");
+                        $card2 = self::getUniqueValueFromDB("SELECT `card_id` FROM `tokyo` WHERE `card_location_arg` = {$id} AND `card_location` ='cardposition_" . $jour . "_2'");
                         if ($card2 != null)
                         {
                             letsgotojapan::$instance->tokyo->moveCard( $card2, 'cardposition_'.$jour.'_2', $id);
                         }
                         if ($card2 == null)
                         {
-                            $card2 = self::getUniqueValueFromDB("SELECT card_id FROM kyoto WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_2'");
+                            $card2 = self::getUniqueValueFromDB("SELECT `card_id` FROM `kyoto` WHERE `card_location_arg` = {$id} AND `card_location` ='cardposition_" . $jour . "_2'");
                             $ville2 =2;
                             letsgotojapan::$instance->kyoto->moveCard( $card2, 'cardposition_'.$jour.'_2', $id);
                         }
 
-                        $card3 = self::getUniqueValueFromDB("SELECT card_id FROM tokyo WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_4'");
+                        $card3 = self::getUniqueValueFromDB("SELECT `card_id` FROM `tokyo` WHERE `card_location_arg` = {$id} AND `card_location` ='cardposition_" . $jour . "_4'");
                         if ($card3 != null)
                         {
                             letsgotojapan::$instance->tokyo->moveCard( $card3, 'cardposition_'.$jour.'_3', $id);
                         }
                         if ($card3 == null)
                         {
-                            $card3 = self::getUniqueValueFromDB("SELECT card_id FROM kyoto WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_4'");
+                            $card3 = self::getUniqueValueFromDB("SELECT `card_id` FROM `kyoto` WHERE `card_location_arg` = {$id} AND `card_location` ='cardposition_" . $jour . "_4'");
                             $ville3 =2;
                             letsgotojapan::$instance->kyoto->moveCard( $card3, 'cardposition_'.$jour.'_3', $id);
                         }
@@ -1035,38 +1036,38 @@ function Condenser($id, $new)
 
                     if($positionadd==3)
                     {
-                        $card1 = self::getUniqueValueFromDB("SELECT card_id FROM tokyo WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_2'");
+                        $card1 = self::getUniqueValueFromDB("SELECT `card_id` FROM `tokyo` WHERE `card_location_arg` = {$id} AND `card_location` ='cardposition_" . $jour . "_2'");
                         if ($card1 != null)
                         {
                             letsgotojapan::$instance->tokyo->moveCard( $card1, 'cardposition_'.$jour.'_1', $id);
                         }
                         if ($card1 == null)
                         {
-                            $card1 = self::getUniqueValueFromDB("SELECT card_id FROM kyoto WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_2'");
+                            $card1 = self::getUniqueValueFromDB("SELECT `card_id` FROM `kyoto` WHERE `card_location_arg` = {$id} AND `card_location` ='cardposition_" . $jour . "_2'");
                             $ville1 =2;
                             letsgotojapan::$instance->kyoto->moveCard( $card1, 'cardposition_'.$jour.'_1', $id);
                         }
 
-                        $card2 = self::getUniqueValueFromDB("SELECT card_id FROM tokyo WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_3'");
+                        $card2 = self::getUniqueValueFromDB("SELECT `card_id` FROM `tokyo` WHERE `card_location_arg` = {$id} AND `card_location` ='cardposition_" . $jour . "_3'");
                         if ($card2 != null)
                         {
                             letsgotojapan::$instance->tokyo->moveCard( $card2, 'cardposition_'.$jour.'_2', $id);
                         }
                         if ($card2 == null)
                         {
-                            $card2 = self::getUniqueValueFromDB("SELECT card_id FROM kyoto WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_3'");
+                            $card2 = self::getUniqueValueFromDB("SELECT `card_id` FROM `kyoto` WHERE `card_location_arg` = {$id} AND `card_location` ='cardposition_" . $jour . "_3'");
                             $ville2 =2;
                             letsgotojapan::$instance->kyoto->moveCard( $card2, 'cardposition_'.$jour.'_2', $id);
                         }
 
-                        $card3 = self::getUniqueValueFromDB("SELECT card_id FROM tokyo WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_4'");
+                        $card3 = self::getUniqueValueFromDB("SELECT `card_id` FROM `tokyo` WHERE `card_location_arg` = {$id} AND `card_location` ='cardposition_" . $jour . "_4'");
                         if ($card3 != null)
                         {
                             letsgotojapan::$instance->tokyo->moveCard( $card3, 'cardposition_'.$jour.'_3', $id);
                         }
                         if ($card3 == null)
                         {
-                            $card3 = self::getUniqueValueFromDB("SELECT card_id FROM kyoto WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_4'");
+                            $card3 = self::getUniqueValueFromDB("SELECT `card_id` FROM `kyoto` WHERE `card_location_arg` = {$id} AND `card_location` ='cardposition_" . $jour . "_4'");
                             $ville3 =2;
                             letsgotojapan::$instance->kyoto->moveCard( $card3, 'cardposition_'.$jour.'_3', $id);
                         }
@@ -1074,38 +1075,38 @@ function Condenser($id, $new)
 
                     if($positionadd==5)
                     {
-                        $card1 = self::getUniqueValueFromDB("SELECT card_id FROM tokyo WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_2'");
+                        $card1 = self::getUniqueValueFromDB("SELECT `card_id` FROM `tokyo` WHERE `card_location_arg` = {$id} AND `card_location` ='cardposition_" . $jour . "_2'");
                         if ($card1 != null)
                         {
                             letsgotojapan::$instance->tokyo->moveCard( $card1, 'cardposition_'.$jour.'_1', $id);
                         }
                         if ($card1 == null)
                         {
-                            $card1 = self::getUniqueValueFromDB("SELECT card_id FROM kyoto WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_2'");
+                            $card1 = self::getUniqueValueFromDB("SELECT `card_id` FROM `kyoto` WHERE `card_location_arg` = {$id} AND `card_location` ='cardposition_" . $jour . "_2'");
                             $ville1 =2;
                             letsgotojapan::$instance->kyoto->moveCard( $card1, 'cardposition_'.$jour.'_1', $id);
                         }
 
-                        $card2 = self::getUniqueValueFromDB("SELECT card_id FROM tokyo WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_4'");
+                        $card2 = self::getUniqueValueFromDB("SELECT `card_id` FROM `tokyo` WHERE `card_location_arg` = {$id} AND `card_location` ='cardposition_" . $jour . "_4'");
                         if ($card2 != null)
                         {
                             letsgotojapan::$instance->tokyo->moveCard( $card2, 'cardposition_'.$jour.'_2', $id);
                         }
                         if ($card2 == null)
                         {
-                            $card2 = self::getUniqueValueFromDB("SELECT card_id FROM kyoto WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_4'");
+                            $card2 = self::getUniqueValueFromDB("SELECT `card_id` FROM `kyoto` WHERE `card_location_arg` = {$id} AND `card_location` ='cardposition_" . $jour . "_4'");
                             $ville2 =2;
                             letsgotojapan::$instance->kyoto->moveCard( $card2, 'cardposition_'.$jour.'_2', $id);
                         }
 
-                        $card3 = self::getUniqueValueFromDB("SELECT card_id FROM tokyo WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_5'");
+                        $card3 = self::getUniqueValueFromDB("SELECT `card_id` FROM `tokyo` WHERE `card_location_arg` = {$id} AND `card_location` ='cardposition_" . $jour . "_5'");
                         if ($card3 != null)
                         {
                             letsgotojapan::$instance->tokyo->moveCard( $card3, 'cardposition_'.$jour.'_3', $id);
                         }
                         if ($card3 == null)
                         {
-                            $card3 = self::getUniqueValueFromDB("SELECT card_id FROM kyoto WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_5'");
+                            $card3 = self::getUniqueValueFromDB("SELECT `card_id` FROM `kyoto` WHERE `card_location_arg` = {$id} AND `card_location` ='cardposition_" . $jour . "_5'");
                             $ville3 =2;
                             letsgotojapan::$instance->kyoto->moveCard( $card3, 'cardposition_'.$jour.'_3', $id);
                         }
@@ -1156,39 +1157,39 @@ function CondenserExtraWalk($id, $jour, $new)
         $ville2 =1;
         $ville3 =1;
 
-        $card1 = self::getUniqueValueFromDB("SELECT card_id FROM tokyo WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_2'");
+        $card1 = self::getUniqueValueFromDB("SELECT `card_id` FROM `tokyo` WHERE `card_location_arg` = {$id} AND `card_location` ='cardposition_" . $jour . "_2'");
         if ($card1 != null)
         {
             letsgotojapan::$instance->tokyo->moveCard( $card1, 'cardposition_'.$jour.'_1', $id);
         }
         if ($card1 == null)
         {
-            $card1 = self::getUniqueValueFromDB("SELECT card_id FROM kyoto WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_2'");
+            $card1 = self::getUniqueValueFromDB("SELECT `card_id` FROM `kyoto` WHERE `card_location_arg` = {$id} AND `card_location` ='cardposition_" . $jour . "_2'");
             $ville1 =2;
             letsgotojapan::$instance->kyoto->moveCard( $card1, 'cardposition_'.$jour.'_1', $id);
         }
 
     
-        $card2 = self::getUniqueValueFromDB("SELECT card_id FROM tokyo WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_4'");
+        $card2 = self::getUniqueValueFromDB("SELECT `card_id` FROM `tokyo` WHERE `card_location_arg` = {$id} AND `card_location` ='cardposition_" . $jour . "_4'");
         if ($card2 != null)
         {
             letsgotojapan::$instance->tokyo->moveCard( $card2, 'cardposition_'.$jour.'_2', $id);
         }
         if ($card2 == null)
         {
-            $card2 = self::getUniqueValueFromDB("SELECT card_id FROM kyoto WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_4'");
+            $card2 = self::getUniqueValueFromDB("SELECT `card_id` FROM `kyoto` WHERE `card_location_arg` = {$id} AND `card_location` ='cardposition_" . $jour . "_4'");
             $ville2 =2;
             letsgotojapan::$instance->kyoto->moveCard( $card2, 'cardposition_'.$jour.'_2', $id);
         }
 
-        $card3 = self::getUniqueValueFromDB("SELECT card_id FROM tokyo WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_6'");
+        $card3 = self::getUniqueValueFromDB("SELECT `card_id` FROM `tokyo` WHERE `card_location_arg` = {$id} AND `card_location` ='cardposition_" . $jour . "_6'");
         if ($card3 != null)
         {
             letsgotojapan::$instance->tokyo->moveCard( $card3, 'cardposition_'.$jour.'_3', $id);
         }
         if ($card3 == null)
         {
-            $card3 = self::getUniqueValueFromDB("SELECT card_id FROM kyoto WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_6'");
+            $card3 = self::getUniqueValueFromDB("SELECT `card_id` FROM `kyoto` WHERE `card_location_arg` = {$id} AND `card_location` ='cardposition_" . $jour . "_6'");
             $ville3 =2;
             letsgotojapan::$instance->kyoto->moveCard( $card3, 'cardposition_'.$jour.'_3', $id);
         }
@@ -1231,50 +1232,50 @@ function CondenserExtraWalk($id, $jour, $new)
 
         if($positionadd==1)
         {
-            $card1 = self::getUniqueValueFromDB("SELECT card_id FROM tokyo WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_1'");
+            $card1 = self::getUniqueValueFromDB("SELECT `card_id` FROM `tokyo` WHERE `card_location_arg` = {$id} AND `card_location` ='cardposition_" . $jour . "_1'");
             if ($card1 != null)
             {
                 letsgotojapan::$instance->tokyo->moveCard( $card1, 'cardposition_'.$jour.'_1', $id);
             }
             if ($card1 == null)
             {
-                $card1 = self::getUniqueValueFromDB("SELECT card_id FROM kyoto WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_1'");
+                $card1 = self::getUniqueValueFromDB("SELECT `card_id` FROM `kyoto` WHERE `card_location_arg` = {$id} AND `card_location` ='cardposition_" . $jour . "_1'");
                 $ville1 =2;
                 letsgotojapan::$instance->kyoto->moveCard( $card1, 'cardposition_'.$jour.'_1', $id);
             }
 
-            $card2 = self::getUniqueValueFromDB("SELECT card_id FROM tokyo WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_2'");
+            $card2 = self::getUniqueValueFromDB("SELECT `card_id` FROM `tokyo` WHERE `card_location_arg` = {$id} AND `card_location` ='cardposition_" . $jour . "_2'");
             if ($card2 != null)
             {
                 letsgotojapan::$instance->tokyo->moveCard( $card2, 'cardposition_'.$jour.'_2', $id);
             }
             if ($card2 == null)
             {
-                $card2 = self::getUniqueValueFromDB("SELECT card_id FROM kyoto WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_2'");
+                $card2 = self::getUniqueValueFromDB("SELECT `card_id` FROM `kyoto` WHERE `card_location_arg` = {$id} AND `card_location` ='cardposition_" . $jour . "_2'");
                 $ville2 =2;
                 letsgotojapan::$instance->kyoto->moveCard( $card2, 'cardposition_'.$jour.'_2', $id);
             }
 
-            $card3 = self::getUniqueValueFromDB("SELECT card_id FROM tokyo WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_4'");
+            $card3 = self::getUniqueValueFromDB("SELECT `card_id` FROM `tokyo` WHERE `card_location_arg` = {$id} AND `card_location` ='cardposition_" . $jour . "_4'");
             if ($card3 != null)
             {
                 letsgotojapan::$instance->tokyo->moveCard( $card3, 'cardposition_'.$jour.'_3', $id);
             }
             if ($card3 == null)
             {
-                $card3 = self::getUniqueValueFromDB("SELECT card_id FROM kyoto WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_4'");
+                $card3 = self::getUniqueValueFromDB("SELECT `card_id` FROM `kyoto` WHERE `card_location_arg` = {$id} AND `card_location` ='cardposition_" . $jour . "_4'");
                 $ville3 =2;
                 letsgotojapan::$instance->kyoto->moveCard( $card3, 'cardposition_'.$jour.'_3', $id);
             }
 
-            $card4 = self::getUniqueValueFromDB("SELECT card_id FROM tokyo WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_6'");
+            $card4 = self::getUniqueValueFromDB("SELECT `card_id` FROM `tokyo` WHERE `card_location_arg` = {$id} AND `card_location` ='cardposition_" . $jour . "_6'");
             if ($card4 != null)
             {
                 letsgotojapan::$instance->tokyo->moveCard( $card4, 'cardposition_'.$jour.'_4', $id);
             }
             if ($card4 == null)
             {
-                $card4 = self::getUniqueValueFromDB("SELECT card_id FROM kyoto WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_6'");
+                $card4 = self::getUniqueValueFromDB("SELECT `card_id` FROM `kyoto` WHERE `card_location_arg` = {$id} AND `card_location` ='cardposition_" . $jour . "_6'");
                 $ville4 =2;
                 letsgotojapan::$instance->kyoto->moveCard( $card4, 'cardposition_'.$jour.'_4', $id);
             }
@@ -1282,50 +1283,50 @@ function CondenserExtraWalk($id, $jour, $new)
 
         if($positionadd==3)
         {
-            $card1 = self::getUniqueValueFromDB("SELECT card_id FROM tokyo WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_2'");
+            $card1 = self::getUniqueValueFromDB("SELECT `card_id` FROM `tokyo` WHERE `card_location_arg` = {$id} AND `card_location` ='cardposition_" . $jour . "_2'");
             if ($card1 != null)
             {
                 letsgotojapan::$instance->tokyo->moveCard( $card1, 'cardposition_'.$jour.'_1', $id);
             }
             if ($card1 == null)
             {
-                $card1 = self::getUniqueValueFromDB("SELECT card_id FROM kyoto WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_2'");
+                $card1 = self::getUniqueValueFromDB("SELECT `card_id` FROM `kyoto` WHERE `card_location_arg` = {$id} AND `card_location` ='cardposition_" . $jour . "_2'");
                 $ville1 =2;
                 letsgotojapan::$instance->kyoto->moveCard( $card1, 'cardposition_'.$jour.'_1', $id);
             }
 
-            $card2 = self::getUniqueValueFromDB("SELECT card_id FROM tokyo WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_3'");
+            $card2 = self::getUniqueValueFromDB("SELECT `card_id` FROM `tokyo` WHERE `card_location_arg` = {$id} AND `card_location` ='cardposition_" . $jour . "_3'");
             if ($card2 != null)
             {
                 letsgotojapan::$instance->tokyo->moveCard( $card2, 'cardposition_'.$jour.'_2', $id);
             }
             if ($card2 == null)
             {
-                $card2 = self::getUniqueValueFromDB("SELECT card_id FROM kyoto WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_3'");
+                $card2 = self::getUniqueValueFromDB("SELECT `card_id` FROM `kyoto` WHERE `card_location_arg` = {$id} AND `card_location` ='cardposition_" . $jour . "_3'");
                 $ville2 =2;
                 letsgotojapan::$instance->kyoto->moveCard( $card2, 'cardposition_'.$jour.'_2', $id);
             }
 
-            $card3 = self::getUniqueValueFromDB("SELECT card_id FROM tokyo WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_4'");
+            $card3 = self::getUniqueValueFromDB("SELECT `card_id` FROM `tokyo` WHERE `card_location_arg` = {$id} AND `card_location` ='cardposition_" . $jour . "_4'");
             if ($card3 != null)
             {
                 letsgotojapan::$instance->tokyo->moveCard( $card3, 'cardposition_'.$jour.'_3', $id);
             }
             if ($card3 == null)
             {
-                $card3 = self::getUniqueValueFromDB("SELECT card_id FROM kyoto WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_4'");
+                $card3 = self::getUniqueValueFromDB("SELECT `card_id` FROM `kyoto` WHERE `card_location_arg` = {$id} AND `card_location` ='cardposition_" . $jour . "_4'");
                 $ville3 =2;
                 letsgotojapan::$instance->kyoto->moveCard( $card3, 'cardposition_'.$jour.'_3', $id);
             }
 
-            $card4 = self::getUniqueValueFromDB("SELECT card_id FROM tokyo WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_6'");
+            $card4 = self::getUniqueValueFromDB("SELECT `card_id` FROM `tokyo` WHERE `card_location_arg` = {$id} AND `card_location` ='cardposition_" . $jour . "_6'");
             if ($card4 != null)
             {
                 letsgotojapan::$instance->tokyo->moveCard( $card4, 'cardposition_'.$jour.'_4', $id);
             }
             if ($card4 == null)
             {
-                $card4 = self::getUniqueValueFromDB("SELECT card_id FROM kyoto WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_6'");
+                $card4 = self::getUniqueValueFromDB("SELECT `card_id` FROM `kyoto` WHERE `card_location_arg` = {$id} AND `card_location` ='cardposition_" . $jour . "_6'");
                 $ville4 =2;
                 letsgotojapan::$instance->kyoto->moveCard( $card4, 'cardposition_'.$jour.'_4', $id);
             }
@@ -1333,50 +1334,50 @@ function CondenserExtraWalk($id, $jour, $new)
 
         if($positionadd==5)
         {
-            $card1 = self::getUniqueValueFromDB("SELECT card_id FROM tokyo WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_2'");
+            $card1 = self::getUniqueValueFromDB("SELECT `card_id` FROM `tokyo` WHERE `card_location_arg` = {$id} AND `card_location` ='cardposition_" . $jour . "_2'");
             if ($card1 != null)
             {
                 letsgotojapan::$instance->tokyo->moveCard( $card1, 'cardposition_'.$jour.'_1', $id);
             }
             if ($card1 == null)
             {
-                $card1 = self::getUniqueValueFromDB("SELECT card_id FROM kyoto WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_2'");
+                $card1 = self::getUniqueValueFromDB("SELECT `card_id` FROM `kyoto` WHERE `card_location_arg` = {$id} AND `card_location` ='cardposition_" . $jour . "_2'");
                 $ville1 =2;
                 letsgotojapan::$instance->kyoto->moveCard( $card1, 'cardposition_'.$jour.'_1', $id);
             }
 
-            $card2 = self::getUniqueValueFromDB("SELECT card_id FROM tokyo WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_4'");
+            $card2 = self::getUniqueValueFromDB("SELECT `card_id` FROM `tokyo` WHERE `card_location_arg` = {$id} AND `card_location` ='cardposition_" . $jour . "_4'");
             if ($card2 != null)
             {
                 letsgotojapan::$instance->tokyo->moveCard( $card2, 'cardposition_'.$jour.'_2', $id);
             }
             if ($card2 == null)
             {
-                $card2 = self::getUniqueValueFromDB("SELECT card_id FROM kyoto WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_4'");
+                $card2 = self::getUniqueValueFromDB("SELECT `card_id` FROM `kyoto` WHERE `card_location_arg` = {$id} AND `card_location` ='cardposition_" . $jour . "_4'");
                 $ville2 =2;
                 letsgotojapan::$instance->kyoto->moveCard( $card2, 'cardposition_'.$jour.'_2', $id);
             }
 
-            $card3 = self::getUniqueValueFromDB("SELECT card_id FROM tokyo WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_5'");
+            $card3 = self::getUniqueValueFromDB("SELECT `card_id` FROM `tokyo` WHERE `card_location_arg` = {$id} AND `card_location` ='cardposition_" . $jour . "_5'");
             if ($card3 != null)
             {
                 letsgotojapan::$instance->tokyo->moveCard( $card3, 'cardposition_'.$jour.'_3', $id);
             }
             if ($card3 == null)
             {
-                $card3 = self::getUniqueValueFromDB("SELECT card_id FROM kyoto WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_5'");
+                $card3 = self::getUniqueValueFromDB("SELECT `card_id` FROM `kyoto` WHERE `card_location_arg` = {$id} AND `card_location` ='cardposition_" . $jour . "_5'");
                 $ville3 =2;
                 letsgotojapan::$instance->kyoto->moveCard( $card3, 'cardposition_'.$jour.'_3', $id);
             }
 
-            $card4 = self::getUniqueValueFromDB("SELECT card_id FROM tokyo WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_6'");
+            $card4 = self::getUniqueValueFromDB("SELECT `card_id` FROM `tokyo` WHERE `card_location_arg` = {$id} AND `card_location` ='cardposition_" . $jour . "_6'");
             if ($card4 != null)
             {
                 letsgotojapan::$instance->tokyo->moveCard( $card4, 'cardposition_'.$jour.'_4', $id);
             }
             if ($card4 == null)
             {
-                $card4 = self::getUniqueValueFromDB("SELECT card_id FROM kyoto WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_6'");
+                $card4 = self::getUniqueValueFromDB("SELECT `card_id` FROM `kyoto` WHERE `card_location_arg` = {$id} AND `card_location` ='cardposition_" . $jour . "_6'");
                 $ville4 =2;
                 letsgotojapan::$instance->kyoto->moveCard( $card4, 'cardposition_'.$jour.'_4', $id);
             }
@@ -1384,50 +1385,50 @@ function CondenserExtraWalk($id, $jour, $new)
 
         if($positionadd==7)
         {
-            $card1 = self::getUniqueValueFromDB("SELECT card_id FROM tokyo WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_2'");
+            $card1 = self::getUniqueValueFromDB("SELECT `card_id` FROM `tokyo` WHERE `card_location_arg` = {$id} AND `card_location` ='cardposition_" . $jour . "_2'");
             if ($card1 != null)
             {
                 letsgotojapan::$instance->tokyo->moveCard( $card1, 'cardposition_'.$jour.'_1', $id);
             }
             if ($card1 == null)
             {
-                $card1 = self::getUniqueValueFromDB("SELECT card_id FROM kyoto WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_2'");
+                $card1 = self::getUniqueValueFromDB("SELECT `card_id` FROM `kyoto` WHERE `card_location_arg` = {$id} AND `card_location` ='cardposition_" . $jour . "_2'");
                 $ville1 =2;
                 letsgotojapan::$instance->kyoto->moveCard( $card1, 'cardposition_'.$jour.'_1', $id);
             }
 
-            $card2 = self::getUniqueValueFromDB("SELECT card_id FROM tokyo WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_4'");
+            $card2 = self::getUniqueValueFromDB("SELECT `card_id` FROM `tokyo` WHERE `card_location_arg` = {$id} AND `card_location` ='cardposition_" . $jour . "_4'");
             if ($card2 != null)
             {
                 letsgotojapan::$instance->tokyo->moveCard( $card2, 'cardposition_'.$jour.'_2', $id);
             }
             if ($card2 == null)
             {
-                $card2 = self::getUniqueValueFromDB("SELECT card_id FROM kyoto WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_4'");
+                $card2 = self::getUniqueValueFromDB("SELECT `card_id` FROM `kyoto` WHERE `card_location_arg` = {$id} AND `card_location` ='cardposition_" . $jour . "_4'");
                 $ville2 =2;
                 letsgotojapan::$instance->kyoto->moveCard( $card2, 'cardposition_'.$jour.'_2', $id);
             }
 
-            $card3 = self::getUniqueValueFromDB("SELECT card_id FROM tokyo WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_6'");
+            $card3 = self::getUniqueValueFromDB("SELECT `card_id` FROM `tokyo` WHERE `card_location_arg` = {$id} AND `card_location` ='cardposition_" . $jour . "_6'");
             if ($card3 != null)
             {
                 letsgotojapan::$instance->tokyo->moveCard( $card3, 'cardposition_'.$jour.'_3', $id);
             }
             if ($card3 == null)
             {
-                $card3 = self::getUniqueValueFromDB("SELECT card_id FROM kyoto WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_6'");
+                $card3 = self::getUniqueValueFromDB("SELECT `card_id` FROM `kyoto` WHERE `card_location_arg` = {$id} AND `card_location` ='cardposition_" . $jour . "_6'");
                 $ville3 =2;
                 letsgotojapan::$instance->kyoto->moveCard( $card3, 'cardposition_'.$jour.'_3', $id);
             }
 
-            $card4 = self::getUniqueValueFromDB("SELECT card_id FROM tokyo WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_7'");
+            $card4 = self::getUniqueValueFromDB("SELECT `card_id` FROM `tokyo` WHERE `card_location_arg` = {$id} AND `card_location` ='cardposition_" . $jour . "_7'");
             if ($card4 != null)
             {
                 letsgotojapan::$instance->tokyo->moveCard( $card4, 'cardposition_'.$jour.'_4', $id);
             }
             if ($card4 == null)
             {
-                $card4 = self::getUniqueValueFromDB("SELECT card_id FROM kyoto WHERE card_location_arg = {$id} AND card_location ='cardposition_" . $jour . "_7'");
+                $card4 = self::getUniqueValueFromDB("SELECT `card_id` FROM `kyoto` WHERE `card_location_arg` = {$id} AND `card_location` ='cardposition_" . $jour . "_7'");
                 $ville4 =2;
                 letsgotojapan::$instance->kyoto->moveCard( $card4, 'cardposition_'.$jour.'_4', $id);
             }
@@ -1457,7 +1458,7 @@ function CondenserExtraWalk($id, $jour, $new)
 
 function Smile($gain, $player)
 {
-    $turn = self::getUniqueValueFromDB("SELECT level FROM tokens WHERE name = 'turn'");
+    $turn = self::getUniqueValueFromDB("SELECT `level` FROM `tokens` WHERE `name` = 'turn'");
 
     if($player!=0)
     {
@@ -1465,8 +1466,8 @@ function Smile($gain, $player)
     {
         for($i=1; $i<=$gain; $i++)
         {
-            self::DbQuery( "UPDATE player set smile = smile + 1  WHERE player_id = {$player}" );
-            $newsmile = self::getUniqueValueFromDB("SELECT smile FROM player WHERE player_id={$player}");
+            self::DbQuery( "UPDATE `player` set `smile` = smile + 1  WHERE `player_id` = {$player}" );
+            $newsmile = self::getUniqueValueFromDB("SELECT `smile` FROM `player` WHERE `player_id`={$player}");
             letsgotojapan::$instance->notifyAllPlayers('smile','', array(
                 'position' => $newsmile,
                 'player' => $player,
@@ -1477,8 +1478,8 @@ function Smile($gain, $player)
 
             if ($newsmile == 3)
             {
-                self::DbQuery( "UPDATE player set smile = 0  WHERE player_id = {$player}" );
-                $newsmile = self::getUniqueValueFromDB("SELECT smile FROM player WHERE player_id={$player}");
+                self::DbQuery( "UPDATE `player` set `smile` = 0  WHERE `player_id` = {$player}" );
+                $newsmile = self::getUniqueValueFromDB("SELECT `smile` FROM `player` WHERE `player_id`={$player}");
                 letsgotojapan::$instance->notifyAllPlayers('smile','', array(
                     'position' => $newsmile,
                     'player' => $player,
@@ -1487,11 +1488,11 @@ function Smile($gain, $player)
                     );
                 
                 
-                $happy = self::getUniqueValueFromDB("SELECT happy FROM player WHERE player_id={$player}");
+                $happy = self::getUniqueValueFromDB("SELECT `happy` FROM `player` WHERE `player_id`={$player}");
                 if($happy < 3)
                 {
-                    self::DbQuery( "UPDATE player set happy = happy+1  WHERE player_id = {$player}" );
-                    $newhappy = self::getUniqueValueFromDB("SELECT happy FROM player WHERE player_id={$player}");
+                    self::DbQuery( "UPDATE `player` set `happy` = happy+1  WHERE `player_id` = {$player}" );
+                    $newhappy = self::getUniqueValueFromDB("SELECT `happy` FROM `player` WHERE `player_id`={$player}");
                     letsgotojapan::$instance->notifyAllPlayers('happy','', array(
                         'position' => $newhappy,
                         'player' => $player,
@@ -1513,8 +1514,8 @@ function Smile($gain, $player)
     {
         for($i=-1; $i>=$gain; $i--)
         {
-            self::DbQuery( "UPDATE player set smile = smile - 1  WHERE player_id = {$player}" );
-            $newsmile = self::getUniqueValueFromDB("SELECT smile FROM player WHERE player_id={$player}");
+            self::DbQuery( "UPDATE `player` set `smile` = smile - 1  WHERE `player_id` = {$player}" );
+            $newsmile = self::getUniqueValueFromDB("SELECT `smile` FROM `player` WHERE `player_id`={$player}");
             letsgotojapan::$instance->notifyAllPlayers('smile','', array(
                 'position' => $newsmile,
                 'player' => $player,
@@ -1525,8 +1526,8 @@ function Smile($gain, $player)
 
             if ($newsmile == -3)
             {
-                self::DbQuery( "UPDATE player set smile = 0  WHERE player_id = {$player}" );
-                $newsmile = self::getUniqueValueFromDB("SELECT smile FROM player WHERE player_id={$player}");
+                self::DbQuery( "UPDATE `player` set `smile` = 0  WHERE `player_id` = {$player}" );
+                $newsmile = self::getUniqueValueFromDB("SELECT `smile` FROM `player` WHERE `player_id`={$player}");
                 letsgotojapan::$instance->notifyAllPlayers('smile','', array(
                     'position' => $newsmile,
                     'player' => $player,
@@ -1535,11 +1536,11 @@ function Smile($gain, $player)
                     );
                 
 
-                $angry = self::getUniqueValueFromDB("SELECT angry FROM player WHERE player_id={$player}");
+                $angry = self::getUniqueValueFromDB("SELECT `angry` FROM `player` WHERE `player_id`={$player}");
                 if($angry < 3)
                 {
-                    self::DbQuery( "UPDATE player set angry = angry+1  WHERE player_id = {$player}" );
-                    $newangry = self::getUniqueValueFromDB("SELECT angry FROM player WHERE player_id={$player}");
+                    self::DbQuery( "UPDATE `player` set `angry` = angry+1  WHERE `player_id` = {$player}" );
+                    $newangry = self::getUniqueValueFromDB("SELECT `angry` FROM `player` WHERE `player_id`={$player}");
                     letsgotojapan::$instance->notifyAllPlayers('angry','', array(
                         'position' => $newangry,
                         'player' => $player,
@@ -1563,8 +1564,8 @@ function Smile($gain, $player)
     {
         for($i=1; $i<=$gain; $i++)
         {
-            self::DbQuery( "UPDATE agent set smile = smile + 1  WHERE name = 'agent'" );
-            $newsmile = self::getUniqueValueFromDB("SELECT smile FROM agent WHERE name = 'agent'");
+            self::DbQuery( "UPDATE `agent` set `smile` = smile + 1  WHERE `name` = 'agent'" );
+            $newsmile = self::getUniqueValueFromDB("SELECT `smile` FROM `agent` WHERE `name` = 'agent'");
             letsgotojapan::$instance->notifyAllPlayers('smile','', array(
                 'position' => $newsmile,
                 'player' => $player,
@@ -1575,8 +1576,8 @@ function Smile($gain, $player)
 
             if ($newsmile == 3)
             {
-                self::DbQuery( "UPDATE agent set smile = 0 WHERE name = 'agent'" );;
-                $newsmile = self::getUniqueValueFromDB("SELECT smile FROM agent WHERE name = 'agent'");
+                self::DbQuery( "UPDATE `agent` set `smile` = 0 WHERE `name` = 'agent'" );;
+                $newsmile = self::getUniqueValueFromDB("SELECT `smile` FROM `agent` WHERE `name` = 'agent'");
                 letsgotojapan::$instance->notifyAllPlayers('smile','', array(
                     'position' => $newsmile,
                     'player' => $player,
@@ -1585,11 +1586,11 @@ function Smile($gain, $player)
                     );
                 
                 
-                $happy = self::getUniqueValueFromDB("SELECT happy FROM agent WHERE name = 'agent'");
+                $happy = self::getUniqueValueFromDB("SELECT `happy` FROM `agent` WHERE `name` = 'agent'");
                 if($happy < 3)
                 {
-                    self::DbQuery( "UPDATE agent set happy = happy + 1  WHERE name = 'agent'" );
-                    $newhappy = self::getUniqueValueFromDB("SELECT happy FROM agent WHERE name = 'agent'");
+                    self::DbQuery( "UPDATE `agent` set `happy` = happy + 1  WHERE `name` = 'agent'" );
+                    $newhappy = self::getUniqueValueFromDB("SELECT `happy` FROM `agent` WHERE `name` = 'agent'");
                     letsgotojapan::$instance->notifyAllPlayers('happy','', array(
                         'position' => $newhappy,
                         'player' => $player,
@@ -1611,8 +1612,8 @@ function Smile($gain, $player)
     {
         for($i=-1; $i>=$gain; $i--)
         {
-            self::DbQuery( "UPDATE agent set smile = smile - 1  WHERE name = 'agent'" );
-            $newsmile = self::getUniqueValueFromDB("SELECT smile FROM agent WHERE name = 'agent'");
+            self::DbQuery( "UPDATE `agent` set `smile` = smile - 1  WHERE `name` = 'agent'" );
+            $newsmile = self::getUniqueValueFromDB("SELECT `smile` FROM `agent` WHERE `name` = 'agent'");
             letsgotojapan::$instance->notifyAllPlayers('smile','', array(
                 'position' => $newsmile,
                 'player' => $player,
@@ -1623,8 +1624,8 @@ function Smile($gain, $player)
 
             if ($newsmile == -3)
             {
-                self::DbQuery( "UPDATE agent set smile = 0 WHERE name = 'agent'" );;
-                $newsmile = self::getUniqueValueFromDB("SELECT smile FROM agent WHERE name = 'agent'");
+                self::DbQuery( "UPDATE `agent` set `smile` = 0 WHERE `name` = 'agent'" );;
+                $newsmile = self::getUniqueValueFromDB("SELECT `smile` FROM `agent` WHERE `name` = 'agent'");
                 letsgotojapan::$instance->notifyAllPlayers('smile','', array(
                     'position' => $newsmile,
                     'player' => $player,
@@ -1633,11 +1634,11 @@ function Smile($gain, $player)
                     );
                 
 
-                $angry = self::getUniqueValueFromDB("SELECT angry FROM agent WHERE name = 'agent'");
+                $angry = self::getUniqueValueFromDB("SELECT `angry` FROM `agent` WHERE `name` = 'agent'");
                 if($angry < 3)
                 {
-                    self::DbQuery( "UPDATE agent set angry = angry + 1  WHERE name = 'agent'" );
-                    $newangry = self::getUniqueValueFromDB("SELECT angry FROM agent WHERE name = 'agent'");
+                    self::DbQuery( "UPDATE `agent` set `angry` = angry + 1  WHERE `name` = 'agent'" );
+                    $newangry = self::getUniqueValueFromDB("SELECT `angry` FROM `agent` WHERE `name` = 'agent'");
                     letsgotojapan::$instance->notifyAllPlayers('angry','', array(
                         'position' => $newangry,
                         'player' => $player,
@@ -1659,12 +1660,12 @@ function Smile($gain, $player)
 
 function MajPannel ($id)
 {
-    $turn = self::getUniqueValueFromDB("SELECT level FROM tokens WHERE name = 'turn'");
+    $turn = self::getUniqueValueFromDB("SELECT `level` FROM `tokens` WHERE `name` = 'turn'");
 
-    $recherche = self::getUniqueValueFromDB("SELECT recherche FROM player WHERE player_id={$id}");
-    $train = self::getUniqueValueFromDB("SELECT train FROM player WHERE player_id={$id}");
-    $trainstart = self::getUniqueValueFromDB("SELECT trainstart FROM player WHERE player_id={$id}");
-    $wild = self::getUniqueValueFromDB("SELECT wild FROM player WHERE player_id={$id}");
+    $recherche = self::getUniqueValueFromDB("SELECT `recherche` FROM `player` WHERE `player_id`={$id}");
+    $train = self::getUniqueValueFromDB("SELECT `train` FROM `player` WHERE `player_id`={$id}");
+    $trainstart = self::getUniqueValueFromDB("SELECT `trainstart` FROM `player` WHERE `player_id`={$id}");
+    $wild = self::getUniqueValueFromDB("SELECT `wild` FROM `player` WHERE `player_id`={$id}");
 
     letsgotojapan::$instance->notifyAllPlayers('majpannel','', array(
         'id' =>  $id,
@@ -1718,12 +1719,12 @@ function Gain($type, $player)
 {
     if($player !=0 )
     {
-        $passport = self::getUniqueValueFromDB("SELECT passportcard FROM player WHERE player_id = {$player}");
+        $passport = self::getUniqueValueFromDB("SELECT `passportcard` FROM `player` WHERE `player_id` = {$player}");
 
     if($type == 'r')
     {
-        self::DbQuery( "UPDATE player set r = r +1   WHERE player_id = {$player}" );
-        $new = self::getUniqueValueFromDB("SELECT r FROM player WHERE player_id = {$player}");
+        self::DbQuery( "UPDATE `player` set `r` = r +1   WHERE `player_id` = {$player}" );
+        $new = self::getUniqueValueFromDB("SELECT `r` FROM `player` WHERE `player_id` = {$player}");
 
         
         if($new < 12)
@@ -1775,8 +1776,8 @@ function Gain($type, $player)
 
     if($type == 'g')
     {
-        self::DbQuery( "UPDATE player set g = g +1   WHERE player_id = {$player}" );
-        $new = self::getUniqueValueFromDB("SELECT g FROM player WHERE player_id = {$player}");
+        self::DbQuery( "UPDATE `player` set `g` = g +1   WHERE `player_id` = {$player}" );
+        $new = self::getUniqueValueFromDB("SELECT `g` FROM `player` WHERE `player_id` = {$player}");
         
         if($new < 12)
         {
@@ -1827,8 +1828,8 @@ function Gain($type, $player)
 
     if($type == 'p')
     {
-        self::DbQuery( "UPDATE player set p = p +1   WHERE player_id = {$player}" );
-        $new = self::getUniqueValueFromDB("SELECT p FROM player WHERE player_id = {$player}");
+        self::DbQuery( "UPDATE `player` set `p` = p +1   WHERE `player_id` = {$player}" );
+        $new = self::getUniqueValueFromDB("SELECT `p` FROM `player` WHERE `player_id` = {$player}");
 
         if($new < 12)
         {
@@ -1878,8 +1879,8 @@ function Gain($type, $player)
 
     if($type == 'y')
     {
-        self::DbQuery( "UPDATE player set y = y +1   WHERE player_id = {$player}" );
-        $new = self::getUniqueValueFromDB("SELECT y FROM player WHERE player_id = {$player}");
+        self::DbQuery( "UPDATE `player` set `y` = y +1   WHERE `player_id` = {$player}" );
+        $new = self::getUniqueValueFromDB("SELECT `y` FROM `player` WHERE `player_id` = {$player}");
 
         if($new < 12)
         {
@@ -1929,8 +1930,8 @@ function Gain($type, $player)
 
     if($type == 'b')
     {
-        self::DbQuery( "UPDATE player set b = b +1   WHERE player_id = {$player}" );
-        $new = self::getUniqueValueFromDB("SELECT b FROM player WHERE player_id = {$player}");
+        self::DbQuery( "UPDATE `player` set `b` = b +1   WHERE `player_id` = {$player}" );
+        $new = self::getUniqueValueFromDB("SELECT `b` FROM `player` WHERE `player_id` = {$player}");
 
         if($new < 12)
         {
@@ -1980,7 +1981,7 @@ function Gain($type, $player)
         if($passport== 9)
         {
             letsgotojapan::$instance->Smile(1,$player);
-            self::DbQuery( "UPDATE player set passportscore = passportscore +1   WHERE player_id = {$player}" );
+            self::DbQuery( "UPDATE `player` set `passportscore` = passportscore +1   WHERE `player_id` = {$player}" );
             letsgotojapan::$instance->MajScorePassport(9,$player);
         }
 
@@ -1988,13 +1989,13 @@ function Gain($type, $player)
 
     if($type == 'h1')
     {
-        self::DbQuery( "UPDATE player set happy1 = happy1 +1   WHERE player_id = {$player}" );
+        self::DbQuery( "UPDATE `player` set `happy1` = happy1 +1   WHERE `player_id` = {$player}" );
         letsgotojapan::$instance->Smile(1,$player);
 
         if($passport== 8)
         {
             
-            self::DbQuery( "UPDATE player set passportscore = passportscore +1   WHERE player_id = {$player}" );
+            self::DbQuery( "UPDATE `player` set `passportscore` = passportscore +1   WHERE `player_id` = {$player}" );
             letsgotojapan::$instance->MajScorePassport(8,$player);
         }
         
@@ -2002,40 +2003,40 @@ function Gain($type, $player)
 
     if($type == 'h2')
     {
-        self::DbQuery( "UPDATE player set happy2 = happy2 +1   WHERE player_id = {$player}" );
+        self::DbQuery( "UPDATE `player` set `happy2` = happy2 +1   WHERE `player_id` = {$player}" );
         letsgotojapan::$instance->Smile(1,$player);
 
         if($passport== 2)
         {
             letsgotojapan::$instance->Smile(1,$player);
-            self::DbQuery( "UPDATE player set passportscore = passportscore +1   WHERE player_id = {$player}" );
+            self::DbQuery( "UPDATE `player` set `passportscore` = passportscore +1   WHERE `player_id` = {$player}" );
             letsgotojapan::$instance->MajScorePassport(2,$player);
         }
     }
 
     if($type == 'a1')
     {
-        self::DbQuery( "UPDATE player set angry1 = angry1 +1   WHERE player_id = {$player}" );
+        self::DbQuery( "UPDATE `player` set `angry1` = angry1 +1   WHERE `player_id` = {$player}" );
         letsgotojapan::$instance->Smile(-1,$player);
 
         if($passport== 8)
         {
             
-            self::DbQuery( "UPDATE player set passportscore = passportscore +2   WHERE player_id = {$player}" );
+            self::DbQuery( "UPDATE `player` set `passportscore` = passportscore +2   WHERE `player_id` = {$player}" );
             letsgotojapan::$instance->MajScorePassport(8,$player);
         }
     }
 
     if($type == 'a2')
     {
-        self::DbQuery( "UPDATE player set angry2 = angry2 +1   WHERE player_id = {$player}" );
+        self::DbQuery( "UPDATE `player` set `angry2` = angry2 +1   WHERE `player_id` = {$player}" );
         if($passport!= 7)
         {
         letsgotojapan::$instance->Smile(-1,$player);
         }
         if($passport== 7)
         {
-            self::DbQuery( "UPDATE player set passportscore = passportscore +1   WHERE player_id = {$player}" );
+            self::DbQuery( "UPDATE `player` set `passportscore` = passportscore +1   WHERE `player_id` = {$player}" );
             letsgotojapan::$instance->MajScorePassport(7,$player);
         }
     }
@@ -2046,8 +2047,8 @@ function Gain($type, $player)
     {
     if($type == 'r')
     {
-        self::DbQuery( "UPDATE agent set r = r +1   WHERE name = 'agent'" );
-        $new = self::getUniqueValueFromDB("SELECT r FROM agent WHERE name = 'agent'");
+        self::DbQuery( "UPDATE `agent` set `r` = r +1   WHERE `name` = 'agent'" );
+        $new = self::getUniqueValueFromDB("SELECT `r` FROM `agent` WHERE `name` = 'agent'");
 
         
         if($new < 12)
@@ -2099,8 +2100,8 @@ function Gain($type, $player)
 
     if($type == 'g')
     {
-        self::DbQuery( "UPDATE agent set g = g +1   WHERE name = 'agent'" );
-        $new = self::getUniqueValueFromDB("SELECT g FROM agent WHERE name = 'agent'");
+        self::DbQuery( "UPDATE `agent` set `g` = g +1   WHERE `name` = 'agent'" );
+        $new = self::getUniqueValueFromDB("SELECT `g` FROM `agent` WHERE `name` = 'agent'");
         
         if($new < 12)
         {
@@ -2151,8 +2152,8 @@ function Gain($type, $player)
 
     if($type == 'p')
     {
-        self::DbQuery( "UPDATE agent set p = p +1   WHERE name = 'agent'" );
-        $new = self::getUniqueValueFromDB("SELECT p FROM agent WHERE name = 'agent'");
+        self::DbQuery( "UPDATE `agent` set `p` = p +1   WHERE `name` = 'agent'" );
+        $new = self::getUniqueValueFromDB("SELECT `p` FROM `agent` WHERE `name` = 'agent'");
 
         if($new < 12)
         {
@@ -2202,8 +2203,8 @@ function Gain($type, $player)
 
     if($type == 'y')
     {
-        self::DbQuery( "UPDATE agent set y = y +1   WHERE name = 'agent'" );
-        $new = self::getUniqueValueFromDB("SELECT y FROM agent WHERE name = 'agent'");
+        self::DbQuery( "UPDATE `agent` set `y` = y +1   WHERE `name` = 'agent'" );
+        $new = self::getUniqueValueFromDB("SELECT `y` FROM `agent` WHERE `name` = 'agent'");
 
         if($new < 12)
         {
@@ -2253,8 +2254,8 @@ function Gain($type, $player)
 
     if($type == 'b')
     {
-        self::DbQuery( "UPDATE agent set b = b +1   WHERE name = 'agent'" );
-        $new = self::getUniqueValueFromDB("SELECT b FROM agent WHERE name = 'agent'");
+        self::DbQuery( "UPDATE `agent` set `b` = b +1   WHERE `name` = 'agent'" );
+        $new = self::getUniqueValueFromDB("SELECT `b` FROM `agent` WHERE `name` = 'agent'");
 
         if($new < 12)
         {
@@ -2304,26 +2305,26 @@ function Gain($type, $player)
 
     if($type == 'h1')
     {
-        self::DbQuery( "UPDATE agent set happy1 = happy1 +1   WHERE name = 'agent'" );
+        self::DbQuery( "UPDATE `agent` set `happy1` = happy1 +1   WHERE `name` = 'agent'" );
         letsgotojapan::$instance->Smile(1,$player);
         
     }
 
     if($type == 'h2')
     {
-        self::DbQuery( "UPDATE agent set happy2 = happy2 +1   WHERE name = 'agent'" );
+        self::DbQuery( "UPDATE `agent` set `happy2` = happy2 +1   WHERE `name` = 'agent'" );
         letsgotojapan::$instance->Smile(1,$player);
     }
 
     if($type == 'a1')
     {
-        self::DbQuery( "UPDATE agent set angry1 = angry1 +1   WHERE name = 'agent'" );
+        self::DbQuery( "UPDATE `agent` set `angry1` = angry1 +1   WHERE `name` = 'agent'" );
         letsgotojapan::$instance->Smile(-1,$player);
     }
 
     if($type == 'a2')
     {
-        self::DbQuery( "UPDATE agent set angry2 = angry2 +1   WHERE name = 'agent'" );
+        self::DbQuery( "UPDATE `agent` set `angry2` = angry2 +1   WHERE `name` = 'agent'" );
         letsgotojapan::$instance->Smile(-1,$player);
     }
     }
@@ -2343,32 +2344,32 @@ function EtatToken($player)
 
     if($player !=0)
     {
-    $ret[] = self::getUniqueValueFromDB("SELECT r FROM player WHERE player_id = {$player}");
-    $ret[] = self::getUniqueValueFromDB("SELECT g FROM player WHERE player_id = {$player}");
-    $ret[] = self::getUniqueValueFromDB("SELECT p FROM player WHERE player_id = {$player}");
-    $ret[] = self::getUniqueValueFromDB("SELECT y FROM player WHERE player_id = {$player}");
-    $ret[] = self::getUniqueValueFromDB("SELECT b FROM player WHERE player_id = {$player}");
-    $ret[] = self::getUniqueValueFromDB("SELECT happy1 FROM player WHERE player_id = {$player}");
-    $ret[] = self::getUniqueValueFromDB("SELECT happy2 FROM player WHERE player_id = {$player}");
-    $ret[] = self::getUniqueValueFromDB("SELECT angry1 FROM player WHERE player_id = {$player}");
-    $ret[] = self::getUniqueValueFromDB("SELECT angry2 FROM player WHERE player_id = {$player}");
-    $ret[] = self::getUniqueValueFromDB("SELECT walkday FROM player WHERE player_id = {$player}");
-    $ret[] = self::getUniqueValueFromDB("SELECT trainday FROM player WHERE player_id = {$player}");
+    $ret[] = self::getUniqueValueFromDB("SELECT `r` FROM `player` WHERE `player_id` = {$player}");
+    $ret[] = self::getUniqueValueFromDB("SELECT `g` FROM `player` WHERE `player_id` = {$player}");
+    $ret[] = self::getUniqueValueFromDB("SELECT `p` FROM `player` WHERE `player_id` = {$player}");
+    $ret[] = self::getUniqueValueFromDB("SELECT `y` FROM `player` WHERE `player_id` = {$player}");
+    $ret[] = self::getUniqueValueFromDB("SELECT `b` FROM `player` WHERE `player_id` = {$player}");
+    $ret[] = self::getUniqueValueFromDB("SELECT `happy1` FROM `player` WHERE `player_id` = {$player}");
+    $ret[] = self::getUniqueValueFromDB("SELECT `happy2` FROM `player` WHERE `player_id` = {$player}");
+    $ret[] = self::getUniqueValueFromDB("SELECT `angry1` FROM `player` WHERE `player_id` = {$player}");
+    $ret[] = self::getUniqueValueFromDB("SELECT `angry2` FROM `player` WHERE `player_id` = {$player}");
+    $ret[] = self::getUniqueValueFromDB("SELECT `walkday` FROM `player` WHERE `player_id` = {$player}");
+    $ret[] = self::getUniqueValueFromDB("SELECT `trainday` FROM `player` WHERE `player_id` = {$player}");
     }
 
     if($player ==0)
     {
-    $ret[] = self::getUniqueValueFromDB("SELECT r FROM agent WHERE name = 'agent'");
-    $ret[] = self::getUniqueValueFromDB("SELECT g FROM agent WHERE name = 'agent'");
-    $ret[] = self::getUniqueValueFromDB("SELECT p FROM agent WHERE name = 'agent'");
-    $ret[] = self::getUniqueValueFromDB("SELECT y FROM agent WHERE name = 'agent'");
-    $ret[] = self::getUniqueValueFromDB("SELECT b FROM agent WHERE name = 'agent'");
-    $ret[] = self::getUniqueValueFromDB("SELECT happy1 FROM agent WHERE name = 'agent'");
-    $ret[] = self::getUniqueValueFromDB("SELECT happy2 FROM agent WHERE name = 'agent'");
-    $ret[] = self::getUniqueValueFromDB("SELECT angry1 FROM agent WHERE name = 'agent'");
-    $ret[] = self::getUniqueValueFromDB("SELECT angry2 FROM agent WHERE name = 'agent'");
-    $ret[] = self::getUniqueValueFromDB("SELECT walkday FROM agent WHERE name = 'agent'");
-    $ret[] = self::getUniqueValueFromDB("SELECT trainday FROM agent WHERE name = 'agent'");
+    $ret[] = self::getUniqueValueFromDB("SELECT `r` FROM `agent` WHERE `name` = 'agent'");
+    $ret[] = self::getUniqueValueFromDB("SELECT `g` FROM `agent` WHERE `name` = 'agent'");
+    $ret[] = self::getUniqueValueFromDB("SELECT `p` FROM `agent` WHERE `name` = 'agent'");
+    $ret[] = self::getUniqueValueFromDB("SELECT `y` FROM `agent` WHERE `name` = 'agent'");
+    $ret[] = self::getUniqueValueFromDB("SELECT `b` FROM `agent` WHERE `name` = 'agent'");
+    $ret[] = self::getUniqueValueFromDB("SELECT `happy1` FROM `agent` WHERE `name` = 'agent'");
+    $ret[] = self::getUniqueValueFromDB("SELECT `happy2` FROM `agent` WHERE `name` = 'agent'");
+    $ret[] = self::getUniqueValueFromDB("SELECT `angry1` FROM `agent` WHERE `name` = 'agent'");
+    $ret[] = self::getUniqueValueFromDB("SELECT `angry2` FROM `agent` WHERE `name` = 'agent'");
+    $ret[] = self::getUniqueValueFromDB("SELECT `walkday` FROM `agent` WHERE `name` = 'agent'");
+    $ret[] = self::getUniqueValueFromDB("SELECT `trainday` FROM `agent` WHERE `name` = 'agent'");
     }
     
     
@@ -2379,12 +2380,12 @@ function EtatToken($player)
 
 function FirstAgent ()
 {
-    $count1 = count(array_merge(self::getObjectListFromDB( "SELECT card_location FROM tokyo WHERE card_location_arg = 0 AND card_location LIKE 'cardposition_1%'", true ),self::getObjectListFromDB( "SELECT card_location FROM kyoto WHERE card_location_arg = 0 AND card_location LIKE 'cardposition_1%'", true )));
-    $count2 = count(array_merge(self::getObjectListFromDB( "SELECT card_location FROM tokyo WHERE card_location_arg = 0 AND card_location LIKE 'cardposition_2%'", true ),self::getObjectListFromDB( "SELECT card_location FROM kyoto WHERE card_location_arg = 0 AND card_location LIKE 'cardposition_2%'", true )));
-    $count3 = count(array_merge(self::getObjectListFromDB( "SELECT card_location FROM tokyo WHERE card_location_arg = 0 AND card_location LIKE 'cardposition_3%'", true ),self::getObjectListFromDB( "SELECT card_location FROM kyoto WHERE card_location_arg = 0 AND card_location LIKE 'cardposition_3%'", true )));
-    $count4 = count(array_merge(self::getObjectListFromDB( "SELECT card_location FROM tokyo WHERE card_location_arg = 0 AND card_location LIKE 'cardposition_4%'", true ),self::getObjectListFromDB( "SELECT card_location FROM kyoto WHERE card_location_arg = 0 AND card_location LIKE 'cardposition_4%'", true )));
-    $count5 = count(array_merge(self::getObjectListFromDB( "SELECT card_location FROM tokyo WHERE card_location_arg = 0 AND card_location LIKE 'cardposition_5%'", true ),self::getObjectListFromDB( "SELECT card_location FROM kyoto WHERE card_location_arg = 0 AND card_location LIKE 'cardposition_5%'", true )));
-    $count6 = count(array_merge(self::getObjectListFromDB( "SELECT card_location FROM tokyo WHERE card_location_arg = 0 AND card_location LIKE 'cardposition_6%'", true ),self::getObjectListFromDB( "SELECT card_location FROM kyoto WHERE card_location_arg = 0 AND card_location LIKE 'cardposition_6%'", true )));
+    $count1 = count(array_merge(self::getObjectListFromDB( "SELECT `card_location` FROM `tokyo` WHERE `card_location_arg` = 0 AND `card_location` LIKE 'cardposition_1%'", true ),self::getObjectListFromDB( "SELECT `card_location` FROM `kyoto` WHERE `card_location_arg` = 0 AND `card_location` LIKE 'cardposition_1%'", true )));
+    $count2 = count(array_merge(self::getObjectListFromDB( "SELECT `card_location` FROM `tokyo` WHERE `card_location_arg` = 0 AND `card_location` LIKE 'cardposition_2%'", true ),self::getObjectListFromDB( "SELECT `card_location` FROM `kyoto` WHERE `card_location_arg` = 0 AND `card_location` LIKE 'cardposition_2%'", true )));
+    $count3 = count(array_merge(self::getObjectListFromDB( "SELECT `card_location` FROM `tokyo` WHERE `card_location_arg` = 0 AND `card_location` LIKE 'cardposition_3%'", true ),self::getObjectListFromDB( "SELECT `card_location` FROM `kyoto` WHERE `card_location_arg` = 0 AND `card_location` LIKE 'cardposition_3%'", true )));
+    $count4 = count(array_merge(self::getObjectListFromDB( "SELECT `card_location` FROM `tokyo` WHERE `card_location_arg` = 0 AND `card_location` LIKE 'cardposition_4%'", true ),self::getObjectListFromDB( "SELECT `card_location` FROM `kyoto` WHERE `card_location_arg` = 0 AND `card_location` LIKE 'cardposition_4%'", true )));
+    $count5 = count(array_merge(self::getObjectListFromDB( "SELECT `card_location` FROM `tokyo` WHERE `card_location_arg` = 0 AND `card_location` LIKE 'cardposition_5%'", true ),self::getObjectListFromDB( "SELECT `card_location` FROM `kyoto` WHERE `card_location_arg` = 0 AND `card_location` LIKE 'cardposition_5%'", true )));
+    $count6 = count(array_merge(self::getObjectListFromDB( "SELECT `card_location` FROM `tokyo` WHERE `card_location_arg` = 0 AND `card_location` LIKE 'cardposition_6%'", true ),self::getObjectListFromDB( "SELECT `card_location` FROM `kyoto` WHERE `card_location_arg` = 0 AND `card_location` LIKE 'cardposition_6%'", true )));
     $tableau = [$count1,$count2,$count3,$count4,$count5,$count6];
 
     $day = 0;
@@ -2424,7 +2425,7 @@ function tableExists($tableName) {
 
 function MajScorePassport ($card, $player)
 {
-    $newscore = self::getUniqueValueFromDB( "SELECT passportscore FROM player WHERE  player_id = {$player}");
+    $newscore = self::getUniqueValueFromDB( "SELECT `passportscore` FROM `player` WHERE  `player_id` = {$player}");
     letsgotojapan::$instance->notifyAllPlayers('majscorepassport','', array(
                     
         'card' => $card,
@@ -2436,7 +2437,7 @@ function MajScorePassport ($card, $player)
 
     if($newscore>=0)
     {
-    $name = self::getUniqueValueFromDB( "SELECT player_name FROM player WHERE  player_id = {$player}");
+    $name = self::getUniqueValueFromDB( "SELECT `player_name` FROM `player` WHERE  `player_id` = {$player}");
     letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} will have a bonus of ${score} ${log} at the end of the game thanks to the passport card'), array(
             'player_name' => $name,
             'log' => letsgotojapan::$instance->getLogsType(8),
@@ -2448,7 +2449,7 @@ function MajScorePassport ($card, $player)
 
     if($newscore<0)
     {
-    $name = self::getUniqueValueFromDB( "SELECT player_name FROM player WHERE  player_id = {$player}");
+    $name = self::getUniqueValueFromDB( "SELECT `player_name` FROM `player` WHERE  `player_id` = {$player}");
     letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} will have a penalty of ${score} ${log} at the end of the game because of the passport card'), array(
             'player_name' => $name,
             'log' => letsgotojapan::$instance->getLogsType(8),
@@ -2481,14 +2482,14 @@ self::checkAction( 'actSelect' );
 self::checkArgs($arg1);  
 
 $id = self::getCurrentPlayerId();
-$pending =  self::getObjectFromDB( "SELECT* FROM pending WHERE player_id = {$id} order by id desc limit 1");
+$pending =  self::getObjectFromDB( "SELECT* FROM `pending` WHERE `player_id` = {$id} order by `id` desc limit 1");
 $this->callPending($pending, true, $arg1);
-self::DbQuery("delete from pending where id=".$pending['id']);
+self::DbQuery("delete from `pending` where `id`=".$pending['id']);
 
 /*$test = 0;
 while ($test==0)
 {
-    $pending2 =  self::getObjectFromDB( "SELECT* FROM pending WHERE player_id = {$id} order by id desc limit 1");
+    $pending2 =  self::getObjectFromDB( "SELECT* FROM `pending` WHERE `player_id` = {$id} order by `id` desc limit 1");
     if ($pending2 != null)
     {
         $action = $this->callPending($pending2, false);
@@ -2497,7 +2498,7 @@ while ($test==0)
         if (($action['selectable']==null)&&($action['buttons']==null))
         {
             $this->callPending($pending2, true);
-            self::DbQuery("delete from pending where id=".$pending2['id']);
+            self::DbQuery("delete from `pending` where `id`=".$pending2['id']);
         }
 
         else
@@ -2526,14 +2527,14 @@ self::checkAction( 'actSelect' );
 self::checkArgs($arg1);       
   
 $id = self::getCurrentPlayerId();
-$pending =  self::getObjectFromDB( "SELECT* FROM pending WHERE player_id = {$id} order by id desc limit 1");
+$pending =  self::getObjectFromDB( "SELECT* FROM `pending` WHERE `player_id` = {$id} order by `id` desc limit 1");
 $this->callPending($pending, true, $arg1);
-self::DbQuery("delete from pending where id=".$pending['id']);
+self::DbQuery("delete from `pending` where `id`=".$pending['id']);
 
 /*$test = 0;
 while ($test==0)
 {
-    $pending2 =  self::getObjectFromDB( "SELECT* FROM pending WHERE player_id = {$id} order by id desc limit 1");
+    $pending2 =  self::getObjectFromDB( "SELECT* FROM `pending` WHERE `player_id` = {$id} order by `id` desc limit 1");
 
     if ($pending2 != null)
     {
@@ -2542,7 +2543,7 @@ while ($test==0)
         if (($action['selectable']==null)&&($action['buttons']==null))
         {
             $this->callPending($pending2, true);
-            self::DbQuery("delete from pending where id=".$pending2['id']);
+            self::DbQuery("delete from `pending` where `id`=".$pending2['id']);
         }
 
         else
@@ -2572,7 +2573,7 @@ function actValidate3Discard( $arg1, $arg2, $arg3)
     $explode2 = explode("_", $arg2);
     $explode3 = explode("_", $arg3);
 
-    $nbrejoueurs = count(self::getObjectListFromDB( "SELECT player_id id FROM player", true ));
+    $nbrejoueurs = count(self::getObjectListFromDB( "SELECT `player_id` id FROM `player`", true ));
 
     if($explode1[1] == 1)
     {
@@ -2641,9 +2642,9 @@ function actValidate3Discard( $arg1, $arg2, $arg3)
             );
     }
     
-    self::DbQuery( "UPDATE player set recherche = recherche - 1  WHERE player_id = {$id}" );
+    self::DbQuery( "UPDATE `player` set `recherche` = recherche - 1  WHERE `player_id` = {$id}" );
     letsgotojapan::$instance->MajPannel($id);
-    $name = self::getUniqueValueFromDB("SELECT player_name FROM player WHERE player_id = {$id}");
+    $name = self::getUniqueValueFromDB("SELECT `player_name` FROM `player` WHERE `player_id` = {$id}");
     if ($nbrejoueurs == 1)
     {
     letsgotojapan::$instance->notifyAllPlayers('message',clienttranslate( '${player_name} uses ${log}' ), array(
@@ -2662,17 +2663,17 @@ function actValidate3Discard( $arg1, $arg2, $arg3)
         );
     }
 
-    self::DbQuery( "UPDATE player set select1 = '0'  WHERE player_id = {$id}" );
-    self::DbQuery( "UPDATE player set select2 = '0'  WHERE player_id = {$id}" );
-    self::DbQuery( "UPDATE player set select3 = '0'  WHERE player_id = {$id}" );
+    self::DbQuery( "UPDATE `player` set `select1` = '0'  WHERE `player_id` = {$id}" );
+    self::DbQuery( "UPDATE `player` set `select2` = '0'  WHERE `player_id` = {$id}" );
+    self::DbQuery( "UPDATE `player` set `select3` = '0'  WHERE `player_id` = {$id}" );
     
     
     
-    $pending =  self::getObjectFromDB( "SELECT* FROM pending WHERE player_id = {$id} order by id desc limit 1");
-    self::DbQuery("delete from pending where id=".$pending['id']);
+    $pending =  self::getObjectFromDB( "SELECT* FROM `pending` WHERE `player_id` = {$id} order by `id` desc limit 1");
+    self::DbQuery("delete from `pending` where `id`=".$pending['id']);
 
-    $counthandtokyocard = count(self::getObjectListFromDB( "SELECT card_id id FROM tokyo WHERE card_location ='playerhand' AND card_location_arg = {$id}", true ));
-    $counthandkyotocard = count(self::getObjectListFromDB( "SELECT card_id id FROM kyoto WHERE card_location ='playerhand' AND card_location_arg = {$id}", true ));
+    $counthandtokyocard = count(self::getObjectListFromDB( "SELECT `card_id` id FROM `tokyo` WHERE `card_location` ='playerhand' AND `card_location_arg` = {$id}", true ));
+    $counthandkyotocard = count(self::getObjectListFromDB( "SELECT `card_id` id FROM `kyoto` WHERE `card_location` ='playerhand' AND `card_location_arg` = {$id}", true ));
     $playerhandcount = $counthandtokyocard + $counthandkyotocard;
 
     
@@ -2727,10 +2728,10 @@ function actConfirmPref($arg1, $arg2)
 {
     if (letsgotojapan::$instance->tableExists('prefconfirm')) 
     {
-        $etat = self::getUniqueValueFromDB("SELECT valeur FROM prefconfirm WHERE player_id={$arg1}");
+        $etat = self::getUniqueValueFromDB("SELECT `valeur` FROM `prefconfirm` WHERE `player_id`={$arg1}");
         if($etat != $arg2)
         {
-            self::DbQuery( "UPDATE prefconfirm set valeur = '{$arg2}' WHERE player_id = {$arg1}" );
+            self::DbQuery( "UPDATE `prefconfirm` set `valeur` = '{$arg2}' WHERE `player_id` = {$arg1}" );
         }
 
         
@@ -2757,7 +2758,7 @@ function repairBiggy()
         if( $bPlayer1 && $bPlayer2 )
         {
 
-            self::dbQuery( "UPDATE token SET token_type='wolf' WHERE ( token_type,token_player_id )=( 'werewolf','84189585' )" );
+            self::dbQuery( "UPDATE `token` SET `token_type`='wolf' WHERE ( `token_type`,`token_player_id` )=( 'werewolf','84189585' )" );
 
         }
     }*/
@@ -2781,7 +2782,7 @@ function repairBiggy()
    
 function argPlayerTurn()
 {
-    $listplayers = self::getObjectListFromDB( "SELECT player_id id FROM player", true );
+    $listplayers = self::getObjectListFromDB( "SELECT `player_id` id FROM `player`", true );
     $ret =[];
     
     
@@ -2793,7 +2794,7 @@ function argPlayerTurn()
     try {
         
         
-        $pending =  self::getObjectFromDB( "SELECT* FROM pending WHERE player_id = {$player_id} order by id desc limit 1");
+        $pending =  self::getObjectFromDB( "SELECT* FROM `pending` WHERE `player_id` = {$player_id} order by `id` desc limit 1");
         if($pending != null)
         {
         $args = $this->callPending($pending, false);
@@ -2833,20 +2834,20 @@ function st_MultiPlayerActivation()
 {
 
 
-    $actifmode = self::getUniqueValueFromDB("SELECT actif FROM mode WHERE name='mode'");
+    $actifmode = self::getUniqueValueFromDB("SELECT `actif` FROM `mode` WHERE `name`='mode'");
 
 
     if($actifmode == 1)
     {
-        self::DbQuery( "UPDATE mode set actif = 0  WHERE name='mode'" );
+        self::DbQuery( "UPDATE `mode` set `actif` = 0  WHERE `name`='mode'" );
 
-        $countplayer = count(self::getObjectListFromDB( "SELECT player_id FROM player", true ));
-        $listplayers = self::getObjectListFromDB( "SELECT player_id id FROM player", true );
+        $countplayer = count(self::getObjectListFromDB( "SELECT `player_id` FROM `player`", true ));
+        $listplayers = self::getObjectListFromDB( "SELECT `player_id` id FROM `player`", true );
 
         foreach ($listplayers as $player)
         {
             
-            $type = self::getUniqueValueFromDB("SELECT passportcard FROM player WHERE player_id = {$player}");
+            $type = self::getUniqueValueFromDB("SELECT `passportcard` FROM `player` WHERE `player_id` = {$player}");
             letsgotojapan::$instance->notifyAllPlayers('placepassortpannel','', array(
                 'id' => $player,
                 'type' => $type,
@@ -2857,13 +2858,13 @@ function st_MultiPlayerActivation()
 
             if($type == 1)
             {
-                self::DbQuery( "UPDATE player set train = 3  WHERE player_id = {$player}" );
+                self::DbQuery( "UPDATE `player` set `train` = 3  WHERE `player_id` = {$player}" );
             }
 
             if($type == 3)
             {
                 
-                self::DbQuery( "UPDATE player set angry1 = 2  WHERE player_id = {$player}" );
+                self::DbQuery( "UPDATE `player` set `angry1` = 2  WHERE `player_id` = {$player}" );
                 letsgotojapan::$instance->Smile(-2,$player);
 
 
@@ -2871,13 +2872,13 @@ function st_MultiPlayerActivation()
 
             if($type == 4)
             {
-                self::DbQuery( "UPDATE player set wild = 3  WHERE player_id = {$player}" );
+                self::DbQuery( "UPDATE `player` set `wild` = 3  WHERE `player_id` = {$player}" );
             }
 
             if($type == 5)
             {
-                self::DbQuery( "UPDATE player set recherche = 5  WHERE player_id = {$player}" );
-                self::DbQuery( "UPDATE player set happy2 = 1  WHERE player_id = {$player}" );
+                self::DbQuery( "UPDATE `player` set `recherche` = 5  WHERE `player_id` = {$player}" );
+                self::DbQuery( "UPDATE `player` set `happy2` = 1  WHERE `player_id` = {$player}" );
                 letsgotojapan::$instance->Smile(1,$player);
 
 
@@ -2895,17 +2896,17 @@ function st_MultiPlayerActivation()
 
             if($type == 10)
             {
-                self::DbQuery( "UPDATE player set pass10 = 2  WHERE player_id = {$player}" );
+                self::DbQuery( "UPDATE `player` set `pass10` = 2  WHERE `player_id` = {$player}" );
             }
 
 
 
             //MAJ PANNEL
 
-            $recherche = self::getUniqueValueFromDB("SELECT recherche FROM player WHERE player_id={$player}");
-            $train = self::getUniqueValueFromDB("SELECT train FROM player WHERE player_id={$player}");
-            $trainstart = self::getUniqueValueFromDB("SELECT trainstart FROM player WHERE player_id={$player}");
-            $wild = self::getUniqueValueFromDB("SELECT wild FROM player WHERE player_id={$player}");
+            $recherche = self::getUniqueValueFromDB("SELECT `recherche` FROM `player` WHERE `player_id`={$player}");
+            $train = self::getUniqueValueFromDB("SELECT `train` FROM `player` WHERE `player_id`={$player}");
+            $trainstart = self::getUniqueValueFromDB("SELECT `trainstart` FROM `player` WHERE `player_id`={$player}");
+            $wild = self::getUniqueValueFromDB("SELECT `wild` FROM `player` WHERE `player_id`={$player}");
         
             letsgotojapan::$instance->notifyAllPlayers('majpannelall','', array(
                 'id' =>  $player,
@@ -2958,9 +2959,9 @@ function st_MultiPlayerActivation()
         if ($countplayer>=2)
         {
             self::DbQuery("DELETE FROM `copybonus`;");
-            $copybonus = self::getObjectListFromDB( "SELECT player_id id, smile smile, happy happy, angry angry, recherche recherche, train train, trainstart trainstart, wild wild FROM player");
+            $copybonus = self::getObjectListFromDB( "SELECT `player_id` id, `smile` smile, `happy` happy, `angry` angry, `recherche` recherche, `train` train, `trainstart` trainstart, `wild` wild FROM `player`");
 
-            $listplayers = self::getObjectListFromDB( "SELECT player_id id FROM player", true );
+            $listplayers = self::getObjectListFromDB( "SELECT `player_id` id FROM `player`", true );
 
             foreach ($listplayers as $player_id)
             {   
@@ -2968,15 +2969,15 @@ function st_MultiPlayerActivation()
                 {
                     if($player_id == $bonus['id'])
                     {
-                    self::DbQuery("INSERT INTO copybonus (player_id, smile, happy, angry, recherche, train, trainstart, wild) VALUES ('{$bonus['id']}', '{$bonus['smile']}', '{$bonus['happy']}', '{$bonus['angry']}', '{$bonus['recherche']}', '{$bonus['train']}', '{$bonus['trainstart']}', '{$bonus['wild']}')");
+                    self::DbQuery("INSERT INTO `copybonus` (`player_id`, `smile`, `happy`, `angry`, `recherche`, `train`, `trainstart`, `wild`) VALUES ('{$bonus['id']}', '{$bonus['smile']}', '{$bonus['happy']}', '{$bonus['angry']}', '{$bonus['recherche']}', '{$bonus['train']}', '{$bonus['trainstart']}', '{$bonus['wild']}')");
                     }
                 }
 
                 //MAJ SMILE
 
-            $smile = self::getUniqueValueFromDB("SELECT smile FROM copybonus WHERE player_id={$player_id}");
-            $happy = self::getUniqueValueFromDB("SELECT happy FROM copybonus WHERE player_id={$player_id}");
-            $angry = self::getUniqueValueFromDB("SELECT angry FROM copybonus WHERE player_id={$player_id}");
+            $smile = self::getUniqueValueFromDB("SELECT `smile` FROM `copybonus` WHERE `player_id`={$player_id}");
+            $happy = self::getUniqueValueFromDB("SELECT `happy` FROM `copybonus` WHERE `player_id`={$player_id}");
+            $angry = self::getUniqueValueFromDB("SELECT `angry` FROM `copybonus` WHERE `player_id`={$player_id}");
 
             letsgotojapan::$instance->notifyAllPlayers('majsmileall','', array(
                 'id' =>  $player_id,
@@ -3001,9 +3002,9 @@ function st_MultiPlayerActivation()
     
     if($actifmode == 0)
     {
-    $turn = self::getUniqueValueFromDB("SELECT level FROM tokens WHERE name = 'turn'");
+    $turn = self::getUniqueValueFromDB("SELECT `level` FROM `tokens` WHERE `name` = 'turn'");
     $newturn = $turn+1;
-    $countplayer = count(self::getObjectListFromDB( "SELECT player_id FROM player", true ));
+    $countplayer = count(self::getObjectListFromDB( "SELECT `player_id` FROM `player`", true ));
 
     if ($countplayer>=2)
     {
@@ -3011,8 +3012,8 @@ function st_MultiPlayerActivation()
         {
         // DESTROY CARD
 
-        $destroytokyo = self::getObjectListFromDB( "SELECT card_id id, card_location_arg location_arg FROM copytokyo WHERE card_location != 'deck' and card_location != 'discard' and card_location != 'discardboardhidden' and card_location != 'discardboard' and card_location != 'playerhand'");
-        $destroykyoto = self::getObjectListFromDB( "SELECT card_id id, card_location_arg location_arg FROM copykyoto WHERE card_location != 'deck' and card_location != 'discard' and card_location != 'discardboardhidden' and card_location != 'discardboard' and card_location != 'playerhand'");
+        $destroytokyo = self::getObjectListFromDB( "SELECT `card_id` id, `card_location_arg` location_arg FROM `copytokyo` WHERE `card_location` != 'deck' and `card_location` != 'discard' and `card_location` != 'discardboardhidden' and `card_location` != 'discardboard' and `card_location` != 'playerhand'");
+        $destroykyoto = self::getObjectListFromDB( "SELECT `card_id` id, `card_location_arg` location_arg FROM `copykyoto` WHERE `card_location` != 'deck' and `card_location` != 'discard' and `card_location` != 'discardboardhidden' and `card_location` != 'discardboard' and `card_location` != 'playerhand'");
 
         letsgotojapan::$instance->notifyAllPlayers('destroytokyo','', array(
             'tableau' => $destroytokyo,
@@ -3037,11 +3038,11 @@ function st_MultiPlayerActivation()
             self::DbQuery("DELETE FROM `copykyoto`;");
             self::DbQuery("DELETE FROM `copybonus`;");
 
-            $copydecktokyo = self::getObjectListFromDB( "SELECT card_id id, card_type type, card_type_arg type_arg, card_location location, card_location_arg location_arg, walk walk, finallocation finallocation, finalwalk finalwalk FROM tokyo WHERE card_location != 'deck' and card_location != 'discard' and card_location != 'discardboardhidden' and card_location != 'discardboard' and card_location != 'playerhand'");
-            $copydeckkyoto = self::getObjectListFromDB( "SELECT card_id id, card_type type, card_type_arg type_arg, card_location location, card_location_arg location_arg, walk walk, finallocation finallocation, finalwalk finalwalk FROM kyoto WHERE card_location != 'deck' and card_location != 'discard' and card_location != 'discardboardhidden' and card_location != 'discardboard' and card_location != 'playerhand'");
-            $copybonus = self::getObjectListFromDB( "SELECT player_id id, smile smile, happy happy, angry angry, recherche recherche, train train, trainstart trainstart, wild wild FROM player");
+            $copydecktokyo = self::getObjectListFromDB( "SELECT `card_id` id, `card_type` type, `card_type_arg` type_arg, `card_location` location, `card_location_arg` location_arg, `walk` walk, `finallocation` finallocation, `finalwalk` finalwalk FROM `tokyo` WHERE `card_location` != 'deck' and `card_location` != 'discard' and `card_location` != 'discardboardhidden' and `card_location` != 'discardboard' and `card_location` != 'playerhand'");
+            $copydeckkyoto = self::getObjectListFromDB( "SELECT `card_id` id, `card_type` type, `card_type_arg` type_arg, `card_location` location, `card_location_arg` location_arg, `walk` walk, `finallocation` finallocation, `finalwalk` finalwalk FROM `kyoto` WHERE `card_location` != 'deck' and `card_location` != 'discard' and `card_location` != 'discardboardhidden' and `card_location` != 'discardboard' and `card_location` != 'playerhand'");
+            $copybonus = self::getObjectListFromDB( "SELECT `player_id` id, `smile` smile, `happy` happy, `angry` angry, `recherche` recherche, `train` train, `trainstart` trainstart, `wild` wild FROM `player`");
 
-            $listplayers = self::getObjectListFromDB( "SELECT player_id id FROM player", true );
+            $listplayers = self::getObjectListFromDB( "SELECT `player_id` id FROM `player`", true );
 
             foreach ($listplayers as $player_id)
             {
@@ -3051,7 +3052,7 @@ function st_MultiPlayerActivation()
                     {
                         if($player_id == $tokyo['location_arg'])
                         {
-                            self::DbQuery("INSERT INTO copytokyo (card_id, card_type, card_type_arg, card_location, card_location_arg, walk, finallocation, finalwalk) VALUES ('{$tokyo['id']}', '{$tokyo['type']}', '{$tokyo['type_arg']}', '{$tokyo['location']}', '{$tokyo['location_arg']}', '{$tokyo['walk']}', '{$tokyo['finallocation']}', '{$tokyo['finalwalk']}')");
+                            self::DbQuery("INSERT INTO `copytokyo` (`card_id`, `card_type`, `card_type_arg`, `card_location`, `card_location_arg`, `walk`, `finallocation`, `finalwalk`) VALUES ('{$tokyo['id']}', '{$tokyo['type']}', '{$tokyo['type_arg']}', '{$tokyo['location']}', '{$tokyo['location_arg']}', '{$tokyo['walk']}', '{$tokyo['finallocation']}', '{$tokyo['finalwalk']}')");
                         }
                     }
                 }
@@ -3062,7 +3063,7 @@ function st_MultiPlayerActivation()
                     {
                         if($player_id == $kyoto['location_arg'])
                         {
-                            self::DbQuery("INSERT INTO copykyoto (card_id, card_type, card_type_arg, card_location, card_location_arg, walk, finallocation, finalwalk) VALUES ('{$kyoto['id']}', '{$kyoto['type']}', '{$kyoto['type_arg']}', '{$kyoto['location']}', '{$kyoto['location_arg']}', '{$kyoto['walk']}', '{$kyoto['finallocation']}', '{$kyoto['finalwalk']}')");
+                            self::DbQuery("INSERT INTO `copykyoto` (`card_id`, `card_type`, `card_type_arg`, `card_location`, `card_location_arg`, `walk`, `finallocation`, `finalwalk`) VALUES ('{$kyoto['id']}', '{$kyoto['type']}', '{$kyoto['type_arg']}', '{$kyoto['location']}', '{$kyoto['location_arg']}', '{$kyoto['walk']}', '{$kyoto['finallocation']}', '{$kyoto['finalwalk']}')");
                         }
                     }
                 }
@@ -3071,17 +3072,17 @@ function st_MultiPlayerActivation()
                 {
                     if($player_id == $bonus['id'])
                     {
-                    self::DbQuery("INSERT INTO copybonus (player_id, smile, happy, angry, recherche, train, trainstart, wild) VALUES ('{$bonus['id']}', '{$bonus['smile']}', '{$bonus['happy']}', '{$bonus['angry']}', '{$bonus['recherche']}', '{$bonus['train']}', '{$bonus['trainstart']}', '{$bonus['wild']}')");
+                    self::DbQuery("INSERT INTO `copybonus` (`player_id`, `smile`, `happy`, `angry`, `recherche`, `train`, `trainstart`, `wild`) VALUES ('{$bonus['id']}', '{$bonus['smile']}', '{$bonus['happy']}', '{$bonus['angry']}', '{$bonus['recherche']}', '{$bonus['train']}', '{$bonus['trainstart']}', '{$bonus['wild']}')");
                     }
                 }
 
 
                 //MAJ PANNEL
 
-                $recherche = self::getUniqueValueFromDB("SELECT recherche FROM player WHERE player_id={$player_id}");
-                $train = self::getUniqueValueFromDB("SELECT train FROM player WHERE player_id={$player_id}");
-                $trainstart = self::getUniqueValueFromDB("SELECT trainstart FROM player WHERE player_id={$player_id}");
-                $wild = self::getUniqueValueFromDB("SELECT wild FROM player WHERE player_id={$player_id}");
+                $recherche = self::getUniqueValueFromDB("SELECT `recherche` FROM `player` WHERE `player_id`={$player_id}");
+                $train = self::getUniqueValueFromDB("SELECT `train` FROM `player` WHERE `player_id`={$player_id}");
+                $trainstart = self::getUniqueValueFromDB("SELECT `trainstart` FROM `player` WHERE `player_id`={$player_id}");
+                $wild = self::getUniqueValueFromDB("SELECT `wild` FROM `player` WHERE `player_id`={$player_id}");
             
                 letsgotojapan::$instance->notifyAllPlayers('majpannelall','', array(
                     'id' =>  $player_id,
@@ -3095,9 +3096,9 @@ function st_MultiPlayerActivation()
 
                 //MAJ SMILE
 
-                $smile = self::getUniqueValueFromDB("SELECT smile FROM copybonus WHERE player_id={$player_id}");
-                $happy = self::getUniqueValueFromDB("SELECT happy FROM copybonus WHERE player_id={$player_id}");
-                $angry = self::getUniqueValueFromDB("SELECT angry FROM copybonus WHERE player_id={$player_id}");
+                $smile = self::getUniqueValueFromDB("SELECT `smile` FROM `copybonus` WHERE `player_id`={$player_id}");
+                $happy = self::getUniqueValueFromDB("SELECT `happy` FROM `copybonus` WHERE `player_id`={$player_id}");
+                $angry = self::getUniqueValueFromDB("SELECT `angry` FROM `copybonus` WHERE `player_id`={$player_id}");
 
                 letsgotojapan::$instance->notifyAllPlayers('majsmileall','', array(
                     'id' =>  $player_id,
@@ -3112,12 +3113,12 @@ function st_MultiPlayerActivation()
 
                 //// PASSPORT 18
 
-                $passportcard = self::getUniqueValueFromDB( "SELECT passportcard FROM player WHERE  player_id = {$player_id}");
+                $passportcard = self::getUniqueValueFromDB( "SELECT `passportcard` FROM `player` WHERE  `player_id` = {$player_id}");
                 if($passportcard == 18)
                 {
                     $scorepassport18 = 0;
-                    $tokyopass = self::getObjectListFromDB( "SELECT card_type type FROM tokyo WHERE  card_location_arg = {$player_id} AND walk =0 AND card_location LIKE 'cardposition%'", true );
-                    $kyotopass = self::getObjectListFromDB( "SELECT card_type type FROM kyoto WHERE  card_location_arg = {$player_id} AND walk =0 AND card_location LIKE 'cardposition%'", true );
+                    $tokyopass = self::getObjectListFromDB( "SELECT `card_type` type FROM `tokyo` WHERE  `card_location_arg` = {$player_id} AND `walk` =0 AND `card_location` LIKE 'cardposition%'", true );
+                    $kyotopass = self::getObjectListFromDB( "SELECT `card_type` type FROM `kyoto` WHERE  `card_location_arg` = {$player_id} AND `walk` =0 AND `card_location` LIKE 'cardposition%'", true );
 
                     if($tokyopass != null)
                     {
@@ -3148,7 +3149,7 @@ function st_MultiPlayerActivation()
                     }
 
                     $newscore = $scorepassport18 * 4;
-                    self::DbQuery( "UPDATE player set passportscore = $newscore  WHERE player_id = {$player_id}" );
+                    self::DbQuery( "UPDATE `player` set `passportscore` = $newscore  WHERE `player_id` = {$player_id}" );
                     letsgotojapan::$instance->MajScorePassport(18,$player_id);
 
                 }
@@ -3166,8 +3167,8 @@ function st_MultiPlayerActivation()
 
         // DISPLAY CARD
 
-        $displaytokyo = self::getObjectListFromDB( "SELECT card_id id, card_type type, card_type_arg type_arg, card_location location, card_location_arg location_arg, walk walk, finallocation finallocation, finalwalk finalwalk FROM copytokyo WHERE card_location != 'deck' and card_location != 'discard' and card_location != 'discardboardhidden' and card_location != 'discardboard' and card_location != 'playerhand'");
-        $displaykyoto = self::getObjectListFromDB( "SELECT card_id id, card_type type, card_type_arg type_arg, card_location location, card_location_arg location_arg, walk walk, finallocation finallocation, finalwalk finalwalk FROM copykyoto WHERE card_location != 'deck' and card_location != 'discard' and card_location != 'discardboardhidden' and card_location != 'discardboard' and card_location != 'playerhand'");
+        $displaytokyo = self::getObjectListFromDB( "SELECT `card_id` id, `card_type` type, `card_type_arg` type_arg, `card_location` location, `card_location_arg` location_arg, `walk` walk, `finallocation` finallocation, `finalwalk` finalwalk FROM `copytokyo` WHERE `card_location` != 'deck' and `card_location` != 'discard' and `card_location` != 'discardboardhidden' and `card_location` != 'discardboard' and `card_location` != 'playerhand'");
+        $displaykyoto = self::getObjectListFromDB( "SELECT `card_id` id, `card_type` type, `card_type_arg` type_arg, `card_location` location, `card_location_arg` location_arg, `walk` walk, `finallocation` finallocation, `finalwalk` finalwalk FROM `copykyoto` WHERE `card_location` != 'deck' and `card_location` != 'discard' and `card_location` != 'discardboardhidden' and `card_location` != 'discardboard' and `card_location` != 'playerhand'");
 
         letsgotojapan::$instance->notifyAllPlayers('displaytokyo','', array(
             'tableau' => $displaytokyo,
@@ -3194,7 +3195,7 @@ function st_MultiPlayerActivation()
         if (($newturn < 5)||($newturn == 11))  
         {
             /// changement de turn ////
-            self::DbQuery( "UPDATE tokens set level = level + 1  WHERE name ='turn'" );
+            self::DbQuery( "UPDATE `tokens` set `level` = level + 1  WHERE `name` ='turn'" );
             letsgotojapan::$instance->notifyAllPlayers('turn','', array(
             'turn' =>$newturn,
             )
@@ -3202,15 +3203,15 @@ function st_MultiPlayerActivation()
 
             
 
-            $listplayers = self::getObjectListFromDB( "SELECT player_id id FROM player", true );
+            $listplayers = self::getObjectListFromDB( "SELECT `player_id` id FROM `player`", true );
 
             foreach ($listplayers as $player_id)
             {
                 $this->tokyo->pickCardForLocation( 'deck', 'playerhand', $player_id);
                 $this->kyoto->pickCardForLocation( 'deck', 'playerhand', $player_id);
 
-                $tokyocard = self::getObjectListFromDB( "SELECT card_id id, card_type type FROM tokyo WHERE card_location ='playerhand' AND card_location_arg = {$player_id}");
-                $kyotocard = self::getObjectListFromDB( "SELECT card_id id, card_type type FROM kyoto WHERE card_location ='playerhand' AND card_location_arg = {$player_id}");
+                $tokyocard = self::getObjectListFromDB( "SELECT `card_id` id, `card_type` type FROM `tokyo` WHERE `card_location` ='playerhand' AND `card_location_arg` = {$player_id}");
+                $kyotocard = self::getObjectListFromDB( "SELECT `card_id` id, `card_type` type FROM `kyoto` WHERE `card_location` ='playerhand' AND `card_location_arg` = {$player_id}");
                 
                 
                 foreach($tokyocard as $card1)
@@ -3247,8 +3248,8 @@ function st_MultiPlayerActivation()
 
                 //////////////// Compteur discard ///////////////
 
-                $tokyocarddiscard = self::getObjectListFromDB( "SELECT card_id id FROM tokyo WHERE card_location ='discardboardhidden' AND card_location_arg = {$player_id}", true);
-                $kyotocarddiscard = self::getObjectListFromDB( "SELECT card_id id FROM kyoto WHERE card_location ='discardboardhidden' AND card_location_arg = {$player_id}", true);
+                $tokyocarddiscard = self::getObjectListFromDB( "SELECT `card_id` id FROM `tokyo` WHERE `card_location` ='discardboardhidden' AND `card_location_arg` = {$player_id}", true);
+                $kyotocarddiscard = self::getObjectListFromDB( "SELECT `card_id` id FROM `kyoto` WHERE `card_location` ='discardboardhidden' AND `card_location_arg` = {$player_id}", true);
                 $tokyocarddiscardcount = count($tokyocarddiscard);
                 $kyotocarddiscardcount = count($kyotocarddiscard);
 
@@ -3270,8 +3271,8 @@ function st_MultiPlayerActivation()
 
                 }
 
-                $newtokyocarddiscardcount = count(self::getObjectListFromDB( "SELECT card_id id FROM tokyo WHERE card_location ='discardboard' AND card_location_arg = {$player_id}", true));
-                $newkyotocarddiscardcount = count(self::getObjectListFromDB( "SELECT card_id id FROM kyoto WHERE card_location ='discardboard' AND card_location_arg = {$player_id}", true));
+                $newtokyocarddiscardcount = count(self::getObjectListFromDB( "SELECT `card_id` id FROM `tokyo` WHERE `card_location` ='discardboard' AND `card_location_arg` = {$player_id}", true));
+                $newkyotocarddiscardcount = count(self::getObjectListFromDB( "SELECT `card_id` id FROM `kyoto` WHERE `card_location` ='discardboard' AND `card_location_arg` = {$player_id}", true));
 
                 letsgotojapan::$instance->notifyAllPlayers('majcompteurdiscard','', array(
                     'count1' => $newtokyocarddiscardcount,
@@ -3290,7 +3291,7 @@ function st_MultiPlayerActivation()
         if (($newturn == 5)||($newturn == 7)||($newturn == 9)) 
         {
             /// changement de turn ////
-            self::DbQuery( "UPDATE tokens set level = level + 1  WHERE name ='turn'" );
+            self::DbQuery( "UPDATE `tokens` set `level` = level + 1  WHERE `name` ='turn'" );
             letsgotojapan::$instance->notifyAllPlayers('turn','', array(
             'turn' =>$newturn,
             )
@@ -3298,12 +3299,12 @@ function st_MultiPlayerActivation()
 
             
             
-            $listplayers = self::getObjectListFromDB( "SELECT player_id id FROM player", true );
+            $listplayers = self::getObjectListFromDB( "SELECT `player_id` id FROM `player`", true );
 
             foreach ($listplayers as $player_id)
             {
-                $tokyocarddiscard = self::getObjectListFromDB( "SELECT card_id id FROM tokyo WHERE card_location ='discardboardhidden' AND card_location_arg = {$player_id}", true);
-                $kyotocarddiscard = self::getObjectListFromDB( "SELECT card_id id FROM kyoto WHERE card_location ='discardboardhidden' AND card_location_arg = {$player_id}", true);
+                $tokyocarddiscard = self::getObjectListFromDB( "SELECT `card_id` id FROM `tokyo` WHERE `card_location` ='discardboardhidden' AND `card_location_arg` = {$player_id}", true);
+                $kyotocarddiscard = self::getObjectListFromDB( "SELECT `card_id` id FROM `kyoto` WHERE `card_location` ='discardboardhidden' AND `card_location_arg` = {$player_id}", true);
                 $tokyocarddiscardcount = count($tokyocarddiscard);
                 $kyotocarddiscardcount = count($kyotocarddiscard);
 
@@ -3327,8 +3328,8 @@ function st_MultiPlayerActivation()
 
 
                 
-                $tokyodiscardboard = self::getObjectListFromDB( "SELECT card_id id, card_type type FROM tokyo WHERE card_location ='discardboard' AND card_location_arg = {$player_id}");
-                $kyotodiscardboard = self::getObjectListFromDB( "SELECT card_id id, card_type type FROM kyoto WHERE card_location ='discardboard' AND card_location_arg = {$player_id}");
+                $tokyodiscardboard = self::getObjectListFromDB( "SELECT `card_id` id, `card_type` type FROM `tokyo` WHERE `card_location` ='discardboard' AND `card_location_arg` = {$player_id}");
+                $kyotodiscardboard = self::getObjectListFromDB( "SELECT `card_id` id, `card_type` type FROM `kyoto` WHERE `card_location` ='discardboard' AND `card_location_arg` = {$player_id}");
 
                 
                 if($tokyodiscardboard != null)
@@ -3392,14 +3393,14 @@ function st_MultiPlayerActivation()
         if (($newturn == 6)||($newturn == 8))
         {
             /// changement de turn ////
-            self::DbQuery( "UPDATE tokens set level = level + 1  WHERE name ='turn'" );
+            self::DbQuery( "UPDATE `tokens` set `level` = level + 1  WHERE `name` ='turn'" );
             letsgotojapan::$instance->notifyAllPlayers('turn','', array(
             'turn' =>$newturn,
             )
             );
 
 
-            $listplayers = self::getObjectListFromDB( "SELECT player_id id FROM player", true );
+            $listplayers = self::getObjectListFromDB( "SELECT `player_id` id FROM `player`", true );
 
             foreach ($listplayers as $player_id)
             {
@@ -3408,8 +3409,8 @@ function st_MultiPlayerActivation()
                 $this->kyoto->pickCardForLocation( 'deck', 'playerhand', $player_id);
                 $this->kyoto->pickCardForLocation( 'deck', 'playerhand', $player_id);
 
-                $tokyocard = self::getObjectListFromDB( "SELECT card_id id, card_type type FROM tokyo WHERE card_location ='playerhand' AND card_location_arg = {$player_id}");
-                $kyotocard = self::getObjectListFromDB( "SELECT card_id id, card_type type FROM kyoto WHERE card_location ='playerhand' AND card_location_arg = {$player_id}");
+                $tokyocard = self::getObjectListFromDB( "SELECT `card_id` id, `card_type` type FROM `tokyo` WHERE `card_location` ='playerhand' AND `card_location_arg` = {$player_id}");
+                $kyotocard = self::getObjectListFromDB( "SELECT `card_id` id, `card_type` type FROM `kyoto` WHERE `card_location` ='playerhand' AND `card_location_arg` = {$player_id}");
                 
                 
                 foreach($tokyocard as $card1)
@@ -3446,8 +3447,8 @@ function st_MultiPlayerActivation()
 
                 //////////////// Compteur discard ///////////////
 
-                $tokyocarddiscard = self::getObjectListFromDB( "SELECT card_id id FROM tokyo WHERE card_location ='discardboardhidden' AND card_location_arg = {$player_id}", true);
-                $kyotocarddiscard = self::getObjectListFromDB( "SELECT card_id id FROM kyoto WHERE card_location ='discardboardhidden' AND card_location_arg = {$player_id}", true);
+                $tokyocarddiscard = self::getObjectListFromDB( "SELECT `card_id` id FROM `tokyo` WHERE `card_location` ='discardboardhidden' AND `card_location_arg` = {$player_id}", true);
+                $kyotocarddiscard = self::getObjectListFromDB( "SELECT `card_id` id FROM `kyoto` WHERE `card_location` ='discardboardhidden' AND `card_location_arg` = {$player_id}", true);
                 $tokyocarddiscardcount = count($tokyocarddiscard);
                 $kyotocarddiscardcount = count($kyotocarddiscard);
 
@@ -3469,8 +3470,8 @@ function st_MultiPlayerActivation()
 
                 }
 
-                $newtokyocarddiscardcount = count(self::getObjectListFromDB( "SELECT card_id id FROM tokyo WHERE card_location ='discardboard' AND card_location_arg = {$player_id}", true));
-                $newkyotocarddiscardcount = count(self::getObjectListFromDB( "SELECT card_id id FROM kyoto WHERE card_location ='discardboard' AND card_location_arg = {$player_id}", true));
+                $newtokyocarddiscardcount = count(self::getObjectListFromDB( "SELECT `card_id` id FROM `tokyo` WHERE `card_location` ='discardboard' AND `card_location_arg` = {$player_id}", true));
+                $newkyotocarddiscardcount = count(self::getObjectListFromDB( "SELECT `card_id` id FROM `kyoto` WHERE `card_location` ='discardboard' AND `card_location_arg` = {$player_id}", true));
 
                 letsgotojapan::$instance->notifyAllPlayers('majcompteurdiscard','', array(
                     'count1' => $newtokyocarddiscardcount,
@@ -3489,7 +3490,7 @@ function st_MultiPlayerActivation()
         if (($newturn == 10)||($newturn == 12))  
         {
             /// changement de turn ////
-            self::DbQuery( "UPDATE tokens set level = level + 1  WHERE name ='turn'" );
+            self::DbQuery( "UPDATE `tokens` set `level` = level + 1  WHERE `name` ='turn'" );
             letsgotojapan::$instance->notifyAllPlayers('turn','', array(
             'turn' =>$newturn,
             )
@@ -3497,12 +3498,12 @@ function st_MultiPlayerActivation()
 
             
             
-            $listplayers = self::getObjectListFromDB( "SELECT player_id id FROM player", true );
+            $listplayers = self::getObjectListFromDB( "SELECT `player_id` id FROM `player`", true );
 
             foreach ($listplayers as $player_id)
             {
-                $tokyocarddiscard = self::getObjectListFromDB( "SELECT card_id id FROM tokyo WHERE card_location ='discardboardhidden' AND card_location_arg = {$player_id}", true);
-                $kyotocarddiscard = self::getObjectListFromDB( "SELECT card_id id FROM kyoto WHERE card_location ='discardboardhidden' AND card_location_arg = {$player_id}", true);
+                $tokyocarddiscard = self::getObjectListFromDB( "SELECT `card_id` id FROM `tokyo` WHERE `card_location` ='discardboardhidden' AND `card_location_arg` = {$player_id}", true);
+                $kyotocarddiscard = self::getObjectListFromDB( "SELECT `card_id` id FROM `kyoto` WHERE `card_location` ='discardboardhidden' AND `card_location_arg` = {$player_id}", true);
                 $tokyocarddiscardcount = count($tokyocarddiscard);
                 $kyotocarddiscardcount = count($kyotocarddiscard);
 
@@ -3526,8 +3527,8 @@ function st_MultiPlayerActivation()
 
 
                 
-                $tokyodiscardboard = self::getObjectListFromDB( "SELECT card_id id, card_type type FROM tokyo WHERE card_location ='discardboard' AND card_location_arg = {$player_id}");
-                $kyotodiscardboard = self::getObjectListFromDB( "SELECT card_id id, card_type type FROM kyoto WHERE card_location ='discardboard' AND card_location_arg = {$player_id}");
+                $tokyodiscardboard = self::getObjectListFromDB( "SELECT `card_id` id, `card_type` type FROM `tokyo` WHERE `card_location` ='discardboard' AND `card_location_arg` = {$player_id}");
+                $kyotodiscardboard = self::getObjectListFromDB( "SELECT `card_id` id, `card_type` type FROM `kyoto` WHERE `card_location` ='discardboard' AND `card_location_arg` = {$player_id}");
 
                 
                 if($tokyodiscardboard != null)
@@ -3591,7 +3592,7 @@ function st_MultiPlayerActivation()
         if ($newturn == 13) 
         {
             /// changement de turn ////
-            self::DbQuery( "UPDATE tokens set level = level + 1  WHERE name ='turn'" );
+            self::DbQuery( "UPDATE `tokens` set `level` = level + 1  WHERE `name` ='turn'" );
             letsgotojapan::$instance->notifyAllPlayers('turn','', array(
             'turn' =>$newturn,
             )
@@ -3599,13 +3600,13 @@ function st_MultiPlayerActivation()
 
             
             
-            $listplayers = self::getObjectListFromDB( "SELECT player_id id FROM player", true );
+            $listplayers = self::getObjectListFromDB( "SELECT `player_id` id FROM `player`", true );
 
             foreach ($listplayers as $player_id)
             {
                 
-                $tokyocarddiscard = self::getObjectListFromDB( "SELECT card_id id FROM tokyo WHERE card_location ='discardboardhidden' AND card_location_arg = {$player_id}", true);
-                $kyotocarddiscard = self::getObjectListFromDB( "SELECT card_id id FROM kyoto WHERE card_location ='discardboardhidden' AND card_location_arg = {$player_id}", true);
+                $tokyocarddiscard = self::getObjectListFromDB( "SELECT `card_id` id FROM `tokyo` WHERE `card_location` ='discardboardhidden' AND `card_location_arg` = {$player_id}", true);
+                $kyotocarddiscard = self::getObjectListFromDB( "SELECT `card_id` id FROM `kyoto` WHERE `card_location` ='discardboardhidden' AND `card_location_arg` = {$player_id}", true);
                 $tokyocarddiscardcount = count($tokyocarddiscard);
                 $kyotocarddiscardcount = count($kyotocarddiscard);
 
@@ -3629,8 +3630,8 @@ function st_MultiPlayerActivation()
 
 
                 
-                $tokyodiscardboard = self::getObjectListFromDB( "SELECT card_id id, card_type type FROM tokyo WHERE card_location ='discardboard' AND card_location_arg = {$player_id}");
-                $kyotodiscardboard = self::getObjectListFromDB( "SELECT card_id id, card_type type FROM kyoto WHERE card_location ='discardboard' AND card_location_arg = {$player_id}");
+                $tokyodiscardboard = self::getObjectListFromDB( "SELECT `card_id` id, `card_type` type FROM `tokyo` WHERE `card_location` ='discardboard' AND `card_location_arg` = {$player_id}");
+                $kyotodiscardboard = self::getObjectListFromDB( "SELECT `card_id` id, `card_type` type FROM `kyoto` WHERE `card_location` ='discardboard' AND `card_location_arg` = {$player_id}");
 
                 
                 if($tokyodiscardboard != null)
@@ -3700,8 +3701,8 @@ function st_MultiPlayerActivation()
                 )
                 );
 
-            self::DbQuery( "UPDATE tokens set level = level + 1  WHERE name ='turn'" );
-            $listplayers = self::getObjectListFromDB( "SELECT player_id id FROM player", true );
+            self::DbQuery( "UPDATE `tokens` set `level` = level + 1  WHERE `name` ='turn'" );
+            $listplayers = self::getObjectListFromDB( "SELECT `player_id` id FROM `player`", true );
 
             foreach ($listplayers as $player_id)
             {
@@ -3725,8 +3726,8 @@ function st_MultiPlayerActivation()
                 )
                 );
 
-            self::DbQuery( "UPDATE tokens set level = level + 1  WHERE name ='turn'" );
-            $listplayers = self::getObjectListFromDB( "SELECT player_id id FROM player", true );
+            self::DbQuery( "UPDATE `tokens` set `level` = level + 1  WHERE `name` ='turn'" );
+            $listplayers = self::getObjectListFromDB( "SELECT `player_id` id FROM `player`", true );
 
             foreach ($listplayers as $player_id)
             {
@@ -3740,16 +3741,16 @@ function st_MultiPlayerActivation()
         if ($newturn == 16) 
         {
             // tie breaker
-            $listplayers = self::getObjectListFromDB( "SELECT player_id id FROM player", true );
+            $listplayers = self::getObjectListFromDB( "SELECT `player_id` id FROM `player`", true );
             foreach ($listplayers as $player_id)
             {
-                $r = self::getUniqueValueFromDB( "SELECT r FROM player WHERE player_id = {$player_id}");
-                $g = self::getUniqueValueFromDB( "SELECT g FROM player WHERE player_id = {$player_id}");
-                $p = self::getUniqueValueFromDB( "SELECT p FROM player WHERE player_id = {$player_id}");
-                $y = self::getUniqueValueFromDB( "SELECT y FROM player WHERE player_id = {$player_id}");
-                $b = self::getUniqueValueFromDB( "SELECT b FROM player WHERE player_id = {$player_id}");
+                $r = self::getUniqueValueFromDB( "SELECT `r` FROM `player` WHERE `player_id` = {$player_id}");
+                $g = self::getUniqueValueFromDB( "SELECT `g` FROM `player` WHERE `player_id` = {$player_id}");
+                $p = self::getUniqueValueFromDB( "SELECT `p` FROM `player` WHERE `player_id` = {$player_id}");
+                $y = self::getUniqueValueFromDB( "SELECT `y` FROM `player` WHERE `player_id` = {$player_id}");
+                $b = self::getUniqueValueFromDB( "SELECT `b` FROM `player` WHERE `player_id` = {$player_id}");
                 $scoreaux = $r + $g + $p + $y + $b;
-                self::DbQuery( "UPDATE player set player_score_aux = {$scoreaux} WHERE player_id = {$player_id}" );
+                self::DbQuery( "UPDATE `player` set `player_score_aux` = {$scoreaux} WHERE `player_id` = {$player_id}" );
 
             }
             $this->gamestate->nextState('end');
@@ -3773,19 +3774,19 @@ function st_MultiPlayerActivation()
     {
         if($newturn <= 14) //// PASSPORT 18
         {
-            $listplayers = self::getObjectListFromDB( "SELECT player_id id FROM player", true );
+            $listplayers = self::getObjectListFromDB( "SELECT `player_id` id FROM `player`", true );
 
             foreach ($listplayers as $player_id)
             {
 
                 
 
-                $passportcard = self::getUniqueValueFromDB( "SELECT passportcard FROM player WHERE  player_id = {$player_id}");
+                $passportcard = self::getUniqueValueFromDB( "SELECT `passportcard` FROM `player` WHERE  `player_id` = {$player_id}");
                 if($passportcard == 18)
                 {
                     $scorepassport18 = 0;
-                    $tokyopass = self::getObjectListFromDB( "SELECT card_type type FROM tokyo WHERE  card_location_arg = {$player_id} AND walk =0 AND card_location LIKE 'cardposition%'", true );
-                    $kyotopass = self::getObjectListFromDB( "SELECT card_type type FROM kyoto WHERE  card_location_arg = {$player_id} AND walk =0 AND card_location LIKE 'cardposition%'", true );
+                    $tokyopass = self::getObjectListFromDB( "SELECT `card_type` type FROM `tokyo` WHERE  `card_location_arg` = {$player_id} AND `walk` =0 AND `card_location` LIKE 'cardposition%'", true );
+                    $kyotopass = self::getObjectListFromDB( "SELECT `card_type` type FROM `kyoto` WHERE  `card_location_arg` = {$player_id} AND `walk` =0 AND `card_location` LIKE 'cardposition%'", true );
 
                     if($tokyopass != null)
                     {
@@ -3816,7 +3817,7 @@ function st_MultiPlayerActivation()
                     }
 
                     $newscore = $scorepassport18 * 4;
-                    self::DbQuery( "UPDATE player set passportscore = $newscore  WHERE player_id = {$player_id}" );
+                    self::DbQuery( "UPDATE `player` set `passportscore` = $newscore  WHERE `player_id` = {$player_id}" );
                     letsgotojapan::$instance->MajScorePassport(18,$player_id);
 
                 }
@@ -3829,7 +3830,7 @@ function st_MultiPlayerActivation()
         if (($newturn < 5)||($newturn == 11))  
         {
             /// changement de turn ////
-            self::DbQuery( "UPDATE tokens set level = level + 1  WHERE name ='turn'" );
+            self::DbQuery( "UPDATE `tokens` set `level` = level + 1  WHERE `name` ='turn'" );
             letsgotojapan::$instance->notifyAllPlayers('turn','', array(
             'turn' =>$newturn,
             )
@@ -3837,15 +3838,15 @@ function st_MultiPlayerActivation()
 
             
 
-            $listplayers = self::getObjectListFromDB( "SELECT player_id id FROM player", true );
+            $listplayers = self::getObjectListFromDB( "SELECT `player_id` id FROM `player`", true );
 
             foreach ($listplayers as $player_id)
             {
                 $this->tokyo->pickCardForLocation( 'deck', 'playerhand', $player_id);
                 $this->kyoto->pickCardForLocation( 'deck', 'playerhand', $player_id);
 
-                $tokyocard = self::getObjectListFromDB( "SELECT card_id id, card_type type FROM tokyo WHERE card_location ='playerhand' AND card_location_arg = {$player_id}");
-                $kyotocard = self::getObjectListFromDB( "SELECT card_id id, card_type type FROM kyoto WHERE card_location ='playerhand' AND card_location_arg = {$player_id}");
+                $tokyocard = self::getObjectListFromDB( "SELECT `card_id` id, `card_type` type FROM `tokyo` WHERE `card_location` ='playerhand' AND `card_location_arg` = {$player_id}");
+                $kyotocard = self::getObjectListFromDB( "SELECT `card_id` id, `card_type` type FROM `kyoto` WHERE `card_location` ='playerhand' AND `card_location_arg` = {$player_id}");
                 
                 
                 foreach($tokyocard as $card1)
@@ -3882,8 +3883,8 @@ function st_MultiPlayerActivation()
 
                 //////////////// Compteur discard ///////////////
 
-                $tokyocarddiscard = self::getObjectListFromDB( "SELECT card_id id FROM tokyo WHERE card_location ='discardboardhidden' AND card_location_arg = {$player_id}", true);
-                $kyotocarddiscard = self::getObjectListFromDB( "SELECT card_id id FROM kyoto WHERE card_location ='discardboardhidden' AND card_location_arg = {$player_id}", true);
+                $tokyocarddiscard = self::getObjectListFromDB( "SELECT `card_id` id FROM `tokyo` WHERE `card_location` ='discardboardhidden' AND `card_location_arg` = {$player_id}", true);
+                $kyotocarddiscard = self::getObjectListFromDB( "SELECT `card_id` id FROM `kyoto` WHERE `card_location` ='discardboardhidden' AND `card_location_arg` = {$player_id}", true);
                 $tokyocarddiscardcount = count($tokyocarddiscard);
                 $kyotocarddiscardcount = count($kyotocarddiscard);
 
@@ -3905,8 +3906,8 @@ function st_MultiPlayerActivation()
 
                 }
 
-                $newtokyocarddiscardcount = count(self::getObjectListFromDB( "SELECT card_id id FROM tokyo WHERE card_location ='discardboard' AND card_location_arg = {$player_id}", true));
-                $newkyotocarddiscardcount = count(self::getObjectListFromDB( "SELECT card_id id FROM kyoto WHERE card_location ='discardboard' AND card_location_arg = {$player_id}", true));
+                $newtokyocarddiscardcount = count(self::getObjectListFromDB( "SELECT `card_id` id FROM `tokyo` WHERE `card_location` ='discardboard' AND `card_location_arg` = {$player_id}", true));
+                $newkyotocarddiscardcount = count(self::getObjectListFromDB( "SELECT `card_id` id FROM `kyoto` WHERE `card_location` ='discardboard' AND `card_location_arg` = {$player_id}", true));
 
                 letsgotojapan::$instance->notifyAllPlayers('majcompteurdiscard','', array(
                     'count1' => $newtokyocarddiscardcount,
@@ -3925,7 +3926,7 @@ function st_MultiPlayerActivation()
         if (($newturn == 5)||($newturn == 7)||($newturn == 9)) 
         {
             /// changement de turn ////
-            self::DbQuery( "UPDATE tokens set level = level + 1  WHERE name ='turn'" );
+            self::DbQuery( "UPDATE `tokens` set `level` = level + 1  WHERE `name` ='turn'" );
             letsgotojapan::$instance->notifyAllPlayers('turn','', array(
             'turn' =>$newturn,
             )
@@ -3933,12 +3934,12 @@ function st_MultiPlayerActivation()
 
             
             
-            $listplayers = self::getObjectListFromDB( "SELECT player_id id FROM player", true );
+            $listplayers = self::getObjectListFromDB( "SELECT `player_id` id FROM `player`", true );
 
             foreach ($listplayers as $player_id)
             {
-                $tokyocarddiscard = self::getObjectListFromDB( "SELECT card_id id FROM tokyo WHERE card_location ='discardboardhidden' AND card_location_arg = {$player_id}", true);
-                $kyotocarddiscard = self::getObjectListFromDB( "SELECT card_id id FROM kyoto WHERE card_location ='discardboardhidden' AND card_location_arg = {$player_id}", true);
+                $tokyocarddiscard = self::getObjectListFromDB( "SELECT `card_id` id FROM `tokyo` WHERE `card_location` ='discardboardhidden' AND `card_location_arg` = {$player_id}", true);
+                $kyotocarddiscard = self::getObjectListFromDB( "SELECT `card_id` id FROM `kyoto` WHERE `card_location` ='discardboardhidden' AND `card_location_arg` = {$player_id}", true);
                 $tokyocarddiscardcount = count($tokyocarddiscard);
                 $kyotocarddiscardcount = count($kyotocarddiscard);
 
@@ -3962,8 +3963,8 @@ function st_MultiPlayerActivation()
 
 
                 
-                $tokyodiscardboard = self::getObjectListFromDB( "SELECT card_id id, card_type type FROM tokyo WHERE card_location ='discardboard' AND card_location_arg = {$player_id}");
-                $kyotodiscardboard = self::getObjectListFromDB( "SELECT card_id id, card_type type FROM kyoto WHERE card_location ='discardboard' AND card_location_arg = {$player_id}");
+                $tokyodiscardboard = self::getObjectListFromDB( "SELECT `card_id` id, `card_type` type FROM `tokyo` WHERE `card_location` ='discardboard' AND `card_location_arg` = {$player_id}");
+                $kyotodiscardboard = self::getObjectListFromDB( "SELECT `card_id` id, `card_type` type FROM `kyoto` WHERE `card_location` ='discardboard' AND `card_location_arg` = {$player_id}");
 
                 
                 if($tokyodiscardboard != null)
@@ -4027,7 +4028,7 @@ function st_MultiPlayerActivation()
         if (($newturn == 6)||($newturn == 8))
         {
             /// changement de turn ////
-            self::DbQuery( "UPDATE tokens set level = level + 1  WHERE name ='turn'" );
+            self::DbQuery( "UPDATE `tokens` set `level` = level + 1  WHERE `name` ='turn'" );
             letsgotojapan::$instance->notifyAllPlayers('turn','', array(
             'turn' =>$newturn,
             )
@@ -4035,7 +4036,7 @@ function st_MultiPlayerActivation()
 
             
 
-            $listplayers = self::getObjectListFromDB( "SELECT player_id id FROM player", true );
+            $listplayers = self::getObjectListFromDB( "SELECT `player_id` id FROM `player`", true );
 
             foreach ($listplayers as $player_id)
             {
@@ -4044,8 +4045,8 @@ function st_MultiPlayerActivation()
                 $this->kyoto->pickCardForLocation( 'deck', 'playerhand', $player_id);
                 $this->kyoto->pickCardForLocation( 'deck', 'playerhand', $player_id);
 
-                $tokyocard = self::getObjectListFromDB( "SELECT card_id id, card_type type FROM tokyo WHERE card_location ='playerhand' AND card_location_arg = {$player_id}");
-                $kyotocard = self::getObjectListFromDB( "SELECT card_id id, card_type type FROM kyoto WHERE card_location ='playerhand' AND card_location_arg = {$player_id}");
+                $tokyocard = self::getObjectListFromDB( "SELECT `card_id` id, `card_type` type FROM `tokyo` WHERE `card_location` ='playerhand' AND `card_location_arg` = {$player_id}");
+                $kyotocard = self::getObjectListFromDB( "SELECT `card_id` id, `card_type` type FROM `kyoto` WHERE `card_location` ='playerhand' AND `card_location_arg` = {$player_id}");
                 
                 
                 foreach($tokyocard as $card1)
@@ -4082,8 +4083,8 @@ function st_MultiPlayerActivation()
 
                 //////////////// Compteur discard ///////////////
 
-                $tokyocarddiscard = self::getObjectListFromDB( "SELECT card_id id FROM tokyo WHERE card_location ='discardboardhidden' AND card_location_arg = {$player_id}", true);
-                $kyotocarddiscard = self::getObjectListFromDB( "SELECT card_id id FROM kyoto WHERE card_location ='discardboardhidden' AND card_location_arg = {$player_id}", true);
+                $tokyocarddiscard = self::getObjectListFromDB( "SELECT `card_id` id FROM `tokyo` WHERE `card_location` ='discardboardhidden' AND `card_location_arg` = {$player_id}", true);
+                $kyotocarddiscard = self::getObjectListFromDB( "SELECT `card_id` id FROM `kyoto` WHERE `card_location` ='discardboardhidden' AND `card_location_arg` = {$player_id}", true);
                 $tokyocarddiscardcount = count($tokyocarddiscard);
                 $kyotocarddiscardcount = count($kyotocarddiscard);
 
@@ -4105,8 +4106,8 @@ function st_MultiPlayerActivation()
 
                 }
 
-                $newtokyocarddiscardcount = count(self::getObjectListFromDB( "SELECT card_id id FROM tokyo WHERE card_location ='discardboard' AND card_location_arg = {$player_id}", true));
-                $newkyotocarddiscardcount = count(self::getObjectListFromDB( "SELECT card_id id FROM kyoto WHERE card_location ='discardboard' AND card_location_arg = {$player_id}", true));
+                $newtokyocarddiscardcount = count(self::getObjectListFromDB( "SELECT `card_id` id FROM `tokyo` WHERE `card_location` ='discardboard' AND `card_location_arg` = {$player_id}", true));
+                $newkyotocarddiscardcount = count(self::getObjectListFromDB( "SELECT `card_id` id FROM `kyoto` WHERE `card_location` ='discardboard' AND `card_location_arg` = {$player_id}", true));
 
                 letsgotojapan::$instance->notifyAllPlayers('majcompteurdiscard','', array(
                     'count1' => $newtokyocarddiscardcount,
@@ -4125,7 +4126,7 @@ function st_MultiPlayerActivation()
         if (($newturn == 10)||($newturn == 12))  
         {
             /// changement de turn ////
-            self::DbQuery( "UPDATE tokens set level = level + 1  WHERE name ='turn'" );
+            self::DbQuery( "UPDATE `tokens` set `level` = level + 1  WHERE `name` ='turn'" );
             letsgotojapan::$instance->notifyAllPlayers('turn','', array(
             'turn' =>$newturn,
             )
@@ -4133,12 +4134,12 @@ function st_MultiPlayerActivation()
 
            
             
-            $listplayers = self::getObjectListFromDB( "SELECT player_id id FROM player", true );
+            $listplayers = self::getObjectListFromDB( "SELECT `player_id` id FROM `player`", true );
 
             foreach ($listplayers as $player_id)
             {
-                $tokyocarddiscard = self::getObjectListFromDB( "SELECT card_id id FROM tokyo WHERE card_location ='discardboardhidden' AND card_location_arg = {$player_id}", true);
-                $kyotocarddiscard = self::getObjectListFromDB( "SELECT card_id id FROM kyoto WHERE card_location ='discardboardhidden' AND card_location_arg = {$player_id}", true);
+                $tokyocarddiscard = self::getObjectListFromDB( "SELECT `card_id` id FROM `tokyo` WHERE `card_location` ='discardboardhidden' AND `card_location_arg` = {$player_id}", true);
+                $kyotocarddiscard = self::getObjectListFromDB( "SELECT `card_id` id FROM `kyoto` WHERE `card_location` ='discardboardhidden' AND `card_location_arg` = {$player_id}", true);
                 $tokyocarddiscardcount = count($tokyocarddiscard);
                 $kyotocarddiscardcount = count($kyotocarddiscard);
 
@@ -4162,8 +4163,8 @@ function st_MultiPlayerActivation()
 
 
                 
-                $tokyodiscardboard = self::getObjectListFromDB( "SELECT card_id id, card_type type FROM tokyo WHERE card_location ='discardboard' AND card_location_arg = {$player_id}");
-                $kyotodiscardboard = self::getObjectListFromDB( "SELECT card_id id, card_type type FROM kyoto WHERE card_location ='discardboard' AND card_location_arg = {$player_id}");
+                $tokyodiscardboard = self::getObjectListFromDB( "SELECT `card_id` id, `card_type` type FROM `tokyo` WHERE `card_location` ='discardboard' AND `card_location_arg` = {$player_id}");
+                $kyotodiscardboard = self::getObjectListFromDB( "SELECT `card_id` id, `card_type` type FROM `kyoto` WHERE `card_location` ='discardboard' AND `card_location_arg` = {$player_id}");
 
                 
                 if($tokyodiscardboard != null)
@@ -4227,19 +4228,19 @@ function st_MultiPlayerActivation()
         if ($newturn == 13) 
         {
             /// changement de turn ////
-            self::DbQuery( "UPDATE tokens set level = level + 1  WHERE name ='turn'" );
+            self::DbQuery( "UPDATE `tokens` set `level` = level + 1  WHERE `name` ='turn'" );
             letsgotojapan::$instance->notifyAllPlayers('turn','', array(
             'turn' =>$newturn,
             )
             );
 
                         
-            $listplayers = self::getObjectListFromDB( "SELECT player_id id FROM player", true );
+            $listplayers = self::getObjectListFromDB( "SELECT `player_id` id FROM `player`", true );
 
             foreach ($listplayers as $player_id)
             {
-                $tokyocarddiscard = self::getObjectListFromDB( "SELECT card_id id FROM tokyo WHERE card_location ='discardboardhidden' AND card_location_arg = {$player_id}", true);
-                $kyotocarddiscard = self::getObjectListFromDB( "SELECT card_id id FROM kyoto WHERE card_location ='discardboardhidden' AND card_location_arg = {$player_id}", true);
+                $tokyocarddiscard = self::getObjectListFromDB( "SELECT `card_id` id FROM `tokyo` WHERE `card_location` ='discardboardhidden' AND `card_location_arg` = {$player_id}", true);
+                $kyotocarddiscard = self::getObjectListFromDB( "SELECT `card_id` id FROM `kyoto` WHERE `card_location` ='discardboardhidden' AND `card_location_arg` = {$player_id}", true);
                 $tokyocarddiscardcount = count($tokyocarddiscard);
                 $kyotocarddiscardcount = count($kyotocarddiscard);
 
@@ -4263,8 +4264,8 @@ function st_MultiPlayerActivation()
 
 
                 
-                $tokyodiscardboard = self::getObjectListFromDB( "SELECT card_id id, card_type type FROM tokyo WHERE card_location ='discardboard' AND card_location_arg = {$player_id}");
-                $kyotodiscardboard = self::getObjectListFromDB( "SELECT card_id id, card_type type FROM kyoto WHERE card_location ='discardboard' AND card_location_arg = {$player_id}");
+                $tokyodiscardboard = self::getObjectListFromDB( "SELECT `card_id` id, `card_type` type FROM `tokyo` WHERE `card_location` ='discardboard' AND `card_location_arg` = {$player_id}");
+                $kyotodiscardboard = self::getObjectListFromDB( "SELECT `card_id` id, `card_type` type FROM `kyoto` WHERE `card_location` ='discardboard' AND `card_location_arg` = {$player_id}");
 
                 
                 if($tokyodiscardboard != null)
@@ -4334,8 +4335,8 @@ function st_MultiPlayerActivation()
                 )
                 );
 
-            self::DbQuery( "UPDATE tokens set level = level + 1  WHERE name ='turn'" );
-            $listplayers = self::getObjectListFromDB( "SELECT player_id id FROM player", true );
+            self::DbQuery( "UPDATE `tokens` set `level` = level + 1  WHERE `name` ='turn'" );
+            $listplayers = self::getObjectListFromDB( "SELECT `player_id` id FROM `player`", true );
 
             foreach ($listplayers as $player_id)
             {
@@ -4359,8 +4360,8 @@ function st_MultiPlayerActivation()
                 )
                 );
 
-            self::DbQuery( "UPDATE tokens set level = level + 1  WHERE name ='turn'" );
-            $listplayers = self::getObjectListFromDB( "SELECT player_id id FROM player", true );
+            self::DbQuery( "UPDATE `tokens` set `level` = level + 1  WHERE `name` ='turn'" );
+            $listplayers = self::getObjectListFromDB( "SELECT `player_id` id FROM `player`", true );
 
             foreach ($listplayers as $player_id)
             {
@@ -4376,7 +4377,7 @@ function st_MultiPlayerActivation()
             
             $this->gamestate->nextState('end');
             
-            /*$listplayers = self::getObjectListFromDB( "SELECT player_id id FROM player", true );
+            /*$listplayers = self::getObjectListFromDB( "SELECT `player_id` id FROM `player`", true );
 
             foreach ($listplayers as $player_id)
             {
@@ -4486,7 +4487,7 @@ function zombieTurn( $state, $active_player )
         return;
     }
 
-    throw new feException( "Zombie mode not supported at this game state: ".$statename );
+    throw new VisibleSystemException( "Zombie mode not supported at this game state: ".$statename );
 }
 
 ///////////////////////////////////////////////////////////////////////////////// 

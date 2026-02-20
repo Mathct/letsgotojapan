@@ -1,7 +1,8 @@
-<?php 
-        
-  
-    class CardTokyo extends APP_GameClass
+<?php
+
+use Bga\GameFramework\Table;
+
+    class CardTokyo
 {
     
     
@@ -12,7 +13,7 @@
         if(($ret[8] >= 2)||($force ==1))
         {
             $score = 2*min($ret[3], $ret[4]);
-            self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+            Table::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
             return 1;
         }
 
@@ -31,7 +32,7 @@
         if(($ret[3] >= 3)||($force ==1))
         {
             $score = 3 + $ret[3];
-            self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+            Table::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
         return 1;
         }
 
@@ -50,7 +51,7 @@
         if((($ret[3] >= 2)&&($ret[0] >= 2))||($force ==1))
         {
             $score = 8;
-            self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+            Table::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
         return 1;
         }
 
@@ -69,7 +70,7 @@
         if(($ret[1] >= 3)||($force ==1))
         {
             $score =7;
-            self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+            Table::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
         return 1;
         }
 
@@ -87,7 +88,7 @@
         if((($ret[1] >= 2)&&($ret[0] >= 2))||($force ==1))
         {
             $score = 3 + $ret[1];
-            self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+            Table::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
         return 1;
         }
 
@@ -104,7 +105,7 @@
         if(($ret[7] >= 2)||($force ==1))
         {
             $score = 2*min($ret[0], $ret[1]);
-            self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+            Table::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
         return 1;
         }
 
@@ -128,8 +129,8 @@
             for ($i=0; $i<=$position; $i++)
             {
                 $d = $i+1;
-                $tokyo = count(self::getObjectListFromDB( "SELECT card_id id FROM tokyo WHERE  card_location_arg = {$player_id} AND finallocation = 1 AND card_location LIKE 'cardposition_{$d}%'", true ));
-                $kyoto = count(self::getObjectListFromDB( "SELECT card_id id FROM kyoto WHERE  card_location_arg = {$player_id} AND finallocation = 1 AND card_location LIKE 'cardposition_{$d}%'", true ));
+                $tokyo = count(Table::getObjectListFromDB( "SELECT card_id id FROM tokyo WHERE  card_location_arg = {$player_id} AND finallocation = 1 AND card_location LIKE 'cardposition_{$d}%'", true ));
+                $kyoto = count(Table::getObjectListFromDB( "SELECT card_id id FROM kyoto WHERE  card_location_arg = {$player_id} AND finallocation = 1 AND card_location LIKE 'cardposition_{$d}%'", true ));
                 $count = $tokyo + $kyoto;
 
                 if( $count == $trip[$i])
@@ -141,7 +142,7 @@
             }
 
             $score = 3*$found;
-            self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+            Table::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
         return 1;
         }
 
@@ -158,7 +159,7 @@
         if(($ret[4] >= 3)||($force ==1))
         {
             $score = 2*min($ret[0], $ret[2]);
-            self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+            Table::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
         return 1;
         }
 
@@ -175,7 +176,7 @@
         if(($ret[3] >= 4)||($force ==1))
         {
             $score = 2*min($ret[0], $ret[3]);
-            self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+            Table::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
         return 1;
         }
 
@@ -192,7 +193,7 @@
         if(($ret[4] >= 3)||($force ==1))
         {
             $score = 8;
-            self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+            Table::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
         return 1;
         }
 
@@ -209,7 +210,7 @@
         if(($ret[1] >= 3)||($force ==1))
         {
             $score = 2*min($ret[1], $ret[8]);
-            self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+            Table::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
         return 1;
         }
 
@@ -226,7 +227,7 @@
         if(($ret[8] >= 2)||($force ==1))
         {
             $score = 7;
-            self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+            Table::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
         return 1;
         }
 
@@ -243,7 +244,7 @@
         if(($ret[7] >= 4)||($force ==1))
         {
             $score = 14;
-            self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+            Table::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
         return 1;
         }
 
@@ -260,7 +261,7 @@
         if(($ret[6] >= 2)||($force ==1))
         {
             $score = 6;
-            self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+            Table::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
             letsgotojapan::$instance->Gain("y",$player_id);
         return 1;
         }
@@ -279,7 +280,7 @@
         if(($ret[10] >= 2)||($force ==1))
         {
             $score = 8;
-            self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+            Table::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
             letsgotojapan::$instance->Gain("b",$player_id);
         return 1;
         }
@@ -298,7 +299,7 @@
         if(($ret[1] >= 2)||($force ==1))
         {
             $score = 6;
-            self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+            Table::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
             letsgotojapan::$instance->Gain("b",$player_id);
         return 1;
         }
@@ -317,7 +318,7 @@
         if((($ret[1] >= 1)&&($ret[0] >= 2))||($force ==1))
         {
             $score = 4 + $ret[1];
-            self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+            Table::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
             
         return 1;
         }
@@ -335,7 +336,7 @@
         if(($ret[7] >= 2)||($force ==1))
         {
             $score = 8;
-            self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+            Table::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
             letsgotojapan::$instance->Gain("b",$player_id);
             letsgotojapan::$instance->Gain("y",$player_id);
         return 1;
@@ -354,7 +355,7 @@
         if(($ret[4] >= 3)||($force ==1))
         {
             $score = 6;
-            self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+            Table::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
             letsgotojapan::$instance->Gain("b",$player_id);
             letsgotojapan::$instance->Gain("b",$player_id);
         return 1;
@@ -373,7 +374,7 @@
         if(($ret[2] >= 2)||($force ==1))
         {
             $score = 6;
-            self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+            Table::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
             
         return 1;
         }
@@ -391,7 +392,7 @@
         if((($ret[3] >= 3)&&($ret[2] >= 3))||($force ==1))
         {
             $score = 11;
-            self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+            Table::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
             
         return 1;
         }
@@ -409,7 +410,7 @@
         if((($ret[3] >= 3)&&($ret[1] >= 3))||($force ==1))
         {
             $score = 10;
-            self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+            Table::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
             
         return 1;
         }
@@ -427,7 +428,7 @@
         if(($ret[4] >= 3)||($force ==1))
         {
             $score = 2*min($ret[3], $ret[1]);
-            self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+            Table::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
         return 1;
         }
 
@@ -444,7 +445,7 @@
         if(($ret[5] >= 2)||($force ==1))
         {
             $score = 3 + $ret[2];
-            self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+            Table::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
         return 1;
         }
 
@@ -461,7 +462,7 @@
         if(($ret[7] >= 2)||($force ==1))
         {
             $score = 2*min($ret[3], $ret[2]);
-            self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+            Table::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
         return 1;
         }
 
@@ -478,7 +479,7 @@
         if(($ret[5] >= 2)||($force ==1))
         {
             $score = 5;
-            self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+            Table::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
         return 1;
         }
 
@@ -495,7 +496,7 @@
         if(($ret[0] >= 3)||($force ==1))
         {
             $score = 2*min($ret[3], $ret[0]);
-            self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+            Table::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
         return 1;
         }
 
@@ -512,7 +513,7 @@
         if(($ret[7] >= 2)||($force ==1))
         {
             $score = 8;
-            self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+            Table::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
             letsgotojapan::$instance->Gain("h1",$player_id);
             
         return 1;
@@ -531,7 +532,7 @@
         if(($ret[7] >= 2)||($force ==1))
         {
             $score = 4 + $ret[2];
-            self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+            Table::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
         return 1;
         }
 
@@ -548,7 +549,7 @@
         if(($ret[6] >= 2)||($force ==1))
         {
             $score = 7;
-            self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+            Table::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
             letsgotojapan::$instance->Gain("y",$player_id);
             
         return 1;
@@ -567,7 +568,7 @@
         if(($ret[3] >= 4)||($force ==1))
         {
             $score = 3 + $ret[3];
-            self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+            Table::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
         return 1;
         }
 
@@ -584,7 +585,7 @@
         if(($ret[2] >= 2)||($force ==1))
         {
             $score = 4;
-            self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+            Table::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
             letsgotojapan::$instance->Gain("b",$player_id);
             letsgotojapan::$instance->Gain("r",$player_id);
             letsgotojapan::$instance->Gain("p",$player_id);
@@ -605,7 +606,7 @@
         if(($ret[5] >= 1)||($force ==1))
         {
             $score = 3;
-            self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+            Table::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
             letsgotojapan::$instance->Gain("r",$player_id);
             letsgotojapan::$instance->Gain("r",$player_id);
             letsgotojapan::$instance->Gain("h2",$player_id);
@@ -626,7 +627,7 @@
         if(($ret[3] >= 3)||($force ==1))
         {
             $score = 5 + $ret[7];
-            self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+            Table::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
         return 1;
         }
 
@@ -643,7 +644,7 @@
         if(($ret[5] >= 3)||($force ==1))
         {
             $score = 4 + $ret[2];
-            self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+            Table::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
         return 1;
         }
 
@@ -660,9 +661,9 @@
         if(($ret[6] >= 3)||($force ==1))
         {
             $score = 6;
-            self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+            Table::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
             letsgotojapan::$instance->Gain("y",$player_id);
-            self::DbQuery( "UPDATE player set wild = wild +1  WHERE player_id = {$player_id}" );
+            Table::DbQuery( "UPDATE player set wild = wild +1  WHERE player_id = {$player_id}" );
             letsgotojapan::$instance->MajPannel($player_id);
             
         return 1;
@@ -681,7 +682,7 @@
         if(($ret[1] >= 3)||($force ==1))
         {
             $score = 5;
-            self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+            Table::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
             letsgotojapan::$instance->Gain("b",$player_id);
             
         return 1;
@@ -700,7 +701,7 @@
         if(($ret[3] >= 2)||($force ==1))
         {
             $score = 6;
-            self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+            Table::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
             letsgotojapan::$instance->Gain("g",$player_id);
             
         return 1;
@@ -719,7 +720,7 @@
         if((($ret[1] >= 2)&&($ret[4] >= 2))||($force ==1))
         {
             $score = 5 + $ret[4];
-            self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+            Table::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
            
             
         return 1;
@@ -738,7 +739,7 @@
         if(($ret[7] == 0)||($force ==1))
         {
             $score = 4 + $ret[1];
-            self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+            Table::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
            
             
         return 1;
@@ -757,7 +758,7 @@
         if(($ret[7] >= 1)||($force ==1))
         {
             $score = 5 + $ret[4];
-            self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+            Table::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
            
             
         return 1;
@@ -776,7 +777,7 @@
         if(($ret[6] >= 4)||($force ==1))
         {
             $score = 2*$ret[6];
-            self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+            Table::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
            
             
         return 1;
@@ -795,7 +796,7 @@
         if(($ret[10] >= 3)||($force ==1))
         {
             $score = 5 + $ret[4];
-            self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+            Table::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
            
             
         return 1;
@@ -814,7 +815,7 @@
         if(($ret[4] >= 3)||($force ==1))
         {
             $score = 2*min($ret[3], $ret[4]);
-            self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+            Table::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
         return 1;
         }
 
@@ -831,7 +832,7 @@
         if(($ret[4] >= 2)||($force ==1))
         {
             $score = 3*min($ret[1], $ret[3], $ret[2], $ret[0]);
-            self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+            Table::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
         return 1;
         }
 
@@ -848,7 +849,7 @@
         if((($ret[3] >= 2)&&($ret[0] >= 2))||($force ==1))
         {
             $score = 3 + $ret[0];
-            self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+            Table::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
            
             
         return 1;
@@ -867,7 +868,7 @@
         if(($ret[3] >= 2)||($force ==1))
         {
             $score = 5;
-            self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+            Table::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
             letsgotojapan::$instance->Gain("y",$player_id);
             letsgotojapan::$instance->Gain("y",$player_id);
             
@@ -887,7 +888,7 @@
         if(($ret[2] >= 2)||($force ==1))
         {
             $score = 7;
-            self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+            Table::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
             
             
         return 1;
@@ -906,7 +907,7 @@
         if(($ret[7] >= 1)||($force ==1))
         {
             $score = 8;
-            self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+            Table::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
             letsgotojapan::$instance->Gain("a1",$player_id);
             
             
@@ -926,7 +927,7 @@
         if(($ret[3] >= 4)||($force ==1))
         {
             $score = 5 + $ret[4];
-            self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+            Table::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
             
             
         return 1;
@@ -945,7 +946,7 @@
         if(($ret[4] >= 2)||($force ==1))
         {
             $score = 7;
-            self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+            Table::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
             
             
         return 1;
@@ -964,7 +965,7 @@
         if(($ret[3] >= 2)||($force ==1))
         {
             $score = 5;
-            self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+            Table::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
             letsgotojapan::$instance->Gain("b",$player_id);
             
             
@@ -984,7 +985,7 @@
         if(($ret[3] >= 3)||($force ==1))
         {
             $score = 2*min($ret[3], $ret[1]);
-            self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+            Table::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
         return 1;
         }
 
@@ -1001,7 +1002,7 @@
         if(($ret[4] >= 3)||($force ==1))
         {
             $score = $ret[0];
-            self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+            Table::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
             letsgotojapan::$instance->Gain("b",$player_id);
             letsgotojapan::$instance->Gain("b",$player_id);
             
@@ -1022,7 +1023,7 @@
         if(($ret[0] >= 3)||($force ==1))
         {
             $score = 7;
-            self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+            Table::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
             
             
             
@@ -1042,7 +1043,7 @@
         if(($ret[7] >= 2)||($force ==1))
         {
             $score = 5;
-            self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+            Table::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
             letsgotojapan::$instance->Gain("h1",$player_id);
             letsgotojapan::$instance->Gain("h1",$player_id);
             letsgotojapan::$instance->Gain("h1",$player_id);
@@ -1065,7 +1066,7 @@
         if(($ret[1] >= 2)||($force ==1))
         {
             $score = 5 + $ret[5];
-            self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+            Table::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
             
             
             
@@ -1085,7 +1086,7 @@
         if(($ret[1] >= 4)||($force ==1))
         {
             $score = 3;
-            self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+            Table::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
             letsgotojapan::$instance->Gain("b",$player_id);
             letsgotojapan::$instance->Gain("b",$player_id);
             letsgotojapan::$instance->Gain("b",$player_id);
@@ -1109,7 +1110,7 @@
         if(($ret[4] >= 2)||($force ==1))
         {
             $score = 5 + $ret[8];
-            self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+            Table::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
             
             
             
@@ -1129,7 +1130,7 @@
         if(($ret[4] >= 3)||($force ==1))
         {
             $score = 2*min($ret[2], $ret[1]);
-            self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+            Table::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
         return 1;
         }
 
@@ -1147,7 +1148,7 @@
         if(($ret[4] >= 2)||($force ==1))
         {
             $score = 3 + $ret[1];
-            self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+            Table::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
             
             
             
@@ -1167,7 +1168,7 @@
         if(($ret[6] >= 3)||($force ==1))
         {
             $score = 8;
-            self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+            Table::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
             
             
             
@@ -1187,7 +1188,7 @@
         if(($ret[2] >= 2)||($force ==1))
         {
             $score = 6;
-            self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+            Table::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
             
             
             
@@ -1207,7 +1208,7 @@
         if((($ret[0] >= 1)&&($ret[5] >= 1))||($force ==1))
         {
             $score = 5;
-            self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+            Table::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
             letsgotojapan::$instance->Gain("r",$player_id);
             letsgotojapan::$instance->Gain("b",$player_id);
             
@@ -1228,7 +1229,7 @@
         if((($ret[0] >= 3)&&($ret[1] >= 3))||($force ==1))
         {
             $score = 11;
-            self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+            Table::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
             
             
             
@@ -1248,7 +1249,7 @@
         if((($ret[4] >= 2)&&($ret[3] >= 2))||($force ==1))
         {
             $score = 2*min($ret[0], $ret[3]);
-            self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+            Table::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
         return 1;
         }
 
@@ -1265,7 +1266,7 @@
         if(($ret[9] >= 2)||($force ==1))
         {
             $score = 5;
-            self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+            Table::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
             letsgotojapan::$instance->Gain("y",$player_id);
             letsgotojapan::$instance->Gain("y",$player_id);
             
@@ -1286,7 +1287,7 @@
         if(($ret[4] >= 2)||($force ==1))
         {
             $score = 7;
-            self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+            Table::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
             letsgotojapan::$instance->Gain("y",$player_id);
             
             
@@ -1307,7 +1308,7 @@
         if(($ret[2] >= 4)||($force ==1))
         {
             $score = 2*min($ret[2], $ret[1]);
-            self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+            Table::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
         return 1;
         }
 
@@ -1324,7 +1325,7 @@
         if(($ret[8] >= 2)||($force ==1))
         {
             $score = 6;
-            self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+            Table::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
             letsgotojapan::$instance->Gain("g",$player_id);
             letsgotojapan::$instance->Gain("g",$player_id);
             
@@ -1346,7 +1347,7 @@
         if((($ret[0] >= 1)&&($ret[1] >= 1)&&($ret[4] >= 1))||($force ==1))
         {
             $score = 7;
-            self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+            Table::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
             
             
             
@@ -1366,7 +1367,7 @@
         if(($ret[4] >= 3)||($force ==1))
         {
             $score = 2*min($ret[0], $ret[1]);
-            self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+            Table::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
         return 1;
         }
 
@@ -1383,7 +1384,7 @@
         if(($ret[9] >= 2)||($force ==1))
         {
             $score = 7;
-            self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+            Table::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
             letsgotojapan::$instance->Gain("p",$player_id);
             
             
@@ -1405,7 +1406,7 @@
         if(($ret[8] >= 2)||($force ==1))
         {
             $score = 7;
-            self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+            Table::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
             letsgotojapan::$instance->Gain("p",$player_id);
             letsgotojapan::$instance->Gain("b",$player_id);
             
@@ -1428,7 +1429,7 @@
         if(($ret[4] >= 2)||($force ==1))
         {
             $score = 3 + $ret[1];
-            self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+            Table::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
             
             
         return 1;
@@ -1447,7 +1448,7 @@
         if((($ret[3] >= 1)&&($ret[1] >= 1))||($force ==1))
         {
             $score = 3 + $ret[0];
-            self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+            Table::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
             
             
         return 1;
@@ -1466,7 +1467,7 @@
         if(($ret[4] >= 3)||($force ==1))
         {
             $score = 2*min($ret[3], $ret[2]);
-            self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+            Table::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
         return 1;
         }
 
@@ -1483,7 +1484,7 @@
         if(($ret[8] >= 2)||($force ==1))
         {
             $score = 9;
-            self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+            Table::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
             letsgotojapan::$instance->Gain("a2",$player_id);
             letsgotojapan::$instance->Gain("b",$player_id);
             
@@ -1506,7 +1507,7 @@
         if(($ret[1] >= 4)||($force ==1))
         {
             $score = 3 + $ret[1];
-            self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+            Table::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
             
             
         return 1;
@@ -1525,7 +1526,7 @@
         if(($ret[4] >= 4)||($force ==1))
         {
             $score = 6 + $ret[4];
-            self::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
+            Table::DbQuery( "UPDATE player set {$day} = {$day} + {$score}  WHERE player_id = {$player_id}" );
             
             
         return 1;
